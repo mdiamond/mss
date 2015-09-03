@@ -16,11 +16,11 @@
 
 using namespace std;
 
-long long unsigned int CURRENT_SAMPLE = 0;
+unsigned int CURRENT_SAMPLE = 0;
 
-const int FREQUENCY = 44100;
+int FREQUENCY = 44100;
 
-long long int AUDIO_LENGTH = FREQUENCY;
+int AUDIO_LENGTH = FREQUENCY;
 
 void audio_callback(void *, Uint8 *, int);
 
@@ -31,8 +31,10 @@ void fill_buffer(Uint8 *_stream, int length)
   for(int i = 0; i < length; i += 2)
   {
     int current_sample = CURRENT_SAMPLE + (i / 2);
-    stream[i] = sin(M_PI * ((current_sample + (i / 2)) / (freq / FREQUENCY)));
-    stream[i + 1] = sin(M_PI * ((current_sample + (i / 2)) / (freq / FREQUENCY)));
+    int wave_fraction = (current_sample / (FREQUENCY / (freq * 2)));
+    int sample_amplitude = sin(M_PI * wave_fraction);
+    stream[i] = sample_amplitude;
+    stream[i + 1] = sample_amplitude;
   }
 
   CURRENT_SAMPLE += length / 2;
