@@ -1,14 +1,18 @@
 CC = g++ -g -Wall
 #CFLAGS =
 LDFLAGS = -lSDL2
-OBJECTS = main.o
+OBJECTS = Module.o signal_processing.o main.o
 
 all : synth
 
 synth : $(OBJECTS)
-		$(CC) -o $@ $^ $(LDFLAGS)
+	$(CC) -o $@ $^ $(LDFLAGS)
 # $(CFLAGS)
-main.o : main.cpp
-		$(CC) -c main.cpp
+Module : Module.cpp Module.hpp
+	$(CC) -c Module.cpp
+signal_processing : signal_processing.cpp signal_processing.hpp
+	$(CC) -c signal_processing.cpp
+main.o : main.cpp main.hpp
+	$(CC) -c main.cpp
 clean :
 		rm synth $(OBJECTS)

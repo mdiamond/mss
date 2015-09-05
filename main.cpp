@@ -5,8 +5,8 @@
  */
 
 // Included libraries
-#include <iostream>
 #include <cmath>
+#include <iostream>
 #include <queue>
 
 // Included SDL components
@@ -14,41 +14,11 @@
 #include "SDL2/SDL_image.h"
 #include "SDL2/SDL_audio.h"
 
+// Included files
+#include "main.hpp"
+#include "signal_processing.hpp"
+
 using namespace std;
-
-unsigned int CURRENT_SAMPLE = 0;
-
-int SAMPLE_RATE = 44100;
-
-int AUDIO_LENGTH = 44100;
-
-float FREQUENCY = 440;
-
-void audio_callback(void *, Uint8 *, int);
-
-void fill_buffer(Uint8 *_buffer, int length)
-{
-  // Float samples are 32 bits, 4 bytes * 2 (stereo)
-  // is 8 bytes per unique sample, 4 bytes for left, 4 for right
-  int num_unique_samples = length / 8;
-  int num_samples = length / 4;
-  // Cast the buffer pointer to a float pointer to
-  // allow inserting floats into its memory locations
-  float *buffer = (float *) _buffer;
-  // Start at the first sample in the buffer
-  int index = 0;
-  while(num_unique_samples > 0)
-  {
-    float wave_fraction = (CURRENT_SAMPLE / (SAMPLE_RATE / (FREQUENCY * 2)));
-    float sample_amplitude = sin(M_PI * wave_fraction);
-    buffer[index] = sample_amplitude;
-    buffer[index + 1] = sample_amplitude;
-    index += 2;
-    CURRENT_SAMPLE ++;
-    AUDIO_LENGTH --;
-    num_unique_samples --;
-  }
-}
 
 /*
  * Audio callback which triggers the generation of samples.
@@ -59,9 +29,7 @@ void audio_callback(void *userdata, Uint8 *buffer, int length)
   if(AUDIO_LENGTH == 0)
     return;
 
-  //cout << "Callback requesting " << length << " bytes." << endl;
   fill_buffer(buffer, length);
-  //cout << "Buffer filled." << endl;
 }
 
 /*
@@ -71,7 +39,7 @@ int open_audio_device()
 {
   SDL_AudioSpec wanted, obtained;
   
-  wanted.freq = 44100;
+  wanted.freq = SAMPLE_RATE;
   wanted.format = AUDIO_F32SYS;
   wanted.channels = 2;
   wanted.samples = 512;
@@ -104,6 +72,11 @@ int main()
     return 1;
   }
   cout << "SDL initialized." << endl;
+
+  SAMPLE_RATE = 44100;
+  CURRENT_SAMPLE = 0;
+  AUDIO_LENGTH = 44100;
+  FREQUENCY = 440;
 
   // Initialize audio device
   if(!open_audio_device())
