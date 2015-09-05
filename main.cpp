@@ -18,41 +18,50 @@ using namespace std;
 
 unsigned int CURRENT_SAMPLE = 0;
 
-int FREQUENCY = 44100;
+int SAMPLE_RATE = 44100;
 
-int AUDIO_LENGTH = FREQUENCY;
+int AUDIO_LENGTH = 44100;
+
+float FREQUENCY = 440;
 
 void audio_callback(void *, Uint8 *, int);
 
-void fill_buffer(Uint8 *_stream, int length)
+void fill_buffer(Uint8 *_buffer, int length)
 {
-  float *stream = (float *) _stream;
-  float freq = 440;
-  for(int i = 0; i < length; i += 2)
+  // Float samples are 32 bits, 4 bytes * 2 (stereo)
+  // is 8 bytes per unique sample, 4 bytes for left, 4 for right
+  int num_unique_samples = length / 8;
+  int num_samples = length / 4;
+  // Cast the buffer pointer to a float pointer to
+  // allow inserting floats into its memory locations
+  float *buffer = (float *) _buffer;
+  // Start at the first sample in the buffer
+  int index = 0;
+  while(num_unique_samples > 0)
   {
-    int current_sample = CURRENT_SAMPLE + (i / 2);
-    int wave_fraction = (current_sample / (FREQUENCY / (freq * 2)));
-    int sample_amplitude = sin(M_PI * wave_fraction);
-    stream[i] = sample_amplitude;
-    stream[i + 1] = sample_amplitude;
+    float wave_fraction = (CURRENT_SAMPLE / (SAMPLE_RATE / (FREQUENCY * 2)));
+    float sample_amplitude = sin(M_PI * wave_fraction);
+    buffer[index] = sample_amplitude;
+    buffer[index + 1] = sample_amplitude;
+    index += 2;
+    CURRENT_SAMPLE ++;
+    AUDIO_LENGTH --;
+    num_unique_samples --;
   }
-
-  CURRENT_SAMPLE += length / 2;
-  AUDIO_LENGTH -= length / 2;
 }
 
 /*
  * Audio callback which triggers the generation of samples.
  */
-void audio_callback(void *userdata, Uint8 *stream, int length)
+void audio_callback(void *userdata, Uint8 *buffer, int length)
 {
   // If there is no audio to play
-  if(AUDIO_LENGTH = 0)
+  if(AUDIO_LENGTH == 0)
     return;
 
-  cout << "Callback requesting " << length << " samples." << endl;
-  fill_buffer(stream, length);
-  cout << "Buffer filled." << endl;
+  //cout << "Callback requesting " << length << " bytes." << endl;
+  fill_buffer(buffer, length);
+  //cout << "Buffer filled." << endl;
 }
 
 /*
@@ -60,17 +69,23 @@ void audio_callback(void *userdata, Uint8 *stream, int length)
  */
 int open_audio_device()
 {
-  SDL_AudioSpec wanted;
+  SDL_AudioSpec wanted, obtained;
   
   wanted.freq = 44100;
   wanted.format = AUDIO_F32SYS;
   wanted.channels = 2;
-  wanted.samples = 2048;
+  wanted.samples = 512;
   wanted.callback = audio_callback;
   wanted.userdata = NULL;
 
-  if(SDL_OpenAudio(&wanted, NULL) < 0)
+  if(SDL_OpenAudio(&wanted, &obtained) == -1)
     return 0;
+
+  cout << "Audio details:" << endl;
+  cout << "Sample rate: " << obtained.freq << endl;
+  cout << "Format: " << obtained.format << endl;
+  cout << "Channels: " << obtained.channels << endl;
+  cout << "Buffer size: " << obtained.samples << endl;
 
   // Return success
   return 1;
@@ -84,7 +99,7 @@ int main()
   cout << "Initializing SDL." << endl;
 
   // Initialize SDL with the video and audio subsystems
-  if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO)==-1)) { 
+  if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
     cout << "Could not initialize SDL: " <<  SDL_GetError() << endl;
     return 1;
   }
@@ -98,9 +113,12 @@ int main()
   }
   cout << "Audio device opened." << endl;
 
+  cout << "Unpausing audio." << endl;
   SDL_PauseAudio(0);
+  cout << "Audio unpaused." << endl;
+
   while(AUDIO_LENGTH > 0)
-    SDL_Delay(1);
+  {}
 
   // Quit SDL
   cout << "Quitting SDL." << endl;
