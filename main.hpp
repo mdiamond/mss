@@ -9,6 +9,7 @@
 // Included SDL components
 #include "SDL2/SDL.h"
 
+// Audio information
 extern int SAMPLE_RATE;
 extern unsigned long long int CURRENT_SAMPLE;
 extern int AUDIO_LENGTH;

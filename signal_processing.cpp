@@ -5,6 +5,9 @@
  * that are utilized to fill the audio buffer.
  */
 
+// Included libraries
+#include <iostream>
+
 // Included SDL components
 #include "SDL2/SDL.h"
 
@@ -24,8 +27,6 @@ void fill_buffer(Uint8 *_buffer, int length)
   // Float samples are 32 bits, 4 bytes * 2 (stereo)
   // is 8 bytes per unique sample, 4 bytes for left, 4 for right
   int num_unique_samples = length / 8;
-  // 4 bytes per individual sample
-  int num_samples = length / 4;
   // Cast the buffer pointer to a float pointer to
   // allow inserting floats into its memory locations
   float *buffer = (float *) _buffer;
@@ -41,5 +42,21 @@ void fill_buffer(Uint8 *_buffer, int length)
     CURRENT_SAMPLE ++;
     AUDIO_LENGTH --;
     num_unique_samples --;
+  }
+}
+
+/*
+ * Add two signals
+ */
+void add_signals(float *buffer1, float *buffer2, float *result_buffer, int length)
+{
+  // 4 bytes per float
+  int num_samples = length / 4;
+
+  // For each sample
+  for(int i = 0; i < num_samples; i ++)
+  {
+    // Sum the samples from the two input buffers into the result buffer
+    result_buffer[i] = buffer1[i] + buffer2[i];
   }
 }

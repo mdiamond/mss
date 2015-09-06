@@ -12,4 +12,6 @@
 
 void fill_buffer(Uint8 *, int);
 
+void add_signals(float *, float *, float *, int);
+
 #endif

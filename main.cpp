@@ -17,6 +17,14 @@
 // Included files
 #include "main.hpp"
 #include "signal_processing.hpp"
+#include "tests.hpp"
+  
+int SAMPLE_RATE = 44100;
+unsigned long long int CURRENT_SAMPLE = 0;
+int AUDIO_LENGTH = 44100;
+float FREQUENCY = 440;
+
+int testing = 1;
 
 using namespace std;
 
@@ -64,38 +72,43 @@ int open_audio_device()
  */
 int main()
 {
-  cout << "Initializing SDL." << endl;
-
-  // Initialize SDL with the video and audio subsystems
-  if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
-    cout << "Could not initialize SDL: " <<  SDL_GetError() << endl;
-    return 1;
-  }
-  cout << "SDL initialized." << endl;
-
-  SAMPLE_RATE = 44100;
-  CURRENT_SAMPLE = 0;
-  AUDIO_LENGTH = 44100;
-  FREQUENCY = 440;
-
-  // Initialize audio device
-  if(!open_audio_device())
+  if(testing)
   {
-    cout << "Could not open the audio device: " << SDL_GetError() << endl;
-    return 1;
+    if(run_tests())
+      return 0;
+    else
+      return 1;
   }
-  cout << "Audio device opened." << endl;
+  else
+  {
+    cout << "Initializing SDL." << endl;
 
-  cout << "Unpausing audio." << endl;
-  SDL_PauseAudio(0);
-  cout << "Audio unpaused." << endl;
+    // Initialize SDL with the video and audio subsystems
+    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
+      cout << "Could not initialize SDL: " <<  SDL_GetError() << endl;
+      return 1;
+    }
+    cout << "SDL initialized." << endl;
 
-  while(AUDIO_LENGTH > 0)
-  {}
+    // Initialize audio device
+    if(!open_audio_device())
+    {
+      cout << "Could not open the audio device: " << SDL_GetError() << endl;
+      return 1;
+    }
+    cout << "Audio device opened." << endl;
 
-  // Quit SDL
-  cout << "Quitting SDL." << endl;
-  SDL_Quit();
+    cout << "Unpausing audio." << endl;
+    SDL_PauseAudio(0);
+    cout << "Audio unpaused." << endl;
+
+    while(AUDIO_LENGTH > 0)
+    {}
+
+    // Quit SDL
+    cout << "Quitting SDL." << endl;
+    SDL_Quit();
+  }
 
   // Terminate
   cout << "Quitting..." << endl;
