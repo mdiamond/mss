@@ -6,24 +6,33 @@
  * modules.
  */
 
-#ifndef module_h
-#define module_h
+#ifndef synth_module_h
+#define synth_module_h
 
 // Included libraries
 #include <cmath>
 #include <iostream>
 #include <queue>
+#include <string>
 
 // Included SDL components
 #include "SDL2/SDL.h"
 
+enum Modules
+{
+  OUTPUT,
+  OSCILLATOR,
+};
+
 class Module
 {
-  protected:
-    float current_amplitude;
   public:
-    string name;
-    Module(string *);
-}
+    std::string name;
+    int type;
+    float current_amplitude;
+    Module(void);
+    virtual ~Module(void);
+    virtual void process(int) = 0;
+};
 
 #endif

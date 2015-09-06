@@ -8,6 +8,7 @@
 #include <cmath>
 #include <iostream>
 #include <queue>
+#include <vector>
 
 // Included SDL components
 #include "SDL2/SDL.h"
@@ -18,53 +19,60 @@
 #include "main.hpp"
 #include "signal_processing.hpp"
 #include "tests.hpp"
+
+// Included classes
+#include "Module.hpp"
+#include "Output.hpp"
+#include "Oscillator.hpp"
+
+using namespace std;
   
 int SAMPLE_RATE = 44100;
 unsigned long long int CURRENT_SAMPLE = 0;
 int AUDIO_LENGTH = 44100;
 float FREQUENCY = 440;
+int BUFFER_SIZE;
 
-int testing = 1;
+vector<Module *> modules;
 
-using namespace std;
+int testing = 0;
 
 /*
  * Audio callback which triggers the generation of samples.
  */
-void audio_callback(void *userdata, Uint8 *buffer, int length)
+void audio_callback(void *userdata, Uint8 *_buffer, int length)
 {
+  // 4 bytes per float, one left and one right
+  int num_samples = length / 8;
+
+  float *buffer = (float *) _buffer;
+
   // If there is no audio to play
   if(AUDIO_LENGTH == 0)
     return;
 
-  fill_buffer(buffer, length);
-}
+  for(int i = 1; i < modules.size(); i ++)
+  {
+    modules[i]->process(num_samples);
+  }
 
-/*
- * Open the audio device with the specified configuration
- */
-int open_audio_device()
-{
-  SDL_AudioSpec wanted, obtained;
-  
-  wanted.freq = SAMPLE_RATE;
-  wanted.format = AUDIO_F32SYS;
-  wanted.channels = 2;
-  wanted.samples = 512;
-  wanted.callback = audio_callback;
-  wanted.userdata = NULL;
+  vector<float> *l = ((Output *) modules[0])->input_l;
+  vector<float> *r = ((Output *) modules[0])->input_r;
 
-  if(SDL_OpenAudio(&wanted, &obtained) == -1)
-    return 0;
+  int index = 0;
+  for(int i = 0; i < l->size(); i ++)
+  {
+    cout << (*l)[i] << ", ";
+    buffer[index] = (*l)[i];
+    index ++;
+    buffer[index] = (*r)[i];
+    index ++;
+  }
 
-  cout << "Audio details:" << endl;
-  cout << "Sample rate: " << obtained.freq << endl;
-  cout << "Format: " << obtained.format << endl;
-  cout << "Channels: " << obtained.channels << endl;
-  cout << "Buffer size: " << obtained.samples << endl;
+  AUDIO_LENGTH -= length / 2;
+  CURRENT_SAMPLE += length / 2;  
 
-  // Return success
-  return 1;
+  //fill_buffer(buffer, length);
 }
 
 /*
@@ -97,6 +105,19 @@ int main()
       return 1;
     }
     cout << "Audio device opened." << endl;
+
+    // Create the output module
+    Output *output = new Output();
+    modules.push_back(output);
+    // Create an oscillator module
+    string oscillator_1_name = "oscillator 1";
+    Oscillator *oscillator_1 = new Oscillator(&oscillator_1_name);
+    modules.push_back(oscillator_1);
+    // Set the inputs and outputs
+    output->input_l = oscillator_1->output;
+    output->input_r = oscillator_1->output;
+    // Set the oscillator frequency
+    oscillator_1->frequency = 440;
 
     cout << "Unpausing audio." << endl;
     SDL_PauseAudio(0);

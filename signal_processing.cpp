@@ -7,6 +7,7 @@
 
 // Included libraries
 #include <iostream>
+#include <vector>
 
 // Included SDL components
 #include "SDL2/SDL.h"
@@ -46,9 +47,38 @@ void fill_buffer(Uint8 *_buffer, int length)
 }
 
 /*
+ * Open the audio device with the specified configuration
+ */
+int open_audio_device(void)
+{
+  SDL_AudioSpec wanted, obtained;
+  
+  wanted.freq = SAMPLE_RATE;
+  wanted.format = AUDIO_F32SYS;
+  wanted.channels = 2;
+  wanted.samples = 512;
+  wanted.callback = audio_callback;
+  wanted.userdata = NULL;
+
+  if(SDL_OpenAudio(&wanted, &obtained) == -1)
+    return 0;
+
+  cout << "Audio details:" << endl;
+  cout << "Sample rate: " << obtained.freq << endl;
+  cout << "Format: " << obtained.format << endl;
+  cout << "Channels: " << obtained.channels << endl;
+  cout << "Buffer size: " << obtained.samples << endl;
+
+  BUFFER_SIZE = obtained.samples;
+
+  // Return success
+  return 1;
+}
+
+/*
  * Add two signals
  */
-void add_signals(float *buffer1, float *buffer2, float *result_buffer, int length)
+void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *result_buffer, int length)
 {
   // 4 bytes per float
   int num_samples = length / 4;
@@ -57,6 +87,6 @@ void add_signals(float *buffer1, float *buffer2, float *result_buffer, int lengt
   for(int i = 0; i < num_samples; i ++)
   {
     // Sum the samples from the two input buffers into the result buffer
-    result_buffer[i] = buffer1[i] + buffer2[i];
+    (*result_buffer)[i] = (*buffer1)[i] + (*buffer2)[i];
   }
 }

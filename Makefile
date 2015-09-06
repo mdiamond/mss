@@ -1,7 +1,7 @@
 CC = g++ -g -Wall
 #CFLAGS =
 LDFLAGS = -lSDL2
-OBJECTS = Module.o signal_processing.o tests.o main.o
+OBJECTS = Module.o Output.o Oscillator.o signal_processing.o tests.o main.o
 
 all : synth
 
@@ -10,6 +10,10 @@ synth : $(OBJECTS)
 # $(CFLAGS)
 Module.o : Module.cpp Module.hpp
 	$(CC) -c Module.cpp
+Output.o : Output.cpp Output.hpp
+	$(CC) -c Output.cpp
+Oscillator.o : Oscillator.cpp Oscillator.hpp
+	$(CC) -c Oscillator.cpp
 signal_processing.o : signal_processing.cpp signal_processing.hpp
 	$(CC) -c signal_processing.cpp
 tests.o : tests.cpp tests.hpp

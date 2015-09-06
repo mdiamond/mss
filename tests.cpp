@@ -6,6 +6,7 @@
 // Included libraries
 #include <iostream>
 #include <string>
+#include <vector>
 
 // Included files
 #include "signal_processing.hpp"
@@ -13,28 +14,28 @@
 
 using namespace std;
 
-int compare_buffers(float *buffer1, float *buffer2, int length)
+int compare_buffers(vector<float> *buffer1, vector<float> *buffer2, int length)
 {
   int success = 1;
   int num_samples = length / 4;
 
   for(int i = 0; i < num_samples; i ++)
   {
-    if(buffer1[i] != buffer2[i])
+    if((*buffer1)[i] != (*buffer2)[i])
       success = 0;
   }
 
   return success;
 }
 
-int test_add_signals_1()
+int test_add_signals_1(void)
 {
   int length = 4;
   int length_in_bytes = length * 4;
-  float buffer1[length];
-  float buffer2[length];
-  float expected_buffer[length];
-  float result_buffer[length];
+  vector<float> buffer1(length, 0);
+  vector<float> buffer2(length, 0);
+  vector<float> expected_buffer(length, 0);
+  vector<float> result_buffer(length, 0);
 
   buffer1[0] = .5;
   buffer2[0] = .5;
@@ -52,9 +53,9 @@ int test_add_signals_1()
   buffer2[3] = 3.43;
   expected_buffer[3] = -16.57;
 
-  add_signals(buffer1, buffer2, result_buffer, length_in_bytes);
+  add_signals(&buffer1, &buffer2, &result_buffer, length_in_bytes);
 
-  if(compare_buffers(expected_buffer, result_buffer, length_in_bytes))
+  if(compare_buffers(&expected_buffer, &result_buffer, length_in_bytes))
     return 1;
 
   return 0;
@@ -91,7 +92,7 @@ int all_tests_passed(int *results, int test_num)
   return success;
 }
 
-int run_tests()
+int run_tests(void)
 {
   string names[1];
   int results[1];

@@ -8,8 +8,20 @@
 // Included libraries
 #include <cmath>
 #include <iostream>
+#include <string>
 
 // Included SDL components
 #include "SDL2/SDL.h"
 
-using namespace std;
+// Included classes
+#include "Module.hpp"
+
+Module::Module(void)
+{
+  current_amplitude = 0;
+}
+
+Module::~Module(void)
+{
+
+}
