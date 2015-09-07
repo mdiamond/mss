@@ -25,7 +25,7 @@ Output::~Output(void)
 
 }
 
-void Output::process(int length)
+void Output::process(int num_samples)
 {
-
+  process_depends(num_samples);
 }

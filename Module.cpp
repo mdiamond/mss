@@ -25,3 +25,11 @@ Module::~Module(void)
 {
 
 }
+
+void Module::process_depends(int num_samples)
+{
+  for(int i = 0; i < depends.size(); i ++)
+  {
+    depends[i]->process(num_samples);
+  }
+}

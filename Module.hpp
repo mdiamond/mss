@@ -14,6 +14,7 @@
 #include <iostream>
 #include <queue>
 #include <string>
+#include <vector>
 
 // Included SDL components
 #include "SDL2/SDL.h"
@@ -30,9 +31,11 @@ class Module
     std::string name;
     int type;
     float current_amplitude;
+    std::vector<Module *> depends;
     Module(void);
     virtual ~Module(void);
     virtual void process(int) = 0;
+    void process_depends(int);
 };
 
 #endif

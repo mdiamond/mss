@@ -51,11 +51,11 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
   if(AUDIO_LENGTH == 0)
     return;
 
-  for(int i = 1; i < modules.size(); i ++)
-  {
-    modules[i]->process(num_samples);
-  }
+  // Process audio for the output module
+  modules[0]->process(num_samples);
 
+  // Fetch the output module's latest processed audio
+  // and insert it into the buffer
   vector<float> *l = ((Output *) modules[0])->input_l;
   vector<float> *r = ((Output *) modules[0])->input_r;
 
@@ -69,6 +69,8 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     index ++;
   }
 
+  // Increment the current sample by the number
+  // of samples just processed
   AUDIO_LENGTH -= length / 2;
   CURRENT_SAMPLE += length / 2;  
 
@@ -114,6 +116,7 @@ int main()
     Oscillator *oscillator_1 = new Oscillator(&oscillator_1_name);
     modules.push_back(oscillator_1);
     // Set the inputs and outputs
+    output->depends.push_back(oscillator_1);
     output->input_l = oscillator_1->output;
     output->input_r = oscillator_1->output;
     // Set the oscillator frequency
