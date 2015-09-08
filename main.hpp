@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Header file for the driver functions.
+ * Header file for the driver function.
  */
 
 #ifndef synth_main_h
@@ -17,10 +17,9 @@
 
 // Audio information
 extern int SAMPLE_RATE;
-extern unsigned long long int CURRENT_SAMPLE;
-extern int AUDIO_LENGTH;
-extern float FREQUENCY;
 extern int BUFFER_SIZE;
+
+extern int AUDIO_LENGTH;
 
 // The modules currently in use
 extern std::vector<Module *> modules;

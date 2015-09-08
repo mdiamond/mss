@@ -18,11 +18,12 @@ class Output: public Module
 {
   public:
     std::string name;
+    int type;
     std::vector<float> *input_l;
     std::vector<float> *input_r;
     Output(void);
     virtual ~Output(void);
-    virtual void process(int);
+    virtual void process();
 };
 
 #endif

@@ -1,8 +1,6 @@
 /*
  * Matthew Diamond 2015
- * A base class to represent a generic synthesizer module.
- * Other classes will extend this class and represent different
- * types of modules.
+ * Member functions for the Module class.
  */
 
 // Included libraries
@@ -16,20 +14,30 @@
 // Included classes
 #include "Module.hpp"
 
+/*
+ * Dummy function
+ */
 Module::Module(void)
 {
-  current_amplitude = 0;
+
 }
 
+/*
+ * Dummy function
+ */
 Module::~Module(void)
 {
 
 }
 
-void Module::process_depends(int num_samples)
+/*
+ * This function calls upon the modules dependencies
+ * to process samples.
+ */
+void Module::process_depends()
 {
   for(int i = 0; i < depends.size(); i ++)
   {
-    depends[i]->process(num_samples);
+    depends[i]->process();
   }
 }

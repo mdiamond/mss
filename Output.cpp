@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Member functions for the Output class
+ * Member functions for the Output class.
  */
 
 // Included libraries
@@ -11,7 +11,10 @@
 #include "Output.hpp"
 
 using namespace std;
-  
+
+/*
+ * Constructor
+ */
 Output::Output(void)
 {
   name = "output";
@@ -20,12 +23,20 @@ Output::Output(void)
   input_r = NULL;
 }
 
+/*
+ * Dummy function
+ */
 Output::~Output(void)
 {
 
 }
 
-void Output::process(int num_samples)
+/*
+ * This function simply calls upon dependencies for
+ * processing. The output module depends on all other
+ * modules.
+ */
+void Output::process()
 {
-  process_depends(num_samples);
+  process_depends();
 }

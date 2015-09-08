@@ -20,17 +20,18 @@
 // Included classes
 #include "Module.hpp"
 
-static const int buffer_size = BUFFER_SIZE;
-
 class Oscillator: public Module
 {
   public:
     std::string name;
+    int type;
     float frequency;
+    float phase;
+    float amplitude;
     std::vector<float> *input;
     std::vector<float> *output;
     Oscillator(std::string *);
-    virtual void process(int);
+    virtual void process();
     virtual ~Oscillator(void);
 };
 

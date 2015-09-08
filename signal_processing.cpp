@@ -16,38 +16,74 @@
 #include "main.hpp"
 #include "signal_processing.hpp"
 
+// Included classes
+#include "Module.hpp"
+#include "Oscillator.hpp"
+#include "Output.hpp"
+
 using namespace std;
 
 /*
- * The primary helper function for the audio callback function.
- * Figure out how many samples are being worked with, then generate
- * data to fill the buffer.
+ * Audio callback which triggers the generation of samples
+ * when more audio is needed to play. This function calls upon the
+ * output module to process, which recursively triggers the processing
+ * of samples down the entire signal chain. Once all samples are
+ * processed and ready, the buffer is filled with the waiting samples
+ * in the output modules left and right channel output buffers.
  */
-void fill_buffer(Uint8 *_buffer, int length)
+void audio_callback(void *userdata, Uint8 *_buffer, int length)
 {
-  // Float samples are 32 bits, 4 bytes * 2 (stereo)
-  // is 8 bytes per unique sample, 4 bytes for left, 4 for right
-  int num_unique_samples = length / 8;
-  // Cast the buffer pointer to a float pointer to
-  // allow inserting floats into its memory locations
+  // Cast the buffer to a float buffer
   float *buffer = (float *) _buffer;
-  // Start at the first sample in the buffer
-  int index = 0;
-  while(num_unique_samples > 0)
+
+  // If there is no audio to play, just return
+  if(AUDIO_LENGTH == 0)
+    return;
+
+  // Get the address of the output module for later use
+  Output *output = (Output *) modules[0];
+
+  // Process audio for the output module
+  // This will recursively call upon depended modules
+  // for processed audio, meaning that modules at
+  // the beginning of the signal chain will be processed first
+  output->process();
+
+  // // Uncomment this and comment out the buffer filling code
+  // // below for some cool AM action
+  // Oscillator *oscillator_1 = (Oscillator *) modules[1];
+  // Oscillator *oscillator_2 = (Oscillator *) modules[2];
+  // float *buffer_l = buffer;
+  // float *buffer_r = buffer + 1;
+  // for(int i = 0; i < BUFFER_SIZE; i ++)
+  // {
+  //   *buffer_l = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
+  //   *buffer_r = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
+  //   buffer_l += 2;
+  //   buffer_r += 2;
+  //   oscillator_1->frequency += .001;
+  //   oscillator_2->frequency += .00001;
+  // }
+
+  // Fetch the output module's latest processed audio
+  // and insert it into the buffer
+  float *buffer_l = buffer;
+  float *buffer_r = buffer + 1;
+  for(int i = 0; i < BUFFER_SIZE; i ++)
   {
-    float wave_fraction = (CURRENT_SAMPLE / (SAMPLE_RATE / (FREQUENCY * 2)));
-    float sample_amplitude = sin(M_PI * wave_fraction);
-    buffer[index] = sample_amplitude;
-    buffer[index + 1] = sample_amplitude;
-    index += 2;
-    CURRENT_SAMPLE ++;
-    AUDIO_LENGTH --;
-    num_unique_samples --;
+    *buffer_l = (*(output->input_l))[i];
+    *buffer_r = (*(output->input_r))[i];
+    buffer_l += 2;
+    buffer_r += 2;
   }
+
+  // Increment the current sample by the number
+  // of samples just processed
+  AUDIO_LENGTH -= BUFFER_SIZE;
 }
 
 /*
- * Open the audio device with the specified configuration
+ * Open the audio device with a simple configuration.
  */
 int open_audio_device(void)
 {
@@ -64,10 +100,10 @@ int open_audio_device(void)
     return 0;
 
   cout << "Audio details:" << endl;
-  cout << "Sample rate: " << obtained.freq << endl;
-  cout << "Format: " << obtained.format << endl;
-  cout << "Channels: " << obtained.channels << endl;
-  cout << "Buffer size: " << obtained.samples << endl;
+  cout << "  Sample rate: " << obtained.freq << endl;
+  cout << "  Format: " << obtained.format << endl;
+  cout << "  Channels: " << obtained.channels << endl;
+  cout << "  Buffer size: " << obtained.samples << endl;
 
   BUFFER_SIZE = obtained.samples;
 
@@ -78,15 +114,25 @@ int open_audio_device(void)
 /*
  * Add two signals
  */
-void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *result_buffer, int length)
+void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *result_buffer, int num_samples)
 {
-  // 4 bytes per float
-  int num_samples = length / 4;
-
   // For each sample
   for(int i = 0; i < num_samples; i ++)
   {
     // Sum the samples from the two input buffers into the result buffer
     (*result_buffer)[i] = (*buffer1)[i] + (*buffer2)[i];
+  }
+}
+
+/*
+ * Multiply two signals
+ */
+void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *result_buffer, int num_samples)
+{
+  // For each sample
+  for(int i = 0; i < num_samples; i ++)
+  {
+    // Sum the samples from the two input buffers into the result buffer
+    (*result_buffer)[i] = (*buffer1)[i] * (*buffer2)[i];
   }
 }
