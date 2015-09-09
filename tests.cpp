@@ -116,6 +116,6 @@ int run_tests(void)
   names[test_num] = "test add signals 1";
   results[test_num] = test_add_signals_1();
   test_num ++;
-  
+
   print_test_results(names, results, test_num);
 }

@@ -25,7 +25,9 @@ Oscillator::Oscillator(string *_name)
   frequency = 0;
   phase = 0;
   amplitude = 1;
-  input = NULL;
+  fm_on = 0;
+  index = 1;
+  modulator = NULL;
   output = new vector<float>(BUFFER_SIZE, 0);
 }
 
@@ -45,16 +47,22 @@ Oscillator::~Oscillator(void)
  */
 void Oscillator::process()
 {
+  float frequency_shift = 0;
   // Check for any dependencies for frequency modulation
   process_depends();
   // Calculate an amplitude for each sample
   for(int i = 0; i < BUFFER_SIZE; i ++)
   {
+    if(fm_on)
+      frequency_shift = (modulator->frequency * index) * (*modulator->output)[i];
     // Calculate and store the current samples amplitude
     // based on phase
     (*output)[i] = amplitude * sin(phase);
     // Calculate phase for the next sample
-    phase += ((2 * M_PI * frequency) / SAMPLE_RATE);
+    if(fm_on)
+      phase += (2 * M_PI * (frequency + frequency_shift) / SAMPLE_RATE);
+    else
+      phase += (2 * M_PI * frequency / SAMPLE_RATE);
     if(phase > (2 * M_PI))
       phase -= (2 * M_PI);
   }

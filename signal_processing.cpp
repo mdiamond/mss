@@ -57,12 +57,13 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
   // float *buffer_r = buffer + 1;
   // for(int i = 0; i < BUFFER_SIZE; i ++)
   // {
+  //   cout << (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i] << ", ";
   //   *buffer_l = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
   //   *buffer_r = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
   //   buffer_l += 2;
   //   buffer_r += 2;
   //   oscillator_1->frequency += .001;
-  //   oscillator_2->frequency += .00001;
+  //   oscillator_2->frequency += .0001;
   // }
 
   // Fetch the output module's latest processed audio
@@ -88,7 +89,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 int open_audio_device(void)
 {
   SDL_AudioSpec wanted, obtained;
-  
+
   wanted.freq = SAMPLE_RATE;
   wanted.format = AUDIO_F32SYS;
   wanted.channels = 2;
@@ -97,7 +98,10 @@ int open_audio_device(void)
   wanted.userdata = NULL;
 
   if(SDL_OpenAudio(&wanted, &obtained) == -1)
+  {
+    cout << "Could not open the audio device: " << SDL_GetError() << endl;
     return 0;
+  }
 
   cout << "Audio details:" << endl;
   cout << "  Sample rate: " << obtained.freq << endl;
@@ -109,6 +113,40 @@ int open_audio_device(void)
 
   // Return success
   return 1;
+}
+
+void initialize_output()
+{
+  // Create the output module
+  Output *output = new Output();
+  modules.push_back(output);
+
+  // Create two oscillator modules
+  string oscillator_1_name = "oscillator 1";
+  Oscillator *oscillator_1 = new Oscillator(&oscillator_1_name);
+  modules.push_back(oscillator_1);
+  // string oscillator_2_name = "oscillator_2";
+  // Oscillator  *oscillator_2 = new Oscillator(&oscillator_2_name);
+  // modules.push_back(oscillator_2);
+
+  // Set the inputs and outputs
+  output->depends.push_back(oscillator_1);
+  // output->depends.push_back(oscillator_2);
+  output->input_l = oscillator_1->output;
+  output->input_r = oscillator_1->output;
+
+  // Set the oscillator frequencies
+  oscillator_1->frequency = 440;
+  // oscillator_2->frequency = 1;
+
+  // Set up the FM oscillator
+  // string oscillator_3_name = "oscillator 3";
+  // Oscillator *oscillator_3 = new Oscillator(&oscillator_3_name);
+  // oscillator_1->depends.push_back(oscillator_3);
+  // oscillator_1->modulator = oscillator_3;
+  // oscillator_3->frequency = 20;
+  // oscillator_1->fm_on = 1;
+  // modules.push_back(oscillator_3);
 }
 
 /*

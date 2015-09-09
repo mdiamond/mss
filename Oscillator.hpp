@@ -28,7 +28,9 @@ class Oscillator: public Module
     float frequency;
     float phase;
     float amplitude;
-    std::vector<float> *input;
+    int fm_on;
+    float index;
+    Oscillator *modulator;
     std::vector<float> *output;
     Oscillator(std::string *);
     virtual void process();

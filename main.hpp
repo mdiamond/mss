@@ -21,6 +21,10 @@ extern int BUFFER_SIZE;
 
 extern int AUDIO_LENGTH;
 
+// Graphics stuff
+extern SDL_Window *window;
+// extern SDL_Renderer *renderer;
+
 // The modules currently in use
 extern std::vector<Module *> modules;
 

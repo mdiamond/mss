@@ -17,6 +17,8 @@ void audio_callback(void *, Uint8 *, int);
 
 int open_audio_device(void);
 
+void initialize_output();
+
 void add_signals(std::vector<float> *, std::vector<float> *, std::vector<float> *, int);
 void multiply_signals(std::vector<float> *, std::vector<float> *, std::vector<float> *, int);
 
