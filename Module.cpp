@@ -3,15 +3,7 @@
  * Member functions for the Module class.
  */
 
-// Included libraries
-#include <cmath>
-#include <iostream>
-#include <string>
-
-// Included SDL components
-#include "SDL2/SDL.h"
-
-// Included classes
+// Include header file
 #include "Module.hpp"
 
 /*

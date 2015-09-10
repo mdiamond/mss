@@ -8,10 +8,20 @@
 #define synth_signal_processing_h
 
 // Included libraries
+#include <iostream>
 #include <vector>
 
 // Included SDL components
 #include "SDL2/SDL.h"
+
+// Included files
+#include "image_processing.hpp"
+#include "main.hpp"
+
+// Included classes
+#include "Module.hpp"
+#include "Oscillator.hpp"
+#include "Output.hpp"
 
 void audio_callback(void *, Uint8 *, int);
 

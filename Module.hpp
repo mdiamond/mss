@@ -11,9 +11,6 @@
 #define synth_module_h
 
 // Included libraries
-#include <cmath>
-#include <iostream>
-#include <queue>
 #include <string>
 #include <vector>
 

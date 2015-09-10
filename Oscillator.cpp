@@ -3,14 +3,7 @@
  * Member functions for the Oscillator class
  */
 
-// Included libraries
-#include <string>
-
-// Included files
-#include "main.hpp"
-
-// Included classes
-#include "Module.hpp"
+// Include header file
 #include "Oscillator.hpp"
 
 using namespace std;

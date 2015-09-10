@@ -3,13 +3,7 @@
  * Functions for testing my code.
  */
 
-// Included libraries
-#include <iostream>
-#include <string>
-#include <vector>
-
-// Included files
-#include "signal_processing.hpp"
+// Include header file
 #include "tests.hpp"
 
 using namespace std;

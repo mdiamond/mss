@@ -4,27 +4,8 @@
  * and ends here.
  */
 
-// Included libraries
-#include <cmath>
-#include <iostream>
-#include <queue>
-#include <vector>
-
-// Included SDL components
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_image.h"
-#include "SDL2/SDL_audio.h"
-
-// Included files
-#include "image_processing.hpp"
+// Include header file
 #include "main.hpp"
-#include "signal_processing.hpp"
-#include "tests.hpp"
-
-// Included classes
-#include "Module.hpp"
-#include "Output.hpp"
-#include "Oscillator.hpp"
 
 using namespace std;
 

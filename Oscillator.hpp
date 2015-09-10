@@ -11,8 +11,12 @@
 #define synth_oscillator_h
 
 // Included libraries
+#include <cmath>
 #include <string>
 #include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
 
 // Included files
 #include "main.hpp"

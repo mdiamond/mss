@@ -7,10 +7,16 @@
 #define synth_main_h
 
 // Included libraries
+#include <iostream>
 #include <vector>
 
 // Included SDL components
 #include "SDL2/SDL.h"
+
+// Included files
+#include "image_processing.hpp"
+#include "signal_processing.hpp"
+#include "tests.hpp"
 
 // Included classes
 #include "Module.hpp"

@@ -3,11 +3,7 @@
  * Member functions for the Output class.
  */
 
-// Included libraries
-#include <string>
-
-// Included classes
-#include "Module.hpp"
+// Include header file
 #include "Output.hpp"
 
 using namespace std;
