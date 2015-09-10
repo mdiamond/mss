@@ -53,14 +53,15 @@ void Oscillator::process()
   // Calculate an amplitude for each sample
   for(int i = 0; i < BUFFER_SIZE; i ++)
   {
-    if(fm_on)
-      frequency_shift = (modulator->frequency * index) * (*modulator->output)[i];
     // Calculate and store the current samples amplitude
     // based on phase
     (*output)[i] = amplitude * sin(phase);
     // Calculate phase for the next sample
     if(fm_on)
+    {
+      frequency_shift = (modulator->frequency * index) * (*modulator->output)[i];
       phase += (2 * M_PI * (frequency + frequency_shift) / SAMPLE_RATE);
+    }
     else
       phase += (2 * M_PI * frequency / SAMPLE_RATE);
     if(phase > (2 * M_PI))

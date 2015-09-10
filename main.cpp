@@ -32,11 +32,11 @@ int SAMPLE_RATE = 44100;
 int BUFFER_SIZE;
 
 int CURRENT_SAMPLE = 0;
-int AUDIO_LENGTH = 44100;
+int AUDIO_LENGTH = 44100 * 10;
 
 SDL_Window *WINDOW;
 int WINDOW_WIDTH = 1000;
-int WINDOW_HEIGHT = 1000;
+int WINDOW_HEIGHT = 100;
 
 vector<Module *> modules;
 
@@ -81,7 +81,11 @@ int normal_mode()
   // While there's still sound to play, just wait
   while(AUDIO_LENGTH > 0)
   {
-
+    SDL_LockAudio();
+    update_surface();
+    SDL_UpdateWindowSurface(WINDOW);
+    SDL_UnlockAudio();
+    SDL_Delay(1000 / 60);
   }
 
   // Destroy the graphics objects

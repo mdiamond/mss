@@ -50,23 +50,6 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
   // the beginning of the signal chain will be processed first
   output->process();
 
-  // // Uncomment this and comment out the buffer filling code
-  // // below for some cool AM action
-  // Oscillator *oscillator_1 = (Oscillator *) modules[1];
-  // Oscillator *oscillator_2 = (Oscillator *) modules[2];
-  // float *buffer_l = buffer;
-  // float *buffer_r = buffer + 1;
-  // for(int i = 0; i < BUFFER_SIZE; i ++)
-  // {
-  //   // cout << (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i] << ", ";
-  //   *buffer_l = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
-  //   *buffer_r = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
-  //   buffer_l += 2;
-  //   buffer_r += 2;
-  //   oscillator_1->frequency += .001;
-  //   oscillator_2->frequency += .0001;
-  // }
-
   // Fetch the output module's latest processed audio
   // and insert it into the buffer
   float *buffer_l = buffer;
@@ -77,6 +60,10 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     *buffer_r = (*(output->input_r))[i];
     buffer_l += 2;
     buffer_r += 2;
+    // Uncomment these for some cool parameter modulation
+    // ((Oscillator *)modules[1])->frequency += .001;
+    // ((Oscillator *)modules[2])->frequency += .0001;
+    // ((Oscillator *)modules[2])->index -= .00001;
   }
 
   // Increment the current sample by the number
@@ -84,13 +71,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
   CURRENT_SAMPLE += BUFFER_SIZE;
   AUDIO_LENGTH -= BUFFER_SIZE;
 
-  // Video
-  populate_samples(output->input_l);
-  if(CURRENT_SAMPLE % (BUFFER_SIZE * 10) == 0)
-  {
-    update_surface(output->input_l);
-    SDL_UpdateWindowSurface(WINDOW);
-  }
+  populate_samples(output->input_l, output->input_r);
 }
 
 /*
@@ -131,32 +112,36 @@ void initialize_output()
   Output *output = new Output();
   modules.push_back(output);
 
-  // Create two oscillator modules
+  // This configuration is arbitrary and
+  // it will be possible to patch it together
+  // in the GUI later
+  // In the GUI version, this function will only
+  // create the output module
+
+  // Create an oscillator module
   string oscillator_1_name = "oscillator 1";
   Oscillator *oscillator_1 = new Oscillator(&oscillator_1_name);
   modules.push_back(oscillator_1);
-  // string oscillator_2_name = "oscillator_2";
-  // Oscillator  *oscillator_2 = new Oscillator(&oscillator_2_name);
-  // modules.push_back(oscillator_2);
-
-  // Set the inputs and outputs
-  output->depends.push_back(oscillator_1);
-  // output->depends.push_back(oscillator_2);
-  output->input_l = oscillator_1->output;
-  output->input_r = oscillator_1->output;
 
   // Set the oscillator frequencies
   oscillator_1->frequency = 440;
-  // oscillator_2->frequency = 1;
 
-  // Set up the FM oscillator
-  // string oscillator_3_name = "oscillator 3";
-  // Oscillator *oscillator_3 = new Oscillator(&oscillator_3_name);
-  // oscillator_1->depends.push_back(oscillator_3);
-  // oscillator_1->modulator = oscillator_3;
-  // oscillator_3->frequency = 20;
-  // oscillator_1->fm_on = 1;
-  // modules.push_back(oscillator_3);
+  // Create another oscillator module
+  string modulator_name = "modulator";
+  Oscillator *modulator = new Oscillator(&modulator_name);
+  modules.push_back(modulator);
+
+  modulator->frequency = 4;
+
+  oscillator_1->depends.push_back(modulator);
+  oscillator_1->fm_on = 1;
+  oscillator_1->index = 25;
+  oscillator_1->modulator = modulator;
+
+  // Set the inputs and outputs
+  output->depends.push_back(oscillator_1);
+  output->input_l = oscillator_1->output;
+  output->input_r = oscillator_1->output;
 }
 
 /*

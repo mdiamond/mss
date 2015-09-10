@@ -55,32 +55,33 @@ void put_white_pixel(SDL_Surface *screen, int x, int y)
     *((Uint32*)pixel) = 0xFFFFFFFF;
 }
 
-void fill_surface_waveform(SDL_Surface *screen, vector<float> *buffer)
+void fill_surface_waveform(SDL_Surface *screen)
 {
   Uint32 *pixels = (Uint32 *) screen->pixels;
+  int middle = (WINDOW_HEIGHT / 2) - 1;
 
-  for(int x = WINDOW_WIDTH; x > 0; x --)
+  for(int x = 0; x < WINDOW_WIDTH; x ++)
   {
-    int y = (int) (WINDOW_HEIGHT / 2) + ((WINDOW_HEIGHT / 2) * samples[WINDOW_WIDTH - x]);
+    int y = (int) middle + (middle * samples[WINDOW_WIDTH - x - 1]);
     put_white_pixel(screen, x, y);
   }
 }
 
-void populate_samples(vector<float> *buffer)
+void populate_samples(vector<float> *buffer_l, vector<float> *buffer_r)
 {
   for(int i = 0; i + BUFFER_SIZE < samples.size(); i ++)
   {
     samples[i] = samples[i + BUFFER_SIZE];
   }
-  int index = WINDOW_WIDTH - BUFFER_SIZE - 1;
+  int index = WINDOW_WIDTH - BUFFER_SIZE;
   for(int i = 0; i < BUFFER_SIZE && index >= 0; i ++)
   {
-    samples[index] = (*buffer)[i];
+    samples[index] = ((*buffer_l)[i] + (*buffer_r)[i]) / 2;
     index ++;
   }
 }
 
-void update_surface(vector<float> *buffer)
+void update_surface()
 {
   // Get the screen surface
   SDL_Surface *screen = SDL_GetWindowSurface(WINDOW);
@@ -89,5 +90,5 @@ void update_surface(vector<float> *buffer)
   SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0x00000000, 0x00000000, 0x00000000));
 
   // Draw in the most recent waveform samples
-  fill_surface_waveform(screen, buffer);
+  fill_surface_waveform(screen);
 }
