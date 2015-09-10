@@ -47,9 +47,9 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     buffer_l += 2;
     buffer_r += 2;
     // Uncomment these for some cool parameter modulation
-    // ((Oscillator *)modules[1])->frequency += .001;
-    // ((Oscillator *)modules[2])->frequency += .0001;
-    // ((Oscillator *)modules[2])->index -= .00001;
+    ((Oscillator *)modules[1])->frequency += .001;
+    ((Oscillator *)modules[2])->frequency += .0001;
+    ((Oscillator *)modules[2])->index -= .00001;
   }
 
   // Increment the current sample by the number
