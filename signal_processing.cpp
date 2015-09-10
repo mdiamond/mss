@@ -13,6 +13,7 @@
 #include "SDL2/SDL.h"
 
 // Included files
+#include "image_processing.hpp"
 #include "main.hpp"
 #include "signal_processing.hpp"
 
@@ -57,7 +58,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
   // float *buffer_r = buffer + 1;
   // for(int i = 0; i < BUFFER_SIZE; i ++)
   // {
-  //   cout << (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i] << ", ";
+  //   // cout << (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i] << ", ";
   //   *buffer_l = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
   //   *buffer_r = (*(oscillator_1->output))[i] * (*(oscillator_2->output))[i];
   //   buffer_l += 2;
@@ -80,7 +81,16 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 
   // Increment the current sample by the number
   // of samples just processed
+  CURRENT_SAMPLE += BUFFER_SIZE;
   AUDIO_LENGTH -= BUFFER_SIZE;
+
+  // Video
+  populate_samples(output->input_l);
+  if(CURRENT_SAMPLE % (BUFFER_SIZE * 10) == 0)
+  {
+    update_surface(output->input_l);
+    SDL_UpdateWindowSurface(WINDOW);
+  }
 }
 
 /*

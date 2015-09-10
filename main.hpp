@@ -19,11 +19,13 @@
 extern int SAMPLE_RATE;
 extern int BUFFER_SIZE;
 
+extern int CURRENT_SAMPLE;
 extern int AUDIO_LENGTH;
 
 // Graphics stuff
-extern SDL_Window *window;
-// extern SDL_Renderer *renderer;
+extern SDL_Window *WINDOW;
+extern int WINDOW_WIDTH;
+extern int WINDOW_HEIGHT;
 
 // The modules currently in use
 extern std::vector<Module *> modules;

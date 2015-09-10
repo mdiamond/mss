@@ -31,10 +31,12 @@ using namespace std;
 int SAMPLE_RATE = 44100;
 int BUFFER_SIZE;
 
+int CURRENT_SAMPLE = 0;
 int AUDIO_LENGTH = 44100;
 
-SDL_Window *window;
-// SDL_Renderer *renderer = NULL;
+SDL_Window *WINDOW;
+int WINDOW_WIDTH = 1000;
+int WINDOW_HEIGHT = 1000;
 
 vector<Module *> modules;
 
@@ -82,8 +84,8 @@ int normal_mode()
 
   }
 
-  // Destroy the window
-  SDL_DestroyWindow(window);
+  // Destroy the graphics objects
+  SDL_DestroyWindow(WINDOW);
 
   // Quit SDL
   cout << "Quitting SDL." << endl;

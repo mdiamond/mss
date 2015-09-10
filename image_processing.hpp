@@ -14,6 +14,7 @@
 #include "SDL2/SDL.h"
 
 int open_window();
-// void create_renderer();
+void populate_samples(std::vector<float> *);
+void update_surface(std::vector<float> *);
 
 #endif
