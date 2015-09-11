@@ -10,6 +10,10 @@
 #ifndef synth_oscillator_h
 #define synth_oscillator_h
 
+/************
+ * INCLUDES *
+ ************/
+
 // Included libraries
 #include <cmath>
 #include <string>
@@ -23,6 +27,10 @@
 
 // Included classes
 #include "Module.hpp"
+
+/*******************************
+ * OSCILLATOR CLASS DEFINITION *
+ *******************************/
 
 class Oscillator: public Module
 {

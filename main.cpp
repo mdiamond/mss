@@ -9,6 +9,10 @@
 
 using namespace std;
 
+/**********************
+ * EXTERNAL VARIABLES *
+ **********************/
+
 int SAMPLE_RATE = 44100;
 int BUFFER_SIZE;
 
@@ -22,41 +26,62 @@ int WINDOW_HEIGHT = 100;
 
 vector<Module *> modules;
 
+/***********************
+ * TESTING MODE TOGGLE *
+ ***********************/
+
 int testing = 0;
 
+/********************
+ * HELPER FUNCTIONS *
+ ********************/
+
+/*
+ * Run in testing mode. If all tests pass, return 1.
+ * Otherwise, return 0;
+ */
 int testing_mode()
 {
-  if(run_tests())
-    return 0;
-  else
-    return -1;
+  return run_tests();
 }
 
+/*
+ * Run in normal mode. If all objects create successfully,
+ * return 1. Otherwise, return 0.
+ */
 int normal_mode()
 {
+  /**********************************
+   * Initialize SDL and SDL objects *
+   **********************************/
+
   cout << "Initializing SDL." << endl;
 
   // Initialize SDL with the video and audio subsystems
   if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
     cout << "Could not initialize SDL: " <<  SDL_GetError() << endl;
-    return -1;
+    return 0;
   }
   cout << "SDL initialized." << endl;
 
   // Initialize audio device
   if(!open_audio_device())
-    return -1;
+    return 0;
   cout << "Audio device opened." << endl;
 
   // Open a window
   if(!open_window())
-    return -1;
+    return 0;
   cout << "Window opened." << endl;
 
   // Create a renderer
   if(!create_renderer())
-    return -1;
+    return 0;
   cout << "Renderer created." << endl;
+
+  /************************************************
+   * Initialize output and begin processing audio *
+   ************************************************/
 
   // Initialize the output module
   initialize_output();
@@ -76,6 +101,10 @@ int normal_mode()
     SDL_Delay(1000 / 30);
   }
 
+  /************
+   * Clean up *
+   ************/
+
   // Destroy the graphics objects
   SDL_DestroyWindow(WINDOW);
   SDL_DestroyRenderer(RENDERER);
@@ -83,7 +112,13 @@ int normal_mode()
   // Quit SDL
   cout << "Quitting SDL." << endl;
   SDL_Quit();
+
+  return 1;
 }
+
+/*****************
+ * MAIN FUNCTION *
+ *****************/
 
 /*
  * Driver function for the whole program. This program 
@@ -94,16 +129,24 @@ int normal_mode()
  */
 int main()
 {
+  int exit_status = 0;
+
+  // If this is testing mode, just run the tests
   if(testing)
   {
-    testing_mode();
+    if(!testing_mode())
+      exit_status = -1;
   }
+  // If this is normal mode, open SDL, initialize necessary
+  // objects, and begin processing audio and video
   else
   {
-    normal_mode();
+    if(!normal_mode())
+      exit_status = -1;
   }
 
-  // Terminate
+  // Return an exit status based on whether or not
+  // the function called above succeeded and terminate
   cout << "Quitting..." << endl;
-  return 0;
+  return exit_status;
 }

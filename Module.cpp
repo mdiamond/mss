@@ -6,6 +6,10 @@
 // Include header file
 #include "Module.hpp"
 
+/***************************
+ * MODULE MEMBER FUNCTIONS *
+ ***************************/
+
 /*
  * Dummy function
  */
@@ -28,7 +32,7 @@ Module::~Module(void)
  */
 void Module::process_depends()
 {
-  for(int i = 0; i < depends.size(); i ++)
+  for(unsigned int i = 0; i < depends.size(); i ++)
   {
     depends[i]->process();
   }

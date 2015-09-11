@@ -10,6 +10,10 @@
 #ifndef synth_module_h
 #define synth_module_h
 
+/************
+ * INCLUDES *
+ ************/
+
 // Included libraries
 #include <string>
 #include <vector>
@@ -17,11 +21,19 @@
 // Included SDL components
 #include "SDL2/SDL.h"
 
+/*************************
+ * TYPES OF MODULES ENUM *
+ *************************/
+
 enum Modules
 {
   OUTPUT,
   OSCILLATOR,
 };
+
+/***************************
+ * MODULE CLASS DEFINITION *
+ ***************************/
 
 class Module
 {

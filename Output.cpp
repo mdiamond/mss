@@ -8,6 +8,10 @@
 
 using namespace std;
 
+/***************************
+ * OUTPUT MEMBER FUNCTIONS *
+ ***************************/
+
 /*
  * Constructor
  */

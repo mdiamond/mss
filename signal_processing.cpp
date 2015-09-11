@@ -10,55 +10,9 @@
 
 using namespace std;
 
-/*
- * Audio callback which triggers the generation of samples
- * when more audio is needed to play. This function calls upon the
- * output module to process, which recursively triggers the processing
- * of samples down the entire signal chain. Once all samples are
- * processed and ready, the buffer is filled with the waiting samples
- * in the output modules left and right channel output buffers.
- */
-void audio_callback(void *userdata, Uint8 *_buffer, int length)
-{
-  // Cast the buffer to a float buffer
-  float *buffer = (float *) _buffer;
-
-  // If there is no audio to play, just return
-  if(AUDIO_LENGTH == 0)
-    return;
-
-  // Get the address of the output module for later use
-  Output *output = (Output *) modules[0];
-
-  // Process audio for the output module
-  // This will recursively call upon depended modules
-  // for processed audio, meaning that modules at
-  // the beginning of the signal chain will be processed first
-  output->process();
-
-  // Fetch the output module's latest processed audio
-  // and insert it into the buffer
-  float *buffer_l = buffer;
-  float *buffer_r = buffer + 1;
-  for(int i = 0; i < BUFFER_SIZE; i ++)
-  {
-    *buffer_l = (*(output->input_l))[i];
-    *buffer_r = (*(output->input_r))[i];
-    buffer_l += 2;
-    buffer_r += 2;
-    // Uncomment these for some cool parameter modulation
-    ((Oscillator *)modules[1])->frequency += .001;
-    ((Oscillator *)modules[2])->frequency += .0001;
-    ((Oscillator *)modules[2])->index -= .00001;
-  }
-
-  // Increment the current sample by the number
-  // of samples just processed
-  CURRENT_SAMPLE += BUFFER_SIZE;
-  AUDIO_LENGTH -= BUFFER_SIZE;
-
-  populate_samples(output->input_l, output->input_r);
-}
+/****************************
+ * INITIALIZATION FUNCTIONS *
+ ****************************/
 
 /*
  * Open the audio device with a simple configuration.
@@ -113,22 +67,80 @@ void initialize_output()
   oscillator_1->frequency = 440;
 
   // Create another oscillator module
-  string modulator_name = "modulator";
-  Oscillator *modulator = new Oscillator(&modulator_name);
-  modules.push_back(modulator);
+  // string modulator_name = "modulator";
+  // Oscillator *modulator = new Oscillator(&modulator_name);
+  // modules.push_back(modulator);
 
-  modulator->frequency = 4;
+  // modulator->frequency = 4;
 
-  oscillator_1->depends.push_back(modulator);
-  oscillator_1->fm_on = 1;
-  oscillator_1->index = 25;
-  oscillator_1->modulator = modulator;
+  // oscillator_1->depends.push_back(modulator);
+  // oscillator_1->fm_on = 1;
+  // oscillator_1->index = 25;
+  // oscillator_1->modulator = modulator;
 
   // Set the inputs and outputs
   output->depends.push_back(oscillator_1);
   output->input_l = oscillator_1->output;
   output->input_r = oscillator_1->output;
 }
+
+/***************************
+ * AUDIO CALLBACK FUNCTION *
+ ***************************/
+
+/*
+ * Audio callback which triggers the generation of samples
+ * when more audio is needed to play. This function calls upon the
+ * output module to process, which recursively triggers the processing
+ * of samples down the entire signal chain. Once all samples are
+ * processed and ready, the buffer is filled with the waiting samples
+ * in the output modules left and right channel output buffers.
+ */
+void audio_callback(void *userdata, Uint8 *_buffer, int length)
+{
+  // Cast the buffer to a float buffer
+  float *buffer = (float *) _buffer;
+
+  // If there is no audio to play, just return
+  if(AUDIO_LENGTH == 0)
+    return;
+
+  // Get the address of the output module for later use
+  Output *output = (Output *) modules[0];
+
+  // Process audio for the output module
+  // This will recursively call upon depended modules
+  // for processed audio, meaning that modules at
+  // the beginning of the signal chain will be processed first
+  output->process();
+
+  // Fetch the output module's latest processed audio
+  // and insert it into the buffer
+  float *buffer_l = buffer;
+  float *buffer_r = buffer + 1;
+  for(int i = 0; i < BUFFER_SIZE; i ++)
+  {
+    *buffer_l = (*(output->input_l))[i];
+    *buffer_r = (*(output->input_r))[i];
+    buffer_l += 2;
+    buffer_r += 2;
+    // Uncomment these for some cool parameter modulation
+    // ((Oscillator *)modules[1])->frequency += .001;
+    // ((Oscillator *)modules[2])->frequency += .0001;
+    // ((Oscillator *)modules[2])->index -= .00001;
+  }
+
+  // Increment the current sample by the number
+  // of samples just processed
+  CURRENT_SAMPLE += BUFFER_SIZE;
+  AUDIO_LENGTH -= BUFFER_SIZE;
+
+  populate_samples(output->input_l, output->input_r);
+}
+
+/*******************************
+ * SIGNAL PROCESSING FUNCTIONS *
+ *******************************/
 
 /*
  * Add two signals

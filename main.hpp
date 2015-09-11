@@ -6,6 +6,10 @@
 #ifndef synth_main_h
 #define synth_main_h
 
+/************
+ * INCLUDES *
+ ************/
+
 // Included libraries
 #include <iostream>
 #include <vector>
@@ -20,6 +24,10 @@
 
 // Included classes
 #include "Module.hpp"
+
+/**********************
+ * EXTERNAL VARIABLES *
+ **********************/
 
 // Audio information
 extern int SAMPLE_RATE;
@@ -36,7 +44,5 @@ extern int WINDOW_HEIGHT;
 
 // The modules currently in use
 extern std::vector<Module *> modules;
-
-void audio_callback(void *, Uint8 *, int);
 
 #endif

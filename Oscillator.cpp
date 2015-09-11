@@ -8,6 +8,10 @@
 
 using namespace std;
 
+/*******************************
+ * OSCILLATOR MEMBER FUNCTIONS *
+ *******************************/
+
 /*
  * Constructor
  */

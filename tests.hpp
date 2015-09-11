@@ -6,6 +6,10 @@
 #ifndef synth_tests_h
 #define synth_tests_h
 
+/************
+ * INCLUDES *
+ ************/
+
 // Included libraries
 #include <iostream>
 #include <string>
@@ -17,6 +21,11 @@
 // Included files
 #include "signal_processing.hpp"
 
+/*************************
+ * FUNCTION DECLARATIONS *
+ *************************/
+
+// Run tests
 int run_tests(void);
 
 #endif

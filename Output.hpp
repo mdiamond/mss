@@ -7,6 +7,10 @@
 #ifndef synth_output_h
 #define synth_output_h
 
+/************
+ * INCLUDES *
+ ************/
+
 // Included libraries
 #include <string>
 #include <vector>
@@ -16,6 +20,10 @@
 
 // Included classes
 #include "Module.hpp"
+
+/***************************
+ * OUTPUT CLASS DEFINITION *
+ ***************************/
 
 class Output: public Module
 {

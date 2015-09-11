@@ -7,6 +7,10 @@
 #ifndef synth_image_processing_h
 #define synth_image_processing_h
 
+/************
+ * INCLUDES *
+ ************/
+
 // Included libraries
 #include <iostream>
 #include <queue>
@@ -24,8 +28,15 @@
 #include "Oscillator.hpp"
 #include "Output.hpp"
 
+/*************************
+ * FUNCTION DECLARATIONS *
+ *************************/
+
+// Initialization functions
 int open_window();
 int create_renderer();
+
+// Image processing functions
 void populate_samples(std::vector<float> *, std::vector<float> *);
 void draw_surface();
 
