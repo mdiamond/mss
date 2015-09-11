@@ -1,2 +1,2 @@
 # synth
-A very basic synthesizer, for learning
+A very basic modular synthesizer for learning.
