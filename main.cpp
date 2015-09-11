@@ -16,7 +16,8 @@ int CURRENT_SAMPLE = 0;
 int AUDIO_LENGTH = 44100 * 10;
 
 SDL_Window *WINDOW;
-int WINDOW_WIDTH = 1000;
+SDL_Renderer *RENDERER;
+int WINDOW_WIDTH = 500;
 int WINDOW_HEIGHT = 100;
 
 vector<Module *> modules;
@@ -52,9 +53,15 @@ int normal_mode()
     return -1;
   cout << "Window opened." << endl;
 
+  // Create a renderer
+  if(!create_renderer())
+    return -1;
+  cout << "Renderer created." << endl;
+
   // Initialize the output module
   initialize_output();
 
+  // Unpause the audio
   cout << "Unpausing audio." << endl;
   SDL_PauseAudio(0);
   cout << "Audio unpaused." << endl;
@@ -63,14 +70,15 @@ int normal_mode()
   while(AUDIO_LENGTH > 0)
   {
     SDL_LockAudio();
-    update_surface();
+    draw_surface();
     SDL_UpdateWindowSurface(WINDOW);
     SDL_UnlockAudio();
-    SDL_Delay(1000 / 60);
+    SDL_Delay(1000 / 30);
   }
 
   // Destroy the graphics objects
   SDL_DestroyWindow(WINDOW);
+  SDL_DestroyRenderer(RENDERER);
 
   // Quit SDL
   cout << "Quitting SDL." << endl;

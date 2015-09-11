@@ -30,6 +30,7 @@ extern int AUDIO_LENGTH;
 
 // Graphics stuff
 extern SDL_Window *WINDOW;
+extern SDL_Renderer *RENDERER;
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 

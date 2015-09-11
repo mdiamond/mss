@@ -5,30 +5,19 @@
  * that are utilized to fill the audio buffer.
  */
 
-// Included libraries
-#include <iostream>
-#include <queue>
-#include <vector>
-
-// Included SDL components
-#include "SDL2/SDL.h"
-
 // Included files
-#include "main.hpp"
-#include "signal_processing.hpp"
-
-// Included classes
-#include "Module.hpp"
-#include "Oscillator.hpp"
-#include "Output.hpp"
+#include "image_processing.hpp"
 
 using namespace std;
 
-vector<float> samples(WINDOW_WIDTH, 0);
+SDL_Point zero = {0, 0};
+vector<SDL_Point> samples(WINDOW_WIDTH, zero);
 
+/*
+ * Open a window using width and height specified in main.cpp.
+ */
 int open_window()
 {
-  // Create an application window with the following settings:
   WINDOW = SDL_CreateWindow(
       "Visualizer",
       SDL_WINDOWPOS_UNDEFINED,
@@ -38,9 +27,7 @@ int open_window()
       SDL_WINDOW_OPENGL
   );
 
-  // Check that the window was successfully created
   if (WINDOW == NULL) {
-      // In the case that the window could not be made...
       cout << "Could not create window: " << SDL_GetError() << endl;
       return 0;
   }
@@ -48,23 +35,19 @@ int open_window()
   return 1;
 }
 
-void put_white_pixel(SDL_Surface *screen, int x, int y)
+/*
+ * Create a renderer for the window created before.
+ */
+int create_renderer()
 {
-    Uint8 *pixel = (Uint8*) screen->pixels;
-    pixel += (y * screen->pitch) + (x * sizeof(Uint32));
-    *((Uint32*)pixel) = 0xFFFFFFFF;
-}
+  RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED);
 
-void fill_surface_waveform(SDL_Surface *screen)
-{
-  Uint32 *pixels = (Uint32 *) screen->pixels;
-  int middle = (WINDOW_HEIGHT / 2) - 1;
-
-  for(int x = 0; x < WINDOW_WIDTH; x ++)
-  {
-    int y = (int) middle + (middle * samples[WINDOW_WIDTH - x - 1]);
-    put_white_pixel(screen, x, y);
+  if (WINDOW == NULL) {
+    cout << "Could not create renderer: " << SDL_GetError() << endl;
+    return 0;
   }
+
+  return 1;
 }
 
 void populate_samples(vector<float> *buffer_l, vector<float> *buffer_r)
@@ -73,22 +56,32 @@ void populate_samples(vector<float> *buffer_l, vector<float> *buffer_r)
   {
     samples[i] = samples[i + BUFFER_SIZE];
   }
-  int index = WINDOW_WIDTH - BUFFER_SIZE;
-  for(int i = 0; i < BUFFER_SIZE && index >= 0; i ++)
+  int middle = WINDOW_HEIGHT / 2;
+  int index_samples = WINDOW_WIDTH - 1;
+  int index_buffer = BUFFER_SIZE - 1;
+  while(index_samples >= 0 && index_buffer >= 0)
   {
-    samples[index] = ((*buffer_l)[i] + (*buffer_r)[i]) / 2;
-    index ++;
+    int y = (int) middle + (middle * (((*buffer_l)[index_buffer] + (*buffer_r)[index_buffer]) / 2));
+    SDL_Point point = {index_samples, y};
+    samples[index_samples] = point;
+    index_samples --;
+    index_buffer --;
   }
 }
 
-void update_surface()
+void draw_surface()
 {
-  // Get the screen surface
-  SDL_Surface *screen = SDL_GetWindowSurface(WINDOW);
-
   // Fill the screen surface with black
-  SDL_FillRect(screen, NULL, SDL_MapRGB(screen->format, 0x00000000, 0x00000000, 0x00000000));
+  SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
+  SDL_RenderClear(RENDERER);
 
-  // Draw in the most recent waveform samples
-  fill_surface_waveform(screen);
+  // for (int i = 0; i < WINDOW_WIDTH; ++i)
+  // {
+  //   cout << samples[i].x << "," << samples[i].y << endl;
+  // }
+
+  SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
+  SDL_RenderDrawLines(RENDERER, &samples[0], samples.size());
+
+  SDL_RenderPresent(RENDERER);
 }
