@@ -15,18 +15,33 @@ using namespace std;
  * EXTERNAL VARIABLES *
  **********************/
 
+// Audio information
 int SAMPLE_RATE = 44100;
 int BUFFER_SIZE;
 
 int CURRENT_SAMPLE = 0;
 int AUDIO_LENGTH = 44100 * 10;
 
+// SDL Window and renderer
 SDL_Window *WINDOW;
 SDL_Renderer *RENDERER;
-int WINDOW_WIDTH = 500;
-int WINDOW_HEIGHT = 100;
 
-vector<Module *> modules;
+// Module dimensions and amount of modules per page
+int MODULE_WIDTH = 150;
+int MODULE_HEIGHT = 250;
+int MODULES_PER_ROW = 6;
+int MODULES_PER_COLUMN = 3;
+int MODULE_SPACING = 1;
+int MODULE_BORDER_WIDTH = 2;
+
+// Window dimensions
+int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
+                   (MODULE_SPACING * MODULES_PER_ROW);
+int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
+                    (MODULE_SPACING * MODULES_PER_COLUMN);
+
+vector<Module *> MODULES;
+int MODULES_CHANGED = 1;
 
 /***********************
  * TESTING MODE TOGGLE *
@@ -69,17 +84,14 @@ int normal_mode()
   // Initialize audio device
   if(!open_audio_device())
     return 0;
-  cout << "Audio device opened." << endl;
 
   // Open a window
   if(!open_window())
     return 0;
-  cout << "Window opened." << endl;
 
   // Create a renderer
   if(!create_renderer())
     return 0;
-  cout << "Renderer created." << endl;
 
   /************************************************
    * Initialize output and begin processing audio *
@@ -97,10 +109,15 @@ int normal_mode()
   while(AUDIO_LENGTH > 0)
   {
     SDL_LockAudio();
+    cout << "AFTER LOCK AUDIO" << endl;
     draw_surface();
+    cout << "AFTER DRAW SURFACE" << endl;
     SDL_UpdateWindowSurface(WINDOW);
+    cout << "AFTER UPDATE WINDOW SURFACE" << endl;
     SDL_UnlockAudio();
-    SDL_Delay(1000 / 30);
+    cout << "AFTER UNLOCK AUDIO" << endl;
+    SDL_Delay(1000 / 15);
+    cout << "AFTER DELAY" << endl;
   }
 
   /************

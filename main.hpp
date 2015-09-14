@@ -38,13 +38,23 @@ extern int BUFFER_SIZE;
 extern int CURRENT_SAMPLE;
 extern int AUDIO_LENGTH;
 
-// Graphics stuff
+// Graphics objects and variables
+//   SDL Window and Renderer
 extern SDL_Window *WINDOW;
 extern SDL_Renderer *RENDERER;
+//   Module dimensions and amount of modules per page
+extern int MODULE_WIDTH;
+extern int MODULE_HEIGHT;
+extern int MODULES_PER_ROW;
+extern int MODULES_PER_COLUMN;
+extern int MODULE_SPACING;
+extern int MODULE_BORDER_WIDTH;
+//   Window dimensions
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 
 // The modules currently in use
-extern std::vector<Module *> modules;
+extern std::vector<Module *> MODULES;
+extern int MODULES_CHANGED;
 
 #endif

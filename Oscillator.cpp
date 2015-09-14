@@ -72,5 +72,11 @@ void Oscillator::process()
  */
 void Oscillator::render()
 {
-
+  render_border();
+  SDL_Rect inner = {upper_left.x + MODULE_BORDER_WIDTH,
+                    upper_left.y + MODULE_BORDER_WIDTH,
+                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
+                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
+  SDL_SetRenderDrawColor(RENDERER, 0, 255, 0, 255);
+  SDL_RenderFillRect(RENDERER, &inner);
 }

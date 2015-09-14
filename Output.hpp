@@ -22,6 +22,9 @@
 // Included SDL components
 #include "SDL2/SDL.h"
 
+// Included files
+#include "main.hpp"
+
 // Included classes
 #include "Module.hpp"
 

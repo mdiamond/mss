@@ -6,6 +6,11 @@
 // Include header file
 #include "Module.hpp"
 
+// Included files
+// main.hpp must be included here instead of Module.hpp
+// because it declares external Module variables.
+#include "main.hpp"
+
 /***************************
  * MODULE MEMBER FUNCTIONS *
  ***************************/
@@ -36,4 +41,30 @@ void Module::process_depends()
   {
     depends[i]->process();
   }
+}
+
+/*
+ * This function recalculates the modules position in the
+ * window.
+ */
+void Module::calculate_upper_left(int i)
+{
+  int num_x, num_y;
+  num_x = (i % MODULES_PER_ROW);
+  num_y = (i / MODULES_PER_ROW);
+  upper_left.x = (num_x *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+                 (num_x * MODULE_SPACING);
+  upper_left.y = (num_y *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+                 (num_y * MODULE_SPACING);
+
+}
+
+/*
+ * This function renders a border for the module
+ */
+void Module::render_border()
+{
+  border = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
+  SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
+  SDL_RenderFillRect(RENDERER, &border);
 }

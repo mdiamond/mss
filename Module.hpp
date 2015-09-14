@@ -43,6 +43,8 @@ class Module
     // Module information
     std::string name;
     int type;
+    SDL_Point upper_left;
+    SDL_Rect border;
     // A vector containing pointers to any module that must
     // be processed before this module
     std::vector<Module *> depends;
@@ -60,6 +62,8 @@ class Module
     virtual void render() = 0;
     // Member functions
     void process_depends();
+    void calculate_upper_left(int);
+    void render_border();
 };
 
 #endif

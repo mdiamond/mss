@@ -35,6 +35,8 @@ int open_window()
       return 0;
   }
 
+  cout << "Window opened." << endl;
+
   return 1;
 }
 
@@ -49,6 +51,8 @@ int create_renderer()
     cout << "Could not create renderer: " << SDL_GetError() << endl;
     return 0;
   }
+
+  cout << "Renderer created." << endl;
 
   return 1;
 }
@@ -88,10 +92,32 @@ void populate_samples(vector<float> *buffer_l, vector<float> *buffer_r)
 }
 
 /*
+ * Render the GUI in the window by calling the render
+ * function for each module
+ */
+void draw_surface()
+{
+  if(MODULES_CHANGED)
+  {
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+      MODULES[i]->calculate_upper_left(i);
+      MODULES[i]->render_border();
+    }
+    MODULES_CHANGED = 0;
+  }
+  for(unsigned int i = 0; i < MODULES.size(); i ++)
+  {
+    MODULES[i]->render();
+  }
+  SDL_RenderPresent(RENDERER);
+}
+
+/*
  * Construct the waveform in the window using a renderer
  * to draw lines between the points calculated previously.
  */
-void draw_surface()
+void draw_surface_waveform()
 {
   // Fill the screen surface with black
   SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);

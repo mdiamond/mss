@@ -35,6 +35,7 @@ int open_audio_device(void)
     return 0;
   }
 
+  cout << "Audio device opened." << endl;
   cout << "Audio details:" << endl;
   cout << "  Sample rate: " << obtained.freq << endl;
   cout << "  Format: " << obtained.format << endl;
@@ -51,7 +52,7 @@ void initialize_output()
 {
   // Create the output module
   Output *output = new Output();
-  modules.push_back(output);
+  MODULES.push_back(output);
 
   // This configuration is arbitrary and
   // it will be possible to patch it together
@@ -62,7 +63,7 @@ void initialize_output()
   // Create an oscillator module
   string oscillator_1_name = "oscillator 1";
   Oscillator *oscillator_1 = new Oscillator(&oscillator_1_name);
-  modules.push_back(oscillator_1);
+  MODULES.push_back(oscillator_1);
 
   // Set the oscillator frequencies
   oscillator_1->frequency = 440;
@@ -70,7 +71,7 @@ void initialize_output()
   // Create another oscillator module
   // string modulator_name = "modulator";
   // Oscillator *modulator = new Oscillator(&modulator_name);
-  // modules.push_back(modulator);
+  // MODULES.push_back(modulator);
 
   // modulator->frequency = 4;
 
@@ -107,7 +108,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     return;
 
   // Get the address of the output module for later use
-  Output *output = (Output *) modules[0];
+  Output *output = (Output *) MODULES[0];
 
   // Process audio for the output module
   // This will recursively call upon depended modules
@@ -126,9 +127,9 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     buffer_l += 2;
     buffer_r += 2;
     // Uncomment these for some cool parameter modulation
-    // ((Oscillator *)modules[1])->frequency += .001;
-    // ((Oscillator *)modules[2])->frequency += .0001;
-    // ((Oscillator *)modules[2])->index -= .00001;
+    // ((Oscillator *)MODULES[1])->frequency += .001;
+    // ((Oscillator *)MODULES[2])->frequency += .0001;
+    // ((Oscillator *)MODULES[2])->index -= .00001;
   }
 
   // Increment the current sample by the number
@@ -136,7 +137,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
   CURRENT_SAMPLE += BUFFER_SIZE;
   AUDIO_LENGTH -= BUFFER_SIZE;
 
-  populate_samples(output->input_l, output->input_r);
+  // populate_samples(output->input_l, output->input_r);
 }
 
 /*******************************

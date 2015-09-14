@@ -28,7 +28,8 @@ Output::Output(void)
  */
 Output::~Output(void)
 {
-
+  input_l = new vector<float>(BUFFER_SIZE, 0);
+  input_r = new vector<float>(BUFFER_SIZE, 0);
 }
 
 /*
@@ -47,5 +48,11 @@ void Output::process()
  */
 void Output::render()
 {
-
+  render_border();
+  SDL_Rect inner = {upper_left.x + MODULE_BORDER_WIDTH,
+                    upper_left.y + MODULE_BORDER_WIDTH,
+                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
+                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
+  SDL_SetRenderDrawColor(RENDERER, 255, 0, 0, 255);
+  SDL_RenderFillRect(RENDERER, &inner);
 }
