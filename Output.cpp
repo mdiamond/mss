@@ -40,3 +40,12 @@ void Output::process()
 {
   process_depends();
 }
+
+/*
+ * This function uses the renderer to create a representation
+ * of this module in the window.
+ */
+void Output::render()
+{
+
+}

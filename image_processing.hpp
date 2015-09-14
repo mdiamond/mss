@@ -1,7 +1,9 @@
 /*
  * Matthew Diamond 2015
- * Header file for the basic signal processing functions and
- * some callback function helpers.
+ * Header file for the basic image processing functions
+ * and some helpers for main(). This file includes any
+ * files or libraries necessary for image_processing.cpp
+ * and declares any functions.
  */
 
 #ifndef synth_image_processing_h

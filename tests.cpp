@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Functions for testing my code.
+ * Functions for testing other functions.
  */
 
 // Include header file

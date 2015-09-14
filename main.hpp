@@ -1,6 +1,8 @@
 /*
  * Matthew Diamond 2015
- * Header file for the driver function.
+ * Header file for the driver function. This file declares
+ * all external variables and includes any files or libraries
+ * necessary for main.cpp.
  */
 
 #ifndef synth_main_h

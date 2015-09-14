@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Member functions for the Oscillator class
+ * Member functions for the Oscillator class.
  */
 
 // Include header file
@@ -23,7 +23,7 @@ Oscillator::Oscillator(string *_name)
   phase = 0;
   amplitude = 1;
   fm_on = 0;
-  index = 1;
+  modulation_index = 1;
   modulator = NULL;
   output = new vector<float>(BUFFER_SIZE, 0);
 }
@@ -56,7 +56,7 @@ void Oscillator::process()
     // Calculate phase for the next sample
     if(fm_on)
     {
-      frequency_shift = (modulator->frequency * index) * (*modulator->output)[i];
+      frequency_shift = (modulator->frequency * modulation_index) * (*modulator->output)[i];
       phase += (2 * M_PI * (frequency + frequency_shift) / SAMPLE_RATE);
     }
     else
@@ -64,4 +64,13 @@ void Oscillator::process()
     if(phase > (2 * M_PI))
       phase -= (2 * M_PI);
   }
+}
+
+/*
+ * This function uses the renderer to create a representation
+ * of this module in the window.
+ */
+void Oscillator::render()
+{
+
 }

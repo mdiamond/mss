@@ -1,7 +1,9 @@
 /*
  * Matthew Diamond 2015
  * This file contains the driver function. Everything starts
- * and ends here.
+ * and ends here. It initializes all external variables,
+ * then either runs the testing functions or starts SDL and
+ * begins processing.
  */
 
 // Include header file

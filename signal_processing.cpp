@@ -2,7 +2,8 @@
  * Matthew Diamond 2015
  * This file contains all of the basic signal processing functions.
  * It also contains helper functions for the callback function
- * that are utilized to fill the audio buffer.
+ * that are utilized to fill the audio buffer and helper functions
+ * for main().
  */
 
 // Include header file
