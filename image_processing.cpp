@@ -103,6 +103,7 @@ void draw_surface()
     {
       MODULES[i]->calculate_upper_left(i);
       MODULES[i]->render_border();
+      MODULES[i]->render_inner_border();
     }
     MODULES_CHANGED = 0;
   }

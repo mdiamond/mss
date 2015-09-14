@@ -16,9 +16,13 @@ using namespace std;
  * Constructor
  */
 Oscillator::Oscillator(string *_name)
-  : name(*_name)
 {
+  name = *_name;
   type = OSCILLATOR;
+  color.r = 0;
+  color.g = 255;
+  color.b = 0;
+  color.a = 255;
   frequency = 0;
   phase = 0;
   amplitude = 1;
@@ -72,11 +76,5 @@ void Oscillator::process()
  */
 void Oscillator::render()
 {
-  render_border();
-  SDL_Rect inner = {upper_left.x + MODULE_BORDER_WIDTH,
-                    upper_left.y + MODULE_BORDER_WIDTH,
-                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
-                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-  SDL_SetRenderDrawColor(RENDERER, 0, 255, 0, 255);
-  SDL_RenderFillRect(RENDERER, &inner);
+
 }

@@ -35,9 +35,6 @@
 class Output: public Module
 {
   public:
-    // Module information
-    std::string name;
-    int type;
     // Input buffers
     std::vector<float> *input_l;
     std::vector<float> *input_r;

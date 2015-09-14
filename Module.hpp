@@ -45,6 +45,8 @@ class Module
     int type;
     SDL_Point upper_left;
     SDL_Rect border;
+    SDL_Rect inner_border;
+    SDL_Color color;
     // A vector containing pointers to any module that must
     // be processed before this module
     std::vector<Module *> depends;
@@ -64,6 +66,7 @@ class Module
     void process_depends();
     void calculate_upper_left(int);
     void render_border();
+    void render_inner_border();
 };
 
 #endif

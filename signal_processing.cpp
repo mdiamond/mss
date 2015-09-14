@@ -84,6 +84,8 @@ void initialize_output()
   output->depends.push_back(oscillator_1);
   output->input_l = oscillator_1->output;
   output->input_r = oscillator_1->output;
+
+  cout << "Output initialized." << endl;
 }
 
 /***************************

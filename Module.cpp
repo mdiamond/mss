@@ -68,3 +68,16 @@ void Module::render_border()
   SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
   SDL_RenderFillRect(RENDERER, &border);
 }
+
+/*
+ * This function renders an inner border for the module
+ */
+void Module::render_inner_border()
+{
+  inner_border = {upper_left.x + MODULE_BORDER_WIDTH,
+                  upper_left.y + MODULE_BORDER_WIDTH,
+                  MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
+                  MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
+  SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
+  SDL_RenderFillRect(RENDERER, &inner_border);
+}

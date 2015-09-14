@@ -109,15 +109,9 @@ int normal_mode()
   while(AUDIO_LENGTH > 0)
   {
     SDL_LockAudio();
-    cout << "AFTER LOCK AUDIO" << endl;
     draw_surface();
-    cout << "AFTER DRAW SURFACE" << endl;
-    SDL_UpdateWindowSurface(WINDOW);
-    cout << "AFTER UPDATE WINDOW SURFACE" << endl;
     SDL_UnlockAudio();
-    cout << "AFTER UNLOCK AUDIO" << endl;
-    SDL_Delay(1000 / 15);
-    cout << "AFTER DELAY" << endl;
+    SDL_Delay(1000 / 30);
   }
 
   /************

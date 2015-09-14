@@ -38,9 +38,6 @@
 class Oscillator: public Module
 {
   public:
-    // Module information
-    std::string name;
-    int type;
     // Oscillator settings and frequency modulator/
     // modulation settings
     float frequency;
