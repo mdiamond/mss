@@ -23,12 +23,12 @@
 
 class Timer
 {
-  public:
-    Uint32 last_checked_ms;
-    Timer();
-    ~Timer();
-    void start();
-    Uint32 check_time_elapsed();
+    public:
+        Uint32 last_checked_ms;
+        Timer();
+        ~Timer();
+        void start();
+        Uint32 check_time_elapsed();
 };
 
 #endif

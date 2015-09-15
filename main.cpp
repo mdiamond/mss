@@ -36,9 +36,9 @@ int MODULE_BORDER_WIDTH = 2;
 
 // Window dimensions
 int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
-                   (MODULE_SPACING * MODULES_PER_ROW);
+                                     (MODULE_SPACING * MODULES_PER_ROW);
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
-                    (MODULE_SPACING * MODULES_PER_COLUMN);
+                                        (MODULE_SPACING * MODULES_PER_COLUMN);
 
 // Frames per second and ms per frame
 Uint32 FPS = 30;
@@ -63,7 +63,7 @@ int testing = 0;
  */
 int testing_mode()
 {
-  return run_tests();
+    return run_tests();
 }
 
 /*
@@ -72,105 +72,105 @@ int testing_mode()
  */
 int normal_mode()
 {
-  /**********************************
-   * Initialize SDL and SDL objects *
-   **********************************/
+    /**********************************
+     * Initialize SDL and SDL objects *
+     **********************************/
 
-  cout << "Initializing SDL." << endl;
+    cout << "Initializing SDL." << endl;
 
-  // Initialize SDL with the video and audio subsystems
-  if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
-    cout << "Could not initialize SDL: " <<  SDL_GetError() << endl;
-    return 0;
-  }
-  cout << "SDL initialized." << endl;
+    // Initialize SDL with the video and audio subsystems
+    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
+        cout << "Could not initialize SDL: " <<    SDL_GetError() << endl;
+        return 0;
+    }
+    cout << "SDL initialized." << endl;
 
-  // Initialize audio device
-  if(!open_audio_device())
-    return 0;
+    // Initialize audio device
+    if(!open_audio_device())
+        return 0;
 
-  // Open a window
-  if(!open_window())
-    return 0;
+    // Open a window
+    if(!open_window())
+        return 0;
 
-  // Create a renderer
-  if(!create_renderer())
-    return 0;
+    // Create a renderer
+    if(!create_renderer())
+        return 0;
 
-  /************************************************
-   * Initialize output and begin processing audio *
-   ************************************************/
+    /************************************************
+     * Initialize output and begin processing audio *
+     ************************************************/
 
-  // Initialize the output module
-  initialize_output();
+    // Initialize the output module
+    initialize_output();
 
-  // Unpause the audio
-  cout << "Unpausing audio." << endl;
-  SDL_PauseAudio(0);
-  cout << "Audio unpaused." << endl;
+    // Unpause the audio
+    cout << "Unpausing audio." << endl;
+    SDL_PauseAudio(0);
+    cout << "Audio unpaused." << endl;
 
-  // While the user has not quit, continually draw
-  // to the window, then delay until the next frame is needed.
-  Uint32 frame = 0;
-  Uint32 frame_time = 0;
-  Uint32 delay_time = 0;
-  Uint32 frame_previous = 0;
-  Timer *frame_timer = new Timer();
-  frame_timer->start();
-  while(AUDIO_LENGTH > 0)
-  {
-    // Calculate the time in ms at which this frame is
-    // supposed to be displayed
-    frame_time = MSPF * frame;
-
-    // As long as the time that the frame is supposed to be displayed
-    // is in the past, render the frame and try to catch up
-    while((frame_time = MSPF * frame) < SDL_GetTicks() && AUDIO_LENGTH > 0)
+    // While the user has not quit, continually draw
+    // to the window, then delay until the next frame is needed.
+    Uint32 frame = 0;
+    Uint32 frame_time = 0;
+    Uint32 delay_time = 0;
+    Uint32 frame_previous = 0;
+    Timer *frame_timer = new Timer();
+    frame_timer->start();
+    while(AUDIO_LENGTH > 0)
     {
-      // Complain
-      cout << "Behind on frames!" << endl;
-      // Draw the surface
-      draw_surface();
-      // Move on to the next frame
-      frame ++;
+        // Calculate the time in ms at which this frame is
+        // supposed to be displayed
+        frame_time = MSPF * frame;
+
+        // As long as the time that the frame is supposed to be displayed
+        // is in the past, render the frame and try to catch up
+        while((frame_time = MSPF * frame) < SDL_GetTicks() && AUDIO_LENGTH > 0)
+        {
+            // Complain
+            cout << "Behind on frames!" << endl;
+            // Draw the surface
+            draw_surface();
+            // Move on to the next frame
+            frame ++;
+        }
+
+        // If the frame is supposed to be rendered at some point
+        // in the future, calculate how many ms until then and delay
+        // for that many ms
+        if(frame_time > SDL_GetTicks())
+        {
+            delay_time = frame_time - SDL_GetTicks();
+            SDL_Delay(delay_time);
+        }
+
+        // Draw the surface
+        draw_surface();
+
+        // Every 100 frames, print out the framerate
+        if(frame % 100 == 0)
+        {
+            cout << ((frame - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0)) << " frames per second." << endl;
+            frame_previous = frame;
+        }
+
+        // Move on to the next frame
+        frame ++;
     }
 
-    // If the frame is supposed to be rendered at some point
-    // in the future, calculate how many ms until then and delay
-    // for that many ms
-    if(frame_time > SDL_GetTicks())
-    {
-      delay_time = frame_time - SDL_GetTicks();
-      SDL_Delay(delay_time);
-    }
+    /************
+     * Clean up *
+     ************/
 
-    // Draw the surface
-    draw_surface();
+    // Destroy the graphics objects
+    SDL_DestroyWindow(WINDOW);
+    SDL_DestroyRenderer(RENDERER);
 
-    // Every 100 frames, print out the framerate
-    if(frame % 100 == 0)
-    {
-      cout << ((frame - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0)) << " frames per second." << endl;
-      frame_previous = frame;
-    }
+    // Quit SDL
+    cout << "Quitting SDL." << endl;
+    SDL_Quit();
 
-    // Move on to the next frame
-    frame ++;
-  }
-
-  /************
-   * Clean up *
-   ************/
-
-  // Destroy the graphics objects
-  SDL_DestroyWindow(WINDOW);
-  SDL_DestroyRenderer(RENDERER);
-
-  // Quit SDL
-  cout << "Quitting SDL." << endl;
-  SDL_Quit();
-
-  return 1;
+    return 1;
 }
 
 /*****************
@@ -186,24 +186,24 @@ int normal_mode()
  */
 int main()
 {
-  int exit_status = 0;
+    int exit_status = 0;
 
-  // If this is testing mode, just run the tests
-  if(testing)
-  {
-    if(!testing_mode())
-      exit_status = -1;
-  }
-  // If this is normal mode, open SDL, initialize necessary
-  // objects, and begin processing audio and video
-  else
-  {
-    if(!normal_mode())
-      exit_status = -1;
-  }
+    // If this is testing mode, just run the tests
+    if(testing)
+    {
+        if(!testing_mode())
+            exit_status = -1;
+    }
+    // If this is normal mode, open SDL, initialize necessary
+    // objects, and begin processing audio and video
+    else
+    {
+        if(!normal_mode())
+            exit_status = -1;
+    }
 
-  // Return an exit status based on whether or not
-  // the function called above succeeded and terminate
-  cout << "Quitting..." << endl;
-  return exit_status;
+    // Return an exit status based on whether or not
+    // the function called above succeeded and terminate
+    cout << "Quitting..." << endl;
+    return exit_status;
 }

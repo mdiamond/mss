@@ -21,23 +21,22 @@ vector<SDL_Point> samples(WINDOW_WIDTH, zero);
  */
 int open_window()
 {
-  WINDOW = SDL_CreateWindow(
-      "Visualizer",
-      SDL_WINDOWPOS_UNDEFINED,
-      SDL_WINDOWPOS_UNDEFINED,
-      WINDOW_WIDTH,
-      WINDOW_HEIGHT,
-      SDL_WINDOW_OPENGL
-  );
+    WINDOW = SDL_CreateWindow("Visualizer",
+                              SDL_WINDOWPOS_UNDEFINED,
+                              SDL_WINDOWPOS_UNDEFINED,
+                              WINDOW_WIDTH,
+                              WINDOW_HEIGHT,
+                              SDL_WINDOW_OPENGL
+                             );
 
-  if (WINDOW == NULL) {
-      cout << "Could not create window: " << SDL_GetError() << endl;
-      return 0;
-  }
+    if (WINDOW == NULL) {
+        cout << "Could not create window: " << SDL_GetError() << endl;
+        return 0;
+    }
 
-  cout << "Window opened." << endl;
+    cout << "Window opened." << endl;
 
-  return 1;
+    return 1;
 }
 
 /*
@@ -45,16 +44,16 @@ int open_window()
  */
 int create_renderer()
 {
-  RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED);
+    RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED);
 
-  if (WINDOW == NULL) {
-    cout << "Could not create renderer: " << SDL_GetError() << endl;
-    return 0;
-  }
+    if (WINDOW == NULL) {
+        cout << "Could not create renderer: " << SDL_GetError() << endl;
+        return 0;
+    }
 
-  cout << "Renderer created." << endl;
+    cout << "Renderer created." << endl;
 
-  return 1;
+    return 1;
 }
 
 /******************************
@@ -68,34 +67,34 @@ int create_renderer()
  */
 void draw_surface()
 {
-  // First, lock the audio, then copy all data necessary for graphics
-  SDL_LockAudio();
+    // First, lock the audio, then copy all data necessary for graphics
+    SDL_LockAudio();
 
-  for(unsigned int i = 0; i < MODULES.size(); i ++)
-  {
-    MODULES[i]->copy_graphics_data();
-  }
-
-  // Once all data necessary for graphics has been copied,
-  // unlock the audio, then if necessary, re-render the
-  // module borders, then render all the modules, then
-  // present what has been rendered
-  SDL_UnlockAudio();
-
-  if(MODULES_CHANGED)
-  {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-      MODULES[i]->calculate_upper_left(i);
-      MODULES[i]->render_border();
-      MODULES[i]->render_inner_border();
+        MODULES[i]->copy_graphics_data();
     }
-    MODULES_CHANGED = 0;
-  }
 
-  for(unsigned int i = 0; i < MODULES.size(); i ++)
-  {
-    MODULES[i]->render();
-  }
-  SDL_RenderPresent(RENDERER);
+    // Once all data necessary for graphics has been copied,
+    // unlock the audio, then if necessary, re-render the
+    // module borders, then render all the modules, then
+    // present what has been rendered
+    SDL_UnlockAudio();
+
+    if(MODULES_CHANGED)
+    {
+        for(unsigned int i = 0; i < MODULES.size(); i ++)
+        {
+            MODULES[i]->calculate_upper_left(i);
+            MODULES[i]->render_border();
+            MODULES[i]->render_inner_border();
+        }
+        MODULES_CHANGED = 0;
+    }
+
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        MODULES[i]->render();
+    }
+    SDL_RenderPresent(RENDERER);
 }

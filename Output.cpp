@@ -13,24 +13,24 @@ using namespace std;
  ***************************/
 
 /*
- * Constructor
+ * Constructor.
  */
 Output::Output()
 {
-  name = "output";
-  type = OUTPUT;
+    name = "output";
+    type = OUTPUT;
 
-  color.r = 255;
-  color.g = 0;
-  color.b = 0;
-  color.a = 255;
+    color.r = 255;
+    color.g = 0;
+    color.b = 0;
+    color.a = 255;
 
-  this->audio.input_l = new vector<float>(BUFFER_SIZE, 0);
-  this->audio.input_r = new vector<float>(BUFFER_SIZE, 0);
+    this->audio.input_l = new vector<float>(BUFFER_SIZE, 0);
+    this->audio.input_r = new vector<float>(BUFFER_SIZE, 0);
 }
 
 /*
- * Dummy function
+ * Dummy function.
  */
 Output::~Output()
 {
@@ -44,7 +44,7 @@ Output::~Output()
  */
 void Output::process()
 {
-  process_depends();
+    process_depends();
 }
 
 /*
@@ -54,8 +54,8 @@ void Output::process()
  */
 void Output::copy_graphics_data()
 {
-  this->graphics.input_l = new vector<float>(*(this->audio.input_l));
-  this->graphics.input_r = new vector<float>(*(this->audio.input_r));
+    this->graphics.input_l = new vector<float>(*(this->audio.input_l));
+    this->graphics.input_r = new vector<float>(*(this->audio.input_r));
 }
 
 /*

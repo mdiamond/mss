@@ -16,7 +16,7 @@
  ***************************/
 
 /*
- * Dummy function
+ * Dummy function.
  */
 Module::Module()
 {
@@ -24,7 +24,7 @@ Module::Module()
 }
 
 /*
- * Dummy function
+ * Dummy function.
  */
 Module::~Module()
 {
@@ -37,10 +37,10 @@ Module::~Module()
  */
 void Module::process_depends()
 {
-  for(unsigned int i = 0; i < depends.size(); i ++)
-  {
-    depends[i]->process();
-  }
+    for(unsigned int i = 0; i < depends.size(); i ++)
+    {
+        depends[i]->process();
+    }
 }
 
 /*
@@ -49,24 +49,24 @@ void Module::process_depends()
  */
 void Module::calculate_upper_left(int i)
 {
-  int num_x, num_y;
-  num_x = (i % MODULES_PER_ROW);
-  num_y = (i / MODULES_PER_ROW);
-  upper_left.x = (num_x *(WINDOW_WIDTH / MODULES_PER_ROW)) +
-                 (num_x * MODULE_SPACING);
-  upper_left.y = (num_y *(WINDOW_WIDTH / MODULES_PER_ROW)) +
-                 (num_y * MODULE_SPACING);
+    int num_x, num_y;
+    num_x = (i % MODULES_PER_ROW);
+    num_y = (i / MODULES_PER_ROW);
+    upper_left.x = (num_x *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+                   (num_x * MODULE_SPACING);
+    upper_left.y = (num_y *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+                   (num_y * MODULE_SPACING);
 
 }
 
 /*
- * This function renders a border for the module
+ * This function renders a border for the module.
  */
 void Module::render_border()
 {
-  border = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-  SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
-  SDL_RenderFillRect(RENDERER, &border);
+    border = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
+    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
+    SDL_RenderFillRect(RENDERER, &border);
 }
 
 /*
@@ -75,10 +75,10 @@ void Module::render_border()
  */
 void Module::render_inner_border()
 {
-  inner_border = {upper_left.x + MODULE_BORDER_WIDTH,
-                  upper_left.y + MODULE_BORDER_WIDTH,
-                  MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
-                  MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-  SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
-  SDL_RenderFillRect(RENDERER, &inner_border);
+    inner_border = {upper_left.x + MODULE_BORDER_WIDTH,
+                    upper_left.y + MODULE_BORDER_WIDTH,
+                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
+                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
+    SDL_RenderFillRect(RENDERER, &inner_border);
 }

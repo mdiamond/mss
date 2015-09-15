@@ -37,33 +37,33 @@
 
 struct Oscillator_Data
 {
-  // Oscillator settings and frequency modulator/
-  // modulation settings
-  float frequency;
-  float phase;
-  float amplitude;
-  int fm_on;
-  float modulation_index;
-  // Output buffer
-  std::vector<float> *output;
+    // Oscillator settings and frequency modulator/
+    // modulation settings
+    float frequency;
+    float phase;
+    float amplitude;
+    int fm_on;
+    float modulation_index;
+    // Output buffer
+    std::vector<float> *output;
 };
 
 class Oscillator: public Module
 {
-  public:
+    public:
 
-    struct Oscillator_Data audio, graphics;
+        struct Oscillator_Data audio, graphics;
 
-    //  oscillator
-    Oscillator *modulator;
-    // Constructor and destructor
-    Oscillator(std::string *);
-    virtual ~Oscillator();
-    // member functions
-    virtual void process();
-    virtual void copy_graphics_data();
-    virtual void render();
-    void render_waveform();
+        // oscillator to modulate this one
+        Oscillator *modulator;
+        // Constructor and destructor
+        Oscillator(std::string *);
+        virtual ~Oscillator();
+        // member functions
+        virtual void process();
+        virtual void copy_graphics_data();
+        virtual void render();
+        void render_waveform();
 };
 
 #endif
