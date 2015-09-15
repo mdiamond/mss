@@ -124,14 +124,9 @@ int normal_mode()
         frame_time = MSPF * frame;
 
         // As long as the time that the frame is supposed to be displayed
-        // is in the past, inform the user, and advance to a more current frame
+        // is in the past, move on to the next frame
         while((frame_time = MSPF * frame) < SDL_GetTicks() && AUDIO_LENGTH > 0)
-        {
-            // Complain
-            cout << "Behind on frames!" << endl;
-            // Move on to the next frame
             frame ++;
-        }
 
         // If the frame is supposed to be rendered at some point
         // in the future, calculate how many ms until then and delay
