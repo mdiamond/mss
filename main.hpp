@@ -18,6 +18,7 @@
 
 // Included SDL components
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 // Included files
 #include "image_processing.hpp"
@@ -56,8 +57,12 @@ extern int WINDOW_HEIGHT;
 //   Frames per second and ms per frame
 extern Uint32 FPS;
 extern Uint32 MSPF;
+//   Fonts
+extern TTF_Font *FONT_REGULAR;
+extern TTF_Font *FONT_BOLD;
 
-// The modules currently in use
+// The modules currently in use and whether or not
+// The set of modules has been changed recently
 extern std::vector<Module *> MODULES;
 extern int MODULES_CHANGED;
 

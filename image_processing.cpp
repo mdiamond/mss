@@ -56,6 +56,24 @@ int create_renderer()
     return 1;
 }
 
+/*
+ * Load fonts into external variables so that all
+ * modules can render text.
+ */
+int load_fonts()
+{
+    FONT_REGULAR = TTF_OpenFont("SourceCodePro-Regular.ttf", 10);
+    FONT_BOLD = TTF_OpenFont("SourceCodePro-Bold.ttf", 10);
+
+    if(!FONT_REGULAR || !FONT_BOLD)
+    {
+        cout << "Could not open one of the TTF fonts: " << TTF_GetError() << endl;
+        return 0;
+    }
+
+    return 1;
+}
+
 /******************************
  * IMAGE PROCESSING FUNCTIONS *
  ******************************/

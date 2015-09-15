@@ -44,6 +44,12 @@ int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
 Uint32 FPS = 30;
 Uint32 MSPF = 1000 / FPS;
 
+// Fonts
+TTF_Font *FONT_REGULAR;
+TTF_Font *FONT_BOLD;
+
+// The modules currently in use and whether or not
+// The set of modules has been changed recently
 vector<Module *> MODULES;
 int MODULES_CHANGED = 1;
 
@@ -80,7 +86,7 @@ int normal_mode()
 
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
-        cout << "Could not initialize SDL: " <<    SDL_GetError() << endl;
+        cout << "Could not initialize SDL: " << SDL_GetError() << endl;
         return 0;
     }
     cout << "SDL initialized." << endl;
@@ -95,6 +101,17 @@ int normal_mode()
 
     // Create a renderer
     if(!create_renderer())
+        return 0;
+
+    // Initialize truetype
+    if(TTF_Init() == -1)
+    {
+        cout << "Coult not initialize TTF: " << TTF_GetError() << endl;
+        return 0;
+    }
+
+    // Open TTF fonts
+    if(!load_fonts())
         return 0;
 
     /************************************************

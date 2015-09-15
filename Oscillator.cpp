@@ -82,11 +82,7 @@ void Oscillator::process()
  */
 void Oscillator::copy_graphics_data()
 {
-    this->graphics.frequency = this->audio.frequency;
-    this->graphics.phase = this->audio.phase;
-    this->graphics.amplitude = this->audio.amplitude;
-    this->graphics.fm_on = this->audio.fm_on;
-    this->graphics.modulation_index = this->audio.modulation_index;
+    this->graphics = this->audio;
     this->graphics.output = new vector<float>(*(this->audio.output));
 }
 

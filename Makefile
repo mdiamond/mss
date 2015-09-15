@@ -1,6 +1,6 @@
 CC = g++ -g -Wall
 CFLAGS = -std=c++11
-LDFLAGS = -lSDL2
+LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJFLAGS = $(CC) $(CFLAGS) -c
 OBJECTS = Timer.o Module.o Output.o Oscillator.o signal_processing.o image_processing.o tests.o main.o
 
