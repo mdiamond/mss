@@ -81,19 +81,23 @@ void draw_surface()
     // present what has been rendered
     SDL_UnlockAudio();
 
+    SDL_Rect background = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+    SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
+    SDL_RenderFillRect(RENDERER, &background);
+
     if(MODULES_CHANGED)
     {
         for(unsigned int i = 0; i < MODULES.size(); i ++)
         {
             MODULES[i]->calculate_upper_left(i);
-            MODULES[i]->render_border();
-            MODULES[i]->render_inner_border();
         }
         MODULES_CHANGED = 0;
     }
 
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
+        MODULES[i]->render_border();
+        MODULES[i]->render_inner_border();
         MODULES[i]->render();
     }
     SDL_RenderPresent(RENDERER);
