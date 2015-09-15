@@ -32,17 +32,24 @@
  * OUTPUT CLASS DEFINITION *
  ***************************/
 
+struct Output_Data
+{
+  // Input buffers
+  std::vector<float> *input_l;
+  std::vector<float> *input_r;
+};
+
 class Output: public Module
 {
   public:
-    // Input buffers
-    std::vector<float> *input_l;
-    std::vector<float> *input_r;
+    struct Output_Data audio, graphics;
+
     // Constructor and destructor
     Output(void);
     virtual ~Output(void);
     // Member functions
     virtual void process();
+    virtual void copy_graphics_data();
     virtual void render();
 };
 

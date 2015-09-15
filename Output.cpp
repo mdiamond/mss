@@ -19,12 +19,14 @@ Output::Output(void)
 {
   name = "output";
   type = OUTPUT;
+
   color.r = 255;
   color.g = 0;
   color.b = 0;
   color.a = 255;
-  input_l = NULL;
-  input_r = NULL;
+
+  this->audio.input_l = new vector<float>(BUFFER_SIZE, 0);
+  this->audio.input_r = new vector<float>(BUFFER_SIZE, 0);
 }
 
 /*
@@ -32,8 +34,7 @@ Output::Output(void)
  */
 Output::~Output(void)
 {
-  input_l = new vector<float>(BUFFER_SIZE, 0);
-  input_r = new vector<float>(BUFFER_SIZE, 0);
+
 }
 
 /*
@@ -44,6 +45,17 @@ Output::~Output(void)
 void Output::process()
 {
   process_depends();
+}
+
+/*
+ * Copy all data from the audio data struct to the
+ * graphics data struct to make it available for
+ * rendering.
+ */
+void Output::copy_graphics_data()
+{
+  this->graphics.input_l = new vector<float>(*(this->audio.input_l));
+  this->graphics.input_r = new vector<float>(*(this->audio.input_r));
 }
 
 /*

@@ -40,7 +40,8 @@ int open_audio_device(void)
   cout << "  Sample rate: " << obtained.freq << endl;
   cout << "  Format: " << obtained.format << endl;
   cout << "  Channels: " << obtained.channels << endl;
-  cout << "  Buffer size: " << obtained.samples << endl;
+  cout << "  Buffer size in samples: " << obtained.samples << endl;
+  cout << "  Buffer size in bytes: " << obtained.size << endl;
 
   BUFFER_SIZE = obtained.samples;
 
@@ -66,24 +67,24 @@ void initialize_output()
   MODULES.push_back(oscillator_1);
 
   // Set the oscillator frequencies
-  oscillator_1->frequency = 440;
+  (oscillator_1->audio).frequency = 440;
 
   // Create another oscillator module
   // string modulator_name = "modulator";
   // Oscillator *modulator = new Oscillator(&modulator_name);
   // MODULES.push_back(modulator);
 
-  // modulator->frequency = 4;
+  // (modulator->audio).frequency = 4;
 
   // oscillator_1->depends.push_back(modulator);
-  // oscillator_1->fm_on = 1;
-  // oscillator_1->index = 25;
+  // (oscillator_1->audio).fm_on = 1;
+  // (oscillator_1->audio).modulation_index = 25;
   // oscillator_1->modulator = modulator;
 
   // Set the inputs and outputs
   output->depends.push_back(oscillator_1);
-  output->input_l = oscillator_1->output;
-  output->input_r = oscillator_1->output;
+  (output->audio).input_l = (oscillator_1->audio).output;
+  (output->audio).input_r = (oscillator_1->audio).output;
 
   cout << "Output initialized." << endl;
 }
@@ -124,14 +125,14 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
   float *buffer_r = buffer + 1;
   for(int i = 0; i < BUFFER_SIZE; i ++)
   {
-    *buffer_l = (*(output->input_l))[i];
-    *buffer_r = (*(output->input_r))[i];
+    *buffer_l = (*((output->audio).input_l))[i];
+    *buffer_r = (*((output->audio).input_r))[i];
     buffer_l += 2;
     buffer_r += 2;
     // Uncomment these for some cool parameter modulation
-    // ((Oscillator *)MODULES[1])->frequency += .001;
-    // ((Oscillator *)MODULES[2])->frequency += .0001;
-    // ((Oscillator *)MODULES[2])->index -= .00001;
+    // (((Oscillator *)MODULES[1])->audio).frequency += .001;
+    // (((Oscillator *)MODULES[2])->audio).frequency += .0001;
+    // (((Oscillator *)MODULES[2])->audio).modulation_index -= .00001;
   }
 
   // Increment the current sample by the number

@@ -45,7 +45,7 @@ void Module::process_depends()
 
 /*
  * This function recalculates the modules position in the
- * window.
+ * window given only its module number.
  */
 void Module::calculate_upper_left(int i)
 {
@@ -71,6 +71,7 @@ void Module::render_border()
 
 /*
  * This function renders an inner border for the module
+ * using the color defined within the module.
  */
 void Module::render_inner_border()
 {

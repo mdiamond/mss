@@ -92,11 +92,26 @@ void populate_samples(vector<float> *buffer_l, vector<float> *buffer_r)
 }
 
 /*
- * Render the GUI in the window by calling the render
- * function for each module
+ * Render the GUI in the window by using the
+ * member functions in each module that render
+ * their representations.
  */
 void draw_surface()
 {
+  // First, lock the audio, then copy all data necessary for graphics
+  SDL_LockAudio();
+
+  for(unsigned int i = 0; i < MODULES.size(); i ++)
+  {
+    MODULES[i]->copy_graphics_data();
+  }
+
+  // Once all data necessary for graphics has been copied,
+  // unlock the audio, then if necessary, re-render the
+  // module borders, then render all the modules, then
+  // present what has been rendered
+  SDL_UnlockAudio();
+
   if(MODULES_CHANGED)
   {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
@@ -107,6 +122,7 @@ void draw_surface()
     }
     MODULES_CHANGED = 0;
   }
+
   for(unsigned int i = 0; i < MODULES.size(); i ++)
   {
     MODULES[i]->render();

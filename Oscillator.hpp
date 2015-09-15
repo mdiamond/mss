@@ -35,24 +35,33 @@
  * OSCILLATOR CLASS DEFINITION *
  *******************************/
 
+struct Oscillator_Data
+{
+  // Oscillator settings and frequency modulator/
+  // modulation settings
+  float frequency;
+  float phase;
+  float amplitude;
+  int fm_on;
+  float modulation_index;
+  // Output buffer
+  std::vector<float> *output;
+};
+
 class Oscillator: public Module
 {
   public:
-    // Oscillator settings and frequency modulator/
-    // modulation settings
-    float frequency;
-    float phase;
-    float amplitude;
+
+    struct Oscillator_Data audio, graphics;
+
+    //  oscillator
     Oscillator *modulator;
-    int fm_on;
-    float modulation_index;
-    // Output buffer
-    std::vector<float> *output;
     // Constructor and destructor
     Oscillator(std::string *);
     virtual ~Oscillator(void);
     // member functions
     virtual void process();
+    virtual void copy_graphics_data();
     virtual void render();
 };
 

@@ -58,6 +58,11 @@ class Module
     //   populate the modules output buffer and make it available
     //   to other modules
     virtual void process() = 0;
+    //   copy_graphics_data() is called to copy any data in the
+    //   module into a nearly duplicate struct so that audio
+    //   can be unlocked and rendering can occur while audio is
+    //   processing
+    virtual void copy_graphics_data() = 0;
     //   render() is called each time a new frame is needed for
     //   the window to display, it should render the module in
     //   the window

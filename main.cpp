@@ -28,7 +28,7 @@ SDL_Renderer *RENDERER;
 
 // Module dimensions and amount of modules per page
 int MODULE_WIDTH = 150;
-int MODULE_HEIGHT = 250;
+int MODULE_HEIGHT = 225;
 int MODULES_PER_ROW = 6;
 int MODULES_PER_COLUMN = 3;
 int MODULE_SPACING = 1;
@@ -105,12 +105,11 @@ int normal_mode()
   SDL_PauseAudio(0);
   cout << "Audio unpaused." << endl;
 
-  // While there's still sound to play, just wait
+  // While the user has not quit, continually draw
+  // to the window, then delay until the next frame is needed.
   while(AUDIO_LENGTH > 0)
   {
-    SDL_LockAudio();
     draw_surface();
-    SDL_UnlockAudio();
     SDL_Delay(1000 / 30);
   }
 
