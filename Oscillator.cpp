@@ -93,6 +93,7 @@ void Oscillator::copy_graphics_data()
 void Oscillator::render()
 {
     render_waveform();
+    render_text();
 }
 
 void Oscillator::render_waveform()
@@ -101,7 +102,7 @@ void Oscillator::render_waveform()
     SDL_Point zero = {0, 0};
     vector<SDL_Point> points((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11, zero);
     int starting_x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    int starting_y = upper_left.y + MODULE_BORDER_WIDTH + 5;
+    int starting_y = upper_left.y + MODULE_BORDER_WIDTH + 15;
     int waveform_width = (MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11;
     SDL_Rect rect = {starting_x, starting_y, waveform_width, waveform_height};
     int index = 0;
@@ -117,3 +118,17 @@ void Oscillator::render_waveform()
     SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
 }
+
+void Oscillator::render_text()
+{
+    SDL_Color color = {255, 255, 255, 255};
+    SDL_Surface *surface = TTF_RenderText_Blended(FONT_BOLD, name.c_str(), color);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(RENDERER, surface);
+    int width, height;
+    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+    int x = upper_left.x + 5;
+    int y = upper_left.y + 5;
+    SDL_Rect dstrect = {x, y, width, height};
+    SDL_RenderCopy(RENDERER, texture, NULL, &dstrect);
+}
+
