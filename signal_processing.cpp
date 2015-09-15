@@ -6,8 +6,26 @@
  * for main().
  */
 
-// Include header file
+/************
+ * INCLUDES *
+ ************/
+
+// Included libraries
+#include <iostream>
+#include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
+
+// Included files
+#include "image_processing.hpp"
+#include "main.hpp"
 #include "signal_processing.hpp"
+
+// Included classes
+#include "Module.hpp"
+#include "Oscillator.hpp"
+#include "Output.hpp"
 
 using namespace std;
 

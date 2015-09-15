@@ -17,20 +17,7 @@
  * INCLUDES *
  ************/
 
-// Included libraries
-#include <cmath>
-#include <string>
-#include <vector>
-
-// Included SDL components
-#include "SDL2/SDL.h"
-// #include "SDL2/SDL_ttf.h"
-
-// Included files
-#include "main.hpp"
-
-// Included classes
-#include "Module.hpp"
+// No includes necessary
 
 /*******************************
  * OSCILLATOR CLASS DEFINITION *

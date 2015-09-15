@@ -6,8 +6,27 @@
  * begins processing.
  */
 
-// Include header file
+/************
+ * INCLUDES *
+ ************/
+
+// Included libraries
+#include <iostream>
+#include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
+
+// Included files
+#include "image_processing.hpp"
 #include "main.hpp"
+#include "signal_processing.hpp"
+#include "tests.hpp"
+
+// Included classes
+#include "Module.hpp"
+#include "Timer.hpp"
 
 using namespace std;
 
@@ -73,17 +92,22 @@ int testing_mode()
 }
 
 /*
- * Run in normal mode. If all objects create successfully,
- * return 1. Otherwise, return 0.
+ * Initialize all of the stuff that needs to be initialized
+ * before audio can be processed:
+ *   - initialize SDL
+ *   - open the audio device
+ *   - open a window
+ *   - create a renderer
+ *   - initialize SDL_ttf
+ *   - open ttf fonts
+ *   - initialize the synthesizer output module
+ *   - start audio to begin requesting buffers from the audio
+ *     callback function
+ * Return 1 if all of this succeeds, 0 if anything fails.
  */
-int normal_mode()
+int initialize()
 {
-    /**********************************
-     * Initialize SDL and SDL objects *
-     **********************************/
-
     cout << "Initializing SDL." << endl;
-
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
         cout << "Could not initialize SDL: " << SDL_GetError() << endl;
@@ -110,13 +134,9 @@ int normal_mode()
         return 0;
     }
 
-    // Open TTF fonts
+    // Open ttf fonts
     if(!load_fonts())
         return 0;
-
-    /************************************************
-     * Initialize output and begin processing audio *
-     ************************************************/
 
     // Initialize the output module
     initialize_output();
@@ -125,6 +145,19 @@ int normal_mode()
     cout << "Unpausing audio." << endl;
     SDL_PauseAudio(0);
     cout << "Audio unpaused." << endl;
+
+    return 1;
+}
+
+/*
+ * Run in normal mode. If all objects create successfully,
+ * return 1. Otherwise, return 0.
+ */
+int normal_mode()
+{
+    int success = 1;
+
+    success = success && initialize();
 
     // While the user has not quit, continually draw
     // to the window, then delay until the next frame is needed.

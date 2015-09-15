@@ -12,16 +12,7 @@
  * INCLUDES *
  ************/
 
-// Included libraries
-#include <iostream>
-#include <string>
-#include <vector>
-
-// Included SDL components
-#include "SDL2/SDL.h"
-
-// Included files
-#include "signal_processing.hpp"
+// No includes necessary
 
 /*************************
  * FUNCTION DECLARATIONS *

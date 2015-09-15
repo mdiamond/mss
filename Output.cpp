@@ -3,7 +3,22 @@
  * Member functions for the Output class.
  */
 
-// Include header file
+/************
+ * INCLUDES *
+ ************/
+
+// Included libraries
+#include <string>
+#include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
+
+// Included files
+#include "main.hpp"
+
+// Included classes
+#include "Module.hpp"
 #include "Output.hpp"
 
 using namespace std;

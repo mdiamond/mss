@@ -3,13 +3,22 @@
  * Member functions for the Module class.
  */
 
-// Include header file
-#include "Module.hpp"
+/************
+ * INCLUDES *
+ ************/
+
+// Included libraries
+#include <string>
+#include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
 
 // Included files
-// main.hpp must be included here instead of Module.hpp
-// because it declares external Module variables.
 #include "main.hpp"
+
+// Included classes
+#include "Module.hpp"
 
 /***************************
  * MODULE MEMBER FUNCTIONS *

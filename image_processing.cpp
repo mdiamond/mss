@@ -4,13 +4,29 @@
  * It also contains helper functions for main().
  */
 
+/************
+ * INCLUDES *
+ ************/
+
+// Included libraries
+#include <iostream>
+#include <queue>
+#include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
+
 // Included files
 #include "image_processing.hpp"
+#include "main.hpp"
+#include "signal_processing.hpp"
+
+// Included classes
+#include "Module.hpp"
+#include "Oscillator.hpp"
+#include "Output.hpp"
 
 using namespace std;
-
-SDL_Point zero = {0, 0};
-vector<SDL_Point> samples(WINDOW_WIDTH, zero);
 
 /****************************
  * INITIALIZATION FUNCTIONS *

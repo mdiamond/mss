@@ -16,12 +16,7 @@
  * INCLUDES *
  ************/
 
-// Included libraries
-#include <string>
-#include <vector>
-
-// Included SDL components
-#include "SDL2/SDL.h"
+// No includes necessary
 
 /*************************
  * TYPES OF MODULES ENUM *

@@ -3,7 +3,24 @@
  * Member functions for the Oscillator class.
  */
 
-// Include header file
+/************
+ * INCLUDES *
+ ************/
+
+// Included libraries
+#include <cmath>
+#include <string>
+#include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
+
+// Included files
+#include "main.hpp"
+
+// Included classes
+#include "Module.hpp"
 #include "Oscillator.hpp"
 
 using namespace std;

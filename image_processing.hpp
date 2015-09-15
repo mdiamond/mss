@@ -13,22 +13,7 @@
  * INCLUDES *
  ************/
 
-// Included libraries
-#include <iostream>
-#include <queue>
-#include <vector>
-
-// Included SDL components
-#include "SDL2/SDL.h"
-
-// Included files
-#include "main.hpp"
-#include "signal_processing.hpp"
-
-// Included classes
-#include "Module.hpp"
-#include "Oscillator.hpp"
-#include "Output.hpp"
+// No includes necessary
 
 /*************************
  * FUNCTION DECLARATIONS *

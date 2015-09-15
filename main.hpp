@@ -12,22 +12,11 @@
  * INCLUDES *
  ************/
 
-// Included libraries
-#include <iostream>
-#include <vector>
-
 // Included SDL components
-#include "SDL2/SDL.h"
 #include "SDL2/SDL_ttf.h"
-
-// Included files
-#include "image_processing.hpp"
-#include "signal_processing.hpp"
-#include "tests.hpp"
 
 // Included classes
 #include "Module.hpp"
-#include "Timer.hpp"
 
 /**********************
  * EXTERNAL VARIABLES *

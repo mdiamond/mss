@@ -3,7 +3,20 @@
  * Functions for testing other functions.
  */
 
-// Include header file
+/************
+ * INCLUDES *
+ ************/
+
+// Included libraries
+#include <iostream>
+#include <string>
+#include <vector>
+
+// Included SDL components
+#include "SDL2/SDL.h"
+
+// Included files
+#include "signal_processing.hpp"
 #include "tests.hpp"
 
 using namespace std;

@@ -3,7 +3,17 @@
  * Member functions for the Timer class.
  */
 
-// Include header file
+/************
+ * INCLUDES *
+ ************/
+
+// Included Libraries
+#include <iostream>
+
+// Included SDL components
+#include "SDL2/SDL.h"
+
+// Included files
 #include "Timer.hpp"
 
 using namespace std;

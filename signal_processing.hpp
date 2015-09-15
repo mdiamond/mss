@@ -13,21 +13,7 @@
  * INCLUDES *
  ************/
 
-// Included libraries
-#include <iostream>
-#include <vector>
-
-// Included SDL components
-#include "SDL2/SDL.h"
-
-// Included files
-#include "image_processing.hpp"
-#include "main.hpp"
-
-// Included classes
-#include "Module.hpp"
-#include "Oscillator.hpp"
-#include "Output.hpp"
+// No includes necessary
 
 /*************************
  * FUNCTION DECLARATIONS *
