@@ -124,13 +124,11 @@ int normal_mode()
         frame_time = MSPF * frame;
 
         // As long as the time that the frame is supposed to be displayed
-        // is in the past, render the frame and try to catch up
+        // is in the past, inform the user, and advance to a more current frame
         while((frame_time = MSPF * frame) < SDL_GetTicks() && AUDIO_LENGTH > 0)
         {
             // Complain
             cout << "Behind on frames!" << endl;
-            // Draw the surface
-            draw_surface();
             // Move on to the next frame
             frame ++;
         }
