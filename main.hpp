@@ -26,6 +26,7 @@
 
 // Included classes
 #include "Module.hpp"
+#include "Timer.hpp"
 
 /**********************
  * EXTERNAL VARIABLES *
@@ -52,6 +53,9 @@ extern int MODULE_BORDER_WIDTH;
 //   Window dimensions
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
+//   Frames per second and ms per frame
+extern Uint32 FPS;
+extern Uint32 MSPF;
 
 // The modules currently in use
 extern std::vector<Module *> MODULES;

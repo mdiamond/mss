@@ -39,7 +39,6 @@ int open_window();
 int create_renderer();
 
 // Image processing functions
-void populate_samples(std::vector<float> *, std::vector<float> *);
 void draw_surface();
 
 #endif

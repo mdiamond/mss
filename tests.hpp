@@ -28,6 +28,6 @@
  *************************/
 
 // Run tests
-int run_tests(void);
+int run_tests();
 
 #endif

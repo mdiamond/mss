@@ -45,8 +45,8 @@ class Output: public Module
     struct Output_Data audio, graphics;
 
     // Constructor and destructor
-    Output(void);
-    virtual ~Output(void);
+    Output();
+    virtual ~Output();
     // Member functions
     virtual void process();
     virtual void copy_graphics_data();

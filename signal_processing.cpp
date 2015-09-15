@@ -18,7 +18,7 @@ using namespace std;
 /*
  * Open the audio device with a simple configuration.
  */
-int open_audio_device(void)
+int open_audio_device()
 {
   SDL_AudioSpec wanted, obtained;
 

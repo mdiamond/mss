@@ -113,7 +113,7 @@ int test_add_signals_1(void)
 /*
  * Run all tests.
  */
-int run_tests(void)
+int run_tests()
 {
   string names[1];
   int results[1];

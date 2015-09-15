@@ -51,8 +51,8 @@ class Module
     // be processed before this module
     std::vector<Module *> depends;
     // Constructor and destructor
-    Module(void);
-    virtual ~Module(void);
+    Module();
+    virtual ~Module();
     // Virtual member functions
     //   process() is called during each callback function to
     //   populate the modules output buffer and make it available

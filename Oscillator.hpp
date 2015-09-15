@@ -58,11 +58,12 @@ class Oscillator: public Module
     Oscillator *modulator;
     // Constructor and destructor
     Oscillator(std::string *);
-    virtual ~Oscillator(void);
+    virtual ~Oscillator();
     // member functions
     virtual void process();
     virtual void copy_graphics_data();
     virtual void render();
+    void render_waveform();
 };
 
 #endif

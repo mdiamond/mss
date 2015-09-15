@@ -2,12 +2,14 @@ CC = g++ -g -Wall
 CFLAGS = -std=c++11
 LDFLAGS = -lSDL2
 OBJFLAGS = $(CC) $(CFLAGS) -c
-OBJECTS = Module.o Output.o Oscillator.o signal_processing.o image_processing.o tests.o main.o
+OBJECTS = Timer.o Module.o Output.o Oscillator.o signal_processing.o image_processing.o tests.o main.o
 
 all : synth
 
 synth : $(OBJECTS)
 	$(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
+Timer.o : Timer.cpp Timer.hpp
+	$(OBJFLAGS) Timer.cpp
 Module.o : Module.cpp Module.hpp
 	$(OBJFLAGS) Module.cpp
 Output.o : Output.cpp Output.hpp

@@ -34,7 +34,7 @@
  *************************/
 
 // Initialization functions
-int open_audio_device(void);
+int open_audio_device();
 void initialize_output();
 
 // Audio callback function

@@ -18,7 +18,7 @@
 /*
  * Dummy function
  */
-Module::Module(void)
+Module::Module()
 {
 
 }
@@ -26,7 +26,7 @@ Module::Module(void)
 /*
  * Dummy function
  */
-Module::~Module(void)
+Module::~Module()
 {
 
 }

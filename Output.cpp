@@ -15,7 +15,7 @@ using namespace std;
 /*
  * Constructor
  */
-Output::Output(void)
+Output::Output()
 {
   name = "output";
   type = OUTPUT;
@@ -32,7 +32,7 @@ Output::Output(void)
 /*
  * Dummy function
  */
-Output::~Output(void)
+Output::~Output()
 {
 
 }
