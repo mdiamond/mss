@@ -40,6 +40,7 @@ class Output: public Module
         virtual void process();
         virtual void copy_graphics_data();
         virtual void render();
+        void render_text();
 };
 
 #endif

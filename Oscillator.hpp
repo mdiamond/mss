@@ -51,7 +51,6 @@ class Oscillator: public Module
         virtual void process();
         virtual void copy_graphics_data();
         virtual void render();
-        void render_waveform();
         void render_text();
 };
 

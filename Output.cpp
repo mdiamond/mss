@@ -15,6 +15,7 @@
 #include "SDL2/SDL.h"
 
 // Included files
+#include "image_processing.hpp"
 #include "main.hpp"
 
 // Included classes
@@ -78,6 +79,11 @@ void Output::copy_graphics_data()
  * of this module in the window.
  */
 void Output::render()
+{
+    render_name();
+}
+
+void Output::render_text()
 {
 
 }

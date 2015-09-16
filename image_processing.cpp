@@ -78,8 +78,8 @@ int create_renderer()
  */
 int load_fonts()
 {
-    FONT_REGULAR = TTF_OpenFont("SourceCodePro-Regular.ttf", 10);
-    FONT_BOLD = TTF_OpenFont("SourceCodePro-Bold.ttf", 10);
+    FONT_REGULAR = TTF_OpenFont("SourceCodePro-Regular.ttf", 11);
+    FONT_BOLD = TTF_OpenFont("SourceCodePro-Bold.ttf", 11);
 
     if(!FONT_REGULAR || !FONT_BOLD)
     {
@@ -135,4 +135,26 @@ void draw_surface()
         MODULES[i]->render();
     }
     SDL_RenderPresent(RENDERER);
+}
+
+void render_waveform(SDL_Rect *waveform_location, vector<float> *buffer)
+{
+    SDL_Point zero = {0, 0};
+    vector<SDL_Point> points(waveform_location->w, zero);
+    SDL_Rect rect = {waveform_location->x, waveform_location->y, waveform_location->w, waveform_location->h};
+
+    int index = 0;
+    for(unsigned int i = buffer->size() - waveform_location->w; i < buffer->size(); i ++)
+    {
+        points[index].x = waveform_location->x + index;
+        points[index].y = (waveform_location->y + waveform_location->h / 2) +
+                          ((*(buffer))[buffer->size() - waveform_location->w + index]) * (waveform_location->h / 2);
+        index ++;
+    }
+
+    SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
+    SDL_RenderFillRect(RENDERER, &rect);
+
+    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
+    SDL_RenderDrawLines(RENDERER, &points[0], points.size());
 }

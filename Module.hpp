@@ -67,6 +67,7 @@ class Module
         void calculate_upper_left(int);
         void render_border();
         void render_inner_border();
+        void render_name();
 };
 
 #endif

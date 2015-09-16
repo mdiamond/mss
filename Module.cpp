@@ -91,3 +91,16 @@ void Module::render_inner_border()
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(RENDERER, &inner_border);
 }
+
+void Module::render_name()
+{
+    SDL_Color color = {255, 255, 255, 255};
+    SDL_Surface *surface = TTF_RenderText_Blended(FONT_BOLD, name.c_str(), color);
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(RENDERER, surface);
+    int width, height;
+    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+    int x = upper_left.x + 5;
+    int y = upper_left.y + 5;
+    SDL_Rect dstrect = {x, y, width, height};
+    SDL_RenderCopy(RENDERER, texture, NULL, &dstrect);
+}

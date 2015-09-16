@@ -17,6 +17,7 @@
 #include "SDL2/SDL_ttf.h"
 
 // Included files
+#include "image_processing.hpp"
 #include "main.hpp"
 
 // Included classes
@@ -109,43 +110,10 @@ void Oscillator::copy_graphics_data()
  */
 void Oscillator::render()
 {
-    render_waveform();
-    render_text();
+    render_name();
+    SDL_Rect waveform_location = {upper_left.x + MODULE_BORDER_WIDTH + 5,
+                                  upper_left.y + MODULE_BORDER_WIDTH + 16,
+                                  ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11),
+                                  50};
+    render_waveform(&waveform_location, this->graphics.output);
 }
-
-void Oscillator::render_waveform()
-{
-    int waveform_height = 50;
-    SDL_Point zero = {0, 0};
-    vector<SDL_Point> points((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11, zero);
-    int starting_x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    int starting_y = upper_left.y + MODULE_BORDER_WIDTH + 15;
-    int waveform_width = (MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11;
-    SDL_Rect rect = {starting_x, starting_y, waveform_width, waveform_height};
-    int index = 0;
-    for(unsigned int i = this->graphics.output->size() - waveform_width; i < this->graphics.output->size(); i ++)
-    {
-        points[index].x = starting_x + index;
-        points[index].y = (starting_y + waveform_height / 2) +
-                          ((*(this->graphics.output))[this->graphics.output->size() - waveform_width + index]) * (waveform_height / 2);
-        index ++;
-    }
-    SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
-    SDL_RenderFillRect(RENDERER, &rect);
-    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
-    SDL_RenderDrawLines(RENDERER, &points[0], points.size());
-}
-
-void Oscillator::render_text()
-{
-    SDL_Color color = {255, 255, 255, 255};
-    SDL_Surface *surface = TTF_RenderText_Blended(FONT_BOLD, name.c_str(), color);
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(RENDERER, surface);
-    int width, height;
-    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-    int x = upper_left.x + 5;
-    int y = upper_left.y + 5;
-    SDL_Rect dstrect = {x, y, width, height};
-    SDL_RenderCopy(RENDERER, texture, NULL, &dstrect);
-}
-

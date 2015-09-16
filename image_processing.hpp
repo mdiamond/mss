@@ -26,5 +26,6 @@ int load_fonts();
 
 // Image processing functions
 void draw_surface();
+void render_waveform(SDL_Rect *, std::vector<float> *);
 
 #endif
