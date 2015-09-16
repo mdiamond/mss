@@ -42,6 +42,7 @@ class Module
         SDL_Rect border;
         SDL_Rect inner_border;
         SDL_Color color;
+        SDL_Color text_color;
         // A vector containing pointers to any module that must
         // be processed before this module
         std::vector<Module *> depends;
@@ -67,7 +68,7 @@ class Module
         void calculate_upper_left(int);
         void render_border();
         void render_inner_border();
-        void render_name();
+        void render_name(SDL_Color *);
 };
 
 #endif

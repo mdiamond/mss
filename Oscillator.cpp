@@ -38,10 +38,14 @@ Oscillator::Oscillator(string *_name)
     name = *_name;
     type = OSCILLATOR;
 
-    color.r = 0;
-    color.g = 255;
-    color.b = 0;
+    color.r = rand() % 256;
+    text_color.r = 256 - color.r;
+    color.g = rand() % 256;
+    text_color.g = 256 - color.g;
+    color.b = rand() % 256;
+    text_color.b = 256 - color.b;
     color.a = 255;
+    text_color.a = 255;
 
     this->audio.frequency = 0;
     this->audio.phase = 0;
@@ -110,7 +114,7 @@ void Oscillator::copy_graphics_data()
  */
 void Oscillator::render()
 {
-    render_name();
+    render_name(&text_color);
     SDL_Rect waveform_location = {upper_left.x + MODULE_BORDER_WIDTH + 5,
                                   upper_left.y + MODULE_BORDER_WIDTH + 16,
                                   ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11),

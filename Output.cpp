@@ -36,10 +36,14 @@ Output::Output()
     name = "output";
     type = OUTPUT;
 
-    color.r = 255;
-    color.g = 0;
-    color.b = 0;
+    color.r = rand() % 256;
+    text_color.r = 256 - color.r;
+    color.g = rand() % 256;
+    text_color.g = 256 - color.g;
+    color.b = rand() % 256;
+    text_color.b = 256 - color.b;
     color.a = 255;
+    text_color.a = 255;
 
     this->audio.input_l = new vector<float>(BUFFER_SIZE, 0);
     this->audio.input_r = new vector<float>(BUFFER_SIZE, 0);
@@ -80,7 +84,7 @@ void Output::copy_graphics_data()
  */
 void Output::render()
 {
-    render_name();
+    render_name(&text_color);
 }
 
 void Output::render_text()
