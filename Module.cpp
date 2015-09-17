@@ -34,6 +34,7 @@ using namespace std;
  */
 Module::Module()
 {
+    // Pick a random background and text color
     color.r = rand() % 256;
     text_color.r = 256 - color.r;
     color.g = rand() % 256;
@@ -65,7 +66,7 @@ void Module::process_depends()
 }
 
 /*
- * This function renders a border for the module.
+ * This function calculates the module's outer border
  */
 Graphics_Object *Module::calculate_border()
 {
@@ -76,8 +77,8 @@ Graphics_Object *Module::calculate_border()
 }
 
 /*
- * This function renders an inner border for the module
- * using the color defined within the module.
+ * This function calculates the location of the module's
+ * inner border.
  */
 Graphics_Object *Module::calculate_inner_border()
 {
@@ -90,6 +91,9 @@ Graphics_Object *Module::calculate_inner_border()
     return inner_border;
 }
 
+/*
+ * This function calculates the location of the module's name.
+ */
 Graphics_Object *Module::calculate_name()
 {
     SDL_Surface *surface = TTF_RenderText_Blended(FONT_BOLD, name.c_str(), text_color);
@@ -106,8 +110,9 @@ Graphics_Object *Module::calculate_name()
 }
 
 /*
- * This function recalculates the modules position in the
- * window given only its module number.
+ * calculate the locations of all graphics objects, then
+ * call upon the module to caluclate the locations of
+ * any graphics objects that are unique to the module type.
  */
 void Module::calculate_graphics_objects()
 {
@@ -123,21 +128,4 @@ void Module::calculate_graphics_objects()
     graphics_objects.push_back(calculate_inner_border());
     graphics_objects.push_back(calculate_name());
     calculate_unique_graphics_objects();
-}
-
-void Module::update_graphics_objects()
-{
-    update_unique_graphics_objects();
-}
-
-/*
- * This function calls render on all graphics objects associated with
- * this module.
- */
-void Module::render_module()
-{
-    for(unsigned int i = 0; i < this->graphics_objects.size(); i ++)
-    {
-        (this->graphics_objects)[i]->render_graphics_object();
-    }
 }

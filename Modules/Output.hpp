@@ -39,7 +39,6 @@ class Output: public Module
         virtual void process();
         virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
-        virtual void update_unique_graphics_objects();
 };
 
 #endif

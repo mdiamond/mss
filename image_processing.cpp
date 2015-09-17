@@ -98,15 +98,10 @@ int load_fonts()
  * IMAGE PROCESSING FUNCTIONS *
  ******************************/
 
-void update_graphics_objects()
-{
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-    {
-        MODULES[i]->update_graphics_objects();
-    }
-    MODULES_CHANGED = 0;
-}
-
+/*
+ * Determine where in the window each of the modules and their
+ * respective graphics objects are meant to be rendered.
+ */
 void calculate_graphics_objects()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
@@ -116,21 +111,32 @@ void calculate_graphics_objects()
     MODULES_CHANGED = 0;
 }
 
+/*
+ * Determine what graphics objects go on what pages. Create those pages.
+ */
 void calculate_pages()
 {
+    // Specify the location of the page (the entire window),
+    // create the Rect object representing the background and a
+    // list of graphics objects for the page, add the background
+    // to the list
     SDL_Rect location = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
     string object_name = "background";
     Rect *background = new Rect(&object_name, &location, &BLACK);
     vector<Graphics_Object *> *graphics_objects = new vector<Graphics_Object *>();
     graphics_objects->push_back(background);
+
+    // For each module, add each of its graphics objects to the list,
+    // if we're on the last module of the page and the last graphics object
+    // of the module, create the final graphics object and then create the page.
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
         {
             graphics_objects->push_back((MODULES[i]->graphics_objects)[j]);
-            if((unsigned int) (i % (MODULES_PER_ROW * MODULES_PER_COLUMN)) ==
-               (unsigned int) ((MODULES_PER_ROW * MODULES_PER_COLUMN) - 1) ||
-               i == MODULES.size() - 1)
+            if(((unsigned int) (i % (MODULES_PER_ROW * MODULES_PER_COLUMN)) ==
+               (unsigned int) ((MODULES_PER_ROW * MODULES_PER_COLUMN) - 1)) ||
+               ((i == MODULES.size() - 1) && (j == MODULES[i]->graphics_objects.size() - 1)))
             {
                 Page *page = new Page(&location, &BLACK, graphics_objects);
                 PAGES.push_back(page);
@@ -147,27 +153,39 @@ void calculate_pages()
  */
 void draw_surface()
 {
-    // First, lock the audio, then copy all data necessary for graphics
+    // First, lock the audio
     SDL_LockAudio();
 
+    // Once audio is locked, copy all data necessary for graphics
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         MODULES[i]->copy_graphics_data();
     }
 
     // Once all data necessary for graphics has been copied,
-    // unlock the audio, then if necessary, re-render the
-    // module borders, then render all the modules, then
-    // present what has been rendered
+    // unlock the audio
     SDL_UnlockAudio();
 
+    // If the set of modules has changed, calculate the
+    // graphics objects, then calculate the pages
     if(MODULES_CHANGED)
     {
         calculate_graphics_objects();
         calculate_pages();
         MODULES_CHANGED = false;
     }
-    update_graphics_objects();
-    PAGES[CURRENT_PAGE]->render_graphics_object();
+
+    // If the current page exists, render it, otherwise,
+    // render a black rectangle over the whole window
+    if(CURRENT_PAGE < PAGES.size())
+        PAGES[CURRENT_PAGE]->render_graphics_object();
+    else
+    {
+        SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+        SDL_Rect location = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+        SDL_RenderFillRect(RENDERER, &location);
+    }
+
+    // Present what has been rendered
     SDL_RenderPresent(RENDERER);
 }

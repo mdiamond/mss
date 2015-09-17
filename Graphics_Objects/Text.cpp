@@ -23,9 +23,9 @@
 
 using namespace std;
 
-/***************************
- * OUTPUT MEMBER FUNCTIONS *
- ***************************/
+/*************************
+ * TEXT MEMBER FUNCTIONS *
+ *************************/
 
 /*
  * Constructor.

@@ -8,7 +8,6 @@
  ************/
 
 // Included libraries
-#include <iostream>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -95,6 +94,12 @@ void Oscillator::process()
     }
 }
 
+/*
+ * Calculate the location of the waveform visualizer within
+ * the window, then create a waveform object at that location
+ * to make use of this oscillator's output buffer for its
+ * audio data.
+ */
 Graphics_Object *Oscillator::calculate_waveform()
 {
     SDL_Rect _waveform = {upper_left.x + MODULE_BORDER_WIDTH + 5,
@@ -106,14 +111,13 @@ Graphics_Object *Oscillator::calculate_waveform()
     return waveform;
 }
 
+/*
+ * Calculate the locations of any graphics objects that are
+ * unique to this module type.
+ */
 void Oscillator::calculate_unique_graphics_objects()
 {
     graphics_objects.push_back(calculate_waveform());
-}
-
-void Oscillator::update_unique_graphics_objects()
-{
-
 }
 
 /*

@@ -59,12 +59,11 @@ void Output::process()
     process_depends();
 }
 
+/*
+ * Calculate the locations of any graphics objects that are
+ * unique to this module type.
+ */
 void Output::calculate_unique_graphics_objects()
-{
-
-}
-
-void Output::update_unique_graphics_objects()
 {
 
 }

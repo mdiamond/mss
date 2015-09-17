@@ -38,7 +38,6 @@ struct Oscillator_Data
 class Oscillator: public Module
 {
     public:
-
         struct Oscillator_Data audio, graphics;
 
         // oscillator to modulate this one
@@ -50,7 +49,6 @@ class Oscillator: public Module
         virtual void process();
         virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
-        virtual void update_unique_graphics_objects();
         Graphics_Object *calculate_waveform();
 };
 

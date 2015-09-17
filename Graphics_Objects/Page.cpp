@@ -23,9 +23,9 @@
 
 using namespace std;
 
-/*****************************
- * WAVEFORM MEMBER FUNCTIONS *
- *****************************/
+/*************************
+ * PAGE MEMBER FUNCTIONS *
+ *************************/
 
 /*
  * Constructor.

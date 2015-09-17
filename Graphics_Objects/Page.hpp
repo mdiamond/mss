@@ -16,7 +16,7 @@
 #include "SDL2/SDL.h"
 
 /*************************
- * TEXT CLASS DEFINITION *
+ * PAGE CLASS DEFINITION *
  *************************/
 
 class Page: public Graphics_Object

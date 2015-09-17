@@ -61,16 +61,16 @@ class Module
         //   can be unlocked and rendering can occur while audio is
         //   processing
         virtual void copy_graphics_data() = 0;
+        //   calculate_unique_graphics_objects() is called to calculate
+        //   the locations of any graphics objects that are unique
+        //   to this module type
         virtual void calculate_unique_graphics_objects() = 0;
-        virtual void update_unique_graphics_objects() = 0;
         // Member functions
         void process_depends();
         Graphics_Object *calculate_border();
         Graphics_Object *calculate_inner_border();
         Graphics_Object *calculate_name();
         void calculate_graphics_objects();
-        void update_graphics_objects();
-        void render_module();
 };
 
 #endif
