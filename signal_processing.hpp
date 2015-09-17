@@ -1,8 +1,7 @@
 /*
  * Matthew Diamond 2015
  * Header file for the basic signal processing functions and
- * some callback function helpers. This file includes any files
- * or libraries necessary for signal_processing.cpp and declares
+ * some callback function helpers. This file declares
  * any functions.
  */
 

@@ -2,8 +2,7 @@
  * Matthew Diamond 2015
  * The header for a base class to represent a generic synthesizer module.
  * Other classes will extend this class and represent different
- * types of modules. This file defines the class and includes any files or
- * libraries necessary for Module.cpp.
+ * types of modules. This file defines the class.
  * The following classes are derived from the Module class:
  *   - Output
  *   - Oscillator
@@ -16,7 +15,8 @@
  * INCLUDES *
  ************/
 
-// No includes necessary
+// Included classes
+#include "Graphics_Object.hpp"
 
 /*************************
  * TYPES OF MODULES ENUM *
@@ -39,13 +39,14 @@ class Module
         std::string name;
         int type;
         SDL_Point upper_left;
-        SDL_Rect border;
-        SDL_Rect inner_border;
         SDL_Color color;
         SDL_Color text_color;
         // A vector containing pointers to any module that must
         // be processed before this module
         std::vector<Module *> depends;
+        // A vector containing any graphics objects
+        // necessary for rendering this module
+        std::vector<Graphics_Object *> graphics_objects;
         // Constructor and destructor
         Module();
         virtual ~Module();
@@ -59,16 +60,16 @@ class Module
         //   can be unlocked and rendering can occur while audio is
         //   processing
         virtual void copy_graphics_data() = 0;
-        //   render() is called each time a new frame is needed for
-        //   the window to display, it should render the module in
-        //   the window
-        virtual void render() = 0;
+        virtual void calculate_unique_graphics_objects() = 0;
+        virtual void update_unique_graphics_objects() = 0;
         // Member functions
         void process_depends();
-        void calculate_upper_left(int);
-        void render_border();
-        void render_inner_border();
-        void render_name(SDL_Color *);
+        Graphics_Object *calculate_border();
+        Graphics_Object *calculate_inner_border();
+        Graphics_Object *calculate_name();
+        void calculate_graphics_objects(int);
+        void update_graphics_objects();
+        void render_module();
 };
 
 #endif

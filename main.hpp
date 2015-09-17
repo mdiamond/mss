@@ -1,8 +1,7 @@
 /*
  * Matthew Diamond 2015
  * Header file for the driver function. This file declares
- * all external variables and includes any files or libraries
- * necessary for main.cpp.
+ * all external variables.
  */
 
 #ifndef synth_main_h
@@ -41,6 +40,7 @@ extern int MODULES_PER_COLUMN;
 extern int MODULE_SPACING;
 extern int MODULE_BORDER_WIDTH;
 //   Window dimensions
+extern int MENU_HEIGHT;
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 //   Frames per second and ms per frame
@@ -49,6 +49,9 @@ extern Uint32 MSPF;
 //   Fonts
 extern TTF_Font *FONT_REGULAR;
 extern TTF_Font *FONT_BOLD;
+//   Colors
+extern SDL_Color BLACK;
+extern SDL_Color WHITE;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

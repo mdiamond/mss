@@ -23,8 +23,8 @@
 
 // Included classes
 #include "Module.hpp"
-#include "Oscillator.hpp"
-#include "Output.hpp"
+#include "Modules/Oscillator.hpp"
+#include "Modules/Output.hpp"
 
 using namespace std;
 
@@ -78,8 +78,8 @@ int create_renderer()
  */
 int load_fonts()
 {
-    FONT_REGULAR = TTF_OpenFont("SourceCodePro-Regular.ttf", 11);
-    FONT_BOLD = TTF_OpenFont("SourceCodePro-Bold.ttf", 11);
+    FONT_REGULAR = TTF_OpenFont("fonts/SourceCodePro-Regular.ttf", 11);
+    FONT_BOLD = TTF_OpenFont("fonts/SourceCodePro-Bold.ttf", 11);
 
     if(!FONT_REGULAR || !FONT_BOLD)
     {
@@ -123,38 +123,15 @@ void draw_surface()
     {
         for(unsigned int i = 0; i < MODULES.size(); i ++)
         {
-            MODULES[i]->calculate_upper_left(i);
+            MODULES[i]->calculate_graphics_objects(i);
         }
         MODULES_CHANGED = 0;
     }
 
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        MODULES[i]->render_border();
-        MODULES[i]->render_inner_border();
-        MODULES[i]->render();
+        MODULES[i]->update_graphics_objects();
+        MODULES[i]->render_module();
     }
     SDL_RenderPresent(RENDERER);
-}
-
-void render_waveform(SDL_Rect *waveform_location, vector<float> *buffer)
-{
-    SDL_Point zero = {0, 0};
-    vector<SDL_Point> points(waveform_location->w, zero);
-    SDL_Rect rect = {waveform_location->x, waveform_location->y, waveform_location->w, waveform_location->h};
-
-    int index = 0;
-    for(unsigned int i = buffer->size() - waveform_location->w; i < buffer->size(); i ++)
-    {
-        points[index].x = waveform_location->x + index;
-        points[index].y = (waveform_location->y + waveform_location->h / 2) +
-                          ((*(buffer))[buffer->size() - waveform_location->w + index]) * (waveform_location->h / 2);
-        index ++;
-    }
-
-    SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
-    SDL_RenderFillRect(RENDERER, &rect);
-
-    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
-    SDL_RenderDrawLines(RENDERER, &points[0], points.size());
 }

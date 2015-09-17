@@ -1,9 +1,7 @@
 /*
  * Matthew Diamond 2015
  * Header file for the basic image processing functions
- * and some helpers for main(). This file includes any
- * files or libraries necessary for image_processing.cpp
- * and declares any functions.
+ * and some helpers for main(). This file declares any functions.
  */
 
 #ifndef synth_image_processing_h
@@ -26,6 +24,5 @@ int load_fonts();
 
 // Image processing functions
 void draw_surface();
-void render_waveform(SDL_Rect *, std::vector<float> *);
 
 #endif

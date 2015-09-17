@@ -17,12 +17,13 @@
 #include "SDL2/SDL_ttf.h"
 
 // Included files
-#include "image_processing.hpp"
-#include "main.hpp"
+#include "../image_processing.hpp"
+#include "../main.hpp"
 
 // Included classes
-#include "Module.hpp"
+#include "../Module.hpp"
 #include "Oscillator.hpp"
+#include "../Graphics_Objects/Waveform.hpp"
 
 using namespace std;
 
@@ -37,15 +38,6 @@ Oscillator::Oscillator(string *_name)
 {
     name = *_name;
     type = OSCILLATOR;
-
-    color.r = rand() % 256;
-    text_color.r = 256 - color.r;
-    color.g = rand() % 256;
-    text_color.g = 256 - color.g;
-    color.b = rand() % 256;
-    text_color.b = 256 - color.b;
-    color.a = 255;
-    text_color.a = 255;
 
     this->audio.frequency = 0;
     this->audio.phase = 0;
@@ -74,8 +66,10 @@ Oscillator::~Oscillator()
 void Oscillator::process()
 {
     float frequency_shift = 0;
+
     // Check for any dependencies for frequency modulation
     process_depends();
+
     // Get oscillator audio info struct
     struct Oscillator_Data *audio_data = &(this->audio);
     // Calculate an amplitude for each sample
@@ -97,6 +91,27 @@ void Oscillator::process()
     }
 }
 
+Graphics_Object *Oscillator::calculate_waveform()
+{
+    SDL_Rect _waveform = {upper_left.x + MODULE_BORDER_WIDTH + 5,
+                          upper_left.y + MODULE_BORDER_WIDTH + 16,
+                          ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11),
+                          50};
+    string object_name = "waveform";
+    Waveform *waveform = new Waveform(&object_name, &_waveform, &WHITE, this->graphics.output);
+    return waveform;
+}
+
+void Oscillator::calculate_unique_graphics_objects()
+{
+    graphics_objects.push_back(calculate_waveform());
+}
+
+void Oscillator::update_unique_graphics_objects()
+{
+    ((Waveform *) graphics_objects[3])->buffer = this->graphics.output;
+}
+
 /*
  * Copy all data from the audio data struct to the
  * graphics data struct to make it available for
@@ -106,18 +121,4 @@ void Oscillator::copy_graphics_data()
 {
     this->graphics = this->audio;
     this->graphics.output = new vector<float>(*(this->audio.output));
-}
-
-/*
- * This function uses the renderer to create a representation
- * of this module in the window.
- */
-void Oscillator::render()
-{
-    render_name(&text_color);
-    SDL_Rect waveform_location = {upper_left.x + MODULE_BORDER_WIDTH + 5,
-                                  upper_left.y + MODULE_BORDER_WIDTH + 16,
-                                  ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 11),
-                                  50};
-    render_waveform(&waveform_location, this->graphics.output);
 }

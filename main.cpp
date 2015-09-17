@@ -54,10 +54,11 @@ int MODULE_SPACING = 1;
 int MODULE_BORDER_WIDTH = 2;
 
 // Window dimensions
+int MENU_HEIGHT = 11;
 int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
-                                     (MODULE_SPACING * MODULES_PER_ROW);
+                   (MODULE_SPACING * MODULES_PER_ROW);
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
-                                        (MODULE_SPACING * MODULES_PER_COLUMN);
+                    (MODULE_SPACING * MODULES_PER_COLUMN) + MENU_HEIGHT;
 
 // Frames per second and ms per frame
 Uint32 FPS = 30;
@@ -66,6 +67,10 @@ Uint32 MSPF = 1000 / FPS;
 // Fonts
 TTF_Font *FONT_REGULAR;
 TTF_Font *FONT_BOLD;
+
+// Colors
+SDL_Color BLACK = {0, 0, 0 , 255};
+SDL_Color WHITE = {255, 255, 255, 255};
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
@@ -107,6 +112,8 @@ int testing_mode()
  */
 int initialize()
 {
+    system("clear");
+
     cout << "Initializing SDL." << endl;
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 

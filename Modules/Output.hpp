@@ -4,8 +4,7 @@
  * function comes through here. This module simply
  * processes the modules it depends upon, then makes available
  * full audio buffers to the audio callback function. This file
- * defines the class and includes any files or libraries necessary
- * for Output.cpp.
+ * defines the class.
  */
 
 #ifndef synth_output_h
@@ -38,9 +37,9 @@ class Output: public Module
         virtual ~Output();
         // Member functions
         virtual void process();
+        virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
-        virtual void render();
-        void render_text();
+        virtual void update_unique_graphics_objects();
 };
 
 #endif

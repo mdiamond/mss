@@ -6,8 +6,7 @@
  * be modulated with some other oscillator. The
  * resulting waveform can then be processed or output.
  * This module fills its output buffer with the generated signal.
- * This file defines the class and includes any files or
- * libraries necessary for Output.cpp.
+ * This file defines the class.
  */
 
 #ifndef synth_oscillator_h
@@ -49,9 +48,10 @@ class Oscillator: public Module
         virtual ~Oscillator();
         // member functions
         virtual void process();
+        virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
-        virtual void render();
-        void render_text();
+        virtual void update_unique_graphics_objects();
+        Graphics_Object *calculate_waveform();
 };
 
 #endif

@@ -24,8 +24,8 @@
 
 // Included classes
 #include "Module.hpp"
-#include "Oscillator.hpp"
-#include "Output.hpp"
+#include "Modules/Oscillator.hpp"
+#include "Modules/Output.hpp"
 
 using namespace std;
 
