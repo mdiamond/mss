@@ -181,6 +181,14 @@ bool event_handler(SDL_Event *e)
             quit = true;
             break;
         }
+        else if(e->type == SDL_KEYDOWN)
+        {
+
+        }
+        else if(e->type == SDL_MOUSEBUTTONDOWN)
+        {
+
+        }
     }
     return quit;
 }
@@ -230,10 +238,7 @@ bool normal_mode()
         // Draw the surface
         draw_surface();
         if(event_handler(&e))
-        {
-            cleanup();
             break;
-        }
 
         // Every 100 frames, print out the framerate
         if(frame % 100 == 0)

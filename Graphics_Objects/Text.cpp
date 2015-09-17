@@ -33,10 +33,11 @@ using namespace std;
 Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color, SDL_Texture *_texture)
 {
     name = *_name;
+    type = TEXT;
     location = *_location;
     color = *_color;
+
     texture = _texture;
-    type = TEXT;
 }
 
 /*

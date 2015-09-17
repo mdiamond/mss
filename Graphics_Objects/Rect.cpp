@@ -33,9 +33,10 @@ using namespace std;
 Rect::Rect(string *_name, SDL_Rect *_location, SDL_Color *_color)
 {
     name = *_name;
+    type = RECT;
     location = *_location;
     color = *_color;
-    type = RECT;
+
     fill = true;
 }
 

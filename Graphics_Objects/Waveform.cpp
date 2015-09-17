@@ -33,10 +33,10 @@ using namespace std;
 Waveform::Waveform(string *_name, SDL_Rect *_location, SDL_Color *_color, vector<float> *_buffer)
 {
     name = *_name;
+    type = WAVEFORM;
     location = *_location;
     color = *_color;
     buffer = _buffer;
-    type = WAVEFORM;
 }
 
 /*

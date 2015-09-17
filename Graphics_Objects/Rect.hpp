@@ -20,7 +20,7 @@
 class Rect: public Graphics_Object
 {
     public:
-        // Fill the rectangle or just draw the outline?
+        // Fill the rectangle or just draw the outline
         bool fill;
         // Constructor and destructor
         Rect(std::string *, SDL_Rect *, SDL_Color *);
