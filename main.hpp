@@ -25,9 +25,6 @@
 extern int SAMPLE_RATE;
 extern int BUFFER_SIZE;
 
-extern int CURRENT_SAMPLE;
-extern int AUDIO_LENGTH;
-
 // Graphics objects and variables
 //   SDL Window and Renderer
 extern SDL_Window *WINDOW;

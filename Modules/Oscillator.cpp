@@ -46,6 +46,8 @@ Oscillator::Oscillator(string *_name)
     this->audio.modulation_index = 1;
     this->audio.output = new vector<float>(BUFFER_SIZE, 0);
 
+    this->graphics.output = new vector<float>(BUFFER_SIZE, 0);
+
     modulator = NULL;
 }
 
@@ -109,7 +111,7 @@ void Oscillator::calculate_unique_graphics_objects()
 
 void Oscillator::update_unique_graphics_objects()
 {
-    ((Waveform *) graphics_objects[3])->buffer = this->graphics.output;
+
 }
 
 /*
@@ -120,5 +122,8 @@ void Oscillator::update_unique_graphics_objects()
 void Oscillator::copy_graphics_data()
 {
     this->graphics = this->audio;
-    this->graphics.output = new vector<float>(*(this->audio.output));
+    for(int i = 0; i < BUFFER_SIZE; i ++)
+    {
+        this->graphics.output[i] = this->audio.output[i];
+    }
 }

@@ -124,10 +124,6 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     // Cast the buffer to a float buffer
     float *buffer = (float *) _buffer;
 
-    // If there is no audio to play, just return
-    if(AUDIO_LENGTH == 0)
-        return;
-
     // Get the address of the output module for later use
     Output *output = (Output *) MODULES[0];
 
@@ -152,13 +148,6 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
         // (((Oscillator *)MODULES[2])->audio).frequency += .0001;
         // (((Oscillator *)MODULES[2])->audio).modulation_index -= .00001;
     }
-
-    // Increment the current sample by the number
-    // of samples just processed
-    CURRENT_SAMPLE += BUFFER_SIZE;
-    AUDIO_LENGTH -= BUFFER_SIZE;
-
-    // populate_samples(output->input_l, output->input_r);
 }
 
 /*******************************
