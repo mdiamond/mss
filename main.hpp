@@ -16,6 +16,7 @@
 
 // Included classes
 #include "Module.hpp"
+#include "Graphics_Objects/Page.hpp"
 
 /**********************
  * EXTERNAL VARIABLES *
@@ -49,6 +50,9 @@ extern TTF_Font *FONT_BOLD;
 //   Colors
 extern SDL_Color BLACK;
 extern SDL_Color WHITE;
+//   Pages
+extern std::vector<Page *> PAGES;
+extern int CURRENT_PAGE;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

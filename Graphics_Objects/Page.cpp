@@ -30,17 +30,14 @@ using namespace std;
 /*
  * Constructor.
  */
-Page::Page(string *_name, SDL_Rect *_location, SDL_Color *_color, vector<Graphics_Object> *_graphics_objects)
+Page::Page(SDL_Rect *_location, SDL_Color *_color, vector<Graphics_Object *> *_graphics_objects)
 {
-    name = *_name;
     type = PAGE;
     location = *_location;
     color = *_color;
 
-    if(_graphics_objects == NULL || _graphics_objects->size() == 0)
-        graphics_objects = new vector<Graphics_Object>();
-    else
-        graphics_objects = _graphics_objects;
+    if(_graphics_objects != NULL && _graphics_objects->size() > 0)
+        graphics_objects = new vector<Graphics_Object *>(*_graphics_objects);
 }
 
 /*
@@ -52,9 +49,12 @@ Page::~Page()
 }
 
 /*
- * Render the waveform.
+ * Render the graphics objects.
  */
 void Page::render_graphics_object()
 {
-
+    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
+    {
+        (*graphics_objects)[i]->render_graphics_object();
+    }
 }

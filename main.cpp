@@ -69,6 +69,10 @@ TTF_Font *FONT_BOLD;
 SDL_Color BLACK = {0, 0, 0 , 255};
 SDL_Color WHITE = {255, 255, 255, 255};
 
+// Pages
+std::vector<Page *> PAGES;
+int CURRENT_PAGE = 0;
+
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
 vector<Module *> MODULES;

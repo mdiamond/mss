@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <cmath>
 #include <string>
 #include <vector>
@@ -34,10 +35,11 @@ using namespace std;
 /*
  * Constructor
  */
-Oscillator::Oscillator(string *_name)
+Oscillator::Oscillator(string *_name, int _number)
 {
     name = *_name;
     type = OSCILLATOR;
+    number = _number;
 
     this->audio.frequency = 0;
     this->audio.phase = 0;
@@ -121,9 +123,13 @@ void Oscillator::update_unique_graphics_objects()
  */
 void Oscillator::copy_graphics_data()
 {
-    this->graphics = this->audio;
+    this->graphics.frequency = this->audio.frequency;
+    this->graphics.phase = this->audio.phase;
+    this->graphics.amplitude = this->audio.amplitude;
+    this->graphics.fm_on = this->audio.fm_on;
+    this->graphics.modulation_index = this->audio.modulation_index;
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        this->graphics.output[i] = this->audio.output[i];
+        (*(this->graphics.output))[i] = (*(this->audio.output))[i];
     }
 }

@@ -31,10 +31,11 @@ using namespace std;
 /*
  * Constructor.
  */
-Output::Output()
+Output::Output(int _number)
 {
     name = "output";
     type = OUTPUT;
+    number = _number;
 
     this->audio.input_l = new vector<float>(BUFFER_SIZE, 0);
     this->audio.input_r = new vector<float>(BUFFER_SIZE, 0);

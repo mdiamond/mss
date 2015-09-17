@@ -70,7 +70,7 @@ int open_audio_device()
 void initialize_output()
 {
     // Create the output module
-    Output *output = new Output();
+    Output *output = new Output(MODULES.size());
     MODULES.push_back(output);
 
     // This configuration is arbitrary and
@@ -81,7 +81,7 @@ void initialize_output()
 
     // Create an oscillator module
     string oscillator_1_name = "oscillator 1";
-    Oscillator *oscillator_1 = new Oscillator(&oscillator_1_name);
+    Oscillator *oscillator_1 = new Oscillator(&oscillator_1_name, MODULES.size());
     MODULES.push_back(oscillator_1);
 
     // Set the oscillator frequencies
@@ -89,7 +89,7 @@ void initialize_output()
 
     // Create another oscillator module
     // string modulator_name = "modulator";
-    // Oscillator *modulator = new Oscillator(&modulator_name);
+    // Oscillator *modulator = new Oscillator(&modulator_name, MODULES.size());
     // MODULES.push_back(modulator);
 
     // (modulator->audio).frequency = 4;

@@ -4,6 +4,7 @@
  * Other classes will extend this class and represent different
  * types of graphics objects. This file defines the class.
  * The following classes are derived from the graphics object class:
+ *   - Button
  *   - Page
  *   - Rect
  *   - Text
@@ -27,6 +28,7 @@
 
 enum Graphics_Objects
 {
+    BUTTON,
     PAGE,
     RECT,
     TEXT,

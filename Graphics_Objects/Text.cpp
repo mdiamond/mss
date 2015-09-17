@@ -49,8 +49,7 @@ Text::~Text()
 }
 
 /*
- * Render the rectangle. If fill is set, fill it, otherwise,
- * just draw the outline.
+ * Render the text.
  */
 void Text::render_graphics_object()
 {

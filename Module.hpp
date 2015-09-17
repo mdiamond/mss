@@ -38,6 +38,7 @@ class Module
         // Module information
         std::string name;
         int type;
+        int number;
         SDL_Point upper_left;
         SDL_Color color;
         SDL_Color text_color;
@@ -67,7 +68,7 @@ class Module
         Graphics_Object *calculate_border();
         Graphics_Object *calculate_inner_border();
         Graphics_Object *calculate_name();
-        void calculate_graphics_objects(int);
+        void calculate_graphics_objects();
         void update_graphics_objects();
         void render_module();
 };

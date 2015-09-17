@@ -44,7 +44,7 @@ class Oscillator: public Module
         // oscillator to modulate this one
         Oscillator *modulator;
         // Constructor and destructor
-        Oscillator(std::string *);
+        Oscillator(std::string *, int);
         virtual ~Oscillator();
         // member functions
         virtual void process();

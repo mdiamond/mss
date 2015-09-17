@@ -109,16 +109,16 @@ Graphics_Object *Module::calculate_name()
  * This function recalculates the modules position in the
  * window given only its module number.
  */
-void Module::calculate_graphics_objects(int i)
+void Module::calculate_graphics_objects()
 {
     graphics_objects.clear();
-    int num_x, num_y;
-    num_x = (i % MODULES_PER_ROW);
-    num_y = (i / MODULES_PER_ROW);
-    upper_left.x = (num_x *(WINDOW_WIDTH / MODULES_PER_ROW)) +
-                   (num_x * MODULE_SPACING);
-    upper_left.y = (num_y *(WINDOW_WIDTH / MODULES_PER_ROW)) +
-                   (num_y * MODULE_SPACING);
+    int x, y;
+    x = (number % MODULES_PER_ROW);
+    y = (number / MODULES_PER_ROW);
+    upper_left.x = (x *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+                   (x * MODULE_SPACING);
+    upper_left.y = (y *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+                   (y * MODULE_SPACING);
     graphics_objects.push_back(calculate_border());
     graphics_objects.push_back(calculate_inner_border());
     graphics_objects.push_back(calculate_name());

@@ -22,6 +22,8 @@
 #include "signal_processing.hpp"
 
 // Included classes
+#include "Graphics_Objects/Page.hpp"
+#include "Graphics_Objects/Rect.hpp"
 #include "Module.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
@@ -87,12 +89,56 @@ int load_fonts()
         return 0;
     }
 
+    cout << "Fonts loaded." << endl;
+
     return 1;
 }
 
 /******************************
  * IMAGE PROCESSING FUNCTIONS *
  ******************************/
+
+void update_graphics_objects()
+{
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        MODULES[i]->update_graphics_objects();
+    }
+    MODULES_CHANGED = 0;
+}
+
+void calculate_graphics_objects()
+{
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        MODULES[i]->calculate_graphics_objects();
+    }
+    MODULES_CHANGED = 0;
+}
+
+void calculate_pages()
+{
+    SDL_Rect location = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+    string object_name = "background";
+    Rect *background = new Rect(&object_name, &location, &BLACK);
+    vector<Graphics_Object *> *graphics_objects = new vector<Graphics_Object *>();
+    graphics_objects->push_back(background);
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+        {
+            graphics_objects->push_back((MODULES[i]->graphics_objects)[j]);
+            if((unsigned int) (i % (MODULES_PER_ROW * MODULES_PER_COLUMN)) ==
+               (unsigned int) ((MODULES_PER_ROW * MODULES_PER_COLUMN) - 1) ||
+               i == MODULES.size() - 1)
+            {
+                Page *page = new Page(&location, &BLACK, graphics_objects);
+                PAGES.push_back(page);
+                graphics_objects = new vector<Graphics_Object *>();
+            }
+        }
+    }
+}
 
 /*
  * Render the GUI in the window by using the
@@ -115,23 +161,13 @@ void draw_surface()
     // present what has been rendered
     SDL_UnlockAudio();
 
-    SDL_Rect background = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-    SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
-    SDL_RenderFillRect(RENDERER, &background);
-
     if(MODULES_CHANGED)
     {
-        for(unsigned int i = 0; i < MODULES.size(); i ++)
-        {
-            MODULES[i]->calculate_graphics_objects(i);
-        }
-        MODULES_CHANGED = 0;
+        calculate_graphics_objects();
+        calculate_pages();
+        MODULES_CHANGED = false;
     }
-
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-    {
-        MODULES[i]->update_graphics_objects();
-        MODULES[i]->render_module();
-    }
+    update_graphics_objects();
+    PAGES[CURRENT_PAGE]->render_graphics_object();
     SDL_RenderPresent(RENDERER);
 }

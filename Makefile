@@ -2,7 +2,12 @@ CC = g++ -g -Wall
 CFLAGS = -std=c++11
 LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJFLAGS = $(CC) $(CFLAGS) -c
-OBJECTS = Timer.o Module.o Oscillator.o Output.o Graphics_Object.o Rect.o Text.o Waveform.o signal_processing.o image_processing.o tests.o main.o
+FILEOBJ = main.o tests.o signal_processing.o image_processing.o
+BASEOBJ = Module.o Graphics_Object.o
+MODULEOBJ =  Output.o Oscillator.o
+GRAPHICOBJ =  Page.o Rect.o Text.o Waveform.o
+OTHEROBJ = Timer.o
+OBJECTS = $(FILEOBJ) $(BASEOBJ) $(MODULEOBJ) $(GRAPHICOBJ) $(OTHEROBJ)
 
 all : synth
 
@@ -12,11 +17,11 @@ Timer.o : Timer.cpp Timer.hpp
 	$(OBJFLAGS) Timer.cpp
 Module.o : Module.cpp Module.hpp
 	$(OBJFLAGS) Module.cpp
-Output.o Oscillator.o : $(wildcard Modules/*.cpp) $(wildcard Modules/*.hpp)
+$(MODULEOBJ) : $(wildcard Modules/*.cpp) $(wildcard Modules/*.hpp)
 	$(OBJFLAGS) $(wildcard Modules/*.cpp)
 Graphics_Object.o : Graphics_Object.cpp Graphics_Object.hpp
 	$(OBJFLAGS) Graphics_Object.cpp
-Rect.o Text.o Waveform.o : $(wildcard Graphics_Objects/*.cpp) $(wildcard Graphics_Objects/*.hpp)
+$(GRAPHICOBJ) : $(wildcard Graphics_Objects/*.cpp) $(wildcard Graphics_Objects/*.hpp)
 	$(OBJFLAGS) $(wildcard Graphics_Objects/*.cpp)
 signal_processing.o : signal_processing.cpp signal_processing.hpp
 	$(OBJFLAGS) signal_processing.cpp

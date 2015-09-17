@@ -33,7 +33,7 @@ class Output: public Module
         struct Output_Data audio, graphics;
 
         // Constructor and destructor
-        Output();
+        Output(int);
         virtual ~Output();
         // Member functions
         virtual void process();
