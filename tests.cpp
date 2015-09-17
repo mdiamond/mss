@@ -26,20 +26,20 @@ using namespace std;
  ********************/
 
 /*
- * Compare two buffers. Return 1 if they are the same,
- * 0 if they are not.
+ * Compare two buffers. Return true if they are the same,
+ * false if they are not.
  */
-int compare_buffers(vector<float> *buffer1, vector<float> *buffer2, int num_samples)
+bool compare_buffers(vector<float> *buffer1, vector<float> *buffer2, int num_samples)
 {
-    int success = 1;
+    bool same = true;
 
     for(int i = 0; i < num_samples; i ++)
     {
         if((*buffer1)[i] != (*buffer2)[i])
-            success = 0;
+            same = false;
     }
 
-    return success;
+    return same;
 }
 
 /*
@@ -62,22 +62,22 @@ void print_test_results(string *names, int *results, int test_num)
  * Check if all tests have passed or not and inform the user.
  * Return 1 if all tests have passed, 0 if not.
  */
-int all_tests_passed(int *results, int test_num)
+bool all_tests_passed(int *results, int test_num)
 {
-    int success = 1;
+    bool passed = true;
 
     for(int i = 0; i < test_num ; i ++)
     {
         if(!results[i])
-            success = 0;
+            passed = false;
     }
 
-    if(success)
+    if(passed)
         cout << "ALL TESTS PASSED!" << endl;
     else
         cout << "TESTS FAILED!" << endl;
 
-    return success;
+    return passed;
 }
 
 /*********
@@ -87,7 +87,7 @@ int all_tests_passed(int *results, int test_num)
 /*
  * Test #1 for the add_signals() function.
  */
-int test_add_signals_1(void)
+bool test_add_signals_1()
 {
     int num_samples = 4;
     vector<float> buffer1(num_samples, 0);
@@ -114,9 +114,9 @@ int test_add_signals_1(void)
     add_signals(&buffer1, &buffer2, &result_buffer, num_samples);
 
     if(compare_buffers(&expected_buffer, &result_buffer, num_samples))
-        return 1;
+        return true;
 
-    return 0;
+    return false;
 }
 
 /*************
@@ -126,7 +126,7 @@ int test_add_signals_1(void)
 /*
  * Run all tests.
  */
-int run_tests()
+bool run_tests()
 {
     string names[1];
     int results[1];
@@ -139,7 +139,7 @@ int run_tests()
     print_test_results(names, results, test_num);
 
     if(all_tests_passed(results, test_num))
-        return 1;
+        return true;
 
-    return 0;
+    return false;
 }

@@ -72,13 +72,13 @@ SDL_Color WHITE = {255, 255, 255, 255};
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
 vector<Module *> MODULES;
-int MODULES_CHANGED = 1;
+bool MODULES_CHANGED = true;
 
 /***********************
  * TESTING MODE TOGGLE *
  ***********************/
 
-int testing = 0;
+bool testing = false;
 
 /********************
  * HELPER FUNCTIONS *
@@ -88,9 +88,23 @@ int testing = 0;
  * Run in testing mode. If all tests pass, return 1.
  * Otherwise, return 0;
  */
-int testing_mode()
+bool testing_mode()
 {
     return run_tests();
+}
+
+/*
+ * Destroy stuff and shut down SDL.
+ */
+void cleanup()
+{
+    // Destroy the graphics objects
+    SDL_DestroyWindow(WINDOW);
+    SDL_DestroyRenderer(RENDERER);
+
+    // Quit SDL
+    cout << "Quitting SDL." << endl;
+    SDL_Quit();
 }
 
 /*
@@ -105,9 +119,9 @@ int testing_mode()
  *   - initialize the synthesizer output module
  *   - start audio to begin requesting buffers from the audio
  *     callback function
- * Return 1 if all of this succeeds, 0 if anything fails.
+ * Return true if all of this succeeds, false if anything fails.
  */
-int initialize()
+bool initialize()
 {
     system("clear");
 
@@ -115,32 +129,32 @@ int initialize()
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
         cout << "Could not initialize SDL: " << SDL_GetError() << endl;
-        return 0;
+        return false;
     }
     cout << "SDL initialized." << endl;
 
     // Initialize audio device
     if(!open_audio_device())
-        return 0;
+        return false;
 
     // Open a window
     if(!open_window())
-        return 0;
+        return false;
 
     // Create a renderer
     if(!create_renderer())
-        return 0;
+        return false;
 
     // Initialize truetype
     if(TTF_Init() == -1)
     {
         cout << "Coult not initialize TTF: " << TTF_GetError() << endl;
-        return 0;
+        return false;
     }
 
     // Open ttf fonts
     if(!load_fonts())
-        return 0;
+        return false;
 
     // Initialize the output module
     initialize_output();
@@ -150,18 +164,38 @@ int initialize()
     SDL_PauseAudio(0);
     cout << "Audio unpaused." << endl;
 
-    return 1;
+    return true;
+}
+
+/*
+ * Handle events. Return true if SDL_QUIT event
+ * is received.
+ */
+bool event_handler(SDL_Event *e)
+{
+    bool quit = false;
+    while(SDL_PollEvent(e) != 0)
+    {
+        if(e->type == SDL_QUIT)
+        {
+            quit = true;
+            break;
+        }
+    }
+    return quit;
 }
 
 /*
  * Run in normal mode. If all objects create successfully,
- * return 1. Otherwise, return 0.
+ * return true. Otherwise, return false.
  */
-int normal_mode()
+bool normal_mode()
 {
-    int success = 1;
-
-    success = success && initialize();
+    if(!initialize())
+    {
+        cleanup();
+        return false;
+    }
 
     // While the user has not quit, continually draw
     // to the window, then delay until the next frame is needed.
@@ -195,12 +229,10 @@ int normal_mode()
 
         // Draw the surface
         draw_surface();
-        while(SDL_PollEvent(&e) != 0)
+        if(event_handler(&e))
         {
-            if(e.type == SDL_QUIT)
-            {
-                goto cleanup;
-            }
+            cleanup();
+            break;
         }
 
         // Every 100 frames, print out the framerate
@@ -215,20 +247,9 @@ int normal_mode()
         frame_success ++;
     }
 
-    /************
-     * Clean up *
-     ************/
+    cleanup();
 
-    // Destroy the graphics objects
-cleanup:
-    SDL_DestroyWindow(WINDOW);
-    SDL_DestroyRenderer(RENDERER);
-
-    // Quit SDL
-    cout << "Quitting SDL." << endl;
-    SDL_Quit();
-
-    return 1;
+    return true;
 }
 
 /*****************

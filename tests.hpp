@@ -19,6 +19,6 @@
  *************************/
 
 // Run tests
-int run_tests();
+bool run_tests();
 
 #endif

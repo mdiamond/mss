@@ -53,6 +53,6 @@ extern SDL_Color WHITE;
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
 extern std::vector<Module *> MODULES;
-extern int MODULES_CHANGED;
+extern bool MODULES_CHANGED;
 
 #endif
