@@ -22,9 +22,11 @@ class Text: public Graphics_Object
 {
     public:
         TTF_Font *font;
+        std::string *text;
+        std::string old_text;
         SDL_Texture *texture;
         // Constructor and destructor
-        Text(std::string *, SDL_Rect *, SDL_Color *, SDL_Texture *);
+        Text(std::string *, SDL_Rect *, SDL_Color *, std::string *, TTF_Font *);
         virtual ~Text();
         // Member functions
         virtual void render_graphics_object();

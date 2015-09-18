@@ -27,6 +27,8 @@ struct Oscillator_Data
     // Oscillator settings and frequency modulator/
     // modulation settings
     float frequency;
+    float shifted_frequency;
+    std::string frequency_str;
     float phase;
     float amplitude;
     int fm_on;
@@ -50,6 +52,7 @@ class Oscillator: public Module
         virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
         Graphics_Object *calculate_waveform();
+        Graphics_Object *calculate_frequency();
 };
 
 #endif

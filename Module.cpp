@@ -96,16 +96,11 @@ Graphics_Object *Module::calculate_inner_border()
  */
 Graphics_Object *Module::calculate_name()
 {
-    SDL_Surface *surface = TTF_RenderText_Blended(FONT_BOLD, name.c_str(), text_color);
-    SDL_Texture *texture = SDL_CreateTextureFromSurface(RENDERER, surface);
-    int width, height;
-    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-    int x = upper_left.x + 5;
-    int y = upper_left.y + 5;
-    SDL_Rect dstrect = {x, y, width, height};
-    SDL_RenderCopy(RENDERER, texture, NULL, &dstrect);
+    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 2;
+    SDL_Rect location = {x, y, 0, 0};
     string object_name = "module name";
-    Text *module_name = new Text(&object_name, &dstrect, &text_color, texture);
+    Text *module_name = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
     return module_name;
 }
 

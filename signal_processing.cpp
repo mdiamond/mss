@@ -88,16 +88,16 @@ void initialize_output()
     (oscillator_1->audio).frequency = 440;
 
     // Create another oscillator module
-    // string modulator_name = "modulator";
-    // Oscillator *modulator = new Oscillator(&modulator_name, MODULES.size());
-    // MODULES.push_back(modulator);
+    string modulator_name = "modulator";
+    Oscillator *modulator = new Oscillator(&modulator_name, MODULES.size());
+    MODULES.push_back(modulator);
 
-    // (modulator->audio).frequency = 4;
+    (modulator->audio).frequency = 4;
 
-    // oscillator_1->depends.push_back(modulator);
-    // (oscillator_1->audio).fm_on = 1;
-    // (oscillator_1->audio).modulation_index = 25;
-    // oscillator_1->modulator = modulator;
+    oscillator_1->depends.push_back(modulator);
+    (oscillator_1->audio).fm_on = 1;
+    (oscillator_1->audio).modulation_index = 25;
+    oscillator_1->modulator = modulator;
 
     // Set the inputs and outputs
     output->depends.push_back(oscillator_1);
@@ -144,9 +144,9 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
         buffer_l += 2;
         buffer_r += 2;
         // Uncomment these for some cool parameter modulation
-        // (((Oscillator *)MODULES[1])->audio).frequency += .001;
-        // (((Oscillator *)MODULES[2])->audio).frequency += .0001;
-        // (((Oscillator *)MODULES[2])->audio).modulation_index -= .00001;
+        (((Oscillator *)MODULES[1])->audio).frequency += .001;
+        (((Oscillator *)MODULES[2])->audio).frequency += .0001;
+        (((Oscillator *)MODULES[2])->audio).modulation_index -= .00001;
     }
 }
 

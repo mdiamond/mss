@@ -177,7 +177,7 @@ void draw_surface()
 
     // If the current page exists, render it, otherwise,
     // render a black rectangle over the whole window
-    if(CURRENT_PAGE < PAGES.size())
+    if((unsigned int) CURRENT_PAGE < PAGES.size())
         PAGES[CURRENT_PAGE]->render_graphics_object();
     else
     {
