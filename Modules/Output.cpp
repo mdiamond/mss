@@ -20,6 +20,7 @@
 #include "../main.hpp"
 
 // Included classes
+#include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Module.hpp"
 #include "Output.hpp"
 
@@ -38,6 +39,7 @@ Output::Output(int _number)
     type = OUTPUT;
     number = _number;
 
+    audio_on = false;
     this->audio.input_l = new vector<float>(BUFFER_SIZE, 0);
     this->audio.input_r = new vector<float>(BUFFER_SIZE, 0);
 }
@@ -60,13 +62,26 @@ void Output::process()
     process_depends();
 }
 
+Graphics_Object *Output::calculate_on_off_button()
+{
+    SDL_Rect _on_off = {upper_left.x + MODULE_BORDER_WIDTH + 2,
+                          upper_left.y + MODULE_BORDER_WIDTH + 18,
+                          ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4),
+                          15};
+    string object_name = "on/off button";
+    string text_on = "ON";
+    string text_off = "OFF";
+    Toggle_Button *on_off = new Toggle_Button(&object_name, &_on_off, &WHITE, &BLACK, &text_on, &text_off, &audio_on);
+    return on_off;
+}
+
 /*
  * Calculate the locations of any graphics objects that are
  * unique to this module type.
  */
 void Output::calculate_unique_graphics_objects()
 {
-
+    graphics_objects.push_back(calculate_on_off_button());
 }
 
 /*

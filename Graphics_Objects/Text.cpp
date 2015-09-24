@@ -8,7 +8,6 @@
  ************/
 
 // Included libraries
-#include <iostream>
 #include <string>
 #include <vector>
 
@@ -65,8 +64,8 @@ Text::~Text()
  */
 void Text::render_graphics_object()
 {
-    if(*text != old_text)
-    {
+    // if(*text != old_text || old_text.empty())
+    // {
         SDL_Surface *surface = TTF_RenderText_Blended(font, (*text).c_str(), color);
         texture = SDL_CreateTextureFromSurface(RENDERER, surface);
         int width, height;
@@ -75,7 +74,7 @@ void Text::render_graphics_object()
         location.h = height;
         SDL_RenderCopy(RENDERER, texture, NULL, &location);
         old_text = *text;
-    }
+    // }
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
 }

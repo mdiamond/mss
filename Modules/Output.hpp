@@ -31,7 +31,7 @@ class Output: public Module
 {
     public:
         struct Output_Data audio, graphics;
-
+        bool audio_on;
         // Constructor and destructor
         Output(int);
         virtual ~Output();
@@ -39,6 +39,7 @@ class Output: public Module
         virtual void process();
         virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
+        Graphics_Object *calculate_on_off_button();
 };
 
 #endif

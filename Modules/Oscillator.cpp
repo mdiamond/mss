@@ -81,6 +81,7 @@ void Oscillator::process()
 
     // Get oscillator audio info struct
     struct Oscillator_Data *audio_data = &(this->audio);
+    audio_data->shifted_frequency = audio_data->frequency;
     // Calculate an amplitude for each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {

@@ -127,26 +127,46 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     // Get the address of the output module for later use
     Output *output = (Output *) MODULES[0];
 
-    // Process audio for the output module
-    // This will recursively call upon depended modules
-    // for processed audio, meaning that modules at
-    // the beginning of the signal chain will be processed first
-    output->process();
-
-    // Fetch the output module's latest processed audio
-    // and insert it into the buffer
-    float *buffer_l = buffer;
-    float *buffer_r = buffer + 1;
-    for(int i = 0; i < BUFFER_SIZE; i ++)
+    // If the audio is turned on, process all the audio and
+    // populate the buffer
+    if(output->audio_on)
     {
-        *buffer_l = (*((output->audio).input_l))[i];
-        *buffer_r = (*((output->audio).input_r))[i];
-        buffer_l += 2;
-        buffer_r += 2;
-        // Uncomment these for some cool parameter modulation
-        // (((Oscillator *)MODULES[1])->audio).frequency += .001;
-        // (((Oscillator *)MODULES[2])->audio).frequency += .0001;
-        // (((Oscillator *)MODULES[2])->audio).modulation_index -= .00001;
+        // Process audio for the output module
+        // This will recursively call upon depended modules
+        // for processed audio, meaning that modules at
+        // the beginning of the signal chain will be processed first
+        output->process();
+        // Fetch the output module's latest processed audio
+        // and insert it into the buffer
+        float *buffer_l = buffer;
+        float *buffer_r = buffer + 1;
+        for(int i = 0; i < BUFFER_SIZE; i ++)
+        {
+            *buffer_l = (*((output->audio).input_l))[i];
+            *buffer_r = (*((output->audio).input_r))[i];
+            buffer_l += 2;
+            buffer_r += 2;
+            // Uncomment these for some cool parameter modulation
+            // (((Oscillator *)MODULES[1])->audio).frequency += .001;
+            // (((Oscillator *)MODULES[2])->audio).frequency += .0001;
+            // (((Oscillator *)MODULES[2])->audio).modulation_index -= .00001;
+        }
+    }
+
+    // If audio is not turned on, fill the buffer with 0s
+    else
+    {
+        // Fetch the output module's latest processed audio
+        // and insert it into the buffer
+        float *buffer_l = buffer;
+        float *buffer_r = buffer + 1;
+        for(int i = 0; i < BUFFER_SIZE; i ++)
+        {
+            *buffer_l = 0;
+            *buffer_r = 0;
+            buffer_l += 2;
+            buffer_r += 2;
+        }
     }
 }
 

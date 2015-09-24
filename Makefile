@@ -5,7 +5,7 @@ OBJFLAGS = $(CC) $(CFLAGS) -c
 FILEOBJ = main.o tests.o signal_processing.o image_processing.o
 BASEOBJ = Module.o Graphics_Object.o
 MODULEOBJ =  Output.o Oscillator.o
-GRAPHICOBJ =  Page.o Rect.o Text.o Waveform.o
+GRAPHICOBJ =  Page.o Rect.o Text.o Waveform.o Toggle_Button.o
 OTHEROBJ = Timer.o
 OBJECTS = $(FILEOBJ) $(BASEOBJ) $(MODULEOBJ) $(GRAPHICOBJ) $(OTHEROBJ)
 

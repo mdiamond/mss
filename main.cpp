@@ -183,7 +183,6 @@ bool initialize()
  */
 bool check_click()
 {
-    cout << MOUSE_X << ", " << MOUSE_Y << endl;
     bool clicked = false;
     Page *p = PAGES[CURRENT_PAGE];
     Graphics_Object *g;
