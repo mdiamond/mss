@@ -66,11 +66,10 @@ Graphics_Object *Output::calculate_on_off_button()
 {
     SDL_Rect _on_off = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                           upper_left.y + MODULE_BORDER_WIDTH + 18,
-                          ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4),
-                          15};
+                          7, 15};
     string object_name = "on/off button";
-    string text_on = "ON";
-    string text_off = "OFF";
+    string text_on = "1";
+    string text_off = "0";
     Toggle_Button *on_off = new Toggle_Button(&object_name, &_on_off, &WHITE, &BLACK, &text_on, &text_off, &audio_on);
     return on_off;
 }

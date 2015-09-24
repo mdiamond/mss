@@ -77,6 +77,12 @@ int CURRENT_PAGE = 0;
 int MOUSE_X;
 int MOUSE_Y;
 
+// Typing cursor status
+bool CURSOR_ON = true;
+
+// The currently active text box
+Text_Box *ACTIVE_TEXT_BOX = NULL;
+
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
 vector<Module *> MODULES;
@@ -284,6 +290,10 @@ bool normal_mode()
             cout << ((frame_success - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0)) << " frames per second." << endl;
             frame_previous = frame_success;
         }
+
+        // Every 30 frames, negate the status of the typing cursor
+        if(frame % 30 == 0)
+            CURSOR_ON = !CURSOR_ON;
 
         // Move on to the next frame
         frame ++;
