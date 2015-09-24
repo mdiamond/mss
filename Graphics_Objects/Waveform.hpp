@@ -27,6 +27,7 @@ class Waveform: public Graphics_Object
         virtual ~Waveform();
         // Member functions
         virtual void render_graphics_object();
+        virtual void clicked();
 };
 
 #endif

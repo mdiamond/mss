@@ -73,6 +73,10 @@ SDL_Color WHITE = {255, 255, 255, 255};
 std::vector<Page *> PAGES;
 int CURRENT_PAGE = 0;
 
+// Mouse information
+int MOUSE_X;
+int MOUSE_Y;
+
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
 vector<Module *> MODULES;
@@ -172,6 +176,31 @@ bool initialize()
 }
 
 /*
+ * For each graphics object on the current page, 
+ * check if it has been clicked. If so, call its
+ * clicked() function. Return true if something
+ * was clicked, false if nothing was clicked.
+ */
+bool check_click()
+{
+    cout << MOUSE_X << ", " << MOUSE_Y << endl;
+    bool clicked = false;
+    Page *p = PAGES[CURRENT_PAGE];
+    Graphics_Object *g;
+    for(unsigned int i = 0; i < p->graphics_objects->size(); i ++)
+    {
+        g = (*(p->graphics_objects))[i];
+        if(g->was_clicked())
+        {
+            g->clicked();
+            clicked = true;
+        }
+    }
+
+    return clicked;
+}
+
+/*
  * Handle events. Return true if SDL_QUIT event
  * is received.
  */
@@ -189,9 +218,15 @@ bool event_handler(SDL_Event *e)
         {
 
         }
-        else if(e->type == SDL_MOUSEBUTTONDOWN)
+        else if(e->type == SDL_MOUSEBUTTONDOWN ||
+                e->type == SDL_MOUSEBUTTONUP ||
+                e->type == SDL_MOUSEMOTION)
         {
-            
+            SDL_GetMouseState(&MOUSE_X, &MOUSE_Y);
+            if(e->type == SDL_MOUSEBUTTONDOWN)
+            {
+                check_click();
+            }
         }
     }
     return quit;
@@ -282,6 +317,7 @@ int main()
         if(!testing_mode())
             exit_status = -1;
     }
+
     // If this is normal mode, open SDL, initialize necessary
     // objects, and begin processing audio and video
     else

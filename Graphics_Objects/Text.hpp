@@ -30,6 +30,7 @@ class Text: public Graphics_Object
         virtual ~Text();
         // Member functions
         virtual void render_graphics_object();
+        virtual void clicked();
 };
 
 #endif

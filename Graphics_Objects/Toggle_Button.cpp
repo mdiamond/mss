@@ -56,7 +56,7 @@ void Toggle_Button::render_graphics_object()
 
 }
 
-void Toggle_Button::toggle()
+void Toggle_Button::clicked()
 {
     *b = !(*b);
 }

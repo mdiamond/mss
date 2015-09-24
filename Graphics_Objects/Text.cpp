@@ -79,3 +79,8 @@ void Text::render_graphics_object()
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
 }
+
+void Text::clicked()
+{
+    
+}

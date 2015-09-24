@@ -27,6 +27,7 @@ class Rect: public Graphics_Object
         virtual ~Rect();
         // Member functions
         virtual void render_graphics_object();
+        virtual void clicked();
 };
 
 #endif

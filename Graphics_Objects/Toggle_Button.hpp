@@ -29,7 +29,7 @@ class Toggle_Button: public Graphics_Object
         virtual ~Toggle_Button();
         // Member functions
         virtual void render_graphics_object();
-        void toggle();
+        virtual void clicked();
 };
 
 #endif

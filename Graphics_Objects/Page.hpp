@@ -28,6 +28,7 @@ class Page: public Graphics_Object
         virtual ~Page();
         // Member functions
         virtual void render_graphics_object();
+        virtual void clicked();
 };
 
 #endif

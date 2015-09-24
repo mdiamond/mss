@@ -57,6 +57,8 @@ class Graphics_Object
         //   the window to display, it should render the graphics object in
         //   the window
         virtual void render_graphics_object() = 0;
+        virtual void clicked() = 0;
+        bool was_clicked();
 };
 
 #endif

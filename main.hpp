@@ -53,6 +53,9 @@ extern SDL_Color WHITE;
 //   Pages
 extern std::vector<Page *> PAGES;
 extern int CURRENT_PAGE;
+//   Mouse information
+extern int MOUSE_X;
+extern int MOUSE_Y;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

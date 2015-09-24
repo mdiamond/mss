@@ -58,3 +58,8 @@ void Page::render_graphics_object()
         (*graphics_objects)[i]->render_graphics_object();
     }
 }
+
+void Page::clicked()
+{
+    
+}

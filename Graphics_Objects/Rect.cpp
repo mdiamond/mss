@@ -60,3 +60,8 @@ void Rect::render_graphics_object()
     else
         SDL_RenderDrawRect(RENDERER, &location);
 }
+
+void Rect::clicked()
+{
+    
+}

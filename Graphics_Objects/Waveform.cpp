@@ -70,3 +70,8 @@ void Waveform::render_graphics_object()
     SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
 }
+
+void Waveform::clicked()
+{
+    
+}
