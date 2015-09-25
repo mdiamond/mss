@@ -26,6 +26,7 @@
 // Audio information
 extern int SAMPLE_RATE;
 extern int BUFFER_SIZE;
+extern bool AUDIO_ON;
 
 // Graphics objects and variables
 //   SDL Window and Renderer

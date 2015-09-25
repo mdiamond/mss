@@ -18,6 +18,7 @@
 // Included files
 #include "../image_processing.hpp"
 #include "../main.hpp"
+#include "../signal_processing.hpp"
 
 // Included classes
 #include "../Graphics_Objects/Toggle_Button.hpp"
@@ -39,9 +40,8 @@ Output::Output(int _number)
     type = OUTPUT;
     number = _number;
 
-    audio_on = false;
-    this->audio.input_l = new vector<float>(BUFFER_SIZE, 0);
-    this->audio.input_r = new vector<float>(BUFFER_SIZE, 0);
+    audio.input_l = new vector<float>(BUFFER_SIZE, 0);
+    audio.input_r = new vector<float>(BUFFER_SIZE, 0);
 }
 
 /*
@@ -70,7 +70,10 @@ Graphics_Object *Output::calculate_on_off_button()
     string object_name = "on/off button";
     string text_on = "1";
     string text_off = "0";
-    Toggle_Button *on_off = new Toggle_Button(&object_name, &_on_off, &WHITE, &BLACK, &text_on, &text_off, &audio_on);
+    function<void ()> *toggle_function = (function<void ()> *) &toggle_audio_on;
+    Toggle_Button *on_off = new Toggle_Button(&object_name, &_on_off, &WHITE,
+                                              &BLACK, &text_on, &text_off,
+                                              &AUDIO_ON, toggle_function);
     return on_off;
 }
 
@@ -90,6 +93,6 @@ void Output::calculate_unique_graphics_objects()
  */
 void Output::copy_graphics_data()
 {
-    this->graphics.input_l = new vector<float>(*(this->audio.input_l));
-    this->graphics.input_r = new vector<float>(*(this->audio.input_r));
+    graphics.input_l = new vector<float>(*(audio.input_l));
+    graphics.input_r = new vector<float>(*(audio.input_r));
 }

@@ -124,18 +124,19 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     // Cast the buffer to a float buffer
     float *buffer = (float *) _buffer;
 
-    // Get the address of the output module for later use
-    Output *output = (Output *) MODULES[0];
-
     // If the audio is turned on, process all the audio and
     // populate the buffer
-    if(output->audio_on)
+    if(AUDIO_ON)
     {
+        // Get the address of the output module for later use
+        Output *output = (Output *) MODULES[0];
+
         // Process audio for the output module
         // This will recursively call upon depended modules
         // for processed audio, meaning that modules at
         // the beginning of the signal chain will be processed first
         output->process();
+
         // Fetch the output module's latest processed audio
         // and insert it into the buffer
         float *buffer_l = buffer;
@@ -168,6 +169,13 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
             buffer_r += 2;
         }
     }
+}
+
+void toggle_audio_on()
+{
+    SDL_LockAudio();
+    AUDIO_ON = !AUDIO_ON;
+    SDL_UnlockAudio();
 }
 
 /*******************************

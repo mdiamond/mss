@@ -31,7 +31,6 @@ class Output: public Module
 {
     public:
         struct Output_Data audio, graphics;
-        bool audio_on;
         // Constructor and destructor
         Output(int);
         virtual ~Output();

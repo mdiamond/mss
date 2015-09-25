@@ -37,6 +37,7 @@ using namespace std;
 // Audio information
 int SAMPLE_RATE = 44100;
 int BUFFER_SIZE;
+bool AUDIO_ON = false;
 
 // SDL Window and renderer
 SDL_Window *WINDOW;
@@ -197,6 +198,11 @@ bool check_click()
         g = (*(p->graphics_objects))[i];
         if(g->was_clicked())
         {
+            if(ACTIVE_TEXT_BOX != NULL && g->type != TEXT_BOX)
+            {
+                ACTIVE_TEXT_BOX->active = false;
+                ACTIVE_TEXT_BOX = NULL;
+            }
             g->clicked();
             clicked = true;
         }
@@ -280,6 +286,7 @@ bool normal_mode()
         }
 
         // Draw the surface
+        cout << ACTIVE_TEXT_BOX << endl;
         draw_surface();
         if(event_handler(&e))
             break;

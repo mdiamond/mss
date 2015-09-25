@@ -14,6 +14,9 @@
 // Included SDL componenets
 #include "SDL2/SDL.h"
 
+// Included classes
+#include "Text.hpp"
+
 /*****************************
  * TEXT BOX CLASS DEFINITION *
  *****************************/
@@ -22,12 +25,12 @@ class Text_Box: public Graphics_Object
 {
     public:
         TTF_Font *font;
-        std::string text;
-        std::string old_text;
-        SDL_Texture *texture;
+        Text *idle_text;
+        Text *typing_text;
+        std::string typing_buffer;
         bool active;
         // Constructor and destructor
-        Text_Box(std::string *, SDL_Rect *, SDL_Color *, std::string *, TTF_Font *);
+        Text_Box(std::string *, SDL_Rect *, SDL_Color *, std::string *, std::string *, TTF_Font *);
         virtual ~Text_Box();
         // Member functions
         virtual void render_graphics_object();

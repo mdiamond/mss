@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -30,7 +31,7 @@ using namespace std;
 /*
  * Constructor.
  */
-Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_text, TTF_Font *_font)
+Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_live_text, string *_original_text, TTF_Font *_font)
 {
     name = *_name;
     type = TEXT;
@@ -38,10 +39,11 @@ Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_text,
     color = *_color;
 
     font = _font;
-    text = _text;
-    old_text = *text;
+    original_text = *_original_text;
+    current_text = original_text;
+    live_text = _live_text;
 
-    SDL_Surface *surface = TTF_RenderText_Blended(font, (*text).c_str(), color);
+    SDL_Surface *surface = TTF_RenderText_Blended(font, (current_text).c_str(), color);
     texture = SDL_CreateTextureFromSurface(RENDERER, surface);
     int width, height;
     SDL_QueryTexture(texture, NULL, NULL, &width, &height);
@@ -64,17 +66,20 @@ Text::~Text()
  */
 void Text::render_graphics_object()
 {
-    if(*text != old_text)
+    if(live_text != NULL && current_text != old_text)
     {
-        SDL_Surface *surface = TTF_RenderText_Blended(font, (*text).c_str(), color);
-        texture = SDL_CreateTextureFromSurface(RENDERER, surface);
-        int width, height;
-        SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-        location.w = width;
-        location.h = height;
-        SDL_RenderCopy(RENDERER, texture, NULL, &location);
-        old_text = *text;
+        old_text = current_text;
+        current_text = *live_text;
     }
+
+    SDL_Surface *surface = TTF_RenderText_Blended(font, (current_text).c_str(), color);
+    texture = SDL_CreateTextureFromSurface(RENDERER, surface);
+    int width, height;
+    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+    location.w = width;
+    location.h = height;
+    SDL_RenderCopy(RENDERER, texture, NULL, &location);
+
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
 }

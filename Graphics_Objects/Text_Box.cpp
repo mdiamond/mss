@@ -30,7 +30,7 @@ using namespace std;
 /*
  * Constructor.
  */
-Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_text, TTF_Font *_font)
+Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_live_text, string *_original_text, TTF_Font *_font)
 {
     name = *_name;
     type = TEXT;
@@ -38,16 +38,11 @@ Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color, string
     color = *_color;
 
     font = _font;
-    text = *_text;
-    old_text = text;
-
-    SDL_Surface *surface = TTF_RenderText_Blended(font, (text).c_str(), color);
-    texture = SDL_CreateTextureFromSurface(RENDERER, surface);
-    int width, height;
-    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-    location.w = width;
-    location.h = height;
-    SDL_RenderCopy(RENDERER, texture, NULL, &location);
+    string idle_text_name = "idle text";
+    string typing_text_name = "typing text";
+    idle_text = new Text(&idle_text_name, _location, _color, _live_text, _original_text, _font);
+    typing_text = new Text(&typing_text_name, _location, _color, &typing_buffer, _original_text, _font);
+    typing_buffer = "";
 }
 
 /*
@@ -60,24 +55,16 @@ Text_Box::~Text_Box()
 
 /*
  * Render the text box. If the text has changed, first
- * re-create the texture. If the text box is active, draw a flashing
+ * update the text. If the text box is active, draw a flashing
  * cursor within it.
  */
 void Text_Box::render_graphics_object()
 {
-    if(text != old_text)
-    {
-        SDL_Surface *surface = TTF_RenderText_Blended(font, (text).c_str(), color);
-        texture = SDL_CreateTextureFromSurface(RENDERER, surface);
-        int width, height;
-        SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-        location.w = width;
-        location.h = height;
-        SDL_RenderCopy(RENDERER, texture, NULL, &location);
-        old_text = text;
-    }
-    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
-    SDL_RenderCopy(RENDERER, texture, NULL, &location);
+    if(active)
+        typing_text->render_graphics_object();
+    else
+        idle_text->render_graphics_object();
+
     if(active && CURSOR_ON)
     {
         SDL_SetRenderDrawColor(RENDERER, 256 - color.r, 256 - color.g, 256 - color.b, color.a);
