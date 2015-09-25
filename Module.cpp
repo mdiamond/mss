@@ -100,7 +100,7 @@ Graphics_Object *Module::calculate_name()
     int y = upper_left.y + MODULE_BORDER_WIDTH + 2;
     SDL_Rect location = {x, y, 0, 0};
     string object_name = "module name";
-    Text *module_name = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
+    Text *module_name = new Text(&object_name, &location, &text_color, NULL, &name, FONT_BOLD);
     return module_name;
 }
 

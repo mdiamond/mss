@@ -17,6 +17,7 @@
 // Included classes
 #include "Module.hpp"
 #include "Graphics_Objects/Page.hpp"
+#include "Graphics_Objects/Text_Box.hpp"
 
 /**********************
  * EXTERNAL VARIABLES *
@@ -25,6 +26,7 @@
 // Audio information
 extern int SAMPLE_RATE;
 extern int BUFFER_SIZE;
+extern bool AUDIO_ON;
 
 // Graphics objects and variables
 //   SDL Window and Renderer
@@ -56,6 +58,10 @@ extern int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;
 extern int MOUSE_Y;
+//   Typing cursor status
+extern bool CURSOR_ON;
+//   The currently active text box
+extern Text_Box *ACTIVE_TEXT_BOX;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

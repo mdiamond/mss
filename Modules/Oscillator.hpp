@@ -53,6 +53,8 @@ class Oscillator: public Module
         virtual void copy_graphics_data();
         Graphics_Object *calculate_waveform();
         Graphics_Object *calculate_frequency();
+        void calculate_text_objects();
+        void set_frequency(float);
 };
 
 #endif
