@@ -30,7 +30,8 @@ using namespace std;
 /*
  * Constructor.
  */
-Waveform::Waveform(string *_name, SDL_Rect *_location, SDL_Color *_color, vector<float> *_buffer)
+Waveform::Waveform(string *_name, SDL_Rect *_location,
+                   SDL_Color *_color, vector<float> *_buffer)
 {
     name = *_name;
     type = WAVEFORM;

@@ -30,7 +30,8 @@ using namespace std;
 /*
  * Constructor.
  */
-Page::Page(SDL_Rect *_location, SDL_Color *_color, vector<Graphics_Object *> *_graphics_objects)
+Page::Page(SDL_Rect *_location, SDL_Color *_color,
+           vector<Graphics_Object *> *_graphics_objects)
 {
     type = PAGE;
     location = *_location;

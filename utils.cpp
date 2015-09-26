@@ -8,14 +8,17 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
 // Included SDL components
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 // Included classes
 #include "Graphics_Object.hpp"
+#include "Graphics_Objects/Text_Box.hpp"
 #include "Module.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
@@ -50,6 +53,13 @@ void output_function_forwarder(Graphics_Object *g)
 void oscillator_function_forwarder(Graphics_Object *g)
 {
     Oscillator *oscillator = (Oscillator *) g->parent;
+    if(g->name == "oscillator frequency (text_box)")
+    {
+        Text_Box *frequency_text_box = (Text_Box *) g;
+        SDL_LockAudio();
+        oscillator->audio.frequency = stoi(frequency_text_box->text->current_text.c_str());
+        SDL_UnlockAudio();
+    }
 }
 
 /*

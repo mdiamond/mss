@@ -25,16 +25,19 @@ class Text_Box: public Graphics_Object
 {
     public:
         TTF_Font *font;
-        Text *idle_text;
+        Text *text;
+        Text *prompt_text;
         Text *typing_text;
-        std::string typing_buffer;
         bool active;
         // Constructor and destructor
-        Text_Box(std::string *, SDL_Rect *, SDL_Color *, std::string *, std::string *, TTF_Font *);
+        Text_Box(std::string *, SDL_Rect *, SDL_Color *,
+                 std::string *, std::string *, std::string *,
+                 TTF_Font *, Module *);
         virtual ~Text_Box();
         // Member functions
         virtual void render_graphics_object();
         virtual void clicked();
+        void entered();
 };
 
 #endif

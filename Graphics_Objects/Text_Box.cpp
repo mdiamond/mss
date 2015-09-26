@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -16,6 +17,7 @@
 
 // Included files
 #include "../main.hpp"
+#include "../utils.hpp"
 
 // Included classes
 #include "../Graphics_Object.hpp"
@@ -30,19 +32,26 @@ using namespace std;
 /*
  * Constructor.
  */
-Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_live_text, string *_original_text, TTF_Font *_font)
+Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color,
+                   string *_live_text, string *_original_text,
+                   string *_prompt_text, TTF_Font *_font, Module *_parent)
 {
     name = *_name;
-    type = TEXT;
+    type = TEXT_BOX;
     location = *_location;
     color = *_color;
+    parent = _parent;
 
     font = _font;
-    string idle_text_name = "idle text";
-    string typing_text_name = "typing text";
-    idle_text = new Text(&idle_text_name, _location, _color, _live_text, _original_text, _font);
-    typing_text = new Text(&typing_text_name, _location, _color, &typing_buffer, _original_text, _font);
-    typing_buffer = "";
+    string idle_text_name = "idle text (text)";
+    string prompt_text_name = "prompt text (text)";
+    string typing_text_name = "typing text (text)";
+    text = new Text(&idle_text_name, _location, &BLACK, _live_text,
+                         _original_text, _font);
+    prompt_text = new Text(&prompt_text_name, _location, &BLACK,
+                           NULL, _prompt_text, _font);
+    typing_text = new Text(&typing_text_name, _location, &BLACK,
+                           &TYPING_BUFFER, &TYPING_BUFFER, _font);
 }
 
 /*
@@ -60,17 +69,34 @@ Text_Box::~Text_Box()
  */
 void Text_Box::render_graphics_object()
 {
+    SDL_SetRenderDrawColor(RENDERER,
+                           WHITE.r,
+                           WHITE.g,
+                           WHITE.b,
+                           WHITE.a);
+    SDL_RenderFillRect(RENDERER, &location);
+
     if(active)
+    {
         typing_text->render_graphics_object();
+    }
     else
-        idle_text->render_graphics_object();
+    {
+        if(text->current_text == "")
+            prompt_text->render_graphics_object();
+        else
+            text->render_graphics_object();
+    }
 
     if(active && CURSOR_ON)
     {
-        SDL_SetRenderDrawColor(RENDERER, 256 - color.r, 256 - color.g, 256 - color.b, color.a);
-        SDL_RenderDrawLine(RENDERER, location.x + location.w, location.y + 2,
-                           location.x + location.w, location.y + location.h - 2);
+        SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+        SDL_RenderDrawLine(RENDERER, typing_text->location.x + typing_text->location.w,
+                           typing_text->location.y + 2,
+                           typing_text->location.x + typing_text->location.w,
+                           typing_text->location.y + typing_text->location.h - 2);
     }
+
 }
 
 void Text_Box::clicked()
@@ -79,5 +105,16 @@ void Text_Box::clicked()
     {
         active = true;
         ACTIVE_TEXT_BOX = this;
+        TYPING_BUFFER = "";
+        SDL_SetTextInputRect(&location);
+        SDL_StartTextInput();
     }
+}
+
+void Text_Box::entered()
+{
+    function_forwarder(this);
+    SDL_StopTextInput();
+    ACTIVE_TEXT_BOX = NULL;
+    active = false;
 }

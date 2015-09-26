@@ -62,6 +62,8 @@ extern int MOUSE_Y;
 extern bool CURSOR_ON;
 //   The currently active text box
 extern Text_Box *ACTIVE_TEXT_BOX;
+//   The typing text buffer
+extern std::string TYPING_BUFFER;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

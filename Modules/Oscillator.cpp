@@ -107,30 +107,34 @@ void Oscillator::process()
  * to make use of this oscillator's output buffer for its
  * audio data.
  */
-Graphics_Object *Oscillator::calculate_waveform()
+Graphics_Object *Oscillator::calculate_waveform_visualizer()
 {
     SDL_Rect location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                           upper_left.y + MODULE_BORDER_WIDTH + 18,
                           ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4),
                           50};
-    string object_name = "waveform";
-    Waveform *waveform = new Waveform(&object_name, &location, &WHITE, graphics.output);
-    return waveform;
+    string object_name = "waveform visualizer (waveform)";
+    Waveform *waveform_visualizer = new Waveform(&object_name, &location, &WHITE, graphics.output);
+    return waveform_visualizer;
 }
 
 /*
- * Calculate the location of the frequency of the oscillator.
+ * Calculate the location of the text box for
+ * frequency of the oscillator.
  */
 Graphics_Object *Oscillator::calculate_frequency()
 {
-    int x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 90;
-    SDL_Rect location = {x, y, 0, 0};
-    string object_name = "oscillator frequency";
+    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 85;
+    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
+    string object_name = "oscillator frequency (text_box)";
+    string prompt = "Enter freqeuncy here";
     Text_Box *frequency = new Text_Box(&object_name, &location, &text_color,
                                        &(graphics.frequency_str),
                                        &(graphics.frequency_str),
-                                       FONT_REGULAR);
+                                       &prompt,
+                                       FONT_REGULAR,
+                                       this);
     return frequency;
 }
 
@@ -139,7 +143,7 @@ void Oscillator::calculate_text_objects()
     int x = upper_left.x + MODULE_BORDER_WIDTH + 5;
     int y = upper_left.y + MODULE_BORDER_WIDTH + 70;
     SDL_Rect location = {x, y, 0, 0};
-    string object_name = "oscillator frequency";
+    string object_name = "oscillator frequency (text)";
     string contents = "FREQUENCY: ";
     Text *frequency = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
     graphics_objects.push_back(frequency);
@@ -152,7 +156,7 @@ void Oscillator::calculate_text_objects()
 void Oscillator::calculate_unique_graphics_objects()
 {
     calculate_text_objects();
-    graphics_objects.push_back(calculate_waveform());
+    graphics_objects.push_back(calculate_waveform_visualizer());
     graphics_objects.push_back(calculate_frequency());
 }
 

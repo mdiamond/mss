@@ -31,7 +31,8 @@ using namespace std;
 /*
  * Constructor.
  */
-Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_live_text, string *_original_text, TTF_Font *_font)
+Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color,
+           string *_live_text, string *_original_text, TTF_Font *_font)
 {
     name = *_name;
     type = TEXT;
@@ -41,6 +42,7 @@ Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color, string *_live_
     font = _font;
     original_text = *_original_text;
     current_text = original_text;
+    old_text = *_original_text;
     live_text = _live_text;
 
     SDL_Surface *surface = TTF_RenderText_Blended(font, (current_text).c_str(), color);

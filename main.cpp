@@ -84,6 +84,9 @@ bool CURSOR_ON = true;
 // The currently active text box
 Text_Box *ACTIVE_TEXT_BOX = NULL;
 
+// The typing text buffer
+string TYPING_BUFFER;
+
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
 vector<Module *> MODULES;
@@ -193,17 +196,19 @@ bool check_click()
     bool clicked = false;
     Page *p = PAGES[CURRENT_PAGE];
     Graphics_Object *g;
+
+    if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->was_clicked())
+    {
+        ACTIVE_TEXT_BOX->active = false;
+        ACTIVE_TEXT_BOX = NULL;
+    }
+
     for(unsigned int i = 0; i < p->graphics_objects->size(); i ++)
     {
         g = (*(p->graphics_objects))[i];
         if(g->was_clicked())
         {
-            cout << g->name << endl;
-            if(ACTIVE_TEXT_BOX != NULL && g->type != TEXT_BOX)
-            {
-                ACTIVE_TEXT_BOX->active = false;
-                ACTIVE_TEXT_BOX = NULL;
-            }
+            cout << g->name << " clicked" << endl;
             g->clicked();
             clicked = true;
         }
@@ -228,7 +233,22 @@ bool event_handler(SDL_Event *e)
         }
         else if(e->type == SDL_KEYDOWN)
         {
-
+            if(ACTIVE_TEXT_BOX != NULL &&
+               e->key.keysym.sym == SDLK_RETURN)
+            {
+                ACTIVE_TEXT_BOX->text->current_text = TYPING_BUFFER;
+                ACTIVE_TEXT_BOX->entered();
+            }
+            if(e->key.keysym.sym == SDLK_BACKSPACE)
+            {
+                if(!TYPING_BUFFER.empty())
+                    TYPING_BUFFER.pop_back();
+            }
+        }
+        else if(e->type == SDL_TEXTINPUT)
+        {
+            TYPING_BUFFER += e->text.text;
+            ACTIVE_TEXT_BOX->typing_text->current_text = TYPING_BUFFER;
         }
         else if(e->type == SDL_MOUSEBUTTONDOWN ||
                 e->type == SDL_MOUSEBUTTONUP ||

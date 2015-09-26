@@ -85,19 +85,19 @@ void initialize_output()
     MODULES.push_back(oscillator_1);
 
     // Set the oscillator frequencies
-    (oscillator_1->audio).frequency = 440;
+    // (oscillator_1->audio).frequency = 440;
 
     // Create another oscillator module
-    // string modulator_name = "modulator";
-    // Oscillator *modulator = new Oscillator(&modulator_name, MODULES.size());
-    // MODULES.push_back(modulator);
+    string modulator_name = "modulator";
+    Oscillator *modulator = new Oscillator(&modulator_name, MODULES.size());
+    MODULES.push_back(modulator);
 
     // (modulator->audio).frequency = 4;
 
-    // oscillator_1->depends.push_back(modulator);
-    // (oscillator_1->audio).fm_on = 1;
-    // (oscillator_1->audio).modulation_index = 25;
-    // oscillator_1->modulator = modulator;
+    oscillator_1->depends.push_back(modulator);
+    (oscillator_1->audio).fm_on = 1;
+    (oscillator_1->audio).modulation_index = 25;
+    oscillator_1->modulator = modulator;
 
     // Set the inputs and outputs
     output->depends.push_back(oscillator_1);
