@@ -71,7 +71,10 @@ void Waveform::render_graphics_object()
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
 }
 
+/*
+ * Dummy function.
+ */
 void Waveform::clicked()
 {
-    
+
 }

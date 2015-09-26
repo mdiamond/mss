@@ -1,35 +1,64 @@
 CC = g++ -g -Wall
 CFLAGS = -std=c++11
 LDFLAGS = -lSDL2 -lSDL2_ttf
-OBJFLAGS = $(CC) $(CFLAGS) -c
-FILEOBJ = main.o tests.o signal_processing.o image_processing.o
-BASEOBJ = Module.o Graphics_Object.o
-MODULEOBJ =  Output.o Oscillator.o
-GRAPHICOBJ =  Page.o Rect.o Text.o Waveform.o Toggle_Button.o Text_Box.o
-OTHEROBJ = Timer.o
-OBJECTS = $(FILEOBJ) $(BASEOBJ) $(MODULEOBJ) $(GRAPHICOBJ) $(OTHEROBJ)
+OBJFLAGS = $(CC) $(CFLAGS) -o $@ -c
+EXEFLAGS = $(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
+MISCFILEOBJ = obj/main.o obj/tests.o obj/utils.o obj/signal_processing.o obj/image_processing.o
+MISCCLASSOBJ = obj/Timer.o
+BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o obj/Graphics_Object.o
+MODULEOBJ =  obj/Oscillator.o obj/Output.o
+GRAPHICOBJ =  obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
+OBJECTS = $(MISCFILEOBJ) $(MISCCLASSOBJ) $(BASECLASSOBJ) $(MODULEOBJ) $(GRAPHICOBJ)
 
 all : synth
 
 synth : $(OBJECTS)
-	$(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
-Timer.o : Timer.cpp Timer.hpp
-	$(OBJFLAGS) Timer.cpp
-Module.o : Module.cpp Module.hpp
-	$(OBJFLAGS) Module.cpp
-$(MODULEOBJ) : $(wildcard Modules/*.cpp) $(wildcard Modules/*.hpp)
-	$(OBJFLAGS) $(wildcard Modules/*.cpp)
-Graphics_Object.o : Graphics_Object.cpp Graphics_Object.hpp
-	$(OBJFLAGS) Graphics_Object.cpp
-$(GRAPHICOBJ) : $(wildcard Graphics_Objects/*.cpp) $(wildcard Graphics_Objects/*.hpp)
-	$(OBJFLAGS) $(wildcard Graphics_Objects/*.cpp)
-signal_processing.o : signal_processing.cpp signal_processing.hpp
-	$(OBJFLAGS) signal_processing.cpp
-image_processing.o : image_processing.cpp image_processing.hpp
-	$(OBJFLAGS) image_processing.cpp
-tests.o : tests.cpp tests.hpp
+	$(EXEFLAGS)
+
+# Main
+obj/main.o : main.cpp main.hpp
+	$(OBJFLAGS) main.cpp 
+
+# Miscellaneous files
+obj/tests.o : tests.cpp tests.hpp
 	$(OBJFLAGS) tests.cpp
-main.o : main.cpp main.hpp
-	$(OBJFLAGS) main.cpp
+obj/utils.o : utils.cpp utils.hpp
+	$(OBJFLAGS) utils.cpp
+obj/signal_processing.o : signal_processing.cpp signal_processing.hpp
+	$(OBJFLAGS) signal_processing.cpp
+obj/image_processing.o : image_processing.cpp image_processing.hpp
+	$(OBJFLAGS) image_processing.cpp
+
+# Miscellaneous classes
+obj/Timer.o : Timer.cpp Timer.hpp
+	$(OBJFLAGS) Timer.cpp
+
+# Module classes
+obj/Module.o : Module.cpp Module.hpp
+	$(OBJFLAGS) Module.cpp
+obj/Oscillator.o : Modules/Oscillator.cpp Modules/Oscillator.hpp
+	$(OBJFLAGS) Modules/Oscillator.cpp
+obj/Output.o : Modules/Output.cpp Modules/Output.hpp
+	$(OBJFLAGS) Modules/Output.cpp
+
+# Graphics objects classes
+obj/Graphics_Object.o : Graphics_Object.cpp Graphics_Object.hpp
+	$(OBJFLAGS) Graphics_Object.cpp
+obj/Page.o : Graphics_Objects/Page.cpp Graphics_Objects/Page.hpp
+	$(OBJFLAGS) Graphics_Objects/Page.cpp
+obj/Rect.o : Graphics_Objects/Rect.cpp Graphics_Objects/Rect.hpp
+	$(OBJFLAGS) Graphics_Objects/Rect.cpp
+obj/Text.o : Graphics_Objects/Text.cpp Graphics_Objects/Text.hpp
+	$(OBJFLAGS) Graphics_Objects/Text.cpp
+obj/Text_Box.o : Graphics_Objects/Text_Box.cpp Graphics_Objects/Text_Box.hpp
+	$(OBJFLAGS) Graphics_Objects/Text_Box.cpp
+obj/Toggle_Button.o : Graphics_Objects/Toggle_Button.cpp Graphics_Objects/Toggle_Button.hpp
+	$(OBJFLAGS) Graphics_Objects/Toggle_Button.cpp
+obj/Waveform.o : Graphics_Objects/Waveform.cpp Graphics_Objects/Waveform.hpp
+	$(OBJFLAGS) Graphics_Objects/Waveform.cpp
+
+.PHONY: clean
+
+# Clean
 clean :
 		rm synth $(OBJECTS)

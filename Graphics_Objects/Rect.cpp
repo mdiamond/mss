@@ -61,6 +61,9 @@ void Rect::render_graphics_object()
         SDL_RenderDrawRect(RENDERER, &location);
 }
 
+/*
+ * Dummy function.
+ */
 void Rect::clicked()
 {
     

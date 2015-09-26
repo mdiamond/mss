@@ -1,11 +1,11 @@
 /*
  * Matthew Diamond 2015
- * Header file for the testing functions. This file 
+ * Header file for the utils functions. This file 
  * declares any functions.
  */
 
-#ifndef synth_tests_h
-#define synth_tests_h
+#ifndef synth_utils_h
+#define synth_utils_h
 
 /************
  * INCLUDES *
@@ -17,7 +17,6 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
-// Run tests
-bool run_tests();
+void function_forwarder(Graphics_Object *);
 
 #endif

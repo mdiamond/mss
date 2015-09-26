@@ -121,7 +121,7 @@ void calculate_pages()
     // list of graphics objects for the page, add the background
     // to the list
     SDL_Rect location = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-    string object_name = "background";
+    string object_name = "background (rect)";
     Rect *background = new Rect(&object_name, &location, &BLACK);
     vector<Graphics_Object *> *graphics_objects = new vector<Graphics_Object *>();
     graphics_objects->push_back(background);

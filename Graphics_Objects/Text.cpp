@@ -84,6 +84,9 @@ void Text::render_graphics_object()
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
 }
 
+/*
+ * Dummy function.
+ */
 void Text::clicked()
 {
     

@@ -38,7 +38,9 @@ class Output: public Module
         virtual void process();
         virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
+        void calculate_text_objects();
         Graphics_Object *calculate_on_off_button();
+        void toggle_audio_on();
 };
 
 #endif

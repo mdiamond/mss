@@ -27,6 +27,7 @@
 *.out
 *.app
 synth
+obj/*
 
 # Vim files
 *.swp

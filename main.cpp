@@ -198,6 +198,7 @@ bool check_click()
         g = (*(p->graphics_objects))[i];
         if(g->was_clicked())
         {
+            cout << g->name << endl;
             if(ACTIVE_TEXT_BOX != NULL && g->type != TEXT_BOX)
             {
                 ACTIVE_TEXT_BOX->active = false;
@@ -286,7 +287,6 @@ bool normal_mode()
         }
 
         // Draw the surface
-        cout << ACTIVE_TEXT_BOX << endl;
         draw_surface();
         if(event_handler(&e))
             break;

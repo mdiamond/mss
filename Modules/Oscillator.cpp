@@ -79,7 +79,7 @@ void Oscillator::process()
     // Check for any dependencies for frequency modulation
     process_depends();
 
-    audio.frequency = stof(((Text_Box *) graphics_objects[4])->typing_buffer);
+    // audio.frequency = stof(((Text_Box *) graphics_objects[4])->typing_buffer);
     audio.shifted_frequency = audio.frequency;
     // Calculate an amplitude for each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
@@ -109,12 +109,12 @@ void Oscillator::process()
  */
 Graphics_Object *Oscillator::calculate_waveform()
 {
-    SDL_Rect _waveform = {upper_left.x + MODULE_BORDER_WIDTH + 2,
+    SDL_Rect location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                           upper_left.y + MODULE_BORDER_WIDTH + 18,
                           ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4),
                           50};
     string object_name = "waveform";
-    Waveform *waveform = new Waveform(&object_name, &_waveform, &WHITE, graphics.output);
+    Waveform *waveform = new Waveform(&object_name, &location, &WHITE, graphics.output);
     return waveform;
 }
 

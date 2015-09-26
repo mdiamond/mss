@@ -171,13 +171,6 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     }
 }
 
-void toggle_audio_on()
-{
-    SDL_LockAudio();
-    AUDIO_ON = !AUDIO_ON;
-    SDL_UnlockAudio();
-}
-
 /*******************************
  * SIGNAL PROCESSING FUNCTIONS *
  *******************************/

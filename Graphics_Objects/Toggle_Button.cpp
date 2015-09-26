@@ -17,6 +17,7 @@
 
 // Included files
 #include "../main.hpp"
+#include "../utils.hpp"
 
 // Included classes
 #include "../Graphics_Object.hpp"
@@ -34,7 +35,7 @@ using namespace std;
  */
 Toggle_Button::Toggle_Button(string *_name, SDL_Rect *_location, SDL_Color *_color,
                              SDL_Color *_color_off, string *_text_on, string *_text_off,
-                             bool *_b, std::function<void ()> *_function)
+                             bool *_b, Module *_parent)
 {
     name = *_name;
     type = TOGGLE_BUTTON;
@@ -48,7 +49,7 @@ Toggle_Button::Toggle_Button(string *_name, SDL_Rect *_location, SDL_Color *_col
     text_on = new Text(&text_on_name, &location, &color_off, NULL, &text_on_str, FONT_REGULAR);
     text_off = new Text(&text_off_name, &location, &color, NULL, &text_off_str, FONT_REGULAR);
     b = _b;
-    function = _function;
+    parent = _parent;
 }
 
 /*
@@ -78,7 +79,12 @@ void Toggle_Button::render_graphics_object()
     }
 }
 
+/*
+ * Send this graphics object to the function forwarder,
+ * which will determine what its intended functionality is
+ * and call the appropriate functions
+ */
 void Toggle_Button::clicked()
 {
-    function();
+    function_forwarder(this);
 }

@@ -59,6 +59,9 @@ void Page::render_graphics_object()
     }
 }
 
+/*
+ * Dummy function.
+ */
 void Page::clicked()
 {
     

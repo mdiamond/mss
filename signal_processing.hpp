@@ -24,7 +24,6 @@ void initialize_output();
 
 // Audio callback function
 void audio_callback(void *, Uint8 *, int);
-void toggle_audio_on();
 
 // Signal processing functions
 void add_signals(std::vector<float> *, std::vector<float> *, std::vector<float> *, int);

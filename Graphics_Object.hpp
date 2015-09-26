@@ -41,6 +41,9 @@ enum Graphics_Objects
  * GRAPHICS_OBJECT CLASS DEFINITION *
  ************************************/
 
+// Forward declaration of Module class
+class Module;
+
 class Graphics_Object
 {
     public:
@@ -49,6 +52,7 @@ class Graphics_Object
         int type;
         SDL_Rect location;
         SDL_Color color;
+        Module *parent;
         // Constructor and destructor
         Graphics_Object();
         virtual ~Graphics_Object();

@@ -71,7 +71,7 @@ void Module::process_depends()
 Graphics_Object *Module::calculate_border()
 {
     SDL_Rect _border = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-    string object_name = "border";
+    string object_name = "border (rect)";
     Rect *border = new Rect(&object_name, &_border, &WHITE);
     return border;
 }
@@ -86,7 +86,7 @@ Graphics_Object *Module::calculate_inner_border()
                               upper_left.y + MODULE_BORDER_WIDTH,
                               MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
                               MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-    string object_name = "inner_border";
+    string object_name = "inner_border (rect)";
     Rect *inner_border = new Rect(&object_name, &_inner_border, &color);
     return inner_border;
 }
@@ -99,7 +99,7 @@ Graphics_Object *Module::calculate_name()
     int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
     int y = upper_left.y + MODULE_BORDER_WIDTH + 2;
     SDL_Rect location = {x, y, 0, 0};
-    string object_name = "module name";
+    string object_name = "module name (text)";
     Text *module_name = new Text(&object_name, &location, &text_color, NULL, &name, FONT_BOLD);
     return module_name;
 }
