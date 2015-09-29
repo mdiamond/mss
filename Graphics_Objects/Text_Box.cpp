@@ -113,8 +113,9 @@ void Text_Box::clicked()
 
 void Text_Box::entered()
 {
-    function_forwarder(this);
     SDL_StopTextInput();
+    function_forwarder(this);
     ACTIVE_TEXT_BOX = NULL;
     active = false;
+    typing_text->current_text = "";
 }
