@@ -61,9 +61,13 @@ void Page::render_graphics_object()
 }
 
 /*
- * Dummy function.
+ * Send the click to all the contained graphics objects.
  */
 void Page::clicked()
 {
-    
+    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
+    {
+        if((*graphics_objects)[i]->was_clicked())
+            (*graphics_objects)[i]->clicked();
+    }
 }

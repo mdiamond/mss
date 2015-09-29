@@ -3,7 +3,7 @@ CFLAGS = -std=c++11
 LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJFLAGS = $(CC) $(CFLAGS) -o $@ -c
 EXEFLAGS = $(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
-MISCFILEOBJ = obj/main.o obj/tests.o obj/utils.o obj/signal_processing.o obj/image_processing.o
+MISCFILEOBJ = obj/main.o obj/tests.o obj/function_forwarder.o obj/signal_processing.o obj/image_processing.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
 MODULEOBJ =  obj/Oscillator.o obj/Output.o
@@ -22,8 +22,8 @@ obj/main.o : main.cpp main.hpp
 # Miscellaneous files
 obj/tests.o : tests.cpp tests.hpp
 	$(OBJFLAGS) tests.cpp
-obj/utils.o : utils.cpp utils.hpp
-	$(OBJFLAGS) utils.cpp
+obj/function_forwarder.o : function_forwarder.cpp function_forwarder.hpp
+	$(OBJFLAGS) function_forwarder.cpp
 obj/signal_processing.o : signal_processing.cpp signal_processing.hpp
 	$(OBJFLAGS) signal_processing.cpp
 obj/image_processing.o : image_processing.cpp image_processing.hpp
@@ -61,4 +61,4 @@ obj/Waveform.o : Graphics_Objects/Waveform.cpp Graphics_Objects/Waveform.hpp
 
 # Clean
 clean :
-		rm synth $(OBJECTS)
+	rm synth $(OBJECTS)

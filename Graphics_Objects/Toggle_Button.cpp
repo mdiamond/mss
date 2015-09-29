@@ -17,7 +17,7 @@
 
 // Included files
 #include "../main.hpp"
-#include "../utils.hpp"
+#include "../function_forwarder.hpp"
 
 // Included classes
 #include "../Graphics_Object.hpp"
@@ -41,13 +41,16 @@ Toggle_Button::Toggle_Button(string *_name, SDL_Rect *_location, SDL_Color *_col
     type = TOGGLE_BUTTON;
     location = *_location;
     color = *_color;
+
     color_off = *_color_off;
+
     string text_on_name = "text on";
     string text_off_name = "text off";
     text_on_str = *_text_on;
     text_off_str = *_text_off;
     text_on = new Text(&text_on_name, &location, &color_off, NULL, &text_on_str, FONT_REGULAR);
     text_off = new Text(&text_off_name, &location, &color, NULL, &text_off_str, FONT_REGULAR);
+
     b = _b;
     parent = _parent;
 }
@@ -86,5 +89,6 @@ void Toggle_Button::render_graphics_object()
  */
 void Toggle_Button::clicked()
 {
+    cout << name << " clicked" << endl;
     function_forwarder(this);
 }

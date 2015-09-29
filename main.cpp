@@ -37,7 +37,7 @@ using namespace std;
 // Audio information
 int SAMPLE_RATE = 44100;
 int BUFFER_SIZE;
-bool AUDIO_ON = false;
+bool AUDIO_ON = true;
 
 // SDL Window and renderer
 SDL_Window *WINDOW;
@@ -208,7 +208,6 @@ bool check_click()
         g = (*(p->graphics_objects))[i];
         if(g->was_clicked())
         {
-            cout << g->name << " clicked" << endl;
             g->clicked();
             clicked = true;
         }

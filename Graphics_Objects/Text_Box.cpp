@@ -17,7 +17,7 @@
 
 // Included files
 #include "../main.hpp"
-#include "../utils.hpp"
+#include "../function_forwarder.hpp"
 
 // Included classes
 #include "../Graphics_Object.hpp"
@@ -80,6 +80,7 @@ void Text_Box::render_graphics_object()
     {
         typing_text->render_graphics_object();
     }
+
     else
     {
         if(text->current_text == "")
@@ -101,6 +102,8 @@ void Text_Box::render_graphics_object()
 
 void Text_Box::clicked()
 {
+    cout << name << " clicked" << endl;
+
     if(!active)
     {
         active = true;
@@ -117,5 +120,6 @@ void Text_Box::entered()
     function_forwarder(this);
     ACTIVE_TEXT_BOX = NULL;
     active = false;
+    text->current_text = TYPING_BUFFER;
     typing_text->current_text = "";
 }

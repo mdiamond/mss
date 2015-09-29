@@ -91,5 +91,5 @@ void Text::render_graphics_object()
  */
 void Text::clicked()
 {
-    
+
 }

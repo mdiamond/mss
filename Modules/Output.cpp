@@ -110,11 +110,11 @@ void Output::copy_graphics_data()
 
 void Output::toggle_audio_on()
 {
-    // SDL_LockAudio();
+    SDL_LockAudio();
     AUDIO_ON = !AUDIO_ON;
-    // if(AUDIO_ON)
-    //     SDL_PauseAudio(0);
-    // else
-    //     SDL_PauseAudio(1);
-    // SDL_UnlockAudio();
+    if(AUDIO_ON)
+        SDL_PauseAudio(0);
+    else
+        SDL_PauseAudio(1);
+    SDL_UnlockAudio();
 }
