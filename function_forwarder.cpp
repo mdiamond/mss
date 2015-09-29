@@ -60,7 +60,7 @@ void oscillator_function_forwarder(Graphics_Object *g)
     {
         Text_Box *frequency_text_box = (Text_Box *) g;
         SDL_LockAudio();
-        oscillator->audio.frequency = stoi(frequency_text_box->text->current_text.c_str());
+        oscillator->audio.frequency = stof(frequency_text_box->text->current_text.c_str());
         oscillator->audio.shifted_frequency = oscillator->audio.frequency;
         SDL_UnlockAudio();
         cout << oscillator->name << " frequency changed" << endl;

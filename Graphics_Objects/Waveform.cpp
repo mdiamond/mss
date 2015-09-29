@@ -61,7 +61,8 @@ void Waveform::render_graphics_object()
     {
         points[index].x = location.x + index;
         points[index].y = (location.y + location.h / 2) +
-                          ((*(buffer))[buffer->size() - location.w + index]) * (location.h / 2);
+                          (((*(buffer))[buffer->size() - location.w + index]) * -1) *
+                          (location.h / 2);
         index ++;
     }
 

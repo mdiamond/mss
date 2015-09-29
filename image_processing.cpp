@@ -116,6 +116,14 @@ void calculate_graphics_objects()
  */
 void calculate_pages()
 {
+
+    string current_sub_page_name;
+    Page *current_sub_page;
+    vector<Page> *sub_pages = new vector<Page>();
+    vector<Graphics_Object *> *sub_page_graphics_objects = new vector<Graphics_Object *>();
+    string current_page_name;
+    Page *current_page;
+
     // Specify the location of the page (the entire window),
     // create the Rect object representing the background and a
     // list of graphics objects for the page, add the background
@@ -123,25 +131,36 @@ void calculate_pages()
     SDL_Rect location = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
     string object_name = "background (rect)";
     Rect *background = new Rect(&object_name, &location, &BLACK);
-    vector<Graphics_Object *> *graphics_objects = new vector<Graphics_Object *>();
-    graphics_objects->push_back(background);
 
-    // For each module, add each of its graphics objects to the list,
-    // if we're on the last module of the page and the last graphics object
-    // of the module, create the final graphics object and then create the page.
+    current_sub_page_name = "utilities & background (page)";
+    sub_page_graphics_objects->push_back(background);
+    current_sub_page = new Page(&current_sub_page_name, &location, &BLACK,
+                                      sub_page_graphics_objects, NULL);
+    sub_pages->push_back(*current_sub_page);
+
+    sub_page_graphics_objects = new vector<Graphics_Object *>();
+
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
+        current_sub_page_name = MODULES[i]->name + " (page)";
         for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
         {
-            graphics_objects->push_back((MODULES[i]->graphics_objects)[j]);
-            if(((unsigned int) (i % (MODULES_PER_ROW * MODULES_PER_COLUMN)) ==
-               (unsigned int) ((MODULES_PER_ROW * MODULES_PER_COLUMN) - 1)) ||
-               ((i == MODULES.size() - 1) && (j == MODULES[i]->graphics_objects.size() - 1)))
-            {
-                Page *page = new Page(&location, &BLACK, graphics_objects);
-                PAGES.push_back(page);
-                graphics_objects = new vector<Graphics_Object *>();
-            }
+            sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
+        }
+        current_sub_page = new Page(&current_sub_page_name, &location, &BLACK,
+                                         sub_page_graphics_objects, NULL);
+        sub_pages->push_back(*current_sub_page);
+
+        sub_page_graphics_objects = new vector<Graphics_Object *>();
+
+        if(i == (unsigned) ((MODULES_PER_COLUMN * MODULES_PER_ROW) - 1) ||
+           i == MODULES.size() - 1)
+        {
+            current_page_name = to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)";
+            current_page = new Page(&current_page_name, &location, &BLACK,
+                                    NULL, sub_pages);
+            PAGES.push_back(*current_page);
+            sub_pages = new vector<Page>();
         }
     }
 }
@@ -178,7 +197,7 @@ void draw_surface()
     // If the current page exists, render it, otherwise,
     // render a black rectangle over the whole window
     if((unsigned int) CURRENT_PAGE < PAGES.size())
-        PAGES[CURRENT_PAGE]->render_graphics_object();
+        PAGES[CURRENT_PAGE].render_graphics_object();
     else
     {
         SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);

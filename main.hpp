@@ -53,7 +53,7 @@ extern TTF_Font *FONT_BOLD;
 extern SDL_Color BLACK;
 extern SDL_Color WHITE;
 //   Pages
-extern std::vector<Page *> PAGES;
+extern std::vector<Page> PAGES;
 extern int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;

@@ -10,7 +10,6 @@
 // Included libraries
 #include <cmath>
 #include <iostream>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -79,7 +78,6 @@ void Oscillator::process()
     // Check for any dependencies for frequency modulation
     process_depends();
 
-    // audio.frequency = stof(((Text_Box *) graphics_objects[4])->typing_buffer);
     audio.shifted_frequency = audio.frequency;
     // Calculate an amplitude for each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
@@ -167,12 +165,9 @@ void Oscillator::calculate_unique_graphics_objects()
  */
 void Oscillator::copy_graphics_data()
 {
-    ostringstream ss;
     graphics.frequency = audio.frequency;
     graphics.shifted_frequency = audio.shifted_frequency;
-    ss << graphics.shifted_frequency;
-    string frequency_str(ss.str());
-    graphics.frequency_str = frequency_str;
+    graphics.frequency_str = to_string(graphics.shifted_frequency);
     graphics.phase = audio.phase;
     graphics.amplitude = audio.amplitude;
     graphics.fm_on = audio.fm_on;

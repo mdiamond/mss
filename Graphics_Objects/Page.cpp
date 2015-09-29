@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -30,15 +31,22 @@ using namespace std;
 /*
  * Constructor.
  */
-Page::Page(SDL_Rect *_location, SDL_Color *_color,
-           vector<Graphics_Object *> *_graphics_objects)
+Page::Page(string *_name, SDL_Rect *_location, SDL_Color *_color,
+           vector<Graphics_Object *> *_graphics_objects, vector<Page> *_sub_pages)
 {
+    name = *_name;
     type = PAGE;
     location = *_location;
     color = *_color;
 
+    if(_sub_pages != NULL && _sub_pages->size() > 0)
+        sub_pages = new vector<Page>(*_sub_pages);
+    else
+        sub_pages = new vector<Page>();
     if(_graphics_objects != NULL && _graphics_objects->size() > 0)
         graphics_objects = new vector<Graphics_Object *>(*_graphics_objects);
+    else
+        graphics_objects = new vector<Graphics_Object *>();
 }
 
 /*
@@ -58,6 +66,10 @@ void Page::render_graphics_object()
     {
         (*graphics_objects)[i]->render_graphics_object();
     }
+    for(unsigned int i = 0; i < sub_pages->size(); i ++)
+    {
+        (*sub_pages)[i].render_graphics_object();
+    }
 }
 
 /*
@@ -69,5 +81,10 @@ void Page::clicked()
     {
         if((*graphics_objects)[i]->was_clicked())
             (*graphics_objects)[i]->clicked();
+    }
+    for(unsigned int i = 0; i < sub_pages->size(); i ++)
+    {
+        if((*sub_pages)[i].was_clicked())
+            (*sub_pages)[i].clicked();
     }
 }

@@ -71,7 +71,7 @@ SDL_Color BLACK = {0, 0, 0 , 255};
 SDL_Color WHITE = {255, 255, 255, 255};
 
 // Pages
-std::vector<Page *> PAGES;
+std::vector<Page> PAGES;
 int CURRENT_PAGE = 0;
 
 // Mouse information
@@ -194,8 +194,7 @@ bool initialize()
 bool check_click()
 {
     bool clicked = false;
-    Page *p = PAGES[CURRENT_PAGE];
-    Graphics_Object *g;
+    Page *p = &PAGES[CURRENT_PAGE];
 
     if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->was_clicked())
     {
@@ -203,15 +202,8 @@ bool check_click()
         ACTIVE_TEXT_BOX = NULL;
     }
 
-    for(unsigned int i = 0; i < p->graphics_objects->size(); i ++)
-    {
-        g = (*(p->graphics_objects))[i];
-        if(g->was_clicked())
-        {
-            g->clicked();
-            clicked = true;
-        }
-    }
+    if(p->was_clicked())
+        p->clicked();
 
     return clicked;
 }
