@@ -75,7 +75,7 @@ SDL_Color WHITE = {255, 255, 255, 255};
 
 // Pages
 std::vector<Page> PAGES;
-int CURRENT_PAGE = 0;
+unsigned int CURRENT_PAGE = 0;
 
 // Mouse information
 int MOUSE_X;

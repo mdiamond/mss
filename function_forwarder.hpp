@@ -4,8 +4,8 @@
  * declares any functions.
  */
 
-#ifndef synth_utils_h
-#define synth_utils_h
+#ifndef synth_function_forwarder_h
+#define synth_function_forwarder_h
 
 /************
  * INCLUDES *
