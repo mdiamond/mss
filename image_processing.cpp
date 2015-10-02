@@ -147,6 +147,7 @@ bool render_special_pages()
 void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_objects,
                                    vector<Page> *sub_pages, Page *current_sub_page)
 {
+    int x = 2;
     // Create the background and add it to the list of graphics
     // objects
     string object_name = "background (rect)";
@@ -155,13 +156,38 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 
     // Create the "add module" button and add it to the
     // list of graphics objects
-    SDL_Rect location = {7, WINDOW_HEIGHT - 17, 85, 15};
+    SDL_Rect location = {x , WINDOW_HEIGHT - 17, 100, 15};
+    x += 100;
     object_name = "add oscillator (button)";
     string button_text = "ADD OSCILLATOR";
     Module *parent = NULL;
-    Button *add_module_button = new Button(&object_name, &location, &WHITE,
-                                           &button_text, parent);
-    sub_page_graphics_objects->push_back(add_module_button);
+    Button *button = new Button(&object_name, &location, &WHITE,
+                                &button_text, parent);
+    sub_page_graphics_objects->push_back(button);
+
+    // Create the "previous page" button and add it to the
+    // list of graphics objects
+    x += 2;
+    location = {x, WINDOW_HEIGHT - 17, 92, 15};
+    x += 92;
+    object_name = "previous page (button)";
+    button_text = "PREVIOUS PAGE";
+    parent = NULL;
+    button = new Button(&object_name, &location, &WHITE,
+                        &button_text, parent);
+    sub_page_graphics_objects->push_back(button);
+
+    // Create the "next page" button and add it to the
+    // list of graphics objects
+    x += 2;
+    location = {x, WINDOW_HEIGHT - 17, 65, 15};
+    x += 65;
+    object_name = "next page (button)";
+    button_text = "NEXT PAGE";
+    parent = NULL;
+    button = new Button(&object_name, &location, &WHITE,
+                        &button_text, parent);
+    sub_page_graphics_objects->push_back(button);
 
     // Create the sub page and add it to the list of sub pages
     // for the current page
@@ -197,16 +223,11 @@ void calculate_pages()
 
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        cout << i << endl << endl;
-
         current_sub_page_name = MODULES[i]->name + " (page)";
         for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
         {
-            cout << j << endl;
-
             sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
         }
-        cout << endl;
         current_sub_page = new Page(&current_sub_page_name,
                                     &MODULES[i]->graphics_objects[1]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
@@ -224,7 +245,10 @@ void calculate_pages()
                 PAGES[i / (MODULES_PER_COLUMN * MODULES_PER_ROW)] = *current_page;
             else
                 PAGES.push_back(*current_page);
+
             sub_pages = new vector<Page>();
+            sub_page_graphics_objects = new vector<Graphics_Object *>();
+            initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
         }
     }
 }

@@ -78,10 +78,27 @@ void no_parent_function_forwarder(Graphics_Object *g)
 {
     if(g->name == "add oscillator (button)")
     {
-        string name = "Oscillator " + MODULES.size();
+        string name = "Oscillator " + to_string(MODULES.size());
         Oscillator *oscillator = new Oscillator(&name, MODULES.size());
         MODULES.push_back(oscillator);
         MODULES_CHANGED = true;
+        cout << "Added module " << name << endl;
+    }
+    else if(g->name == "previous page (button)")
+    {
+        if(CURRENT_PAGE > 0)
+        {
+            CURRENT_PAGE --;
+            cout << "Switched to page " << CURRENT_PAGE << endl;
+        }
+    }
+    else if(g->name == "next page (button)")
+    {
+        if(CURRENT_PAGE < PAGES.size() - 1)
+        {
+            CURRENT_PAGE ++;
+            cout << "Switched to page " << CURRENT_PAGE << endl;
+        }
     }
 }
 

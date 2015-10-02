@@ -113,11 +113,11 @@ void Module::calculate_graphics_objects()
 {
     graphics_objects.clear();
     int x, y;
-    x = (number % MODULES_PER_ROW);
-    y = (number / MODULES_PER_ROW);
-    upper_left.x = (x *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+    x = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) % MODULES_PER_ROW);
+    y = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) / MODULES_PER_ROW);
+    upper_left.x = (x * (WINDOW_WIDTH / MODULES_PER_ROW)) +
                    (x * MODULE_SPACING);
-    upper_left.y = (y *(WINDOW_WIDTH / MODULES_PER_ROW)) +
+    upper_left.y = (y * ((WINDOW_HEIGHT - MENU_HEIGHT)/ MODULES_PER_COLUMN)) +
                    (y * MODULE_SPACING);
     graphics_objects.push_back(calculate_border());
     graphics_objects.push_back(calculate_inner_border());
