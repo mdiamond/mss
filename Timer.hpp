@@ -13,9 +13,9 @@
 
 // No includes necessary
 
-/*************************
- * TYPES OF MODULES ENUM *
- *************************/
+/**************************
+ * TIMER CLASS DEFINITION *
+ **************************/
 
 class Timer
 {

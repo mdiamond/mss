@@ -3,12 +3,13 @@ CFLAGS = -std=c++11
 LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJFLAGS = $(CC) $(CFLAGS) -o $@ -c
 EXEFLAGS = $(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
-MISCFILEOBJ = obj/main.o obj/tests.o obj/function_forwarder.o obj/signal_processing.o obj/image_processing.o
+MAINOBJ = obj/main.o
+MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/image_processing.o obj/signal_processing.o obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
 MODULEOBJ =  obj/Oscillator.o obj/Output.o
 GRAPHICOBJ =  obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
-OBJECTS = $(MISCFILEOBJ) $(MISCCLASSOBJ) $(BASECLASSOBJ) $(MODULEOBJ) $(GRAPHICOBJ)
+OBJECTS = $(MAINOBJ) $(MISCFILEOBJ) $(MISCCLASSOBJ) $(BASECLASSOBJ) $(MODULEOBJ) $(GRAPHICOBJ)
 
 all : synth
 
@@ -20,14 +21,16 @@ obj/main.o : main.cpp main.hpp
 	$(OBJFLAGS) main.cpp 
 
 # Miscellaneous files
-obj/tests.o : tests.cpp tests.hpp
-	$(OBJFLAGS) tests.cpp
+obj/event_handler.o : event_handler.cpp event_handler.hpp
+	$(OBJFLAGS) event_handler.cpp
 obj/function_forwarder.o : function_forwarder.cpp function_forwarder.hpp
 	$(OBJFLAGS) function_forwarder.cpp
-obj/signal_processing.o : signal_processing.cpp signal_processing.hpp
-	$(OBJFLAGS) signal_processing.cpp
 obj/image_processing.o : image_processing.cpp image_processing.hpp
 	$(OBJFLAGS) image_processing.cpp
+obj/signal_processing.o : signal_processing.cpp signal_processing.hpp
+	$(OBJFLAGS) signal_processing.cpp
+obj/tests.o : tests.cpp tests.hpp
+	$(OBJFLAGS) tests.cpp
 
 # Miscellaneous classes
 obj/Timer.o : Timer.cpp Timer.hpp
