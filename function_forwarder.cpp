@@ -16,6 +16,9 @@
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_ttf.h"
 
+// Included files
+#include "main.hpp"
+
 // Included classes
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
@@ -73,7 +76,13 @@ void oscillator_function_forwarder(Graphics_Object *g)
  */
 void no_parent_function_forwarder(Graphics_Object *g)
 {
-
+    if(g->name == "add oscillator (button)")
+    {
+        string name = "Oscillator " + MODULES.size();
+        Oscillator *oscillator = new Oscillator(&name, MODULES.size());
+        MODULES.push_back(oscillator);
+        MODULES_CHANGED = true;
+    }
 }
 
 /*

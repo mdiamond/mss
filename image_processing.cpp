@@ -22,6 +22,7 @@
 #include "signal_processing.hpp"
 
 // Included classes
+#include "Graphics_Objects/Button.hpp"
 #include "Graphics_Objects/Page.hpp"
 #include "Graphics_Objects/Rect.hpp"
 #include "Module.hpp"
@@ -111,12 +112,14 @@ void calculate_graphics_objects()
     MODULES_CHANGED = 0;
 }
 
-/*
- * Determine what graphics objects go on what pages. Create those pages.
- */
-void calculate_pages()
+bool render_special_pages()
 {
+    return false;
 
+    // Variables for the current sub page, its sub pages,
+    // its sub pages graphics objects, and the current page
+    // (no page has any graphics objects, only sub pages
+    // which contain graphics objects)
     string current_sub_page_name;
     Page *current_sub_page;
     vector<Page> *sub_pages = new vector<Page>();
@@ -124,31 +127,89 @@ void calculate_pages()
     string current_page_name;
     Page *current_page;
 
-    // Specify the location of the page (the entire window),
-    // create the Rect object representing the background and a
-    // list of graphics objects for the page, add the background
-    // to the list
-    SDL_Rect location = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
+    // Create the background and add it to the list of graphics
+    // objects
     string object_name = "background (rect)";
-    Rect *background = new Rect(&object_name, &location, &BLACK);
-
-    current_sub_page_name = "utilities & background (page)";
+    Rect *background = new Rect(&object_name, &WINDOW_RECT, &BLACK);
     sub_page_graphics_objects->push_back(background);
-    current_sub_page = new Page(&current_sub_page_name, &location, &BLACK,
+
+    // Create the sub page and add it to the list of sub pages
+    // for the current page
+    current_sub_page_name = "utilities & background (page)";
+    current_sub_page = new Page(&current_sub_page_name, &WINDOW_RECT, &BLACK,
                                       sub_page_graphics_objects, NULL);
     sub_pages->push_back(*current_sub_page);
-
     sub_page_graphics_objects = new vector<Graphics_Object *>();
+
+    return true;
+}
+
+void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_objects,
+                                   vector<Page> *sub_pages, Page *current_sub_page)
+{
+    // Create the background and add it to the list of graphics
+    // objects
+    string object_name = "background (rect)";
+    Rect *background = new Rect(&object_name, &WINDOW_RECT, &BLACK);
+    sub_page_graphics_objects->push_back(background);
+
+    // Create the "add module" button and add it to the
+    // list of graphics objects
+    SDL_Rect location = {7, WINDOW_HEIGHT - 17, 85, 15};
+    object_name = "add oscillator (button)";
+    string button_text = "ADD OSCILLATOR";
+    Module *parent = NULL;
+    Button *add_module_button = new Button(&object_name, &location, &WHITE,
+                                           &button_text, parent);
+    sub_page_graphics_objects->push_back(add_module_button);
+
+    // Create the sub page and add it to the list of sub pages
+    // for the current page
+    string current_sub_page_name = "utilities & background (page)";
+    current_sub_page = new Page(&current_sub_page_name, &WINDOW_RECT, &BLACK,
+                                      sub_page_graphics_objects, NULL);
+    sub_pages->push_back(*current_sub_page);
+    sub_page_graphics_objects = new vector<Graphics_Object *>();
+}
+
+/*
+ * Determine what graphics objects go on what pages. Create those pages.
+ */
+void calculate_pages()
+{
+    // if(render_special_pages())
+    //     return;
+
+    // Variables for the current sub page, its sub pages,
+    // its sub pages graphics objects, and the current page
+    // (no page has any graphics objects, only sub pages
+    // which contain graphics objects)
+    string current_sub_page_name;
+    Page *current_sub_page;
+    vector<Page> *sub_pages = new vector<Page>();
+    vector<Graphics_Object *> *sub_page_graphics_objects = new vector<Graphics_Object *>();
+    string current_page_name;
+    Page *current_page;
+
+    // Create the first sub page, which will contain important
+    // buttons for special functions
+    initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
 
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
+        cout << i << endl << endl;
+
         current_sub_page_name = MODULES[i]->name + " (page)";
         for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
         {
+            cout << j << endl;
+
             sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
         }
-        current_sub_page = new Page(&current_sub_page_name, &location, &BLACK,
-                                         sub_page_graphics_objects, NULL);
+        cout << endl;
+        current_sub_page = new Page(&current_sub_page_name,
+                                    &MODULES[i]->graphics_objects[1]->location, &BLACK,
+                                    sub_page_graphics_objects, NULL);
         sub_pages->push_back(*current_sub_page);
 
         sub_page_graphics_objects = new vector<Graphics_Object *>();
@@ -157,9 +218,12 @@ void calculate_pages()
            i == MODULES.size() - 1)
         {
             current_page_name = to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)";
-            current_page = new Page(&current_page_name, &location, &BLACK,
+            current_page = new Page(&current_page_name, &WINDOW_RECT, &BLACK,
                                     NULL, sub_pages);
-            PAGES.push_back(*current_page);
+            if(i / (MODULES_PER_COLUMN * MODULES_PER_ROW) < PAGES.size())
+                PAGES[i / (MODULES_PER_COLUMN * MODULES_PER_ROW)] = *current_page;
+            else
+                PAGES.push_back(*current_page);
             sub_pages = new vector<Page>();
         }
     }

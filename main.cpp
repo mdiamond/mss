@@ -53,11 +53,12 @@ int MODULE_SPACING = 1;
 int MODULE_BORDER_WIDTH = 2;
 
 // Window dimensions
-int MENU_HEIGHT = 13;
+int MENU_HEIGHT = 19;
 int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
                    (MODULE_SPACING * MODULES_PER_ROW);
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MODULE_SPACING * MODULES_PER_COLUMN) + MENU_HEIGHT;
+SDL_Rect WINDOW_RECT = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
 // Frames per second and ms per frame
 Uint32 FPS = 30;

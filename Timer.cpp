@@ -18,9 +18,9 @@
 
 using namespace std;
 
-/***************************
- * MODULE MEMBER FUNCTIONS *
- ***************************/
+/**************************
+ * TIMER MEMBER FUNCTIONS *
+ **************************/
 
 /*
  * Dummy function.

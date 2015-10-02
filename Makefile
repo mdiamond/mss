@@ -8,7 +8,7 @@ MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/image_processing.
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
 MODULEOBJ =  obj/Oscillator.o obj/Output.o
-GRAPHICOBJ =  obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
+GRAPHICOBJ =  obj/Button.o obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
 OBJECTS = $(MAINOBJ) $(MISCFILEOBJ) $(MISCCLASSOBJ) $(BASECLASSOBJ) $(MODULEOBJ) $(GRAPHICOBJ)
 
 all : synth
@@ -47,6 +47,8 @@ obj/Output.o : Modules/Output.cpp Modules/Output.hpp
 # Graphics objects classes
 obj/Graphics_Object.o : Graphics_Object.cpp Graphics_Object.hpp
 	$(OBJFLAGS) Graphics_Object.cpp
+obj/Button.o : Graphics_Objects/Button.cpp Graphics_Objects/Button.hpp
+	$(OBJFLAGS) Graphics_Objects/Button.cpp
 obj/Page.o : Graphics_Objects/Page.cpp Graphics_Objects/Page.hpp
 	$(OBJFLAGS) Graphics_Objects/Page.cpp
 obj/Rect.o : Graphics_Objects/Rect.cpp Graphics_Objects/Rect.hpp

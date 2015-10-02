@@ -43,6 +43,7 @@ extern int MODULE_BORDER_WIDTH;
 extern int MENU_HEIGHT;
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
+extern SDL_Rect WINDOW_RECT;
 //   Frames per second and ms per frame
 extern Uint32 FPS;
 extern Uint32 MSPF;
