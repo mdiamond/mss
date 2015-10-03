@@ -52,6 +52,8 @@ Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color,
                            NULL, _prompt_text, _font);
     typing_text = new Text(&typing_text_name, _location, &BLACK,
                            &TYPING_BUFFER, &TYPING_BUFFER, _font);
+
+    active = false;
 }
 
 /*
@@ -97,7 +99,6 @@ void Text_Box::render_graphics_object()
                            typing_text->location.x + typing_text->location.w,
                            typing_text->location.y + typing_text->location.h - 2);
     }
-
 }
 
 void Text_Box::clicked()

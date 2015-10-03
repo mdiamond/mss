@@ -65,7 +65,7 @@ void Output::process()
 void Output::calculate_text_objects()
 {
     SDL_Rect location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-                          upper_left.y + MODULE_BORDER_WIDTH + 18,
+                          upper_left.y + MODULE_BORDER_WIDTH + 23,
                           8, 15};
     string object_name = "on_off (text)";
     string text = "AUDIO ON:";
@@ -76,7 +76,7 @@ void Output::calculate_text_objects()
 Graphics_Object *Output::calculate_on_off_button()
 {
     SDL_Rect location = {upper_left.x + MODULE_BORDER_WIDTH + 70,
-                          upper_left.y + MODULE_BORDER_WIDTH + 18,
+                          upper_left.y + MODULE_BORDER_WIDTH + 23,
                           8, 15};
     string object_name = "on/off button (toggle_button)";
     string text_on = "1";
@@ -87,6 +87,40 @@ Graphics_Object *Output::calculate_on_off_button()
     return on_off;
 }
 
+Graphics_Object *Output::calculate_input_1eft()
+{
+    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 85;
+    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
+    string object_name = "output input left (text_box)";
+    string prompt = "module name";
+    string text = "";
+    Text_Box *input_left = new Text_Box(&object_name, &location, &text_color,
+                                       NULL,
+                                       &text,
+                                       &prompt,
+                                       FONT_REGULAR,
+                                       this);
+    return input_left;
+}
+
+Graphics_Object *Output::calculate_input_right()
+{
+    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 120;
+    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
+    string object_name = "output input right (text_box)";
+    string prompt = "module name";
+    string text = "";
+    Text_Box *input_right = new Text_Box(&object_name, &location, &text_color,
+                                       NULL,
+                                       &text,
+                                       &prompt,
+                                       FONT_REGULAR,
+                                       this);
+    return input_right;
+}
+
 /*
  * Calculate the locations of any graphics objects that are
  * unique to this module type.
@@ -95,6 +129,8 @@ void Output::calculate_unique_graphics_objects()
 {
     calculate_text_objects();
     graphics_objects.push_back(calculate_on_off_button());
+    graphics_objects.push_back(calculate_input_1eft());
+    graphics_objects.push_back(calculate_input_right());
 }
 
 /*

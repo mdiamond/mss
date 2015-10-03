@@ -64,7 +64,7 @@ Button::~Button()
 }
 
 /*
- * Render the Toggle_Button.
+ * Render the Button.
  */
 void Button::render_graphics_object()
 {

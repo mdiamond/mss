@@ -65,6 +65,11 @@ void Module::process_depends()
     }
 }
 
+void Module::set_output_to(vector<float> *buffer)
+{
+    buffer = output;
+}
+
 /*
  * This function calculates the module's outer border
  */
@@ -97,7 +102,7 @@ Graphics_Object *Module::calculate_inner_border()
 Graphics_Object *Module::calculate_name()
 {
     int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 5;
     SDL_Rect location = {x, y, 0, 0};
     string object_name = "module name (text)";
     Text *module_name = new Text(&object_name, &location, &text_color, NULL, &name, FONT_BOLD);

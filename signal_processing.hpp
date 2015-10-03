@@ -26,6 +26,8 @@ void initialize_output();
 void audio_callback(void *, Uint8 *, int);
 
 // Signal processing functions
+void copy_buffer(std::vector<float> *, std::vector<float> *);
+void scale_signal(std::vector<float> *, float, float, float, float);
 void add_signals(std::vector<float> *, std::vector<float> *, std::vector<float> *, int);
 void multiply_signals(std::vector<float> *, std::vector<float> *, std::vector<float> *, int);
 

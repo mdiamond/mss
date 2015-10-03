@@ -94,10 +94,11 @@ bool event_handler(SDL_Event *e)
 
             // If that key is backspace, just remove a character
             // from the typing buffer
-            else if(e->key.keysym.sym == SDLK_BACKSPACE)
+            else if(e->key.keysym.sym == SDLK_BACKSPACE && ACTIVE_TEXT_BOX != NULL)
             {
                 if(!TYPING_BUFFER.empty())
                     TYPING_BUFFER.pop_back();
+                ACTIVE_TEXT_BOX->typing_text->current_text = TYPING_BUFFER;
             }
         }
 

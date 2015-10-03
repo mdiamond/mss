@@ -20,6 +20,7 @@
 // Included files
 #include "../image_processing.hpp"
 #include "../main.hpp"
+#include "../signal_processing.hpp"
 
 // Included classes
 #include "../Module.hpp"
@@ -43,18 +44,35 @@ Oscillator::Oscillator(string *_name, int _number)
     number = _number;
 
     audio.frequency = 0;
-    audio.shifted_frequency = 0;
     audio.frequency_str = "0";
-    audio.phase = 0;
-    audio.amplitude = 1;
-    audio.fm_on = 0;
-    audio.modulation_index = 1;
-    audio.output = new vector<float>(BUFFER_SIZE, 0);
+    audio.input_frequency = new vector<float>(BUFFER_SIZE, 0);
+    audio.live_frequency = false;
 
-    graphics.frequency_str = "0";
+    audio.phase_offset = 0;
+    audio.phase_offset_str = "0";
+    audio.input_phase_offset = new vector<float>(BUFFER_SIZE, 0);
+    audio.live_phase_offset = false;
+
+    audio.pulse_width = 0;
+    audio.pulse_width_str = "0";
+    audio.input_pulse_width = new vector<float>(BUFFER_SIZE, 0);
+    audio.live_pulse_width = false;
+
+    audio.range_low = -1;
+    audio.range_low_str = "-1";
+    audio.input_range_low = new vector<float>(BUFFER_SIZE, 0);
+    audio.live_range_low = false;
+
+    audio.range_high = 1;
+    audio.range_high_str = "1";
+    audio.input_range_high = new vector<float>(BUFFER_SIZE, 0);
+    audio.live_range_high = false;
+
+    output = new vector<float>(BUFFER_SIZE, 0);
+    audio.output = new vector<float>(BUFFER_SIZE, 0);
     graphics.output = new vector<float>(BUFFER_SIZE, 0);
 
-    modulator = NULL;
+    audio.waveform_type = SIN;
 }
 
 /*
@@ -73,29 +91,25 @@ Oscillator::~Oscillator()
  */
 void Oscillator::process()
 {
-    float frequency_shift = 0;
-
     // Check for any dependencies for frequency modulation
     process_depends();
 
-    audio.shifted_frequency = audio.frequency;
     // Calculate an amplitude for each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Calculate and store the current samples amplitude
         // based on phase
-        (*(audio.output))[i] = audio.amplitude * sin(audio.phase);
-        // Calculate phase for the next sample
-        if(audio.fm_on)
-        {
-            frequency_shift = (((modulator->audio).frequency) * audio.modulation_index) * (*((modulator->audio).output))[i];
-            audio.shifted_frequency = audio.frequency + frequency_shift;
-            audio.phase += (2 * M_PI * (audio.shifted_frequency) / SAMPLE_RATE);
-        }
-        else
-            audio.phase += (2 * M_PI * audio.frequency / SAMPLE_RATE);
-        if(audio.phase > (2 * M_PI))
-            audio.phase -= (2 * M_PI);
+        (*(output))[i] = sin(audio.current_phase);
+        // Check if the frequency needs to be updated
+        if(audio.live_frequency)
+            audio.frequency = (*(audio.input_frequency))[i];
+        audio.current_phase += (2 * M_PI * audio.frequency / SAMPLE_RATE);
+        if(audio.current_phase > (2 * M_PI))
+            audio.current_phase -= (2 * M_PI);
+    }
+    if(audio.range_low != -1 || audio.range_high != 1)
+    {
+        scale_signal(output, -1, 1, audio.range_low, audio.range_high);
     }
 }
 
@@ -108,12 +122,80 @@ void Oscillator::process()
 Graphics_Object *Oscillator::calculate_waveform_visualizer()
 {
     SDL_Rect location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-                          upper_left.y + MODULE_BORDER_WIDTH + 18,
+                          upper_left.y + MODULE_BORDER_WIDTH + 23,
                           ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4),
-                          50};
+                          55};
     string object_name = "waveform visualizer (waveform)";
-    Waveform *waveform_visualizer = new Waveform(&object_name, &location, &WHITE, graphics.output);
-    return waveform_visualizer;
+    Waveform *graphics_object = new Waveform(&object_name, &location, &WHITE, output);
+    return graphics_object;
+}
+
+Graphics_Object *Oscillator::calculate_range_high()
+{
+    int x = upper_left.x + (MODULE_WIDTH / 2) + 1;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 204;
+    SDL_Rect location = {x, y, (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3), 15};
+    string object_name = "oscillator range high (text_box)";
+    string prompt = "";
+    string text = "";
+    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
+                                       &(graphics.range_high_str),
+                                       &text,
+                                       &prompt,
+                                       FONT_REGULAR,
+                                       this);
+    return graphics_object;
+}
+
+Graphics_Object *Oscillator::calculate_range_low()
+{
+    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 204;
+    SDL_Rect location = {x, y, (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3), 15};
+    string object_name = "oscillator range low (text_box)";
+    string prompt = "";
+    string text = "";
+    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
+                                       &(graphics.range_low_str),
+                                       &text,
+                                       &prompt,
+                                       FONT_REGULAR,
+                                       this);
+    return graphics_object;
+}
+
+Graphics_Object *Oscillator::calculate_pulse_width()
+{
+    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 169;
+    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
+    string object_name = "oscillator pulse width (text_box)";
+    string prompt = "float or module name";
+    string text = "";
+    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
+                                       &(graphics.pulse_width_str),
+                                       &text,
+                                       &prompt,
+                                       FONT_REGULAR,
+                                       this);
+    return graphics_object;
+}
+
+Graphics_Object *Oscillator::calculate_phase_offset()
+{
+    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 134;
+    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
+    string object_name = "oscillator phase offset (text_box)";
+    string prompt = "float or module name";
+    string text = "";
+    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
+                                       &(graphics.phase_offset_str),
+                                       &text,
+                                       &prompt,
+                                       FONT_REGULAR,
+                                       this);
+    return graphics_object;
 }
 
 /*
@@ -123,28 +205,53 @@ Graphics_Object *Oscillator::calculate_waveform_visualizer()
 Graphics_Object *Oscillator::calculate_frequency()
 {
     int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 85;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 97;
     SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
     string object_name = "oscillator frequency (text_box)";
-    string prompt = "Enter freqeuncy here";
-    Text_Box *frequency = new Text_Box(&object_name, &location, &text_color,
+    string prompt = "float or module name";
+    string text = "";
+    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
                                        &(graphics.frequency_str),
-                                       &(graphics.frequency_str),
+                                       &text,
                                        &prompt,
                                        FONT_REGULAR,
                                        this);
-    return frequency;
+    return graphics_object;
 }
 
 void Oscillator::calculate_text_objects()
 {
     int x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 70;
+    int y = upper_left.y + MODULE_BORDER_WIDTH + 80;
     SDL_Rect location = {x, y, 0, 0};
     string object_name = "oscillator frequency (text)";
     string contents = "FREQUENCY: ";
-    Text *frequency = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
-    graphics_objects.push_back(frequency);
+    Text *text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+    graphics_objects.push_back(text);
+
+    x = upper_left.x + MODULE_BORDER_WIDTH + 5;
+    y = upper_left.y + MODULE_BORDER_WIDTH + 117;
+    location = {x, y, 0, 0};
+    object_name = "oscillator phase offset (text)";
+    contents = "PHASE OFFSET: ";
+    text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+    graphics_objects.push_back(text);
+
+    x = upper_left.x + MODULE_BORDER_WIDTH + 5;
+    y = upper_left.y + MODULE_BORDER_WIDTH + 152;
+    location = {x, y, 0, 0};
+    object_name = "oscillator pulse width (text)";
+    contents = "PULSE WIDTH: ";
+    text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+    graphics_objects.push_back(text);
+
+    x = upper_left.x + MODULE_BORDER_WIDTH + 5;
+    y = upper_left.y + MODULE_BORDER_WIDTH + 187;
+    location = {x, y, 0, 0};
+    object_name = "oscillator range high/low (text)";
+    contents = "RANGE HIGH/LOW: ";
+    text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+    graphics_objects.push_back(text);
 }
 
 /*
@@ -156,6 +263,10 @@ void Oscillator::calculate_unique_graphics_objects()
     calculate_text_objects();
     graphics_objects.push_back(calculate_waveform_visualizer());
     graphics_objects.push_back(calculate_frequency());
+    graphics_objects.push_back(calculate_phase_offset());
+    graphics_objects.push_back(calculate_pulse_width());
+    graphics_objects.push_back(calculate_range_low());
+    graphics_objects.push_back(calculate_range_high());
 }
 
 /*
@@ -165,17 +276,15 @@ void Oscillator::calculate_unique_graphics_objects()
  */
 void Oscillator::copy_graphics_data()
 {
-    graphics.frequency = audio.frequency;
-    graphics.shifted_frequency = audio.shifted_frequency;
-    graphics.frequency_str = to_string(graphics.shifted_frequency);
-    graphics.phase = audio.phase;
-    graphics.amplitude = audio.amplitude;
-    graphics.fm_on = audio.fm_on;
-    graphics.modulation_index = audio.modulation_index;
-    for(int i = 0; i < BUFFER_SIZE; i ++)
-    {
-        (*(graphics.output))[i] = (*(audio.output))[i];
-    }
+    graphics.waveform_type = audio.waveform_type;
+
+    graphics.frequency_str = to_string(audio.frequency);
+    graphics.phase_offset_str = to_string(audio.phase_offset);
+    graphics.pulse_width_str = to_string(audio.pulse_width);
+    graphics.range_low_str = to_string(audio.range_low);
+    graphics.range_high_str = to_string(audio.range_high);
+
+    copy_buffer(output, graphics.output);
 }
 
 void Oscillator::set_frequency(float _frequency)

@@ -30,6 +30,9 @@ struct Output_Data
 class Output: public Module
 {
     public:
+        // Two copies of the output data,
+        // one for access by the audio thread,
+        // one for access by the main thread
         struct Output_Data audio, graphics;
         // Constructor and destructor
         Output(int);
@@ -40,6 +43,8 @@ class Output: public Module
         virtual void copy_graphics_data();
         void calculate_text_objects();
         Graphics_Object *calculate_on_off_button();
+        Graphics_Object *calculate_input_1eft();
+        Graphics_Object *calculate_input_right();
         void toggle_audio_on();
 };
 

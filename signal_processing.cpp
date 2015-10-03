@@ -73,49 +73,6 @@ void initialize_output()
     Output *output = new Output(MODULES.size());
     MODULES.push_back(output);
 
-    // This configuration is arbitrary and
-    // it will be possible to patch it together
-    // in the GUI later
-    // In the GUI version, this function will only
-    // create the output module
-
-    // Create an oscillator module
-    string module_name = "oscillator 1";
-    Oscillator *oscillator_1 = new Oscillator(&module_name, MODULES.size());
-    MODULES.push_back(oscillator_1);
-
-    // Set the oscillator frequencies
-    // (oscillator_1->audio).frequency = 440;
-
-    // Create another oscillator module
-    module_name = "modulator";
-    Oscillator *modulator = new Oscillator(&module_name, MODULES.size());
-    MODULES.push_back(modulator);
-
-    // (modulator->audio).frequency = 4;
-
-    oscillator_1->depends.push_back(modulator);
-    (oscillator_1->audio).fm_on = 1;
-    (oscillator_1->audio).modulation_index = 25;
-    oscillator_1->modulator = modulator;
-
-    // Create another oscillator module
-    module_name = "modulator 2";
-    Oscillator *modulator_2 = new Oscillator(&module_name, MODULES.size());
-    MODULES.push_back(modulator_2);
-
-    // (modulator->audio).frequency = 4;
-
-    modulator->depends.push_back(modulator_2);
-    (modulator->audio).fm_on = 1;
-    (modulator->audio).modulation_index = 12.5;
-    modulator->modulator = modulator_2;
-
-    // Set the inputs and outputs
-    output->depends.push_back(oscillator_1);
-    (output->audio).input_l = (oscillator_1->audio).output;
-    (output->audio).input_r = (oscillator_1->audio).output;
-
     cout << "Output initialized." << endl;
 }
 
@@ -165,6 +122,33 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 /*******************************
  * SIGNAL PROCESSING FUNCTIONS *
  *******************************/
+
+/*
+ * Copy a signal to a new buffer.
+ */
+void copy_buffer(vector<float> *src, vector<float> *dst)
+{
+    for(unsigned int i = 0; i < src->size(); i ++)
+    {
+        (*dst)[i] = (*src)[i];
+    }
+}
+
+/*
+ * Scale a signal.
+ */
+void scale_signal(vector<float> *buffer, float original_low,
+                  float original_high, float low, float high)
+{
+    float temp_low = 0;
+    float temp_high = original_high - original_low;
+    for(unsigned int i = 0; i < buffer->size(); i ++)
+    {
+        (*buffer)[i] = ((*buffer)[i] - original_low) / temp_high;
+        (*buffer)[i] *= high - low;
+        (*buffer)[i] += low;
+    }
+}
 
 /*
  * Add two signals
