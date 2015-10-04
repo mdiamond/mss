@@ -94,15 +94,23 @@ void Oscillator::process()
     // Check for any dependencies for frequency modulation
     process_depends();
 
+    if(audio.live_frequency)
+        audio.frequency = (*(audio.input_frequency))[0];
+    if(audio.live_phase_offset)
+        audio.phase_offset = (*(audio.input_phase_offset))[0];
+    if(audio.live_pulse_width)
+        audio.pulse_width = (*(audio.input_pulse_width))[0];
+    if(audio.live_range_low)
+        audio.range_low = (*(audio.input_range_low))[0];
+    if(audio.live_range_high)
+        audio.range_high = (*(audio.input_range_high))[0];
+
     // Calculate an amplitude for each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Calculate and store the current samples amplitude
         // based on phase
         (*(output))[i] = sin(audio.current_phase);
-        // Check if the frequency needs to be updated
-        if(audio.live_frequency)
-            audio.frequency = (*(audio.input_frequency))[i];
         audio.current_phase += (2 * M_PI * audio.frequency / SAMPLE_RATE);
         if(audio.current_phase > (2 * M_PI))
             audio.current_phase -= (2 * M_PI);
