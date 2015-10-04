@@ -42,6 +42,9 @@ Output::Output(int _number)
 
     audio.input_l = new vector<float>(BUFFER_SIZE, 0);
     audio.input_r = new vector<float>(BUFFER_SIZE, 0);
+
+    graphics.input_l = new vector<float>(BUFFER_SIZE, 0);
+    graphics.input_r = new vector<float>(BUFFER_SIZE, 0);
 }
 
 /*
@@ -140,8 +143,8 @@ void Output::calculate_unique_graphics_objects()
  */
 void Output::copy_graphics_data()
 {
-    graphics.input_l = new vector<float>(*(audio.input_l));
-    graphics.input_r = new vector<float>(*(audio.input_r));
+  copy_signal(audio.input_l, graphics.input_l);
+  copy_signal(audio.input_r, graphics.input_r);
 }
 
 void Output::toggle_audio_on()

@@ -16,6 +16,7 @@
 
 // Included files
 #include "../main.hpp"
+#include "../signal_processing.hpp"
 
 // Included classes
 #include "../Graphics_Object.hpp"
@@ -37,6 +38,7 @@ Waveform::Waveform(string *_name, SDL_Rect *_location,
     type = WAVEFORM;
     location = *_location;
     color = *_color;
+
     buffer = _buffer;
 }
 
@@ -46,6 +48,18 @@ Waveform::Waveform(string *_name, SDL_Rect *_location,
 Waveform::~Waveform()
 {
 
+}
+
+float Waveform::calculate_y(int i, int index)
+{
+    int y = (location.y + location.h / 2) +
+    (((*(buffer))[buffer->size() - location.w + index]) * -1) *
+    (location.h / 2);
+    if(y < location.y)
+        y = location.y;
+    if(y > location.y + location.h)
+        y = location.y + location.h;
+    return y;
 }
 
 /*
@@ -60,9 +74,7 @@ void Waveform::render_graphics_object()
     for(unsigned int i = buffer->size() - location.w; i < buffer->size(); i ++)
     {
         points[index].x = location.x + index;
-        points[index].y = (location.y + location.h / 2) +
-                          (((*(buffer))[buffer->size() - location.w + index]) * -1) *
-                          (location.h / 2);
+        points[index].y = calculate_y(i, index);
         index ++;
     }
 

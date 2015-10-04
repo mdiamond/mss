@@ -292,7 +292,7 @@ void Oscillator::copy_graphics_data()
     graphics.range_low_str = to_string(audio.range_low);
     graphics.range_high_str = to_string(audio.range_high);
 
-    copy_buffer(output, graphics.output);
+    copy_signal(output, graphics.output);
 }
 
 void Oscillator::set_frequency(float _frequency)

@@ -124,9 +124,25 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
  *******************************/
 
 /*
+ * Clip a signal. Make sure no value goes above the max,
+ * and no value goes below the min.
+ */
+void clip_signal(vector<float> *buffer, float min, float max)
+{
+    for(unsigned int i = 0; i < buffer->size(); i ++)
+    {
+        if((*buffer)[i] > max)
+            (*buffer)[i] = max;
+        else if((*buffer)[i] < min)
+            (*buffer)[i] = min;
+    }
+
+}
+
+/*
  * Copy a signal to a new buffer.
  */
-void copy_buffer(vector<float> *src, vector<float> *dst)
+void copy_signal(vector<float> *src, vector<float> *dst)
 {
     for(unsigned int i = 0; i < src->size(); i ++)
     {
@@ -140,7 +156,6 @@ void copy_buffer(vector<float> *src, vector<float> *dst)
 void scale_signal(vector<float> *buffer, float original_low,
                   float original_high, float low, float high)
 {
-    float temp_low = 0;
     float temp_high = original_high - original_low;
     for(unsigned int i = 0; i < buffer->size(); i ++)
     {
