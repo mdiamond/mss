@@ -65,11 +65,6 @@ void Module::process_depends()
     }
 }
 
-void Module::set_output_to(vector<float> *buffer)
-{
-    buffer = output;
-}
-
 /*
  * This function calculates the module's outer border
  */
@@ -109,14 +104,8 @@ Graphics_Object *Module::calculate_name()
     return module_name;
 }
 
-/*
- * calculate the locations of all graphics objects, then
- * call upon the module to caluclate the locations of
- * any graphics objects that are unique to the module type.
- */
-void Module::calculate_graphics_objects()
+void Module::calculate_upper_left()
 {
-    graphics_objects.clear();
     int x, y;
     x = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) % MODULES_PER_ROW);
     y = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) / MODULES_PER_ROW);
@@ -124,8 +113,66 @@ void Module::calculate_graphics_objects()
                    (x * MODULE_SPACING);
     upper_left.y = (y * ((WINDOW_HEIGHT - MENU_HEIGHT)/ MODULES_PER_COLUMN)) +
                    (y * MODULE_SPACING);
-    graphics_objects.push_back(calculate_border());
-    graphics_objects.push_back(calculate_inner_border());
-    graphics_objects.push_back(calculate_name());
+}
+
+/*
+ * calculate the locations of all graphics objects, then
+ * call upon the module to caluclate the locations of
+ * any graphics objects that are unique to the module type.
+ */
+void Module::calculate_graphics_objects()
+{
+    SDL_Rect location;
+    string object_name;
+    Rect *rect;
+    Text *text;
+
+    // Calculate the modules top left pixel location in the window
+    calculate_upper_left();
+
+    // If the graphics objects have not yet been initialized
+    if((*graphics_objects)[0] == NULL)
+    {
+        // graphics_object[0] is the outermost rectangle used to represent the module
+        location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
+        string object_name = "border (rect)";
+        rect = new Rect(&object_name, &location, &WHITE);
+        (*graphics_objects)[0] = rect;
+
+        // graphics_object[1] is the slightly smaller rectangle within the outermost
+        // rectangle
+        location = {upper_left.x + MODULE_BORDER_WIDTH,
+                    upper_left.y + MODULE_BORDER_WIDTH,
+                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
+                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
+        object_name = "inner_border (rect)";
+        rect = new Rect(&object_name, &location, &color);
+        (*graphics_objects)[1] = rect;
+
+        // graphics_object[2] is the objects name
+        location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
+                             upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
+        object_name = "module name (text)";
+        text = new Text(&object_name, &location, &text_color, NULL, &name, FONT_BOLD);
+        (*graphics_objects)[2] = text;
+    }
+    // If they have already been initialized, just update their locations
+    else
+    {
+        location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
+        (*graphics_objects)[0]->location = location;
+
+        location = {upper_left.x + MODULE_BORDER_WIDTH,
+                    upper_left.y + MODULE_BORDER_WIDTH,
+                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
+                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
+        (*graphics_objects)[1]->location = location;
+
+        location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
+                             upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
+        (*graphics_objects)[2]->location = location;
+
+    }
+
     calculate_unique_graphics_objects();
 }

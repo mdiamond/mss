@@ -224,12 +224,12 @@ void calculate_pages()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         current_sub_page_name = MODULES[i]->name + " (page)";
-        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+        for(unsigned int j = 0; j < MODULES[i]->graphics_objects->size(); j ++)
         {
-            sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
+            sub_page_graphics_objects->push_back((*MODULES[i]->graphics_objects)[j]);
         }
         current_sub_page = new Page(&current_sub_page_name,
-                                    &MODULES[i]->graphics_objects[1]->location, &BLACK,
+                                    &(*MODULES[i]->graphics_objects)[1]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(*current_sub_page);
 

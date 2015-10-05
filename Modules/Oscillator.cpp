@@ -73,6 +73,9 @@ Oscillator::Oscillator(string *_name, int _number)
     graphics.output = new vector<float>(BUFFER_SIZE, 0);
 
     audio.waveform_type = SIN;
+
+    Graphics_Object *dummy = NULL;
+    graphics_objects = new vector<Graphics_Object *>(13, dummy);
 }
 
 /*
@@ -123,159 +126,155 @@ void Oscillator::process()
 }
 
 /*
- * Calculate the location of the waveform visualizer within
- * the window, then create a waveform object at that location
- * to make use of this oscillator's output buffer for its
- * audio data.
- */
-Graphics_Object *Oscillator::calculate_waveform_visualizer()
-{
-    SDL_Rect location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-                          upper_left.y + MODULE_BORDER_WIDTH + 23,
-                          ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4),
-                          55};
-    string object_name = "waveform visualizer (waveform)";
-    Waveform *graphics_object = new Waveform(&object_name, &location, &WHITE, output);
-    return graphics_object;
-}
-
-Graphics_Object *Oscillator::calculate_range_high()
-{
-    int x = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 204;
-    SDL_Rect location = {x, y, (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3), 15};
-    string object_name = "oscillator range high (text_box)";
-    string prompt = "";
-    string text = "";
-    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
-                                       &(graphics.range_high_str),
-                                       &text,
-                                       &prompt,
-                                       FONT_REGULAR,
-                                       this);
-    return graphics_object;
-}
-
-Graphics_Object *Oscillator::calculate_range_low()
-{
-    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 204;
-    SDL_Rect location = {x, y, (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3), 15};
-    string object_name = "oscillator range low (text_box)";
-    string prompt = "";
-    string text = "";
-    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
-                                       &(graphics.range_low_str),
-                                       &text,
-                                       &prompt,
-                                       FONT_REGULAR,
-                                       this);
-    return graphics_object;
-}
-
-Graphics_Object *Oscillator::calculate_pulse_width()
-{
-    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 169;
-    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
-    string object_name = "oscillator pulse width (text_box)";
-    string prompt = "float or module name";
-    string text = "";
-    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
-                                       &(graphics.pulse_width_str),
-                                       &text,
-                                       &prompt,
-                                       FONT_REGULAR,
-                                       this);
-    return graphics_object;
-}
-
-Graphics_Object *Oscillator::calculate_phase_offset()
-{
-    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 134;
-    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
-    string object_name = "oscillator phase offset (text_box)";
-    string prompt = "float or module name";
-    string text = "";
-    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
-                                       &(graphics.phase_offset_str),
-                                       &text,
-                                       &prompt,
-                                       FONT_REGULAR,
-                                       this);
-    return graphics_object;
-}
-
-/*
- * Calculate the location of the text box for
- * frequency of the oscillator.
- */
-Graphics_Object *Oscillator::calculate_frequency()
-{
-    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 97;
-    SDL_Rect location = {x, y, ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4), 15};
-    string object_name = "oscillator frequency (text_box)";
-    string prompt = "float or module name";
-    string text = "";
-    Text_Box *graphics_object = new Text_Box(&object_name, &location, &text_color,
-                                       &(graphics.frequency_str),
-                                       &text,
-                                       &prompt,
-                                       FONT_REGULAR,
-                                       this);
-    return graphics_object;
-}
-
-void Oscillator::calculate_text_objects()
-{
-    int x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 80;
-    SDL_Rect location = {x, y, 0, 0};
-    string object_name = "oscillator frequency (text)";
-    string contents = "FREQUENCY: ";
-    Text *text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
-    graphics_objects.push_back(text);
-
-    x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    y = upper_left.y + MODULE_BORDER_WIDTH + 117;
-    location = {x, y, 0, 0};
-    object_name = "oscillator phase offset (text)";
-    contents = "PHASE OFFSET: ";
-    text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
-    graphics_objects.push_back(text);
-
-    x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    y = upper_left.y + MODULE_BORDER_WIDTH + 152;
-    location = {x, y, 0, 0};
-    object_name = "oscillator pulse width (text)";
-    contents = "PULSE WIDTH: ";
-    text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
-    graphics_objects.push_back(text);
-
-    x = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    y = upper_left.y + MODULE_BORDER_WIDTH + 187;
-    location = {x, y, 0, 0};
-    object_name = "oscillator range high/low (text)";
-    contents = "RANGE HIGH/LOW: ";
-    text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
-    graphics_objects.push_back(text);
-}
-
-/*
  * Calculate the locations of any graphics objects that are
  * unique to this module type.
  */
 void Oscillator::calculate_unique_graphics_objects()
 {
-    calculate_text_objects();
-    graphics_objects.push_back(calculate_waveform_visualizer());
-    graphics_objects.push_back(calculate_frequency());
-    graphics_objects.push_back(calculate_phase_offset());
-    graphics_objects.push_back(calculate_pulse_width());
-    graphics_objects.push_back(calculate_range_low());
-    graphics_objects.push_back(calculate_range_high());
+    int x_text, x_text_box, w_text_box, h_text_box,
+        w_waveform, h_waveform,
+        y3, y4, y5, y6, y7, y8, y9, y10, y11,
+        x_range_high, w_range;
+    SDL_Rect location;
+    string object_name, contents, prompt;
+    Text *text;
+    Text_Box *text_box;
+    Waveform *waveform;
+
+    x_text = upper_left.x + MODULE_BORDER_WIDTH + 5;
+    x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
+    h_text_box = 15;
+    w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
+    h_waveform = 55;
+    y3 = upper_left.y + MODULE_BORDER_WIDTH + 23;
+    y4 = upper_left.y + MODULE_BORDER_WIDTH + 80;
+    y5 = upper_left.y + MODULE_BORDER_WIDTH + 97;   
+    y6 = upper_left.y + MODULE_BORDER_WIDTH + 117;
+    y7 = upper_left.y + MODULE_BORDER_WIDTH + 134;
+    y8 = upper_left.y + MODULE_BORDER_WIDTH + 152;
+    y9 = upper_left.y + MODULE_BORDER_WIDTH + 169;
+    y10 = upper_left.y + MODULE_BORDER_WIDTH + 187;
+    y11 = upper_left.y + MODULE_BORDER_WIDTH + 204;
+    x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
+    w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3);
+
+    // If the 4th graphics object is null, that means the graphics objects have not
+    // been calculated before, and we must make them from scratch
+    if((*graphics_objects)[3] == NULL)
+    {
+        // graphics_objects[3] is the waveform visualizer
+        location = {x_text_box, y3, w_waveform, h_waveform};
+        object_name = "waveform visualizer (waveform)";
+        waveform = new Waveform(&object_name, &location, &WHITE, output);
+        (*graphics_objects)[3] = waveform;
+
+        // graphics_objects[4] is the display text "FREQUENCY:"
+        location = {x_text, y4, 0, 0};
+        object_name = "oscillator frequency (text)";
+        contents = "FREQUENCY:";
+        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        (*graphics_objects)[4] = text;
+
+        // graphics_objects[5] is the text box for entering and displaying frequency
+        location = {x_text_box, y5, w_text_box, h_text_box};
+        object_name = "oscillator frequency (text_box)";
+        contents = "";
+        prompt = "# or input";
+        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.frequency_str),
+                                &contents, &prompt, FONT_REGULAR, this);
+        (*graphics_objects)[5] = text_box;
+
+        // graphics_objects[6] is the display text "PHASE OFFSET:"
+        location = {x_text, y6, 0, 0};
+        object_name = "oscillator phase offset (text)";
+        contents = "PHASE OFFSET:";
+        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        (*graphics_objects)[6] = text;
+
+        // graphics_objects[7] is the text box for entering and displaying phase offset
+        location = {x_text_box, y7, w_text_box, h_text_box};
+        object_name = "oscillator phase offset (text_box)";
+        contents = "";
+        prompt = "# or input";
+        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.phase_offset_str),
+                                &contents, &prompt, FONT_REGULAR, this);
+        (*graphics_objects)[7] = text_box;
+
+        // graphics_objects[8] is the display text "PULSE WIDTH:"
+        location = {x_text, y8, 0, 0};
+        object_name = "oscillator pulse width (text)";
+        contents = "PULSE WIDTH:";
+        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        (*graphics_objects)[8] = text;
+
+        // graphics_objects[9] is the text box for entering and displaying pulse width
+        location = {x_text_box, y9, w_text_box, h_text_box};
+        object_name = "oscillator pulse width (text_box)";
+        contents = "";
+        prompt = "# or input";
+        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.pulse_width_str),
+                                &contents, &prompt, FONT_REGULAR, this);
+        (*graphics_objects)[9] = text_box;
+
+        // graphics_objects[10] is the display text "RANGE (LOW - HIGH):"
+        location = {x_text, y10, 0, 0};
+        object_name = "oscillator range low/high (text)";
+        contents = "RANGE (LOW-HIGH):";
+        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        (*graphics_objects)[10] = text;
+
+        // graphics_objects[11] is the text box for entering and displaying range low
+        location = {x_text_box, y11, w_range, h_text_box};
+        object_name = "oscillator range low (text_box)";
+        contents = "";
+        prompt = "# or input";
+        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.range_low_str),
+                                &contents, &prompt, FONT_REGULAR, this);
+        (*graphics_objects)[11] = text_box;
+
+        // graphics_objects[12] is the text box for entering and displaying range high
+        location = {x_range_high, y11, w_range, h_text_box};
+        object_name = "oscillator range high (text_box)";
+        contents = "";
+        prompt = "# or input";
+        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.range_high_str),
+                                &contents, &prompt, FONT_REGULAR, this);
+        (*graphics_objects)[12] = text_box;
+    }
+    // Otherwise, simply update the locations of all of the graphics objects
+    else
+    {
+        location = {x_text_box, y3, w_waveform, h_waveform};
+        (*graphics_objects)[3]->location = location;
+
+        location = {x_text, y4, 0, 0};
+        (*graphics_objects)[4]->location = location;
+
+        location = {x_text_box, y5, w_text_box, h_text_box};
+        (*graphics_objects)[5]->location = location;
+
+        location = {x_text, y6, 0, 0};
+        (*graphics_objects)[6]->location = location;
+
+        location = {x_text_box, y7, w_text_box, h_text_box};
+        (*graphics_objects)[7]->location = location;
+
+        location = {x_text, y8, 0, 0};
+        (*graphics_objects)[8]->location = location;
+
+        location = {x_text_box, y9, w_text_box, h_text_box};
+        (*graphics_objects)[9]->location = location;
+
+        location = {x_text, y10, 0, 0};
+        (*graphics_objects)[10]->location = location;
+
+        location = {x_text_box, y11, w_range, h_text_box};
+        (*graphics_objects)[11]->location = location;
+
+        location = {x_range_high, y11, w_range, h_text_box};
+        (*graphics_objects)[12]->location = location;
+    }
 }
 
 /*
@@ -294,9 +293,4 @@ void Oscillator::copy_graphics_data()
     graphics.range_high_str = to_string(audio.range_high);
 
     copy_signal(output, graphics.output);
-}
-
-void Oscillator::set_frequency(float _frequency)
-{
-    audio.frequency = _frequency;
 }

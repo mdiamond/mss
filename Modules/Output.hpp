@@ -42,9 +42,6 @@ class Output: public Module
         virtual void calculate_unique_graphics_objects();
         virtual void copy_graphics_data();
         void calculate_text_objects();
-        Graphics_Object *calculate_on_off_button();
-        Graphics_Object *calculate_input_1eft();
-        Graphics_Object *calculate_input_right();
         void toggle_audio_on();
 };
 

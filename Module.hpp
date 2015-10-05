@@ -47,7 +47,7 @@ class Module
         std::vector<Module *> depends;
         // A vector containing any graphics objects
         // necessary for rendering this module
-        std::vector<Graphics_Object *> graphics_objects;
+        std::vector<Graphics_Object *> *graphics_objects;
         // Output buffer
         std::vector<float> *output;
         // Constructor and destructor
@@ -69,10 +69,10 @@ class Module
         virtual void calculate_unique_graphics_objects() = 0;
         // Member functions
         void process_depends();
-        void set_output_to(std::vector<float> *);
         Graphics_Object *calculate_border();
         Graphics_Object *calculate_inner_border();
         Graphics_Object *calculate_name();
+        void calculate_upper_left();
         void calculate_graphics_objects();
 };
 
