@@ -100,8 +100,8 @@ void Oscillator::process()
     if(audio.live_phase_offset)
         audio.phase_offset = (*(audio.input_phase_offset))[0];
     if(audio.live_pulse_width)
-        audio.range_low = (*(audio.input_pulse_width))[0];
-    if(audio.live_pulse_width)
+        audio.pulse_width = (*(audio.input_pulse_width))[0];
+    if(audio.live_range_low)
         audio.range_low = (*(audio.input_range_low))[0];
     if(audio.live_range_high)
         audio.range_high = (*(audio.input_range_high))[0];
@@ -293,7 +293,7 @@ void Oscillator::copy_graphics_data()
     graphics.range_low_str = to_string(audio.range_low);
     graphics.range_high_str = to_string(audio.range_high);
 
-    copy_buffer(output, graphics.output);
+    copy_signal(output, graphics.output);
 }
 
 void Oscillator::set_frequency(float _frequency)

@@ -28,6 +28,7 @@ class Waveform: public Graphics_Object
         // Member functions
         virtual void render_graphics_object();
         virtual void clicked();
+        float calculate_y(int, int);
 };
 
 #endif
