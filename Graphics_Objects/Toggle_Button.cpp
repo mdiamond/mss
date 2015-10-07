@@ -56,11 +56,14 @@ Toggle_Button::Toggle_Button(string *_name, SDL_Rect *_location, SDL_Color *_col
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Toggle_Button::~Toggle_Button()
 {
-
+    delete &text_on_str;
+    delete &text_off_str;
+    delete text_on;
+    delete text_off;
 }
 
 /*

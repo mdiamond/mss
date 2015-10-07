@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -31,15 +32,15 @@ using namespace std;
  */
 Graphics_Object::Graphics_Object()
 {
-
+    updated = true;
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Graphics_Object::~Graphics_Object()
 {
-
+    cout << "Destroying " << name << endl;
 }
 
 /*

@@ -74,7 +74,7 @@ SDL_Color BLACK = {0, 0, 0 , 255};
 SDL_Color WHITE = {255, 255, 255, 255};
 
 // Pages
-std::vector<Page> PAGES;
+vector<Page *> *PAGES = new vector<Page *>();
 unsigned int CURRENT_PAGE = 0;
 
 // Mouse information
@@ -92,7 +92,7 @@ string TYPING_BUFFER;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
-vector<Module *> MODULES;
+vector<Module *> *MODULES = new vector<Module *>();
 bool MODULES_CHANGED = true;
 
 /***********************

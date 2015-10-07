@@ -105,47 +105,15 @@ int load_fonts()
  */
 void calculate_graphics_objects()
 {
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    for(unsigned int i = 0; i < MODULES->size(); i ++)
     {
-        MODULES[i]->calculate_graphics_objects();
+        (*MODULES)[i]->calculate_graphics_objects();
     }
     MODULES_CHANGED = 0;
 }
 
-bool render_special_pages()
-{
-    return false;
-
-    // Variables for the current sub page, its sub pages,
-    // its sub pages graphics objects, and the current page
-    // (no page has any graphics objects, only sub pages
-    // which contain graphics objects)
-    string current_sub_page_name;
-    Page *current_sub_page;
-    vector<Page> *sub_pages = new vector<Page>();
-    vector<Graphics_Object *> *sub_page_graphics_objects = new vector<Graphics_Object *>();
-    string current_page_name;
-    Page *current_page;
-
-    // Create the background and add it to the list of graphics
-    // objects
-    string object_name = "background (rect)";
-    Rect *background = new Rect(&object_name, &WINDOW_RECT, &BLACK);
-    sub_page_graphics_objects->push_back(background);
-
-    // Create the sub page and add it to the list of sub pages
-    // for the current page
-    current_sub_page_name = "utilities & background (page)";
-    current_sub_page = new Page(&current_sub_page_name, &WINDOW_RECT, &BLACK,
-                                      sub_page_graphics_objects, NULL);
-    sub_pages->push_back(*current_sub_page);
-    sub_page_graphics_objects = new vector<Graphics_Object *>();
-
-    return true;
-}
-
 void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_objects,
-                                   vector<Page> *sub_pages, Page *current_sub_page)
+                                   vector<Page *> *sub_pages, Page *current_sub_page)
 {
     int x = 2;
     // Create the background and add it to the list of graphics
@@ -167,7 +135,7 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 
     // Create the "previous page" button and add it to the
     // list of graphics objects
-    x += 2;
+    x = WINDOW_WIDTH - 157;
     location = {x, WINDOW_HEIGHT - 17, 92, 15};
     x += 92;
     object_name = "previous page (button)";
@@ -194,8 +162,19 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     string current_sub_page_name = "utilities & background (page)";
     current_sub_page = new Page(&current_sub_page_name, &WINDOW_RECT, &BLACK,
                                       sub_page_graphics_objects, NULL);
-    sub_pages->push_back(*current_sub_page);
+    sub_pages->push_back(current_sub_page);
     sub_page_graphics_objects = new vector<Graphics_Object *>();
+}
+
+void delete_pages()
+{
+    int i = 0;
+    while(!PAGES->empty())
+    {
+        delete (*PAGES)[PAGES->size()];
+        PAGES->pop_back();
+        i ++;
+    }
 }
 
 /*
@@ -203,16 +182,16 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
  */
 void calculate_pages()
 {
-    // if(render_special_pages())
-    //     return;
+    delete PAGES;
+    PAGES = new vector<Page *>();
 
     // Variables for the current sub page, its sub pages,
     // its sub pages graphics objects, and the current page
     // (no page has any graphics objects, only sub pages
-    // which contain graphics objects)
+    // contain graphics objects)
     string current_sub_page_name;
     Page *current_sub_page;
-    vector<Page> *sub_pages = new vector<Page>();
+    vector<Page *> *sub_pages = new vector<Page *>();
     vector<Graphics_Object *> *sub_page_graphics_objects = new vector<Graphics_Object *>();
     string current_page_name;
     Page *current_page;
@@ -221,32 +200,30 @@ void calculate_pages()
     // buttons for special functions
     initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
 
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    for(unsigned int i = 0; i < MODULES->size(); i ++)
     {
-        current_sub_page_name = MODULES[i]->name + " (page)";
-        for(unsigned int j = 0; j < MODULES[i]->graphics_objects->size(); j ++)
+        current_sub_page_name = (*MODULES)[i]->name + " (page)";
+        for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
         {
-            sub_page_graphics_objects->push_back((*MODULES[i]->graphics_objects)[j]);
+            sub_page_graphics_objects->push_back((*(*MODULES)[i]->graphics_objects)[j]);
+            (*(*MODULES)[i]->graphics_objects)[j]->updated = true;
         }
         current_sub_page = new Page(&current_sub_page_name,
-                                    &(*MODULES[i]->graphics_objects)[1]->location, &BLACK,
+                                    &(*(*MODULES)[i]->graphics_objects)[1]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
-        sub_pages->push_back(*current_sub_page);
+        sub_pages->push_back(current_sub_page);
 
         sub_page_graphics_objects = new vector<Graphics_Object *>();
 
         if(i == (unsigned) ((MODULES_PER_COLUMN * MODULES_PER_ROW) - 1) ||
-           i == MODULES.size() - 1)
+           i == MODULES->size() - 1)
         {
             current_page_name = to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)";
             current_page = new Page(&current_page_name, &WINDOW_RECT, &BLACK,
                                     NULL, sub_pages);
-            if(i / (MODULES_PER_COLUMN * MODULES_PER_ROW) < PAGES.size())
-                PAGES[i / (MODULES_PER_COLUMN * MODULES_PER_ROW)] = *current_page;
-            else
-                PAGES.push_back(*current_page);
+            (*PAGES).push_back(current_page);
 
-            sub_pages = new vector<Page>();
+            sub_pages = new vector<Page *>();
             sub_page_graphics_objects = new vector<Graphics_Object *>();
             initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
         }
@@ -260,19 +237,6 @@ void calculate_pages()
  */
 void draw_surface()
 {
-    // First, lock the audio
-    SDL_LockAudio();
-
-    // Once audio is locked, copy all data necessary for graphics
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-    {
-        MODULES[i]->copy_graphics_data();
-    }
-
-    // Once all data necessary for graphics has been copied,
-    // unlock the audio
-    SDL_UnlockAudio();
-
     // If the set of modules has changed, calculate the
     // graphics objects, then calculate the pages
     if(MODULES_CHANGED)
@@ -284,8 +248,8 @@ void draw_surface()
 
     // If the current page exists, render it, otherwise,
     // render a black rectangle over the whole window
-    if((unsigned int) CURRENT_PAGE < PAGES.size())
-        PAGES[CURRENT_PAGE].render_graphics_object();
+    if((unsigned int) CURRENT_PAGE < PAGES->size())
+        (*PAGES)[CURRENT_PAGE]->render_graphics_object();
     else
     {
         SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);

@@ -23,11 +23,11 @@ class Page: public Graphics_Object
 {
     public:
         std::vector<Graphics_Object *> *graphics_objects;
-        std::vector<Page> *sub_pages;
+        std::vector<Page *> *sub_pages;
         // Constructor and destructor
         Page(std::string *, SDL_Rect *, SDL_Color *,
              std::vector<Graphics_Object *> *,
-             std::vector<Page> *);
+             std::vector<Page *> *);
         virtual ~Page();
         // Member functions
         virtual void render_graphics_object();

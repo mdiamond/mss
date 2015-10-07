@@ -43,14 +43,27 @@ Module::Module()
     text_color.b = 256 - color.b;
     color.a = 255;
     text_color.a = 255;
+
+    depends = new vector<Module *>;
+    graphics_objects = new vector<Graphics_Object *>;
+    output = new vector<float>(BUFFER_SIZE, 0);
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Module::~Module()
 {
+    delete &name;
 
+    int i = 0;
+    while(!graphics_objects->empty())
+    {
+        delete (*graphics_objects)[i];
+    }
+    delete depends;
+    delete graphics_objects;
+    delete output;
 }
 
 /*
@@ -59,49 +72,10 @@ Module::~Module()
  */
 void Module::process_depends()
 {
-    for(unsigned int i = 0; i < depends.size(); i ++)
+    for(unsigned int i = 0; i < depends->size(); i ++)
     {
-        depends[i]->process();
+        (*depends)[i]->process();
     }
-}
-
-/*
- * This function calculates the module's outer border
- */
-Graphics_Object *Module::calculate_border()
-{
-    SDL_Rect _border = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-    string object_name = "border (rect)";
-    Rect *border = new Rect(&object_name, &_border, &WHITE);
-    return border;
-}
-
-/*
- * This function calculates the location of the module's
- * inner border.
- */
-Graphics_Object *Module::calculate_inner_border()
-{
-    SDL_Rect _inner_border = {upper_left.x + MODULE_BORDER_WIDTH,
-                              upper_left.y + MODULE_BORDER_WIDTH,
-                              MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
-                              MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-    string object_name = "inner_border (rect)";
-    Rect *inner_border = new Rect(&object_name, &_inner_border, &color);
-    return inner_border;
-}
-
-/*
- * This function calculates the location of the module's name.
- */
-Graphics_Object *Module::calculate_name()
-{
-    int x = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    int y = upper_left.y + MODULE_BORDER_WIDTH + 5;
-    SDL_Rect location = {x, y, 0, 0};
-    string object_name = "module name (text)";
-    Text *module_name = new Text(&object_name, &location, &text_color, NULL, &name, FONT_BOLD);
-    return module_name;
 }
 
 void Module::calculate_upper_left()

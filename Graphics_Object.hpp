@@ -53,6 +53,7 @@ class Graphics_Object
         SDL_Rect location;
         SDL_Color color;
         Module *parent;
+        bool updated;
         // Constructor and destructor
         Graphics_Object();
         virtual ~Graphics_Object();

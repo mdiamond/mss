@@ -41,18 +41,15 @@ Output::Output(int _number)
     type = OUTPUT;
     number = _number;
 
-    audio.input_l = new vector<float>(BUFFER_SIZE, 0);
-    audio.input_r = new vector<float>(BUFFER_SIZE, 0);
-
-    graphics.input_l = new vector<float>(BUFFER_SIZE, 0);
-    graphics.input_r = new vector<float>(BUFFER_SIZE, 0);
+    input_l = new vector<float>(BUFFER_SIZE, 0);
+    input_r = new vector<float>(BUFFER_SIZE, 0);
 
     Graphics_Object *dummy = NULL;
     graphics_objects = new vector<Graphics_Object *>(11, dummy);
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Output::~Output()
 {
@@ -126,7 +123,7 @@ void Output::calculate_unique_graphics_objects()
         // graphics_objects[5] is the waveform visualizer for the left speaker
         location = {x_text_box, y5, w_waveform, h_waveform};
         object_name = "waveform visualizer l (waveform)";
-        waveform = new Waveform(&object_name, &location, &WHITE, graphics.input_l);
+        waveform = new Waveform(&object_name, &location, &WHITE, input_l);
         (*graphics_objects)[5] = waveform;
 
         // graphics_objects[6] is the display text "LEFT INPUT:"
@@ -148,7 +145,7 @@ void Output::calculate_unique_graphics_objects()
         // graphics_objects[8] is the waveform visualizer for the right speaker
         location = {x_text_box, y8, w_waveform, h_waveform};
         object_name = "waveform visualizer r (waveform)";
-        waveform = new Waveform(&object_name, &location, &WHITE, graphics.input_r);
+        waveform = new Waveform(&object_name, &location, &WHITE, input_r);
         (*graphics_objects)[8] = waveform;
 
         // graphics_objects[9] is the display text "PHASE OFFSET:"
@@ -196,24 +193,11 @@ void Output::calculate_unique_graphics_objects()
     }
 }
 
-/*
- * Copy all data from the audio data struct to the
- * graphics data struct to make it available for
- * rendering.
- */
-void Output::copy_graphics_data()
-{
-  copy_signal(audio.input_l, graphics.input_l);
-  copy_signal(audio.input_r, graphics.input_r);
-}
-
 void Output::toggle_audio_on()
 {
-    SDL_LockAudio();
     AUDIO_ON = !AUDIO_ON;
     if(AUDIO_ON)
         SDL_PauseAudio(0);
     else
         SDL_PauseAudio(1);
-    SDL_UnlockAudio();
 }

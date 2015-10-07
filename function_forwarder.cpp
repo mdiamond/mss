@@ -62,6 +62,7 @@ Module *find_module(string *string, vector<Module *> *modules)
 void output_function_forwarder(Graphics_Object *g)
 {
     Output *output = (Output *) g->parent;
+    Text_Box *text_box;
     if(g->name == "on/off button (toggle_button)")
     {
         output->toggle_audio_on();
@@ -69,20 +70,20 @@ void output_function_forwarder(Graphics_Object *g)
     }
     if(g->name == "output input left (text_box)")
     {
-        Text_Box *text_box = (Text_Box *) g;
-        Module *module = find_module(&text_box->text->current_text, &MODULES);
-        if(find_module(&module->name, &output->depends) == NULL)
-            output->depends.push_back(module);
-        output->audio.input_l = module->output;
+        text_box = (Text_Box *) g;
+        Module *module = find_module(&text_box->text->current_text, MODULES);
+        if(find_module(&module->name, output->depends) == NULL)
+            output->depends->push_back(module);
+        output->input_l = module->output;
         cout << "Output left is now coming from " << module->name << endl;
     }
     else if(g->name == "output input right (text_box)")
     {
-        Text_Box *text_box = (Text_Box *) g;
-        Module *module = find_module(&text_box->text->current_text, &MODULES);
-        if(find_module(&module->name, &output->depends) == NULL)
-            output->depends.push_back(module);
-        output->audio.input_r = module->output;
+        text_box = (Text_Box *) g;
+        Module *module = find_module(&text_box->text->current_text, MODULES);
+        if(find_module(&module->name, output->depends) == NULL)
+            output->depends->push_back(module);
+        output->input_r = module->output;
         cout << "Output right is now coming from " << module->name << endl;
     }
 }
@@ -100,27 +101,24 @@ void oscillator_function_forwarder(Graphics_Object *g)
 {
     Oscillator *oscillator = (Oscillator *) g->parent;
     Text_Box *text_box;
-    Button *button;
     if(g->type == TEXT_BOX)
         text_box = (Text_Box *) g;
-    else if(g->type == BUTTON)
-        button = (Button *) g;
 
     if(g->name == "oscillator frequency (text_box)")
     {
         if(can_floatify(&text_box->text->current_text))
         {
-            oscillator->audio.frequency = stof(text_box->text->current_text.c_str());
-            oscillator->audio.live_frequency = false;
-            cout << oscillator->name << " frequency changed to " <<  oscillator->audio.frequency << endl;
+            oscillator->frequency = stof(text_box->text->current_text.c_str());
+            oscillator->live_frequency = false;
+            cout << oscillator->name << " frequency changed to " <<  oscillator->frequency << endl;
         }
         else
         {
-            Module *module = find_module(&text_box->text->current_text, &MODULES);
-            if(find_module(&module->name, &oscillator->depends) == NULL)
-                oscillator->depends.push_back(module);
-            oscillator->audio.input_frequency = module->output;
-            oscillator->audio.live_frequency = true;
+            Module *module = find_module(&text_box->text->current_text, MODULES);
+            if(find_module(&module->name, oscillator->depends) == NULL)
+                oscillator->depends->push_back(module);
+            oscillator->input_frequency = module->output;
+            oscillator->live_frequency = true;
             cout << oscillator->name << " frequency is now coming from " << module->name << endl;
         }
     }
@@ -128,17 +126,17 @@ void oscillator_function_forwarder(Graphics_Object *g)
     {
         if(can_floatify(&text_box->text->current_text))
         {
-            oscillator->audio.phase_offset = stof(text_box->text->current_text.c_str());
-            oscillator->audio.live_phase_offset = false;
-            cout << oscillator->name << " phase offset changed to " <<  oscillator->audio.phase_offset << endl;
+            oscillator->phase_offset = stof(text_box->text->current_text.c_str());
+            oscillator->live_phase_offset = false;
+            cout << oscillator->name << " phase offset changed to " <<  oscillator->phase_offset << endl;
         }
         else
         {
-            Module *module = find_module(&text_box->text->current_text, &MODULES);
-            if(find_module(&module->name, &oscillator->depends) == NULL)
-                oscillator->depends.push_back(module);
-            oscillator->audio.input_phase_offset = module->output;
-            oscillator->audio.live_phase_offset = true;
+            Module *module = find_module(&text_box->text->current_text, MODULES);
+            if(find_module(&module->name, oscillator->depends) == NULL)
+                oscillator->depends->push_back(module);
+            oscillator->input_phase_offset = module->output;
+            oscillator->live_phase_offset = true;
             cout << oscillator->name << " phase offset is now coming from " << module->name << endl;
         }
     }
@@ -146,17 +144,17 @@ void oscillator_function_forwarder(Graphics_Object *g)
     {
         if(can_floatify(&text_box->text->current_text))
         {
-            oscillator->audio.pulse_width = stof(text_box->text->current_text.c_str());
-            oscillator->audio.live_pulse_width = false;
-            cout << oscillator->name << " pulse width changed to " <<  oscillator->audio.pulse_width << endl;
+            oscillator->pulse_width = stof(text_box->text->current_text.c_str());
+            oscillator->live_pulse_width = false;
+            cout << oscillator->name << " pulse width changed to " <<  oscillator->pulse_width << endl;
         }
         else
         {
-            Module *module = find_module(&text_box->text->current_text, &MODULES);
-            if(find_module(&module->name, &oscillator->depends) == NULL)
-                oscillator->depends.push_back(module);
-            oscillator->audio.input_pulse_width = module->output;
-            oscillator->audio.live_pulse_width = true;
+            Module *module = find_module(&text_box->text->current_text, MODULES);
+            if(find_module(&module->name, oscillator->depends) == NULL)
+                oscillator->depends->push_back(module);
+            oscillator->input_pulse_width = module->output;
+            oscillator->live_pulse_width = true;
             cout << oscillator->name << " pulse width is now coming from " << module->name << endl;
         }
     }
@@ -164,17 +162,17 @@ void oscillator_function_forwarder(Graphics_Object *g)
     {
         if(can_floatify(&text_box->text->current_text))
         {
-            oscillator->audio.range_low = stof(text_box->text->current_text.c_str());
-            oscillator->audio.live_range_low = false;
-            cout << oscillator->name << " range low changed to " <<  oscillator->audio.range_low << endl;
+            oscillator->range_low = stof(text_box->text->current_text.c_str());
+            oscillator->live_range_low = false;
+            cout << oscillator->name << " range low changed to " <<  oscillator->range_low << endl;
         }
         else
         {
-            Module *module = find_module(&text_box->text->current_text, &MODULES);
-            if(find_module(&module->name, &oscillator->depends) == NULL)
-                oscillator->depends.push_back(module);
-            oscillator->audio.input_range_low = module->output;
-            oscillator->audio.live_range_low = true;
+            Module *module = find_module(&text_box->text->current_text, MODULES);
+            if(find_module(&module->name, oscillator->depends) == NULL)
+                oscillator->depends->push_back(module);
+            oscillator->input_range_low = module->output;
+            oscillator->live_range_low = true;
             cout << oscillator->name << " range low is now coming from " << module->name << endl;
         }
     }
@@ -182,17 +180,17 @@ void oscillator_function_forwarder(Graphics_Object *g)
     {
         if(can_floatify(&text_box->text->current_text))
         {
-            oscillator->audio.range_high = stof(text_box->text->current_text.c_str());
-            oscillator->audio.live_range_high = false;
-            cout << oscillator->name << " range high changed to " <<  oscillator->audio.range_high << endl;
+            oscillator->range_high = stof(text_box->text->current_text.c_str());
+            oscillator->live_range_high = false;
+            cout << oscillator->name << " range high changed to " <<  oscillator->range_high << endl;
         }
         else
         {
-            Module *module = find_module(&text_box->text->current_text, &MODULES);
-            if(find_module(&module->name, &oscillator->depends) == NULL)
-                oscillator->depends.push_back(module);
-            oscillator->audio.input_range_high = module->output;
-            oscillator->audio.live_range_high = true;
+            Module *module = find_module(&text_box->text->current_text, MODULES);
+            if(find_module(&module->name, oscillator->depends) == NULL)
+                oscillator->depends->push_back(module);
+            oscillator->input_range_high = module->output;
+            oscillator->live_range_high = true;
             cout << oscillator->name << " range high is now coming from " << module->name << endl;
         }
     }
@@ -206,9 +204,9 @@ void no_parent_function_forwarder(Graphics_Object *g)
 {
     if(g->name == "add oscillator (button)")
     {
-        string name = "Oscillator " + to_string(MODULES.size());
-        Oscillator *oscillator = new Oscillator(&name, MODULES.size());
-        MODULES.push_back(oscillator);
+        string name = "Oscillator " + to_string(MODULES->size());
+        Oscillator *oscillator = new Oscillator(&name, MODULES->size());
+        MODULES->push_back(oscillator);
         MODULES_CHANGED = true;
         cout << "Added module " << name << endl;
     }
@@ -222,7 +220,7 @@ void no_parent_function_forwarder(Graphics_Object *g)
     }
     else if(g->name == "next page (button)")
     {
-        if(CURRENT_PAGE < PAGES.size() - 1)
+        if(CURRENT_PAGE < PAGES->size() - 1)
         {
             CURRENT_PAGE ++;
             cout << "Switched to page " << CURRENT_PAGE << endl;

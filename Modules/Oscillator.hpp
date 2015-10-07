@@ -34,45 +34,35 @@ enum Waveforms
  * OSCILLATOR CLASS DEFINITION *
  *******************************/
 
-struct Oscillator_Data
-{
-    // The current phase of the oscillator
-    float current_phase;
-    // Set up floats, buffers, and strings to represent the various
-    // characteristics of the oscillator:
-    //   - frequency: the frequency at which it oscillates
-    //   - phase_offset: what point in oscillation at which to begin oscillating
-    //   - pulse_width: the width of the square wave pulse
-    //   - range_low: the low point of oscillation
-    //   - range_high: the high point of oscillation
-    float frequency, phase_offset, pulse_width, range_low, range_high;
-    std::vector<float> *input_frequency, *input_phase_offset, *input_pulse_width,
-                        *input_range_low, *input_range_high;
-    std::string frequency_str, phase_offset_str, pulse_width_str, range_low_str,
-                range_high_str;
-    bool live_frequency, live_phase_offset, live_pulse_width, live_range_low,
-         live_range_high;
-    // Booleans to represent whether or not each of the waveforms is enabled
-    int waveform_type;
-    // Output buffer
-    std::vector<float> *output;
-};
-
 class Oscillator: public Module
 {
     public:
-        // Two copies of the oscillator data,
-        // one for access by the audio thread,
-        // one for access by the main thread
-        struct Oscillator_Data audio, graphics;
+        // The current phase of the oscillator
+        float current_phase;
+        // Set up floats, buffers, and strings to represent the various
+        // characteristics of the oscillator:
+        //   - frequency: the frequency at which it oscillates
+        //   - phase_offset: what point in oscillation at which to begin oscillating
+        //   - pulse_width: the width of the square wave pulse
+        //   - range_low: the low point of oscillation
+        //   - range_high: the high point of oscillation
+        float frequency, phase_offset, pulse_width, range_low, range_high;
+        std::vector<float> *input_frequency, *input_phase_offset, *input_pulse_width,
+                            *input_range_low, *input_range_high;
+        std::string frequency_str, phase_offset_str, pulse_width_str, range_low_str,
+                    range_high_str;
+        bool live_frequency, live_phase_offset, live_pulse_width, live_range_low,
+             live_range_high;
+        // Booleans to represent whether or not each of the waveforms is enabled
+        int waveform_type;
 
         // Constructor and destructor
         Oscillator(std::string *, int);
         virtual ~Oscillator();
+
         // Member functions
         virtual void process();
         virtual void calculate_unique_graphics_objects();
-        virtual void copy_graphics_data();
 };
 
 #endif

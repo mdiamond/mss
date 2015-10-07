@@ -70,8 +70,8 @@ int open_audio_device()
 void initialize_output()
 {
     // Create the output module
-    Output *output = new Output(MODULES.size());
-    MODULES.push_back(output);
+    Output *output = new Output(MODULES->size());
+    MODULES->push_back(output);
 
     cout << "Output initialized." << endl;
 }
@@ -94,7 +94,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     float *buffer = (float *) _buffer;
 
     // Get the address of the output module for later use
-    Output *output = (Output *) MODULES[0];
+    Output *output = (Output *) (*MODULES)[0];
 
     // Process audio for the output module
     // This will recursively call upon depended modules
@@ -108,14 +108,10 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     float *buffer_r = buffer + 1;
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        *buffer_l = (*((output->audio).input_l))[i];
-        *buffer_r = (*((output->audio).input_r))[i];
+        *buffer_l = (*(output->input_l))[i];
+        *buffer_r = (*(output->input_r))[i];
         buffer_l += 2;
         buffer_r += 2;
-        // Uncomment these for some cool parameter modulation
-        // (((Oscillator *)MODULES[1])->audio).frequency += .001;
-        // (((Oscillator *)MODULES[2])->audio).frequency += .0001;
-        // (((Oscillator *)MODULES[2])->audio).modulation_index -= .00001;
     }
 }
 
@@ -140,7 +136,7 @@ void clip_signal(vector<float> *buffer, float min, float max)
 }
 
 /*
- * Copy a signal to a new buffer.
+ * Copy a signal to a different buffer.
  */
 void copy_signal(vector<float> *src, vector<float> *dst)
 {

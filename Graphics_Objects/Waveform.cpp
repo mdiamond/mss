@@ -43,7 +43,7 @@ Waveform::Waveform(string *_name, SDL_Rect *_location,
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Waveform::~Waveform()
 {

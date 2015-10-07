@@ -56,11 +56,12 @@ Button::Button(string *_name, SDL_Rect *_location, SDL_Color *_color,
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Button::~Button()
 {
-
+    delete &text_str;
+    delete text;
 }
 
 /*

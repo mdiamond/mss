@@ -52,14 +52,18 @@ Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color,
     location.w = width;
     location.h = height;
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
+    updated = false;
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Text::~Text()
 {
-
+    delete &original_text;
+    delete &current_text;
+    delete &old_text;
+    SDL_DestroyTexture(texture);
 }
 
 /*
@@ -72,15 +76,20 @@ void Text::render_graphics_object()
     {
         old_text = current_text;
         current_text = *live_text;
+        updated = true;
     }
-
-    SDL_Surface *surface = TTF_RenderText_Blended(font, (current_text).c_str(), color);
-    texture = SDL_CreateTextureFromSurface(RENDERER, surface);
-    int width, height;
-    SDL_QueryTexture(texture, NULL, NULL, &width, &height);
-    location.w = width;
-    location.h = height;
-    SDL_RenderCopy(RENDERER, texture, NULL, &location);
+    if(updated)
+    {
+        SDL_Surface *surface = TTF_RenderText_Blended(font, (current_text).c_str(), color);
+        SDL_DestroyTexture(texture);
+        texture = SDL_CreateTextureFromSurface(RENDERER, surface);
+        int width, height;
+        SDL_QueryTexture(texture, NULL, NULL, &width, &height);
+        location.w = width;
+        location.h = height;
+        SDL_RenderCopy(RENDERER, texture, NULL, &location);
+        updated = false;
+    }
 
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderCopy(RENDERER, texture, NULL, &location);

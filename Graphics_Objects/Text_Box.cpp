@@ -57,11 +57,13 @@ Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color,
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Text_Box::~Text_Box()
 {
-
+    delete text;
+    delete prompt_text;
+    delete typing_text;
 }
 
 /*

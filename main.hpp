@@ -54,7 +54,7 @@ extern TTF_Font *FONT_BOLD;
 extern SDL_Color BLACK;
 extern SDL_Color WHITE;
 //   Pages
-extern std::vector<Page> PAGES;
+extern std::vector<Page *> *PAGES;
 extern unsigned int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;
@@ -68,7 +68,7 @@ extern std::string TYPING_BUFFER;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
-extern std::vector<Module *> MODULES;
+extern std::vector<Module *> *MODULES;
 extern bool MODULES_CHANGED;
 
 #endif

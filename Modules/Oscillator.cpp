@@ -43,43 +43,42 @@ Oscillator::Oscillator(string *_name, int _number)
     type = OSCILLATOR;
     number = _number;
 
-    audio.frequency = 0;
-    audio.frequency_str = "0";
-    audio.input_frequency = new vector<float>(BUFFER_SIZE, 0);
-    audio.live_frequency = false;
+    frequency = 0;
+    frequency_str = "0";
+    input_frequency = new vector<float>(BUFFER_SIZE, 0);
+    live_frequency = false;
 
-    audio.phase_offset = 0;
-    audio.phase_offset_str = "0";
-    audio.input_phase_offset = new vector<float>(BUFFER_SIZE, 0);
-    audio.live_phase_offset = false;
+    phase_offset = 0;
+    phase_offset_str = "0";
+    input_phase_offset = new vector<float>(BUFFER_SIZE, 0);
+    live_phase_offset = false;
 
-    audio.pulse_width = 0;
-    audio.pulse_width_str = "0";
-    audio.input_pulse_width = new vector<float>(BUFFER_SIZE, 0);
-    audio.live_pulse_width = false;
+    pulse_width = 0;
+    pulse_width_str = "0";
+    input_pulse_width = new vector<float>(BUFFER_SIZE, 0);
+    live_pulse_width = false;
 
-    audio.range_low = -1;
-    audio.range_low_str = "-1";
-    audio.input_range_low = new vector<float>(BUFFER_SIZE, 0);
-    audio.live_range_low = false;
+    range_low = -1;
+    range_low_str = "-1";
+    input_range_low = new vector<float>(BUFFER_SIZE, 0);
+    live_range_low = false;
 
-    audio.range_high = 1;
-    audio.range_high_str = "1";
-    audio.input_range_high = new vector<float>(BUFFER_SIZE, 0);
-    audio.live_range_high = false;
+    range_high = 1;
+    range_high_str = "1";
+    input_range_high = new vector<float>(BUFFER_SIZE, 0);
+    live_range_high = false;
 
     output = new vector<float>(BUFFER_SIZE, 0);
-    audio.output = new vector<float>(BUFFER_SIZE, 0);
-    graphics.output = new vector<float>(BUFFER_SIZE, 0);
+    output = new vector<float>(BUFFER_SIZE, 0);
 
-    audio.waveform_type = SIN;
+    waveform_type = SIN;
 
     Graphics_Object *dummy = NULL;
     graphics_objects = new vector<Graphics_Object *>(13, dummy);
 }
 
 /*
- * Dummy function
+ * Destructor.
  */
 Oscillator::~Oscillator()
 {
@@ -98,30 +97,30 @@ void Oscillator::process()
     process_depends();
 
     // Update any control values
-    if(audio.live_frequency)
-        audio.frequency = (*(audio.input_frequency))[0];
-    if(audio.live_phase_offset)
-        audio.phase_offset = (*(audio.input_phase_offset))[0];
-    if(audio.live_pulse_width)
-        audio.pulse_width = (*(audio.input_pulse_width))[0];
-    if(audio.live_range_low)
-        audio.range_low = (*(audio.input_range_low))[0];
-    if(audio.live_range_high)
-        audio.range_high = (*(audio.input_range_high))[0];
+    if(live_frequency)
+        frequency = (*(input_frequency))[0];
+    if(live_phase_offset)
+        phase_offset = (*(input_phase_offset))[0];
+    if(live_pulse_width)
+        pulse_width = (*(input_pulse_width))[0];
+    if(live_range_low)
+        range_low = (*(input_range_low))[0];
+    if(live_range_high)
+        range_high = (*(input_range_high))[0];
 
     // Calculate an amplitude for each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Calculate and store the current samples amplitude
         // based on phase
-        (*(output))[i] = sin(audio.current_phase);
-        audio.current_phase += (2 * M_PI * audio.frequency / SAMPLE_RATE);
-        if(audio.current_phase > (2 * M_PI))
-            audio.current_phase -= (2 * M_PI);
+        (*output)[i] = sin(current_phase);
+        current_phase += (2 * M_PI * frequency / SAMPLE_RATE);
+        if(current_phase > (2 * M_PI))
+            current_phase -= (2 * M_PI);
     }
-    if(audio.range_low != -1 || audio.range_high != 1)
+    if(range_low != -1 || range_high != 1)
     {
-        scale_signal(output, -1, 1, audio.range_low, audio.range_high);
+        scale_signal(output, -1, 1, range_low, range_high);
     }
 }
 
@@ -181,7 +180,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator frequency (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.frequency_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &(frequency_str),
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[5] = text_box;
 
@@ -197,7 +196,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator phase offset (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.phase_offset_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &(phase_offset_str),
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[7] = text_box;
 
@@ -213,7 +212,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator pulse width (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.pulse_width_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &(pulse_width_str),
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[9] = text_box;
 
@@ -229,7 +228,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator range low (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.range_low_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &(range_low_str),
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[11] = text_box;
 
@@ -238,7 +237,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator range high (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(graphics.range_high_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &(range_high_str),
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[12] = text_box;
     }
@@ -275,22 +274,4 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_range_high, y11, w_range, h_text_box};
         (*graphics_objects)[12]->location = location;
     }
-}
-
-/*
- * Copy all data from the audio data struct to the
- * graphics data struct to make it available for
- * rendering.
- */
-void Oscillator::copy_graphics_data()
-{
-    graphics.waveform_type = audio.waveform_type;
-
-    graphics.frequency_str = to_string(audio.frequency);
-    graphics.phase_offset_str = to_string(audio.phase_offset);
-    graphics.pulse_width_str = to_string(audio.pulse_width);
-    graphics.range_low_str = to_string(audio.range_low);
-    graphics.range_high_str = to_string(audio.range_high);
-
-    copy_signal(output, graphics.output);
 }

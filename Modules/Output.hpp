@@ -20,28 +20,20 @@
  * OUTPUT CLASS DEFINITION *
  ***************************/
 
-struct Output_Data
-{
-    // Input buffers
-    std::vector<float> *input_l;
-    std::vector<float> *input_r;
-};
-
 class Output: public Module
 {
     public:
-        // Two copies of the output data,
-        // one for access by the audio thread,
-        // one for access by the main thread
-        struct Output_Data audio, graphics;
+        // Input buffers
+        std::vector<float> *input_l;
+        std::vector<float> *input_r;
+
         // Constructor and destructor
         Output(int);
         virtual ~Output();
+
         // Member functions
         virtual void process();
         virtual void calculate_unique_graphics_objects();
-        virtual void copy_graphics_data();
-        void calculate_text_objects();
         void toggle_audio_on();
 };
 

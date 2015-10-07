@@ -32,29 +32,38 @@ using namespace std;
  * Constructor.
  */
 Page::Page(string *_name, SDL_Rect *_location, SDL_Color *_color,
-           vector<Graphics_Object *> *_graphics_objects, vector<Page> *_sub_pages)
+           vector<Graphics_Object *> *_graphics_objects, vector<Page *> *_sub_pages)
 {
     name = *_name;
     type = PAGE;
     location = *_location;
     color = *_color;
 
-    if(_sub_pages != NULL && _sub_pages->size() > 0)
-        sub_pages = new vector<Page>(*_sub_pages);
+    if(_sub_pages != NULL)
+        sub_pages = new vector<Page *>(*_sub_pages);
     else
-        sub_pages = new vector<Page>();
-    if(_graphics_objects != NULL && _graphics_objects->size() > 0)
+        sub_pages = new vector<Page *>();
+    if(_graphics_objects != NULL)
         graphics_objects = new vector<Graphics_Object *>(*_graphics_objects);
     else
         graphics_objects = new vector<Graphics_Object *>();
 }
 
 /*
- * Dummy function.
+ * Destructor.
  */
 Page::~Page()
 {
+    delete graphics_objects;
 
+    int i = 0;
+    while(!sub_pages->empty())
+    {
+        delete (*sub_pages)[i];
+        sub_pages->pop_back();
+        i ++;
+    }
+    delete sub_pages;
 }
 
 /*
@@ -68,7 +77,7 @@ void Page::render_graphics_object()
     }
     for(unsigned int i = 0; i < sub_pages->size(); i ++)
     {
-        (*sub_pages)[i].render_graphics_object();
+        (*sub_pages)[i]->render_graphics_object();
     }
 }
 
@@ -84,7 +93,7 @@ void Page::clicked()
     }
     for(unsigned int i = 0; i < sub_pages->size(); i ++)
     {
-        if((*sub_pages)[i].was_clicked())
-            (*sub_pages)[i].clicked();
+        if((*sub_pages)[i]->was_clicked())
+            (*sub_pages)[i]->clicked();
     }
 }
