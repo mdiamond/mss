@@ -53,7 +53,8 @@ Output::Output(int _number)
  */
 Output::~Output()
 {
-
+    delete &input_l_str;
+    delete &input_r_str;
 }
 
 /*

@@ -202,7 +202,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator frequency (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(frequency_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &frequency_str,
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[5] = text_box;
 
@@ -218,7 +218,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator phase offset (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(phase_offset_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &phase_offset_str,
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[7] = text_box;
 
@@ -234,7 +234,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator pulse width (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(pulse_width_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &pulse_width_str,
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[9] = text_box;
 
@@ -250,7 +250,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator range low (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(range_low_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &range_low_str,
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[11] = text_box;
 
@@ -259,7 +259,7 @@ void Oscillator::calculate_unique_graphics_objects()
         object_name = "oscillator range high (text_box)";
         contents = "";
         prompt = "# or input";
-        text_box = new Text_Box(&object_name, &location, &text_color, &(range_high_str),
+        text_box = new Text_Box(&object_name, &location, &text_color, &range_high_str,
                                 &contents, &prompt, FONT_REGULAR, this);
         (*graphics_objects)[12] = text_box;
     }
