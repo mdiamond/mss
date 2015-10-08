@@ -90,7 +90,15 @@ void Module::calculate_upper_left()
 }
 
 /*
- * calculate the locations of all graphics objects, then
+ * Call upon each module to update its control values
+ */
+void Module::update_control_values()
+{
+    update_unique_control_values();
+}
+
+/*
+ * Calculate the locations of all graphics objects, then
  * call upon the module to caluclate the locations of
  * any graphics objects that are unique to the module type.
  */

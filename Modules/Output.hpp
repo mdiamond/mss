@@ -24,8 +24,9 @@ class Output: public Module
 {
     public:
         // Input buffers
-        std::vector<float> *input_l;
-        std::vector<float> *input_r;
+        std::vector<float> *input_l, *input_r;
+        // Strings representing the value of the current sample in the inputs
+        std::string input_l_str, input_r_str;
 
         // Constructor and destructor
         Output(int);
@@ -34,6 +35,7 @@ class Output: public Module
         // Member functions
         virtual void process();
         virtual void calculate_unique_graphics_objects();
+        virtual void update_unique_control_values();
         void toggle_audio_on();
 };
 

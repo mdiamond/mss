@@ -24,6 +24,7 @@ void initialize_output();
 
 // Audio callback function
 void audio_callback(void *, Uint8 *, int);
+Uint32 k_rate_callback_function(Uint32, void *);
 
 // Signal processing functions
 void clip_signal(std::vector<float> *, float, float);

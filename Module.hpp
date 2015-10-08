@@ -39,6 +39,7 @@ class Module
         std::string name;
         int type;
         int number;
+        unsigned short current_sample;
         SDL_Point upper_left;
         SDL_Color color;
         SDL_Color text_color;
@@ -60,6 +61,10 @@ class Module
         //   populate the modules output buffer and make it available
         //   to other modules
         virtual void process() = 0;
+        //   update_control_values() is called during each k rate callback
+        //   to make sure that the modules all get their most up to date control
+        //   values in order to synthesize sound properly
+        virtual void update_unique_control_values() = 0;
         //   calculate_unique_graphics_objects() is called to calculate
         //   the locations of any graphics objects that are unique
         //   to this module type
@@ -68,6 +73,7 @@ class Module
         // Member functions
         void process_depends();
         void calculate_upper_left();
+        void update_control_values();
         void calculate_graphics_objects();
 };
 

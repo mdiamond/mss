@@ -148,7 +148,7 @@ bool initialize()
 
     cout << "Initializing SDL." << endl;
     // Initialize SDL with the video and audio subsystems
-    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) == -1)) { 
+    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) { 
         cout << "Could not initialize SDL: " << SDL_GetError() << endl;
         return false;
     }
@@ -208,6 +208,7 @@ bool normal_mode()
     Uint32 delay_time = 0;
     Uint32 frame_previous = 0;
     Timer *frame_timer = new Timer();
+    SDL_TimerID k_rate_timer = SDL_AddTimer(100, k_rate_callback_function, NULL);
     frame_timer->start();
     SDL_Event e;
     while(true)
