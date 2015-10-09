@@ -117,7 +117,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 
 /*
  * K rate callback is triggered by an SDL_Timer, and simply updates
- * control values for all modules at 1/10 of the sampling rate.
+ * control values for all modules at 1/100th of a second.
  */
 Uint32 k_rate_callback_function(Uint32 interval, void *param)
 {

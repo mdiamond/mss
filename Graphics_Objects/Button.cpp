@@ -50,7 +50,7 @@ Button::Button(string *_name, SDL_Rect *_location, SDL_Color *_color,
 
     string object_name = "button text (text)";
     text_str = *_text;
-    text = new Text(&object_name, &location, &opposite, NULL, &text_str, FONT_REGULAR);
+    text = new Text(&object_name, &location, &opposite, &text_str, FONT_REGULAR);
 
     parent = _parent;
 }

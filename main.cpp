@@ -87,9 +87,6 @@ bool CURSOR_ON = true;
 // The currently active text box
 Text_Box *ACTIVE_TEXT_BOX = NULL;
 
-// The typing text buffer
-string TYPING_BUFFER;
-
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
 vector<Module *> *MODULES = new vector<Module *>();
@@ -208,7 +205,7 @@ bool normal_mode()
     Uint32 delay_time = 0;
     Uint32 frame_previous = 0;
     Timer *frame_timer = new Timer();
-    SDL_TimerID k_rate_timer = SDL_AddTimer(100, k_rate_callback_function, NULL);
+    // SDL_TimerID k_rate_timer = SDL_AddTimer(10, k_rate_callback_function, NULL);
     frame_timer->start();
     SDL_Event e;
     while(true)

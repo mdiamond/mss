@@ -99,6 +99,18 @@ void Oscillator::process()
     // Check for any dependencies for frequency modulation
     process_depends();
 
+    // Update any control values
+    if(live_frequency)
+        frequency = (*(input_frequency))[current_sample];
+    if(live_phase_offset)
+        phase_offset = (*(input_phase_offset))[current_sample];
+    if(live_pulse_width)
+        pulse_width = (*(input_pulse_width))[current_sample];
+    if(live_range_low)
+        range_low = (*(input_range_low))[current_sample];
+    if(live_range_high)
+        range_high = (*(input_range_high))[current_sample];
+
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < BUFFER_SIZE; i ++)
     {
@@ -113,6 +125,36 @@ void Oscillator::process()
     if(range_low != -1 || range_high != 1)
     {
         scale_signal(output, -1, 1, range_low, range_high);
+    }
+}
+
+void Oscillator::update_unique_graphics_objects()
+{
+    // Update text boxes
+    if(live_frequency)
+    {
+        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(frequency);
+        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+    }
+    if(live_phase_offset)
+    {
+        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(phase_offset);
+        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+    }
+    if(live_pulse_width)
+    {
+        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(pulse_width);
+        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+    }
+    if(live_range_low)
+    {
+        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(range_low);
+        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+    }
+    if(live_range_high)
+    {
+        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(range_high);
+        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
     }
 }
 
@@ -194,7 +236,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_text, y4, 0, 0};
         object_name = "oscillator frequency (text)";
         contents = "FREQUENCY:";
-        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
         (*graphics_objects)[4] = text;
 
         // graphics_objects[5] is the text box for entering and displaying frequency
@@ -210,7 +252,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_text, y6, 0, 0};
         object_name = "oscillator phase offset (text)";
         contents = "PHASE OFFSET:";
-        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
         (*graphics_objects)[6] = text;
 
         // graphics_objects[7] is the text box for entering and displaying phase offset
@@ -226,7 +268,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_text, y8, 0, 0};
         object_name = "oscillator pulse width (text)";
         contents = "PULSE WIDTH:";
-        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
         (*graphics_objects)[8] = text;
 
         // graphics_objects[9] is the text box for entering and displaying pulse width
@@ -242,7 +284,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_text, y10, 0, 0};
         object_name = "oscillator range low/high (text)";
         contents = "RANGE (LOW-HIGH):";
-        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
         (*graphics_objects)[10] = text;
 
         // graphics_objects[11] is the text box for entering and displaying range low

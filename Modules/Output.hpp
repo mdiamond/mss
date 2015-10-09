@@ -35,6 +35,7 @@ class Output: public Module
         // Member functions
         virtual void process();
         virtual void calculate_unique_graphics_objects();
+        virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
         void toggle_audio_on();
 };

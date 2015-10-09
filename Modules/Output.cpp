@@ -67,6 +67,11 @@ void Output::process()
     process_depends();
 }
 
+void Output::update_unique_graphics_objects()
+{
+
+}
+
 void Output::update_unique_control_values()
 {
     // Update any control values
@@ -117,7 +122,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_text, y3, 8, 15};
         object_name = "on_off (text)";
         contents = "AUDIO ON:";
-        text = new Text(&object_name, &location, &text_color, NULL, &contents, FONT_REGULAR);
+        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
         (*graphics_objects)[3] = text;
 
         // graphics_objects[4] is the toggle button to turn audio on or off
@@ -140,7 +145,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_text, y6, 0, 0};
         object_name = "output input left (text)";
         contents = "INPUT LEFT:";
-        text = new Text(&object_name, &location, &text_color, &input_l_str, &contents, FONT_REGULAR);
+        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
         (*graphics_objects)[6] = text;
 
         // graphics_objects[7] is the text box for entering and displaying input right
@@ -162,7 +167,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_text, y9, 0, 0};
         object_name = "output input right (text)";
         contents = "INPUT RIGHT:";
-        text = new Text(&object_name, &location, &text_color, &input_r_str, &contents, FONT_REGULAR);
+        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
         (*graphics_objects)[9] = text;
 
         // graphics_objects[10] is the text box for entering and displaying input left

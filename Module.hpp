@@ -60,8 +60,7 @@ class Module
         //   process() is called during each callback function to
         //   populate the modules output buffer and make it available
         //   to other modules
-        virtual void process() = 0;
-        //   update_control_values() is called during each k rate callback
+        virtual void process() = 0;        //   update_control_values() is called during each k rate callback
         //   to make sure that the modules all get their most up to date control
         //   values in order to synthesize sound properly
         virtual void update_unique_control_values() = 0;
@@ -69,12 +68,14 @@ class Module
         //   the locations of any graphics objects that are unique
         //   to this module type
         virtual void calculate_unique_graphics_objects() = 0;
+        virtual void update_unique_graphics_objects() = 0;
 
         // Member functions
         void process_depends();
         void calculate_upper_left();
         void update_control_values();
         void calculate_graphics_objects();
+        void update_graphics_objects();
 };
 
 #endif

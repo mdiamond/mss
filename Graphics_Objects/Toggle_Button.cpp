@@ -48,8 +48,8 @@ Toggle_Button::Toggle_Button(string *_name, SDL_Rect *_location, SDL_Color *_col
     string text_off_name = "text off";
     text_on_str = *_text_on;
     text_off_str = *_text_off;
-    text_on = new Text(&text_on_name, &location, &color_off, NULL, &text_on_str, FONT_REGULAR);
-    text_off = new Text(&text_off_name, &location, &color, NULL, &text_off_str, FONT_REGULAR);
+    text_on = new Text(&text_on_name, &location, &color_off, &text_on_str, FONT_REGULAR);
+    text_off = new Text(&text_off_name, &location, &color, &text_off_str, FONT_REGULAR);
 
     b = _b;
     parent = _parent;

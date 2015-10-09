@@ -90,11 +90,16 @@ void Module::calculate_upper_left()
 }
 
 /*
- * Call upon each module to update its control values
+ * Call upon each module to update its control values.
  */
 void Module::update_control_values()
 {
     update_unique_control_values();
+}
+
+void Module::update_graphics_objects()
+{
+    update_unique_graphics_objects();
 }
 
 /*
@@ -135,7 +140,7 @@ void Module::calculate_graphics_objects()
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                              upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
         object_name = "module name (text)";
-        text = new Text(&object_name, &location, &text_color, NULL, &name, FONT_BOLD);
+        text = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
         (*graphics_objects)[2] = text;
     }
     // If they have already been initialized, just update their locations

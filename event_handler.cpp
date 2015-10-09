@@ -87,19 +87,12 @@ bool event_handler(SDL_Event *e)
             // text that's been recorded from the keyboard previously
             if(ACTIVE_TEXT_BOX != NULL &&
                e->key.keysym.sym == SDLK_RETURN)
-            {
-                ACTIVE_TEXT_BOX->text->current_text = TYPING_BUFFER;
                 ACTIVE_TEXT_BOX->entered();
-            }
 
             // If that key is backspace, just remove a character
             // from the typing buffer
             else if(e->key.keysym.sym == SDLK_BACKSPACE && ACTIVE_TEXT_BOX != NULL)
-            {
-                if(!TYPING_BUFFER.empty())
-                    TYPING_BUFFER.pop_back();
-                ACTIVE_TEXT_BOX->typing_text->current_text = TYPING_BUFFER;
-            }
+                ACTIVE_TEXT_BOX->delete_character();
         }
 
         // If neither an SDL_QUIT or SDL_KEYDOWN event has been received,
@@ -109,8 +102,7 @@ bool event_handler(SDL_Event *e)
         // current active)
         else if(e->type == SDL_TEXTINPUT && ACTIVE_TEXT_BOX != NULL)
         {
-            TYPING_BUFFER += e->text.text;
-            ACTIVE_TEXT_BOX->typing_text->current_text = TYPING_BUFFER;
+            ACTIVE_TEXT_BOX->typed(e->text.text);
         }
 
         // If none of the above events have been received, but any kind of

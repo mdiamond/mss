@@ -46,12 +46,9 @@ Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color,
     string idle_text_name = "idle text (text)";
     string prompt_text_name = "prompt text (text)";
     string typing_text_name = "typing text (text)";
-    text = new Text(&idle_text_name, _location, &BLACK, _live_text,
-                         _original_text, _font);
-    prompt_text = new Text(&prompt_text_name, _location, &BLACK,
-                           NULL, _prompt_text, _font);
-    typing_text = new Text(&typing_text_name, _location, &BLACK,
-                           &TYPING_BUFFER, &TYPING_BUFFER, _font);
+    text = new Text(&idle_text_name, _location, &BLACK, _original_text, _font);
+    prompt_text = new Text(&prompt_text_name, _location, &BLACK, _prompt_text, _font);
+    typing_text = new Text(&typing_text_name, _location, &BLACK, _original_text, _font);
 
     active = false;
 }
@@ -81,13 +78,10 @@ void Text_Box::render_graphics_object()
     SDL_RenderFillRect(RENDERER, &location);
 
     if(active)
-    {
         typing_text->render_graphics_object();
-    }
-
     else
     {
-        if(text->current_text == "")
+        if(text->text == "")
             prompt_text->render_graphics_object();
         else
             text->render_graphics_object();
@@ -97,10 +91,23 @@ void Text_Box::render_graphics_object()
     {
         SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
         SDL_RenderDrawLine(RENDERER, typing_text->location.x + typing_text->location.w,
-                           typing_text->location.y + 2,
-                           typing_text->location.x + typing_text->location.w,
-                           typing_text->location.y + typing_text->location.h - 2);
+                           location.y + 2,
+                           location.x + typing_text->location.w,
+                           location.y + 11);
     }
+}
+
+void Text_Box::typed(char *ch)
+{
+    typing_text->text += ch;
+    typing_text->updated = true;
+}
+
+void Text_Box::delete_character()
+{
+    if(!typing_text->text.empty())
+        typing_text->text.pop_back();
+    typing_text->updated = true;
 }
 
 void Text_Box::clicked()
@@ -111,7 +118,6 @@ void Text_Box::clicked()
     {
         active = true;
         ACTIVE_TEXT_BOX = this;
-        TYPING_BUFFER = "";
         SDL_SetTextInputRect(&location);
         SDL_StartTextInput();
     }
@@ -121,8 +127,9 @@ void Text_Box::entered()
 {
     SDL_StopTextInput();
     function_forwarder(this);
+    text->text = typing_text->text;
+    text->updated = true;
     ACTIVE_TEXT_BOX = NULL;
     active = false;
-    text->current_text = TYPING_BUFFER;
-    typing_text->current_text = "";
+    typing_text->text = "";
 }

@@ -66,4 +66,4 @@ obj/Waveform.o : Graphics_Objects/Waveform.cpp Graphics_Objects/Waveform.hpp
 
 # Clean
 clean :
-	rm synth $(OBJECTS)
+	rm -f synth $(OBJECTS)

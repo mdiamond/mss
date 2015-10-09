@@ -249,7 +249,11 @@ void draw_surface()
     // If the current page exists, render it, otherwise,
     // render a black rectangle over the whole window
     if((unsigned int) CURRENT_PAGE < PAGES->size())
+    {
+        for(unsigned int i = 0; i < MODULES->size(); i ++)
+            (*MODULES)[i]->update_graphics_objects();
         (*PAGES)[CURRENT_PAGE]->render_graphics_object();
+    }
     else
     {
         SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
