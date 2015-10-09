@@ -231,14 +231,14 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_text_box, y3, w_waveform, h_waveform};
         object_name = "waveform visualizer (waveform)";
         waveform = new Waveform(&object_name, &location, &WHITE, output);
-        (*graphics_objects)[3] = waveform;
+        (*graphics_objects)[OSCILLATOR_OUTPUT_WAVEFORM] = waveform;
 
         // graphics_objects[4] is the display text "FREQUENCY:"
         location = {x_text, y4, 0, 0};
         object_name = "oscillator frequency (text)";
         contents = "FREQUENCY:";
         text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
-        (*graphics_objects)[4] = text;
+        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT] = text;
 
         // graphics_objects[5] is the text box for entering and displaying frequency
         location = {x_text_box, y5, w_text_box, h_text_box};
@@ -247,14 +247,14 @@ void Oscillator::calculate_unique_graphics_objects()
         prompt = "# or input";
         text_box = new Text_Box(&object_name, &location, &text_color, &frequency_str,
                                 &contents, &prompt, FONT_REGULAR, this);
-        (*graphics_objects)[5] = text_box;
+        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX] = text_box;
 
         // graphics_objects[6] is the display text "PHASE OFFSET:"
         location = {x_text, y6, 0, 0};
         object_name = "oscillator phase offset (text)";
         contents = "PHASE OFFSET:";
         text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
-        (*graphics_objects)[6] = text;
+        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT] = text;
 
         // graphics_objects[7] is the text box for entering and displaying phase offset
         location = {x_text_box, y7, w_text_box, h_text_box};
@@ -263,14 +263,14 @@ void Oscillator::calculate_unique_graphics_objects()
         prompt = "# or input";
         text_box = new Text_Box(&object_name, &location, &text_color, &phase_offset_str,
                                 &contents, &prompt, FONT_REGULAR, this);
-        (*graphics_objects)[7] = text_box;
+        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX] = text_box;
 
         // graphics_objects[8] is the display text "PULSE WIDTH:"
         location = {x_text, y8, 0, 0};
         object_name = "oscillator pulse width (text)";
         contents = "PULSE WIDTH:";
         text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
-        (*graphics_objects)[8] = text;
+        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT] = text;
 
         // graphics_objects[9] is the text box for entering and displaying pulse width
         location = {x_text_box, y9, w_text_box, h_text_box};
@@ -279,14 +279,14 @@ void Oscillator::calculate_unique_graphics_objects()
         prompt = "# or input";
         text_box = new Text_Box(&object_name, &location, &text_color, &pulse_width_str,
                                 &contents, &prompt, FONT_REGULAR, this);
-        (*graphics_objects)[9] = text_box;
+        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX] = text_box;
 
         // graphics_objects[10] is the display text "RANGE (LOW - HIGH):"
         location = {x_text, y10, 0, 0};
         object_name = "oscillator range low/high (text)";
         contents = "RANGE (LOW-HIGH):";
         text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
-        (*graphics_objects)[10] = text;
+        (*graphics_objects)[OSCILLATOR_RANGE_TEXT] = text;
 
         // graphics_objects[11] is the text box for entering and displaying range low
         location = {x_text_box, y11, w_range, h_text_box};
@@ -295,7 +295,7 @@ void Oscillator::calculate_unique_graphics_objects()
         prompt = "# or input";
         text_box = new Text_Box(&object_name, &location, &text_color, &range_low_str,
                                 &contents, &prompt, FONT_REGULAR, this);
-        (*graphics_objects)[11] = text_box;
+        (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX] = text_box;
 
         // graphics_objects[12] is the text box for entering and displaying range high
         location = {x_range_high, y11, w_range, h_text_box};
@@ -304,39 +304,39 @@ void Oscillator::calculate_unique_graphics_objects()
         prompt = "# or input";
         text_box = new Text_Box(&object_name, &location, &text_color, &range_high_str,
                                 &contents, &prompt, FONT_REGULAR, this);
-        (*graphics_objects)[12] = text_box;
+        (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX] = text_box;
     }
     // Otherwise, simply update the locations of all of the graphics objects
     else
     {
         location = {x_text_box, y3, w_waveform, h_waveform};
-        (*graphics_objects)[3]->location = location;
+        (*graphics_objects)[OSCILLATOR_OUTPUT_WAVEFORM]->location = location;
 
         location = {x_text, y4, 0, 0};
-        (*graphics_objects)[4]->location = location;
+        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT]->location = location;
 
         location = {x_text_box, y5, w_text_box, h_text_box};
-        (*graphics_objects)[5]->location = location;
+        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX]->location = location;
 
         location = {x_text, y6, 0, 0};
-        (*graphics_objects)[6]->location = location;
+        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT]->location = location;
 
         location = {x_text_box, y7, w_text_box, h_text_box};
-        (*graphics_objects)[7]->location = location;
+        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX]->location = location;
 
         location = {x_text, y8, 0, 0};
-        (*graphics_objects)[8]->location = location;
+        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT]->location = location;
 
         location = {x_text_box, y9, w_text_box, h_text_box};
-        (*graphics_objects)[9]->location = location;
+        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX]->location = location;
 
         location = {x_text, y10, 0, 0};
-        (*graphics_objects)[10]->location = location;
+        (*graphics_objects)[OSCILLATOR_RANGE_TEXT]->location = location;
 
         location = {x_text_box, y11, w_range, h_text_box};
-        (*graphics_objects)[11]->location = location;
+        (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX]->location = location;
 
         location = {x_range_high, y11, w_range, h_text_box};
-        (*graphics_objects)[12]->location = location;
+        (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX]->location = location;
     }
 }

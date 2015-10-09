@@ -190,11 +190,11 @@ void calculate_pages()
     // (no page has any graphics objects, only sub pages
     // contain graphics objects)
     string current_sub_page_name;
-    Page *current_sub_page;
+    Page *current_sub_page = NULL;
     vector<Page *> *sub_pages = new vector<Page *>();
     vector<Graphics_Object *> *sub_page_graphics_objects = new vector<Graphics_Object *>();
     string current_page_name;
-    Page *current_page;
+    Page *current_page = NULL;
 
     // Create the first sub page, which will contain important
     // buttons for special functions

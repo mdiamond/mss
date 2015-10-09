@@ -24,8 +24,19 @@
 
 enum Modules
 {
-    OUTPUT,
+    OUTPUT = 0,
     OSCILLATOR,
+};
+
+/********************************
+ * MODULE GRAPHICS OBJECTS ENUM *
+ ********************************/
+
+enum Module_Graphics_Objects
+{
+    MODULE_BORDER_RECT = 0,
+    MODULE_INNER_BORDER_RECT,
+    MODULE_NAME_TEXT,
 };
 
 /***************************

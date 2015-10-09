@@ -28,12 +28,12 @@
 
 enum Graphics_Objects
 {
-    BUTTON,
+    BUTTON = 0,
     PAGE,
     RECT,
     TEXT,
-    TOGGLE_BUTTON,
     TEXT_BOX,
+    TOGGLE_BUTTON,
     WAVEFORM
 };
 

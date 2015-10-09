@@ -66,10 +66,7 @@ void output_function_forwarder(Graphics_Object *g)
     Text_Box *text_box;
     Waveform *waveform;
     if(g->name == "on/off button (toggle_button)")
-    {
         output->toggle_audio_on();
-        cout << "Audio toggled" << endl;
-    }
     if(g->name == "output input left (text_box)")
     {
         text_box = (Text_Box *) g;
@@ -77,7 +74,7 @@ void output_function_forwarder(Graphics_Object *g)
         if(find_module(&module->name, output->depends) == NULL)
             output->depends->push_back(module);
         output->input_l = module->output;
-        waveform = (Waveform *) (*output->graphics_objects)[5];
+        waveform = (Waveform *) (*output->graphics_objects)[OUTPUT_INPUT_L_WAVEFORM];
         waveform->buffer = module->output;
         cout << "Output left is now coming from " << module->name << endl;
     }
@@ -88,7 +85,7 @@ void output_function_forwarder(Graphics_Object *g)
         if(find_module(&module->name, output->depends) == NULL)
             output->depends->push_back(module);
         output->input_r = module->output;
-        waveform = (Waveform *) (*output->graphics_objects)[8];
+        waveform = (Waveform *) (*output->graphics_objects)[OUTPUT_INPUT_R_WAVEFORM];
         waveform->buffer = module->output;
         cout << "Output right is now coming from " << module->name << endl;
     }

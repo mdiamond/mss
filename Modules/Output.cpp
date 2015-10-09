@@ -123,7 +123,7 @@ void Output::calculate_unique_graphics_objects()
         object_name = "on_off (text)";
         contents = "AUDIO ON:";
         text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
-        (*graphics_objects)[3] = text;
+        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TEXT] = text;
 
         // graphics_objects[4] is the toggle button to turn audio on or off
         location = {x_button, y4, 8, 15};
@@ -133,20 +133,20 @@ void Output::calculate_unique_graphics_objects()
         Toggle_Button *toggle_button = new Toggle_Button(&object_name, &location, &WHITE,
                                                   &BLACK, &contents, &text_off,
                                                   &AUDIO_ON, this);
-        (*graphics_objects)[4] = toggle_button;
+        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON] = toggle_button;
 
         // graphics_objects[5] is the waveform visualizer for the left speaker
         location = {x_text_box, y5, w_waveform, h_waveform};
         object_name = "waveform visualizer l (waveform)";
         waveform = new Waveform(&object_name, &location, &WHITE, input_l);
-        (*graphics_objects)[5] = waveform;
+        (*graphics_objects)[OUTPUT_INPUT_L_WAVEFORM] = waveform;
 
         // graphics_objects[6] is the display text "LEFT INPUT:"
         location = {x_text, y6, 0, 0};
         object_name = "output input left (text)";
         contents = "INPUT LEFT:";
         text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
-        (*graphics_objects)[6] = text;
+        (*graphics_objects)[OUTPUT_INPUT_L_TEXT] = text;
 
         // graphics_objects[7] is the text box for entering and displaying input right
         location = {x_text_box, y7, w_text_box, h_text_box};
@@ -155,20 +155,20 @@ void Output::calculate_unique_graphics_objects()
         prompt = "input";
         text_box = new Text_Box(&object_name, &location, &text_color, NULL,
                                 &contents, &prompt, FONT_REGULAR, this);
-        (*graphics_objects)[7] = text_box;
+        (*graphics_objects)[OUTPUT_INPUT_L_TEXT_BOX] = text_box;
 
         // graphics_objects[8] is the waveform visualizer for the right speaker
         location = {x_text_box, y8, w_waveform, h_waveform};
         object_name = "waveform visualizer r (waveform)";
         waveform = new Waveform(&object_name, &location, &WHITE, input_r);
-        (*graphics_objects)[8] = waveform;
+        (*graphics_objects)[OUTPUT_INPUT_R_WAVEFORM] = waveform;
 
         // graphics_objects[9] is the display text "PHASE OFFSET:"
         location = {x_text, y9, 0, 0};
         object_name = "output input right (text)";
         contents = "INPUT RIGHT:";
         text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
-        (*graphics_objects)[9] = text;
+        (*graphics_objects)[OUTPUT_INPUT_R_TEXT] = text;
 
         // graphics_objects[10] is the text box for entering and displaying input left
         location = {x_text_box, y10, w_text_box, h_text_box};
@@ -177,42 +177,55 @@ void Output::calculate_unique_graphics_objects()
         prompt = "input";
         text_box = new Text_Box(&object_name, &location, &text_color, NULL,
                                 &contents, &prompt, FONT_REGULAR, this);
-        (*graphics_objects)[10] = text_box;
+        (*graphics_objects)[OUTPUT_INPUT_R_TEXT_BOX] = text_box;
     }
     // Otherwise, simply update the locations of all of the graphics objects
     else
     {
         location = {x_text, y3, 8, 15};
-        (*graphics_objects)[3]->location = location;
+        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TEXT]->location = location;
 
         location = {x_button, y4, 8, 15};
-        (*graphics_objects)[4]->location = location;
+        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]->location = location;
 
         location = {x_text_box, y5, w_waveform, h_waveform};
-        (*graphics_objects)[5]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_L_WAVEFORM]->location = location;
 
         location = {x_text, y6, 0, 0};
-        (*graphics_objects)[6]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_L_TEXT]->location = location;
 
         location = {x_text_box, y7, w_text_box, h_text_box};
-        (*graphics_objects)[7]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_L_TEXT_BOX]->location = location;
 
         location = {x_text_box, y8, w_waveform, h_waveform};
-        (*graphics_objects)[8]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_R_WAVEFORM]->location = location;
 
         location = {x_text, y9, 0, 0};
-        (*graphics_objects)[9]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_R_TEXT]->location = location;
 
         location = {x_text_box, y10, w_text_box, h_text_box};
-        (*graphics_objects)[10]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_R_TEXT_BOX]->location = location;
     }
 }
 
 void Output::toggle_audio_on()
 {
     AUDIO_ON = !AUDIO_ON;
+
     if(AUDIO_ON)
         SDL_PauseAudio(0);
     else
         SDL_PauseAudio(1);
+
+    cout << "Audio toggled" << endl;
+}
+
+void Output::set_input_l()
+{
+
+}
+
+void Output::set_input_r()
+{
+
 }

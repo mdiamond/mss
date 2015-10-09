@@ -16,6 +16,22 @@
 
 // No includes necessary
 
+/********************************
+ * OUTPUT GRAPHICS OBJECTS ENUM *
+ ********************************/
+
+enum Ouput_Graphics_Objects
+{
+    OUTPUT_AUDIO_TOGGLE_TEXT = 3,
+    OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON,
+    OUTPUT_INPUT_L_WAVEFORM,
+    OUTPUT_INPUT_L_TEXT,
+    OUTPUT_INPUT_L_TEXT_BOX,
+    OUTPUT_INPUT_R_WAVEFORM,
+    OUTPUT_INPUT_R_TEXT,
+    OUTPUT_INPUT_R_TEXT_BOX,
+};
+
 /***************************
  * OUTPUT CLASS DEFINITION *
  ***************************/
@@ -38,6 +54,8 @@ class Output: public Module
         virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
         void toggle_audio_on();
+        void set_input_l();
+        void set_input_r();
 };
 
 #endif

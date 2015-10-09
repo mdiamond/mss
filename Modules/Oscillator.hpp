@@ -24,10 +24,28 @@
 
 enum Waveforms
 {
-    SIN,
+    SIN = 0,
     TRI,
     SAW,
     SQR
+};
+
+/************************************
+ * OSCILLATOR GRAPHICS OBJECTS ENUM *
+ ************************************/
+
+enum Oscillator_Graphics_Objects
+{
+    OSCILLATOR_OUTPUT_WAVEFORM = 3,
+    OSCILLATOR_FREQUENCY_TEXT,
+    OSCILLATOR_FREQUENCY_TEXT_BOX,
+    OSCILLATOR_PHASE_OFFSET_TEXT,
+    OSCILLATOR_PHASE_OFFSET_TEXT_BOX,
+    OSCILLATOR_PULSE_WIDTH_TEXT,
+    OSCILLATOR_PULSE_WIDTH_TEXT_BOX,
+    OSCILLATOR_RANGE_TEXT,
+    OSCILLATOR_RANGE_LOW_TEXT_BOX,
+    OSCILLATOR_RANGE_HIGH_TEXT_BOX
 };
 
 /*******************************

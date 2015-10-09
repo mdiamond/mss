@@ -124,7 +124,7 @@ void Module::calculate_graphics_objects()
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
         string object_name = "border (rect)";
         rect = new Rect(&object_name, &location, &WHITE);
-        (*graphics_objects)[0] = rect;
+        (*graphics_objects)[MODULE_BORDER_RECT] = rect;
 
         // graphics_object[1] is the slightly smaller rectangle within the outermost
         // rectangle
@@ -134,30 +134,30 @@ void Module::calculate_graphics_objects()
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
         object_name = "inner_border (rect)";
         rect = new Rect(&object_name, &location, &color);
-        (*graphics_objects)[1] = rect;
+        (*graphics_objects)[MODULE_INNER_BORDER_RECT] = rect;
 
         // graphics_object[2] is the objects name
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                              upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
         object_name = "module name (text)";
         text = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
-        (*graphics_objects)[2] = text;
+        (*graphics_objects)[MODULE_NAME_TEXT] = text;
     }
     // If they have already been initialized, just update their locations
     else
     {
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-        (*graphics_objects)[0]->location = location;
+        (*graphics_objects)[MODULE_BORDER_RECT]->location = location;
 
         location = {upper_left.x + MODULE_BORDER_WIDTH,
                     upper_left.y + MODULE_BORDER_WIDTH,
                     MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-        (*graphics_objects)[1]->location = location;
+        (*graphics_objects)[MODULE_INNER_BORDER_RECT]->location = location;
 
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                              upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
-        (*graphics_objects)[2]->location = location;
+        (*graphics_objects)[MODULE_NAME_TEXT]->location = location;
 
     }
 
