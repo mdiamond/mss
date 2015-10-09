@@ -99,26 +99,27 @@ void Oscillator::process()
     // Check for any dependencies for frequency modulation
     process_depends();
 
-    // Update any control values
-    if(live_frequency)
-        frequency = (*(input_frequency))[current_sample];
-    if(live_phase_offset)
-        phase_offset = (*(input_phase_offset))[current_sample];
-    if(live_pulse_width)
-        pulse_width = (*(input_pulse_width))[current_sample];
-    if(live_range_low)
-        range_low = (*(input_range_low))[current_sample];
-    if(live_range_high)
-        range_high = (*(input_range_high))[current_sample];
-
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < BUFFER_SIZE; i ++)
     {
         current_sample = i;
+
+        // Update any control values
+        if(live_frequency)
+            frequency = (*(input_frequency))[i];
+        if(live_phase_offset)
+            phase_offset = (*(input_phase_offset))[i];
+        if(live_pulse_width)
+            pulse_width = (*(input_pulse_width))[i];
+        if(live_range_low)
+            range_low = (*(input_range_low))[i];
+        if(live_range_high)
+            range_high = (*(input_range_high))[i];
+
         // Calculate and store the current samples amplitude
         // based on phase
         (*output)[i] = sin(current_phase);
-        current_phase += (2 * M_PI * frequency / SAMPLE_RATE);
+        current_phase += (2 * M_PI * (frequency / SAMPLE_RATE));
         if(current_phase > (2 * M_PI))
             current_phase -= (2 * M_PI);
     }
@@ -138,23 +139,23 @@ void Oscillator::update_unique_graphics_objects()
     }
     if(live_phase_offset)
     {
-        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(phase_offset);
-        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[7])->text->text = to_string(phase_offset);
+        ((Text_Box *) (*graphics_objects)[7])->text->updated = true;
     }
     if(live_pulse_width)
     {
-        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(pulse_width);
-        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[9])->text->text = to_string(pulse_width);
+        ((Text_Box *) (*graphics_objects)[9])->text->updated = true;
     }
     if(live_range_low)
     {
-        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(range_low);
-        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[11])->text->text = to_string(range_low);
+        ((Text_Box *) (*graphics_objects)[11])->text->updated = true;
     }
     if(live_range_high)
     {
-        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(range_high);
-        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[12])->text->text = to_string(range_high);
+        ((Text_Box *) (*graphics_objects)[12])->text->updated = true;
     }
 }
 
