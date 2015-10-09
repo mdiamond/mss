@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -45,7 +46,7 @@ Module::Module()
     text_color.a = 255;
 
     depends = new vector<Module *>;
-    graphics_objects = new vector<Graphics_Object *>;
+    graphics_objects = new vector<Graphics_Object *>();
     output = new vector<float>(BUFFER_SIZE, 0);
 }
 
@@ -54,14 +55,14 @@ Module::Module()
  */
 Module::~Module()
 {
-    delete &name;
-
     int i = 0;
+
+    delete &name;
+    delete depends;
     while(!graphics_objects->empty())
     {
         delete (*graphics_objects)[i];
     }
-    delete depends;
     delete graphics_objects;
     delete output;
 }
@@ -117,14 +118,17 @@ void Module::calculate_graphics_objects()
     // Calculate the modules top left pixel location in the window
     calculate_upper_left();
 
+    cout << "GOT HERE!" << endl;
+    cout << graphics_objects->size() << endl;
     // If the graphics objects have not yet been initialized
-    if((*graphics_objects)[0] == NULL)
+    if(graphics_objects->size() == 0)
     {
+        cout << "GOT HERE!" << endl;
         // graphics_object[0] is the outermost rectangle used to represent the module
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
         string object_name = "border (rect)";
         rect = new Rect(&object_name, &location, &WHITE);
-        (*graphics_objects)[MODULE_BORDER_RECT] = rect;
+        graphics_objects->push_back(rect);
 
         // graphics_object[1] is the slightly smaller rectangle within the outermost
         // rectangle
@@ -134,14 +138,14 @@ void Module::calculate_graphics_objects()
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
         object_name = "inner_border (rect)";
         rect = new Rect(&object_name, &location, &color);
-        (*graphics_objects)[MODULE_INNER_BORDER_RECT] = rect;
+        graphics_objects->push_back(rect);
 
         // graphics_object[2] is the objects name
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                              upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
         object_name = "module name (text)";
         text = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
-        (*graphics_objects)[MODULE_NAME_TEXT] = text;
+        graphics_objects->push_back(text);
     }
     // If they have already been initialized, just update their locations
     else
@@ -158,7 +162,6 @@ void Module::calculate_graphics_objects()
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                              upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
         (*graphics_objects)[MODULE_NAME_TEXT]->location = location;
-
     }
 
     calculate_unique_graphics_objects();
