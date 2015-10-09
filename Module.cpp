@@ -118,12 +118,9 @@ void Module::calculate_graphics_objects()
     // Calculate the modules top left pixel location in the window
     calculate_upper_left();
 
-    cout << "GOT HERE!" << endl;
-    cout << graphics_objects->size() << endl;
     // If the graphics objects have not yet been initialized
     if(graphics_objects->size() == 0)
     {
-        cout << "GOT HERE!" << endl;
         // graphics_object[0] is the outermost rectangle used to represent the module
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
         string object_name = "border (rect)";
