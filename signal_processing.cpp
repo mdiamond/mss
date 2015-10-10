@@ -113,6 +113,9 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
         buffer_l += 2;
         buffer_r += 2;
     }
+
+    for(unsigned int i = 1; i < MODULES->size(); i ++)
+        (*MODULES)[i]->processed = false;
 }
 
 /*
@@ -122,9 +125,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 Uint32 k_rate_callback_function(Uint32 interval, void *param)
 {
     for(unsigned int i = 0; i < MODULES->size(); i ++)
-    {
         (*MODULES)[i]->update_control_values();
-    }
 
     return interval;
 }
@@ -146,7 +147,6 @@ void clip_signal(vector<float> *buffer, float min, float max)
         else if((*buffer)[i] < min)
             (*buffer)[i] = min;
     }
-
 }
 
 /*
@@ -155,9 +155,7 @@ void clip_signal(vector<float> *buffer, float min, float max)
 void copy_signal(vector<float> *src, vector<float> *dst)
 {
     for(unsigned int i = 0; i < src->size(); i ++)
-    {
         (*dst)[i] = (*src)[i];
-    }
 }
 
 /*
@@ -178,25 +176,19 @@ void scale_signal(vector<float> *buffer, float original_low,
 /*
  * Add two signals
  */
-void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *result_buffer, int num_samples)
+void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst, int num_samples)
 {
     // For each sample
     for(int i = 0; i < num_samples; i ++)
-    {
-        // Sum the samples from the two input buffers into the result buffer
-        (*result_buffer)[i] = (*buffer1)[i] + (*buffer2)[i];
-    }
+        (*dst)[i] = (*buffer1)[i] + (*buffer2)[i];
 }
 
 /*
  * Multiply two signals
  */
-void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *result_buffer, int num_samples)
+void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst, int num_samples)
 {
     // For each sample
     for(int i = 0; i < num_samples; i ++)
-    {
-        // Sum the samples from the two input buffers into the result buffer
-        (*result_buffer)[i] = (*buffer1)[i] * (*buffer2)[i];
-    }
+        (*dst)[i] = (*buffer1)[i] * (*buffer2)[i];
 }

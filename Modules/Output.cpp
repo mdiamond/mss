@@ -16,6 +16,7 @@
 #include "SDL2/SDL.h"
 
 // Included files
+#include "../function_forwarder.hpp"
 #include "../image_processing.hpp"
 #include "../main.hpp"
 #include "../signal_processing.hpp"
@@ -41,6 +42,8 @@ Output::Output(int _number)
     type = OUTPUT;
     number = _number;
 
+    dependencies = new vector<Module *>(2, NULL);
+
     input_l = new vector<float>(BUFFER_SIZE, 0);
     input_r = new vector<float>(BUFFER_SIZE, 0);
 }
@@ -50,8 +53,7 @@ Output::Output(int _number)
  */
 Output::~Output()
 {
-    delete &input_l_str;
-    delete &input_r_str;
+
 }
 
 /*
@@ -61,7 +63,7 @@ Output::~Output()
  */
 void Output::process()
 {
-    process_depends();
+    process_dependencies();
 }
 
 void Output::update_unique_graphics_objects()
@@ -71,11 +73,7 @@ void Output::update_unique_graphics_objects()
 
 void Output::update_unique_control_values()
 {
-    // Update any control values
-    if(input_l != NULL)
-        input_l_str = to_string((*input_l)[current_sample]);
-    if(input_r != NULL)
-        input_r_str = to_string((*input_r)[current_sample]);
+
 }
 
 /*
@@ -219,10 +217,36 @@ void Output::toggle_audio_on()
 
 void Output::set_input_l()
 {
+    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OUTPUT_INPUT_L_TEXT_BOX];
+    Waveform *waveform = (Waveform *) (*graphics_objects)[OUTPUT_INPUT_L_WAVEFORM];
+    Module *src;
 
+    src = find_module(&text_box->typing_text->text, MODULES);
+    if(src != NULL)
+    {
+        (*dependencies)[0] = src;
+        input_l = src->output;
+        waveform->buffer = src->output;
+        cout << "Output left is now coming from " << src->name << endl;
+    }
+    else
+        cout << "Output left could not be set, no such module";
 }
 
 void Output::set_input_r()
 {
+    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OUTPUT_INPUT_R_TEXT_BOX];
+    Waveform *waveform = (Waveform *) (*graphics_objects)[OUTPUT_INPUT_R_WAVEFORM];
+    Module *src;
 
+    src = find_module(&text_box->typing_text->text, MODULES);
+    if(src != NULL)
+    {
+        (*dependencies)[1] = src;
+        input_r = src->output;
+        waveform->buffer = src->output;
+        cout << "Output right is now coming from " << src->name << endl;
+    }
+    else
+        cout << "Output right could not be set, no such module";
 }

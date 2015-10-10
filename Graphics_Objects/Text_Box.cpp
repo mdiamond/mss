@@ -112,7 +112,7 @@ void Text_Box::delete_character()
 
 void Text_Box::clicked()
 {
-    cout << name << " clicked" << endl;
+    cout << RED_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
     if(!active)
     {

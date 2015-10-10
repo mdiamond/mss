@@ -16,6 +16,7 @@
 #include "SDL2/SDL.h"
 
 // Included files
+#include "function_forwarder.hpp"
 #include "main.hpp"
 
 // Included classes
@@ -45,7 +46,7 @@ Module::Module()
     color.a = 255;
     text_color.a = 255;
 
-    depends = new vector<Module *>;
+    processed = false;
     graphics_objects = new vector<Graphics_Object *>();
     output = new vector<float>(BUFFER_SIZE, 0);
 }
@@ -55,14 +56,9 @@ Module::Module()
  */
 Module::~Module()
 {
-    int i = 0;
-
-    delete &name;
-    delete depends;
-    while(!graphics_objects->empty())
-    {
+    delete dependencies;
+    for (int i = 0; i < graphics_objects->size(); i ++)
         delete (*graphics_objects)[i];
-    }
     delete graphics_objects;
     delete output;
 }
@@ -71,12 +67,11 @@ Module::~Module()
  * This function calls upon the modules dependencies
  * to process samples.
  */
-void Module::process_depends()
+void Module::process_dependencies()
 {
-    for(unsigned int i = 0; i < depends->size(); i ++)
-    {
-        (*depends)[i]->process();
-    }
+    for(unsigned int i = 0; i < dependencies->size(); i ++)
+        if((*dependencies)[i] != NULL && !(*dependencies)[i]->processed)
+            (*dependencies)[i]->process();
 }
 
 void Module::calculate_upper_left()

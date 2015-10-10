@@ -25,7 +25,6 @@
 class Toggle_Button: public Graphics_Object
 {
     public:
-        std::string text_on_str, text_off_str;
         Text *text_on, *text_off;
         SDL_Color color_off;
         bool *b;

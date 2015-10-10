@@ -63,38 +63,27 @@ Module *find_module(string *string, vector<Module *> *modules)
 void output_function_forwarder(Graphics_Object *g)
 {
     Output *output = (Output *) g->parent;
-    Text_Box *text_box;
-    Waveform *waveform;
+
     if(g->name == "on/off button (toggle_button)")
         output->toggle_audio_on();
-    if(g->name == "output input left (text_box)")
-    {
-        text_box = (Text_Box *) g;
-        Module *module = find_module(&text_box->typing_text->text, MODULES);
-        if(find_module(&module->name, output->depends) == NULL)
-            output->depends->push_back(module);
-        output->input_l = module->output;
-        waveform = (Waveform *) (*output->graphics_objects)[OUTPUT_INPUT_L_WAVEFORM];
-        waveform->buffer = module->output;
-        cout << "Output left is now coming from " << module->name << endl;
-    }
+    else if(g->name == "output input left (text_box)")
+        output->set_input_l();
     else if(g->name == "output input right (text_box)")
-    {
-        text_box = (Text_Box *) g;
-        Module *module = find_module(&text_box->typing_text->text, MODULES);
-        if(find_module(&module->name, output->depends) == NULL)
-            output->depends->push_back(module);
-        output->input_r = module->output;
-        waveform = (Waveform *) (*output->graphics_objects)[OUTPUT_INPUT_R_WAVEFORM];
-        waveform->buffer = module->output;
-        cout << "Output right is now coming from " << module->name << endl;
-    }
+        output->set_input_r();
 }
 
 bool can_floatify(string *string)
 {
-    return isdigit((*string)[0]) || (*string)[0] == '-' ||
-           (*string)[0] == '.';
+    if(string->empty())
+        return false;
+    if(!(isdigit((*string)[0]) || (*string)[0] == '-' ||
+       (*string)[0] == '.'))
+        return false;
+    if(string->size() > 1)
+        if(!(isdigit((*string)[1]) || 
+           (*string)[1] == '.'))
+            return false;
+    return true;
 }
 
 /*
@@ -118,8 +107,8 @@ void oscillator_function_forwarder(Graphics_Object *g)
         else
         {
             Module *module = find_module(&text_box->typing_text->text, MODULES);
-            if(find_module(&module->name, oscillator->depends) == NULL)
-                oscillator->depends->push_back(module);
+            if(find_module(&module->name, oscillator->dependencies) == NULL)
+                oscillator->dependencies->push_back(module);
             oscillator->input_frequency = module->output;
             oscillator->live_frequency = true;
             cout << oscillator->name << " frequency is now coming from " << module->name << endl;
@@ -136,8 +125,8 @@ void oscillator_function_forwarder(Graphics_Object *g)
         else
         {
             Module *module = find_module(&text_box->typing_text->text, MODULES);
-            if(find_module(&module->name, oscillator->depends) == NULL)
-                oscillator->depends->push_back(module);
+            if(find_module(&module->name, oscillator->dependencies) == NULL)
+                oscillator->dependencies->push_back(module);
             oscillator->input_phase_offset = module->output;
             oscillator->live_phase_offset = true;
             cout << oscillator->name << " phase offset is now coming from " << module->name << endl;
@@ -154,8 +143,8 @@ void oscillator_function_forwarder(Graphics_Object *g)
         else
         {
             Module *module = find_module(&text_box->typing_text->text, MODULES);
-            if(find_module(&module->name, oscillator->depends) == NULL)
-                oscillator->depends->push_back(module);
+            if(find_module(&module->name, oscillator->dependencies) == NULL)
+                oscillator->dependencies->push_back(module);
             oscillator->input_pulse_width = module->output;
             oscillator->live_pulse_width = true;
             cout << oscillator->name << " pulse width is now coming from " << module->name << endl;
@@ -172,8 +161,8 @@ void oscillator_function_forwarder(Graphics_Object *g)
         else
         {
             Module *module = find_module(&text_box->typing_text->text, MODULES);
-            if(find_module(&module->name, oscillator->depends) == NULL)
-                oscillator->depends->push_back(module);
+            if(find_module(&module->name, oscillator->dependencies) == NULL)
+                oscillator->dependencies->push_back(module);
             oscillator->input_range_low = module->output;
             oscillator->live_range_low = true;
             cout << oscillator->name << " range low is now coming from " << module->name << endl;
@@ -190,8 +179,8 @@ void oscillator_function_forwarder(Graphics_Object *g)
         else
         {
             Module *module = find_module(&text_box->typing_text->text, MODULES);
-            if(find_module(&module->name, oscillator->depends) == NULL)
-                oscillator->depends->push_back(module);
+            if(find_module(&module->name, oscillator->dependencies) == NULL)
+                oscillator->dependencies->push_back(module);
             oscillator->input_range_high = module->output;
             oscillator->live_range_high = true;
             cout << oscillator->name << " range high is now coming from " << module->name << endl;

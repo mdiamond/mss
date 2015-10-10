@@ -40,7 +40,7 @@ using namespace std;
  */
 int open_window()
 {
-    WINDOW = SDL_CreateWindow("Visualizer",
+    WINDOW = SDL_CreateWindow("synth",
                               SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED,
                               WINDOW_WIDTH,
@@ -135,7 +135,7 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 
     // Create the "previous page" button and add it to the
     // list of graphics objects
-    x = WINDOW_WIDTH - 157;
+    x = WINDOW_WIDTH - 159;
     location = {x, WINDOW_HEIGHT - 17, 92, 15};
     x += 92;
     object_name = "previous page (button)";
@@ -148,7 +148,7 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     // Create the "next page" button and add it to the
     // list of graphics objects
     x += 2;
-    location = {x, WINDOW_HEIGHT - 17, 65, 15};
+    location = {x, WINDOW_HEIGHT - 17, 63, 15};
     x += 65;
     object_name = "next page (button)";
     button_text = "NEXT PAGE";
@@ -163,18 +163,6 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     current_sub_page = new Page(&current_sub_page_name, &WINDOW_RECT, &BLACK,
                                       sub_page_graphics_objects, NULL);
     sub_pages->push_back(current_sub_page);
-    sub_page_graphics_objects = new vector<Graphics_Object *>();
-}
-
-void delete_pages()
-{
-    int i = 0;
-    while(!PAGES->empty())
-    {
-        delete (*PAGES)[PAGES->size()];
-        PAGES->pop_back();
-        i ++;
-    }
 }
 
 /*
@@ -182,8 +170,8 @@ void delete_pages()
  */
 void calculate_pages()
 {
-    delete PAGES;
-    PAGES = new vector<Page *>();
+    destroy_pages();
+    PAGES->clear();
 
     // Variables for the current sub page, its sub pages,
     // its sub pages graphics objects, and the current page
@@ -200,6 +188,9 @@ void calculate_pages()
     // buttons for special functions
     initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
 
+    delete sub_page_graphics_objects;
+    sub_page_graphics_objects = new vector<Graphics_Object *>();
+
     for(unsigned int i = 0; i < MODULES->size(); i ++)
     {
         current_sub_page_name = (*MODULES)[i]->name + " (page)";
@@ -213,19 +204,28 @@ void calculate_pages()
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(current_sub_page);
 
+        delete sub_page_graphics_objects;
         sub_page_graphics_objects = new vector<Graphics_Object *>();
 
-        if(i == (unsigned) ((MODULES_PER_COLUMN * MODULES_PER_ROW) - 1) ||
+        if(i % (unsigned) ((MODULES_PER_COLUMN * MODULES_PER_ROW)) == ((MODULES_PER_COLUMN * MODULES_PER_ROW)) - 1||
            i == MODULES->size() - 1)
         {
+
             current_page_name = to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)";
             current_page = new Page(&current_page_name, &WINDOW_RECT, &BLACK,
                                     NULL, sub_pages);
             (*PAGES).push_back(current_page);
 
-            sub_pages = new vector<Page *>();
-            sub_page_graphics_objects = new vector<Graphics_Object *>();
-            initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
+            delete sub_pages;
+            delete sub_page_graphics_objects;
+            if(i != MODULES->size() - 1)
+            {
+                sub_pages = new vector<Page *>();
+                sub_page_graphics_objects = new vector<Graphics_Object *>();
+                initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
+                delete sub_page_graphics_objects;
+                sub_page_graphics_objects = new vector<Graphics_Object *>();
+            }
         }
     }
 }
@@ -246,20 +246,13 @@ void draw_surface()
         MODULES_CHANGED = false;
     }
 
-    // If the current page exists, render it, otherwise,
-    // render a black rectangle over the whole window
-    if((unsigned int) CURRENT_PAGE < PAGES->size())
-    {
-        for(unsigned int i = 0; i < MODULES->size(); i ++)
-            (*MODULES)[i]->update_graphics_objects();
-        (*PAGES)[CURRENT_PAGE]->render_graphics_object();
-    }
-    else
-    {
-        SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
-        SDL_Rect location = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
-        SDL_RenderFillRect(RENDERER, &location);
-    }
+    // Clear the renderer
+    SDL_RenderClear(RENDERER);
+
+    // Render the current page
+    for(unsigned int i = 0; i < MODULES->size(); i ++)
+        (*MODULES)[i]->update_graphics_objects();
+    (*PAGES)[CURRENT_PAGE]->render_graphics_object();
 
     // Present what has been rendered
     SDL_RenderPresent(RENDERER);

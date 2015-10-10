@@ -18,6 +18,7 @@
 #include "SDL2/SDL_ttf.h"
 
 // Included files
+#include "../function_forwarder.hpp"
 #include "../image_processing.hpp"
 #include "../main.hpp"
 #include "../signal_processing.hpp"
@@ -42,9 +43,9 @@ Oscillator::Oscillator(string *_name, int _number)
     name = *_name;
     type = OSCILLATOR;
     number = _number;
-    current_sample = 0;
-
     current_phase = 0;
+
+    dependencies = new vector<Module *>();
 
     frequency = 0;
     frequency_str = "0";
@@ -82,11 +83,7 @@ Oscillator::Oscillator(string *_name, int _number)
  */
 Oscillator::~Oscillator()
 {
-    delete &frequency_str;
-    delete &phase_offset_str;
-    delete &pulse_width_str;
-    delete &range_low_str;
-    delete &range_high_str;
+
 }
 
 /*
@@ -97,14 +94,12 @@ Oscillator::~Oscillator()
  */
 void Oscillator::process()
 {
-    // Check for any dependencies for frequency modulation
-    process_depends();
+    // Process any dependencies
+    process_dependencies();
 
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < BUFFER_SIZE; i ++)
     {
-        current_sample = i;
-
         // Update any control values
         if(live_frequency)
             frequency = (*(input_frequency))[i];
@@ -128,6 +123,8 @@ void Oscillator::process()
     {
         scale_signal(output, -1, 1, range_low, range_high);
     }
+
+    processed = true;
 }
 
 void Oscillator::update_unique_graphics_objects()
@@ -162,34 +159,17 @@ void Oscillator::update_unique_graphics_objects()
 
 void Oscillator::update_unique_control_values()
 {
-    // Update any control values
-    if(live_frequency)
-    {
-        frequency = (*(input_frequency))[current_sample];
-        frequency_str = to_string(frequency);
-    }
-    if(live_phase_offset)
-    {
-        phase_offset = (*(input_phase_offset))[current_sample];
-        phase_offset_str = to_string(phase_offset);
-    }
-    if(live_pulse_width)
-    {
-        pulse_width = (*(input_pulse_width))[current_sample];
-        pulse_width_str = to_string(pulse_width);
-    }
-    if(live_range_low)
-    {
-        range_low = (*(input_range_low))[current_sample];
-        range_low_str = to_string(range_low);
-    }
-    if(live_range_high)
-    {
-        range_high = (*(input_range_high))[current_sample];
-        range_high_str = to_string(range_high);
-    }
-
-
+    // // Update any control values
+    // if(live_frequency)
+    //     frequency = (*(input_frequency))[current_sample];
+    // if(live_phase_offset)
+    //     phase_offset = (*(input_phase_offset))[current_sample];
+    // if(live_pulse_width)
+    //     pulse_width = (*(input_pulse_width))[current_sample];
+    // if(live_range_low)
+    //     range_low = (*(input_range_low))[current_sample];
+    // if(live_range_high)
+    //     range_high = (*(input_range_high))[current_sample];
 }
 
 /*

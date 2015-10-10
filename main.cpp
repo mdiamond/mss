@@ -26,6 +26,7 @@
 #include "tests.hpp"
 
 // Included classes
+#include "Color_Modifier.hpp"
 #include "Module.hpp"
 #include "Timer.hpp"
 
@@ -34,6 +35,12 @@ using namespace std;
 /**********************
  * EXTERNAL VARIABLES *
  **********************/
+
+// Color codes for stdout output
+Color_Modifier DEFAULT_STDOUT(FG_DEFAULT);
+Color_Modifier RED_STDOUT(FG_RED);
+Color_Modifier GREEN_STDOUT(FG_GREEN);
+Color_Modifier BLUE_STDOUT(FG_BLUE);
 
 // Audio information
 int SAMPLE_RATE = 44100;
@@ -55,7 +62,7 @@ int MODULE_BORDER_WIDTH = 2;
 // Window dimensions
 int MENU_HEIGHT = 19;
 int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
-                   (MODULES_PER_ROW * MODULE_SPACING);
+                   (MODULES_PER_ROW * MODULE_SPACING) + 4;
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MODULES_PER_COLUMN * MODULE_SPACING) +
                     MENU_HEIGHT;
@@ -111,14 +118,40 @@ bool testing_mode()
     return run_tests();
 }
 
+void destroy_pages()
+{
+    for(unsigned int i = 0; i < PAGES->size(); i ++)
+        delete (*PAGES)[i];
+}
+
+void destroy_modules()
+{
+    for(unsigned int i = 0; i < MODULES->size(); i ++)
+        delete (*MODULES)[i];
+}
+
 /*
  * Destroy stuff and shut down SDL.
  */
 void cleanup()
 {
-    // Destroy the graphics objects
+    // Destroy the modules
+    destroy_modules();
+    delete MODULES;
+    cout << "Destroyed all modules." << endl;
+
+    // Destroy all pages
+    destroy_pages();
+    delete PAGES;
+    cout << "Destroyed all pages." << endl;
+
+    // Destroy the window
     SDL_DestroyWindow(WINDOW);
+    cout << "Destroyed window." << endl;
+
+    // Destroy the renderer
     SDL_DestroyRenderer(RENDERER);
+    cout << "Destroyed renderer." << endl;
 
     // Quit SDL
     cout << "Quitting SDL." << endl;
@@ -185,6 +218,28 @@ bool initialize()
     return true;
 }
 
+namespace Color {
+    enum Code {
+        FG_RED      = 31,
+        FG_GREEN    = 32,
+        FG_BLUE     = 34,
+        FG_DEFAULT  = 39,
+        BG_RED      = 41,
+        BG_GREEN    = 42,
+        BG_BLUE     = 44,
+        BG_DEFAULT  = 49
+    };
+    class Modifier {
+        Code code;
+    public:
+        Modifier(Code pCode) : code(pCode) {}
+        friend std::ostream&
+        operator<<(std::ostream& os, const Modifier& mod) {
+            return os << "\033[" << mod.code << "m";
+        }
+    };
+}
+
 /*
  * Run in normal mode. If all objects create successfully,
  * return true. Otherwise, return false.
@@ -205,7 +260,7 @@ bool normal_mode()
     Uint32 delay_time = 0;
     Uint32 frame_previous = 0;
     Timer *frame_timer = new Timer();
-    // SDL_TimerID k_rate_timer = SDL_AddTimer(10, k_rate_callback_function, NULL);
+    SDL_TimerID k_rate_timer = SDL_AddTimer(100, k_rate_callback_function, NULL);
     frame_timer->start();
     SDL_Event e;
     while(true)
@@ -236,7 +291,8 @@ bool normal_mode()
         // Every 100 frames, print out the framerate
         if(frame % 100 == 0)
         {
-            cout << ((frame_success - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0)) << " frames per second." << endl;
+            cout << GREEN_STDOUT << ((frame_success - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0))
+                 << " frames per second." << DEFAULT_STDOUT << endl;
             frame_previous = frame_success;
         }
 
@@ -249,8 +305,16 @@ bool normal_mode()
         frame_success ++;
     }
 
+    // Pause audio
+    SDL_PauseAudio(1);
+
+    // Wait for the final audio buffer to play through
+    SDL_Delay(((BUFFER_SIZE / SAMPLE_RATE) * 1000) + 10);
+
+    // Clean up
     cleanup();
 
+    // Return success
     return true;
 }
 

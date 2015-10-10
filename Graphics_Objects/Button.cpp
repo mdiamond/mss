@@ -60,7 +60,6 @@ Button::Button(string *_name, SDL_Rect *_location, SDL_Color *_color,
  */
 Button::~Button()
 {
-    delete &text_str;
     delete text;
 }
 
@@ -81,6 +80,6 @@ void Button::render_graphics_object()
  */
 void Button::clicked()
 {
-    cout << name << " clicked" << endl;
+    cout << RED_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
     function_forwarder(this);
 }

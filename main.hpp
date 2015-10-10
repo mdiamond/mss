@@ -15,6 +15,7 @@
 #include "SDL2/SDL_ttf.h"
 
 // Included classes
+#include "Color_Modifier.hpp"
 #include "Module.hpp"
 #include "Graphics_Objects/Page.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
@@ -22,6 +23,12 @@
 /**********************
  * EXTERNAL VARIABLES *
  **********************/
+
+// Color codes for stdout output
+extern Color_Modifier DEFAULT_STDOUT;
+extern Color_Modifier RED_STDOUT;
+extern Color_Modifier GREEN_STDOUT;
+extern Color_Modifier BLUE_STDOUT;
 
 // Audio information
 extern int SAMPLE_RATE;
@@ -68,5 +75,11 @@ extern Text_Box *ACTIVE_TEXT_BOX;
 // The set of modules has been changed recently
 extern std::vector<Module *> *MODULES;
 extern bool MODULES_CHANGED;
+
+/*************************
+ * FUNCTION DECLARATIONS *
+ *************************/
+
+void destroy_pages();
 
 #endif

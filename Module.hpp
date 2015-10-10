@@ -50,13 +50,13 @@ class Module
         std::string name;
         int type;
         int number;
-        unsigned short current_sample;
+        bool processed;
         SDL_Point upper_left;
         SDL_Color color;
         SDL_Color text_color;
         // A vector containing pointers to any module that must
         // be processed before this module
-        std::vector<Module *> *depends;
+        std::vector<Module *> *dependencies;
         // A vector containing any graphics objects
         // necessary for rendering this module
         std::vector<Graphics_Object *> *graphics_objects;
@@ -82,7 +82,7 @@ class Module
         virtual void update_unique_graphics_objects() = 0;
 
         // Member functions
-        void process_depends();
+        void process_dependencies();
         void calculate_upper_left();
         void update_control_values();
         void calculate_graphics_objects();

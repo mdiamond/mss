@@ -56,13 +56,8 @@ Page::~Page()
 {
     delete graphics_objects;
 
-    int i = 0;
-    while(!sub_pages->empty())
-    {
+    for(unsigned int i = 0; i < sub_pages->size(); i ++)
         delete (*sub_pages)[i];
-        sub_pages->pop_back();
-        i ++;
-    }
     delete sub_pages;
 }
 

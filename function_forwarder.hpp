@@ -11,11 +11,15 @@
  * INCLUDES *
  ************/
 
-// No includes necessary
+// Included classes
+#include "Graphics_Object.hpp"
+#include "Module.hpp"
 
 /*************************
  * FUNCTION DECLARATIONS *
  *************************/
+
+Module *find_module(std::string *, std::vector<Module *> *);
 
 void function_forwarder(Graphics_Object *);
 

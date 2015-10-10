@@ -57,7 +57,6 @@ Text::Text(string *_name, SDL_Rect *_location, SDL_Color *_color,
  */
 Text::~Text()
 {
-    delete &text;
     SDL_DestroyTexture(texture);
 }
 
