@@ -88,7 +88,7 @@ void Toggle_Button::render_graphics_object()
  */
 void Toggle_Button::clicked()
 {
-    cout << RED_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+    cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
     function_forwarder(this);
 }

@@ -48,6 +48,19 @@ enum Oscillator_Graphics_Objects
     OSCILLATOR_RANGE_HIGH_TEXT_BOX
 };
 
+/********************************
+ * OSCILLATOR DEPENDENCIES ENUM *
+ ********************************/
+
+enum Oscillator_Dependencies
+{
+    OSCILLATOR_FREQUENCY_DEPENDENCY = 0,
+    OSCILLATOR_PHASE_OFFSET_DEPENDENCY,
+    OSCILLATOR_PULSE_WIDTH_DEPENDENCY,
+    OSCILLATOR_RANGE_LOW_DEPENDENCY,
+    OSCILLATOR_RANGE_HIGH_DEPENDENCY
+};
+
 /*******************************
  * OSCILLATOR CLASS DEFINITION *
  *******************************/
@@ -83,6 +96,11 @@ class Oscillator: public Module
         virtual void calculate_unique_graphics_objects();
         virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
+        void set_frequency();
+        void set_phase_offset();
+        void set_pulse_width();
+        void set_range_low();
+        void set_range_high();
 };
 
 #endif

@@ -32,6 +32,16 @@ enum Ouput_Graphics_Objects
     OUTPUT_INPUT_R_TEXT_BOX,
 };
 
+/****************************
+ * OUTPUT DEPENDENCIES ENUM *
+ ****************************/
+
+enum Ouput_Dependencies
+{
+    OUTPUT_INPUT_L_DEPENDENCY = 0,
+    OUTPUT_INPUT_R_DEPENDENCY
+};
+
 /***************************
  * OUTPUT CLASS DEFINITION *
  ***************************/

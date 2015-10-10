@@ -224,7 +224,7 @@ void Output::set_input_l()
     src = find_module(&text_box->typing_text->text, MODULES);
     if(src != NULL)
     {
-        (*dependencies)[0] = src;
+        (*dependencies)[OUTPUT_INPUT_L_DEPENDENCY] = src;
         input_l = src->output;
         waveform->buffer = src->output;
         cout << "Output left is now coming from " << src->name << endl;
@@ -242,7 +242,7 @@ void Output::set_input_r()
     src = find_module(&text_box->typing_text->text, MODULES);
     if(src != NULL)
     {
-        (*dependencies)[1] = src;
+        (*dependencies)[OUTPUT_INPUT_R_DEPENDENCY] = src;
         input_r = src->output;
         waveform->buffer = src->output;
         cout << "Output right is now coming from " << src->name << endl;

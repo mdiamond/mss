@@ -21,6 +21,8 @@
 
 Module *find_module(std::string *, std::vector<Module *> *);
 
+bool can_floatify(std::string *);
+
 void function_forwarder(Graphics_Object *);
 
 #endif
