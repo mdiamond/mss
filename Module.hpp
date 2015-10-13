@@ -87,6 +87,8 @@ class Module
         void update_control_values();
         void calculate_graphics_objects();
         void update_graphics_objects();
+        void set(float, float *, int);
+        void set(Module *, std::vector<float> **, int);
 };
 
 #endif

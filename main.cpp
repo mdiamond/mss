@@ -62,7 +62,8 @@ int MODULE_BORDER_WIDTH = 2;
 // Window dimensions
 int MENU_HEIGHT = 19;
 int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
-                   (MODULES_PER_ROW * MODULE_SPACING) + 4;
+                   (MODULES_PER_ROW * MODULE_SPACING) +
+                   ((MODULE_SPACING + 1) * 2);
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MODULES_PER_COLUMN * MODULE_SPACING) +
                     MENU_HEIGHT;

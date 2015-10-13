@@ -82,8 +82,6 @@ class Oscillator: public Module
                             *input_range_low, *input_range_high;
         std::string frequency_str, phase_offset_str, pulse_width_str, range_low_str,
                     range_high_str;
-        bool live_frequency, live_phase_offset, live_pulse_width, live_range_low,
-             live_range_high;
         // Booleans to represent whether or not each of the waveforms is enabled
         int waveform_type;
 
@@ -96,11 +94,16 @@ class Oscillator: public Module
         virtual void calculate_unique_graphics_objects();
         virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
-        void set_frequency();
-        void set_phase_offset();
-        void set_pulse_width();
-        void set_range_low();
-        void set_range_high();
+        void set_frequency(float);
+        void set_frequency(Module *);
+        void set_phase_offset(float);
+        void set_phase_offset(Module *);
+        void set_pulse_width(float);
+        void set_pulse_width(Module *);
+        void set_range_low(float);
+        void set_range_low(Module *);
+        void set_range_high(float);
+        void set_range_high(Module *);
 };
 
 #endif

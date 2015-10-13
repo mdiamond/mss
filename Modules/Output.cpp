@@ -38,7 +38,7 @@ using namespace std;
  */
 Output::Output(int _number)
 {
-    name = "output";
+    name = "Output";
     type = OUTPUT;
     number = _number;
 
@@ -215,38 +215,20 @@ void Output::toggle_audio_on()
     cout << "Audio toggled" << endl;
 }
 
-void Output::set_input_l()
+void Output::set_input_l(Module *src)
 {
-    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OUTPUT_INPUT_L_TEXT_BOX];
     Waveform *waveform = (Waveform *) (*graphics_objects)[OUTPUT_INPUT_L_WAVEFORM];
-    Module *src;
 
-    src = find_module(&text_box->typing_text->text, MODULES);
-    if(src != NULL)
-    {
-        (*dependencies)[OUTPUT_INPUT_L_DEPENDENCY] = src;
-        input_l = src->output;
-        waveform->buffer = src->output;
-        cout << "Output left is now coming from " << src->name << endl;
-    }
-    else
-        cout << "Output left could not be set, no such module";
+    set(src, &input_l, OUTPUT_INPUT_L_DEPENDENCY);
+    waveform->buffer = src->output;
+    cout << name << " input left is now coming from " << src->name << endl;
 }
 
-void Output::set_input_r()
+void Output::set_input_r(Module *src)
 {
-    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OUTPUT_INPUT_R_TEXT_BOX];
     Waveform *waveform = (Waveform *) (*graphics_objects)[OUTPUT_INPUT_R_WAVEFORM];
-    Module *src;
 
-    src = find_module(&text_box->typing_text->text, MODULES);
-    if(src != NULL)
-    {
-        (*dependencies)[OUTPUT_INPUT_R_DEPENDENCY] = src;
-        input_r = src->output;
-        waveform->buffer = src->output;
-        cout << "Output right is now coming from " << src->name << endl;
-    }
-    else
-        cout << "Output right could not be set, no such module";
+    set(src, &input_r, OUTPUT_INPUT_R_DEPENDENCY);
+    waveform->buffer = src->output;
+    cout << name << " input right is now coming from " << src->name << endl;
 }

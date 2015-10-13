@@ -66,5 +66,5 @@ void Rect::render_graphics_object()
  */
 void Rect::clicked()
 {
-    
+
 }

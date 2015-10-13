@@ -50,29 +50,23 @@ Oscillator::Oscillator(string *_name, int _number)
     frequency = 0;
     frequency_str = "0";
     input_frequency = new vector<float>(BUFFER_SIZE, 0);
-    live_frequency = false;
 
     phase_offset = 0;
     phase_offset_str = "0";
     input_phase_offset = new vector<float>(BUFFER_SIZE, 0);
-    live_phase_offset = false;
 
     pulse_width = 0;
     pulse_width_str = "0";
     input_pulse_width = new vector<float>(BUFFER_SIZE, 0);
-    live_pulse_width = false;
 
     range_low = -1;
     range_low_str = "-1";
     input_range_low = new vector<float>(BUFFER_SIZE, 0);
-    live_range_low = false;
 
     range_high = 1;
     range_high_str = "1";
     input_range_high = new vector<float>(BUFFER_SIZE, 0);
-    live_range_high = false;
 
-    output = new vector<float>(BUFFER_SIZE, 0);
     output = new vector<float>(BUFFER_SIZE, 0);
 
     waveform_type = SIN;
@@ -101,15 +95,15 @@ void Oscillator::process()
     for(unsigned short i = 0; i < BUFFER_SIZE; i ++)
     {
         // Update any control values
-        if(live_frequency)
+        if((*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] != NULL)
             frequency = (*(input_frequency))[i];
-        if(live_phase_offset)
+        if((*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] != NULL)
             phase_offset = (*(input_phase_offset))[i];
-        if(live_pulse_width)
+        if((*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] != NULL)
             pulse_width = (*(input_pulse_width))[i];
-        if(live_range_low)
+        if((*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] != NULL)
             range_low = (*(input_range_low))[i];
-        if(live_range_high)
+        if((*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] != NULL)
             range_high = (*(input_range_high))[i];
 
         // Calculate and store the current samples amplitude
@@ -130,27 +124,27 @@ void Oscillator::process()
 void Oscillator::update_unique_graphics_objects()
 {
     // Update text boxes
-    if(live_frequency)
+    if((*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] != NULL)
     {
         ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(frequency);
         ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
     }
-    if(live_phase_offset)
+    if((*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] != NULL)
     {
         ((Text_Box *) (*graphics_objects)[7])->text->text = to_string(phase_offset);
         ((Text_Box *) (*graphics_objects)[7])->text->updated = true;
     }
-    if(live_pulse_width)
+    if((*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] != NULL)
     {
         ((Text_Box *) (*graphics_objects)[9])->text->text = to_string(pulse_width);
         ((Text_Box *) (*graphics_objects)[9])->text->updated = true;
     }
-    if(live_range_low)
+    if((*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] != NULL)
     {
         ((Text_Box *) (*graphics_objects)[11])->text->text = to_string(range_low);
         ((Text_Box *) (*graphics_objects)[11])->text->updated = true;
     }
-    if(live_range_high)
+    if((*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] != NULL)
     {
         ((Text_Box *) (*graphics_objects)[12])->text->text = to_string(range_high);
         ((Text_Box *) (*graphics_objects)[12])->text->updated = true;
@@ -324,132 +318,62 @@ void Oscillator::calculate_unique_graphics_objects()
     }
 }
 
-void Oscillator::set_frequency()
+void Oscillator::set_frequency(float val)
 {
-    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX];
-
-    if(can_floatify(&text_box->typing_text->text))
-    {
-        frequency = stof(text_box->typing_text->text.c_str());
-        (*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] = NULL;
-        live_frequency = false;
-        cout << name << " frequency changed to " <<  frequency << endl;
-    }
-    else
-    {
-        Module *src = find_module(&text_box->typing_text->text, MODULES);
-        if(src != NULL)
-        {
-            (*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] = src;
-            input_frequency = src->output;
-            live_frequency = true;
-            cout << name << " frequency is now coming from " << src->name << endl;
-        }
-        else
-            cout << RED_STDOUT << "Oscillator frequency input could not be set, no such module" << DEFAULT_STDOUT << endl;
-    }
+    set(val, &frequency, OSCILLATOR_FREQUENCY_DEPENDENCY);
+    cout << name << " frequency changed to " << frequency << endl;
 }
 
-void Oscillator::set_phase_offset()
+void Oscillator::set_frequency(Module *src)
 {
-    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX];
-
-    if(can_floatify(&text_box->typing_text->text))
-    {
-        phase_offset = stof(text_box->typing_text->text.c_str());
-        (*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] = NULL;
-        live_phase_offset = false;
-        cout << name << " phase offset changed to " <<  phase_offset << endl;
-    }
-    else
-    {
-        Module *src = find_module(&text_box->typing_text->text, MODULES);
-        if(src != NULL)
-        {
-            (*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] = src;
-            input_phase_offset = src->output;
-            live_phase_offset = true;
-            cout << name << " phase offset is now coming from " << src->name << endl;
-        }
-        else
-            cout << RED_STDOUT << "Oscillator phase offset input could not be set, no such module" << DEFAULT_STDOUT << endl;
-    }
+    set(src, &input_frequency, OSCILLATOR_FREQUENCY_DEPENDENCY);
+    cout << name << " frequency is now coming from " << src->name << endl;
 }
 
-void Oscillator::set_pulse_width()
+void Oscillator::set_phase_offset(float val)
 {
-    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX];
-
-    if(can_floatify(&text_box->typing_text->text))
-    {
-        pulse_width = stof(text_box->typing_text->text.c_str());
-        (*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] = NULL;
-        live_pulse_width = false;
-        cout << name << " pulse width changed to " <<  pulse_width << endl;
-    }
-    else
-    {
-        Module *src = find_module(&text_box->typing_text->text, MODULES);
-        if(src != NULL)
-        {
-            (*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] = src;
-            input_pulse_width = src->output;
-            live_pulse_width = true;
-            cout << name << " pulse width is now coming from " << src->name << endl;
-        }
-        else
-            cout << RED_STDOUT << "Oscillator pulse width input could not be set, no such module" << DEFAULT_STDOUT << endl;
-    }
+    set(val, &phase_offset, OSCILLATOR_PHASE_OFFSET_DEPENDENCY);
+    cout << name << " phase offset changed to " << phase_offset << endl;
 }
 
-void Oscillator::set_range_low()
+void Oscillator::set_phase_offset(Module *src)
 {
-    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX];
-
-    if(can_floatify(&text_box->typing_text->text))
-    {
-        range_low = stof(text_box->typing_text->text.c_str());
-        (*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] = NULL;
-        live_range_low = false;
-        cout << name << " range low changed to " <<  range_low << endl;
-    }
-    else
-    {
-        Module *src = find_module(&text_box->typing_text->text, MODULES);
-        if(src != NULL)
-        {
-            (*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] = src;
-            input_range_low = src->output;
-            live_range_low = true;
-            cout << name << " range low is now coming from " << src->name << endl;
-        }
-        else
-            cout << RED_STDOUT << "Oscillator range low input could not be set, no such module" << DEFAULT_STDOUT << endl;
-    }
+    set(src, &input_phase_offset, OSCILLATOR_PHASE_OFFSET_DEPENDENCY);
+    cout << name << " phase offset is now coming from " << src->name << endl;
 }
 
-void Oscillator::set_range_high()
+void Oscillator::set_pulse_width(float val)
 {
-    Text_Box *text_box = (Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX];
+    set(val, &pulse_width, OSCILLATOR_PULSE_WIDTH_DEPENDENCY);
+    cout << name << " pulse width changed to " << pulse_width << endl;
+}
 
-    if(can_floatify(&text_box->typing_text->text))
-    {
-        range_high = stof(text_box->typing_text->text.c_str());
-        (*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] = NULL;
-        live_range_high = false;
-        cout << name << " range high changed to " <<  range_high << endl;
-    }
-    else
-    {
-        Module *src = find_module(&text_box->typing_text->text, MODULES);
-        if(src != NULL)
-        {
-            (*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] = src;
-            input_range_high = src->output;
-            live_range_high = true;
-            cout << name << " range high is now coming from " << src->name << endl;
-        }
-        else
-            cout << RED_STDOUT << "Oscillator range high input could not be set, no such module" << DEFAULT_STDOUT << endl;
-    }
+void Oscillator::set_pulse_width(Module *src)
+{
+    set(src, &input_pulse_width, OSCILLATOR_PULSE_WIDTH_DEPENDENCY);
+    cout << name << " pulse width is now coming from " << src->name << endl;
+}
+
+void Oscillator::set_range_low(float val)
+{
+    set(val, &range_low, OSCILLATOR_RANGE_LOW_DEPENDENCY);
+    cout << name << " range low changed to " << range_low << endl;
+}
+
+void Oscillator::set_range_low(Module *src)
+{
+    set(src, &input_range_low, OSCILLATOR_RANGE_LOW_DEPENDENCY);
+    cout << name << " range low is now coming from " << src->name << endl;
+}
+
+void Oscillator::set_range_high(float val)
+{
+    set(val, &range_high, OSCILLATOR_RANGE_HIGH_DEPENDENCY);
+    cout << name << " range high changed to " << range_high << endl;
+}
+
+void Oscillator::set_range_high(Module *src)
+{
+    set(src, &input_range_high, OSCILLATOR_RANGE_HIGH_DEPENDENCY);
+    cout << name << " range high is now coming from " << src->name << endl;
 }

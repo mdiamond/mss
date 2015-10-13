@@ -158,3 +158,15 @@ void Module::calculate_graphics_objects()
 
     calculate_unique_graphics_objects();
 }
+
+void Module::set(float val, float *dst, int dependency_num)
+{
+    *dst = val;
+    (*dependencies)[dependency_num] = NULL;
+}
+
+void Module::set(Module *src, vector<float> **dst, int dependency_num)
+{
+    *dst = src->output;
+    (*dependencies)[dependency_num] = src;
+}
