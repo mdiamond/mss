@@ -40,7 +40,7 @@ Graphics_Object::Graphics_Object()
  */
 Graphics_Object::~Graphics_Object()
 {
-
+	cout << "Destroying " << name << "." << endl;
 }
 
 /*

@@ -63,6 +63,14 @@ float Waveform::calculate_y(int i, int index)
 }
 
 /*
+ * Dummy function.
+ */
+void Waveform::update_graphics_object()
+{
+
+}
+
+/*
  * Render the waveform.
  */
 void Waveform::render_graphics_object()

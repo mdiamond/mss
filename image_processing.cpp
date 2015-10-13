@@ -49,7 +49,7 @@ int open_window()
                              );
 
     if (WINDOW == NULL) {
-        cout << "Could not create window: " << SDL_GetError() << endl;
+        cout << RED_STDOUT << "Could not create window: " << SDL_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 
@@ -66,7 +66,7 @@ int create_renderer()
     RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED);
 
     if (WINDOW == NULL) {
-        cout << "Could not create renderer: " << SDL_GetError() << endl;
+        cout << RED_STDOUT << "Could not create renderer: " << SDL_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 
@@ -86,7 +86,7 @@ int load_fonts()
 
     if(!FONT_REGULAR || !FONT_BOLD)
     {
-        cout << "Could not open one of the TTF fonts: " << TTF_GetError() << endl;
+        cout << RED_STDOUT << "Could not open one of the TTF fonts: " << TTF_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 
@@ -189,34 +189,52 @@ void calculate_pages()
     // buttons for special functions
     initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
 
+    // Reset the sub page graphics objects
     delete sub_page_graphics_objects;
     sub_page_graphics_objects = new vector<Graphics_Object *>();
 
+    // For each module
     for(unsigned int i = 0; i < MODULES->size(); i ++)
     {
+        // Figure out what its name will be
         current_sub_page_name = (*MODULES)[i]->name + " (page)";
+
+        // Add each of its graphics objects to the current sub page
         for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
         {
             sub_page_graphics_objects->push_back((*(*MODULES)[i]->graphics_objects)[j]);
             (*(*MODULES)[i]->graphics_objects)[j]->updated = true;
         }
+
+        // Create the sub page using the created vector of graphics objects,
+        // add it to the list of sub pages
         current_sub_page = new Page(&current_sub_page_name,
                                     &(*(*MODULES)[i]->graphics_objects)[1]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(current_sub_page);
 
+        // Reset the sub page graphics objects
         delete sub_page_graphics_objects;
         sub_page_graphics_objects = new vector<Graphics_Object *>();
 
-        if(i % (unsigned) ((MODULES_PER_COLUMN * MODULES_PER_ROW)) == ((MODULES_PER_COLUMN * MODULES_PER_ROW)) - 1||
+        // If this is the last sub page in the current page, or
+        // if there are no more modules to take into consideration
+        if(i % (unsigned) ((MODULES_PER_COLUMN * MODULES_PER_ROW)) ==
+           ((MODULES_PER_COLUMN * MODULES_PER_ROW)) - 1 ||
            i == MODULES->size() - 1)
         {
-
+            // Figure out the name of the current page
             current_page_name = to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)";
+
+            // Create the page using the created vector of sub pages, add it
+            // to the global list of pages
             current_page = new Page(&current_page_name, &WINDOW_RECT, &BLACK,
                                     NULL, sub_pages);
             (*PAGES).push_back(current_page);
 
+            // Delete the vector of sub pages and sub page graphics objects,
+            // only re-initialize them and restart the process of calculating a new page
+            // if there are still modules left to take into consideration
             delete sub_pages;
             delete sub_page_graphics_objects;
             if(i != MODULES->size() - 1)
@@ -250,9 +268,10 @@ void draw_surface()
     // Clear the renderer
     SDL_RenderClear(RENDERER);
 
-    // Render the current page
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
-        (*MODULES)[i]->update_graphics_objects();
+    // Update graphics objects for the current page
+    (*PAGES)[CURRENT_PAGE]->update_graphics_object();
+
+    // Render graphics objects for the current page
     (*PAGES)[CURRENT_PAGE]->render_graphics_object();
 
     // Present what has been rendered

@@ -62,8 +62,7 @@ int MODULE_BORDER_WIDTH = 2;
 // Window dimensions
 int MENU_HEIGHT = 19;
 int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
-                   (MODULES_PER_ROW * MODULE_SPACING) +
-                   ((MODULE_SPACING + 1) * 2);
+                   ((MODULES_PER_ROW - 1) * MODULE_SPACING);
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MODULES_PER_COLUMN * MODULE_SPACING) +
                     MENU_HEIGHT;
@@ -155,8 +154,9 @@ void cleanup()
     cout << "Destroyed renderer." << endl;
 
     // Quit SDL
-    cout << "Quitting SDL." << endl;
     SDL_Quit();
+    cout << "SDL terminated." << endl;
+
 }
 
 /*
@@ -329,6 +329,6 @@ int main()
 
     // Return an exit status based on whether or not
     // the function called above succeeded and terminate
-    cout << "Quitting..." << endl;
+    cout << "Terminating..." << endl;
     return exit_status;
 }

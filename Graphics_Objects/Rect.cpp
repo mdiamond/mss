@@ -49,6 +49,14 @@ Rect::~Rect()
 }
 
 /*
+ * Dummy function.
+ */
+void Rect::update_graphics_object()
+{
+
+}
+
+/*
  * Render the rectangle. If fill is set, fill it, otherwise,
  * just draw the outline.
  */

@@ -49,7 +49,7 @@ int open_audio_device()
 
     if(SDL_OpenAudio(&wanted, &obtained) == -1)
     {
-        cout << "Could not open the audio device: " << SDL_GetError() << endl;
+        cout << RED_STDOUT << "Could not open the audio device: " << SDL_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 

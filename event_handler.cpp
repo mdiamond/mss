@@ -17,6 +17,7 @@
 #include "SDL2/SDL.h"
 
 // Included files
+#include "function_forwarder.hpp"
 #include "main.hpp"
 
 // Included classes
@@ -82,17 +83,37 @@ bool event_handler(SDL_Event *e)
         // Otherwise, if a keyboard key is pressed...
         else if(e->type == SDL_KEYDOWN)
         {
+            // If a keyboard combination for creating a module or switching
+            // pages is entered, handle that
+            if(e->key.keysym.sym == SDLK_1)
+            {
+                if(e->key.keysym.mod & KMOD_LCTRL)
+                    add_oscillator();
+            }
+            else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
+            {
+                if(e->key.keysym.mod & KMOD_LCTRL)
+                    next_page();
+            }
+            else if(e->key.keysym.sym == SDLK_RIGHTBRACKET)
+            {
+                if(e->key.keysym.mod & KMOD_LCTRL)
+                    previous_page();
+            }
             // If that key is the return key, and there is an active
             // text box, call its entered() function and pass it the
             // text that's been recorded from the keyboard previously
-            if(ACTIVE_TEXT_BOX != NULL &&
-               e->key.keysym.sym == SDLK_RETURN)
+            else if(ACTIVE_TEXT_BOX != NULL && e->key.keysym.sym == SDLK_RETURN)
+            {
                 ACTIVE_TEXT_BOX->entered();
+            }
 
             // If that key is backspace, just remove a character
             // from the typing buffer
             else if(e->key.keysym.sym == SDLK_BACKSPACE && ACTIVE_TEXT_BOX != NULL)
+            {
                 ACTIVE_TEXT_BOX->delete_character();
+            }
         }
 
         // If neither an SDL_QUIT or SDL_KEYDOWN event has been received,

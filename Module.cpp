@@ -56,6 +56,8 @@ Module::Module()
  */
 Module::~Module()
 {
+    cout << "Destroying " << name << "." << endl;
+
     delete dependencies;
     for (int i = 0; i < graphics_objects->size(); i ++)
         delete (*graphics_objects)[i];
@@ -79,10 +81,8 @@ void Module::calculate_upper_left()
     int x, y;
     x = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) % MODULES_PER_ROW);
     y = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) / MODULES_PER_ROW);
-    upper_left.x = (x * (WINDOW_WIDTH / MODULES_PER_ROW)) +
-                   (x * MODULE_SPACING);
-    upper_left.y = (y * ((WINDOW_HEIGHT - MENU_HEIGHT)/ MODULES_PER_COLUMN)) +
-                   (y * MODULE_SPACING);
+    upper_left.x = ((x * MODULE_WIDTH) + (x * MODULE_SPACING));
+    upper_left.y = ((y * MODULE_HEIGHT) + (y * MODULE_SPACING));
 }
 
 /*

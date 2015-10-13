@@ -62,6 +62,21 @@ Page::~Page()
 }
 
 /*
+ * Update the graphics objects.
+ */
+void Page::update_graphics_object()
+{
+    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
+    {
+        (*graphics_objects)[i]->update_graphics_object();
+    }
+    for(unsigned int i = 0; i < sub_pages->size(); i ++)
+    {
+        (*sub_pages)[i]->update_graphics_object();
+    }
+}
+
+/*
  * Render the graphics objects.
  */
 void Page::render_graphics_object()

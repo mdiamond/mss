@@ -23,6 +23,10 @@ Module *find_module(std::string *, std::vector<Module *> *);
 
 bool can_floatify(std::string *);
 
+void add_oscillator();
+void next_page();
+void previous_page();
+
 void function_forwarder(Graphics_Object *);
 
 #endif

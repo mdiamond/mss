@@ -61,6 +61,14 @@ Text::~Text()
 }
 
 /*
+ * Dummy function.
+ */
+void Text::update_graphics_object()
+{
+
+}
+
+/*
  * Render the text. If the text has changed, first
  * re-create the texture.
  */

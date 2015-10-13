@@ -63,6 +63,14 @@ Toggle_Button::~Toggle_Button()
 }
 
 /*
+ * Dummy function.
+ */
+void Toggle_Button::update_graphics_object()
+{
+
+}
+
+/*
  * Render the Toggle_Button.
  */
 void Toggle_Button::render_graphics_object()

@@ -64,6 +64,14 @@ Text_Box::~Text_Box()
 }
 
 /*
+ * Dummy function.
+ */
+void Text_Box::update_graphics_object()
+{
+
+}
+
+/*
  * Render the text box. If the text has changed, first
  * update the text. If the text box is active, draw a flashing
  * cursor within it.

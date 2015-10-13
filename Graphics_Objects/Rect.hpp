@@ -26,6 +26,7 @@ class Rect: public Graphics_Object
         Rect(std::string *, SDL_Rect *, SDL_Color *);
         virtual ~Rect();
         // Member functions
+        virtual void update_graphics_object();
         virtual void render_graphics_object();
         virtual void clicked();
 };
