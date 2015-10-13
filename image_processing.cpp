@@ -109,6 +109,7 @@ void calculate_graphics_objects()
     {
         (*MODULES)[i]->calculate_graphics_objects();
     }
+
     MODULES_CHANGED = 0;
 }
 
