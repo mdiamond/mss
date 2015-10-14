@@ -122,6 +122,9 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
  */
 Uint32 k_rate_callback_function(Uint32 interval, void *param)
 {
+    if(SDL_GetAudioStatus() == SDL_AUDIO_PAUSED)
+        return 0;
+
     for(unsigned int i = 0; i < MODULES->size(); i ++)
         (*MODULES)[i]->update_control_values();
 

@@ -211,6 +211,9 @@ bool normal_mode()
     // Pause audio
     SDL_PauseAudio(1);
 
+    // Delay to ensure all callback functions finish
+    SDL_Delay(100);
+
     // Clean up
     cleanup();
 
