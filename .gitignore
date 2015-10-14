@@ -32,3 +32,6 @@ obj/*
 # Vim files
 *.swp
 *.vim
+
+# OS data
+*.DS_Store
