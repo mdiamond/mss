@@ -1,7 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Header file for the utils functions. This file 
- * declares any functions.
+ * Header file for the function forwarder.
  */
 
 #ifndef synth_function_forwarder_h
