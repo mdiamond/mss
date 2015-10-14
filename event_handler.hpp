@@ -16,9 +16,6 @@
 #ifndef synth_event_handler_h
 #define synth_event_handler_h
 
-// Helper functions
-bool check_click();
-
 // Event handler
 bool event_handler(SDL_Event *);
 

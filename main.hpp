@@ -77,10 +77,4 @@ extern Text_Box *ACTIVE_TEXT_BOX;
 extern std::vector<Module *> *MODULES;
 extern bool MODULES_CHANGED;
 
-/*************************
- * FUNCTION DECLARATIONS *
- *************************/
-
-void destroy_pages();
-
 #endif

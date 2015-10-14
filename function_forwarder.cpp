@@ -1,6 +1,8 @@
 /*
  * Matthew Diamond 2015
- * Functions for accomplishing miscellaneous tasks.
+ * Functions for taking a graphics object as input, and determining
+ * what should happen based on the type and naming of the graphics
+ * object.
  */
 
 /************
@@ -57,6 +59,10 @@ Module *find_module(string *string, vector<Module *> *modules)
     return NULL;
 }
 
+/*
+ * Return true if it is possible to turn this string into
+ * a float. Return false otherwise.
+ */
 bool can_floatify(string *string)
 {
     if(string->empty())
@@ -98,7 +104,7 @@ void output_function_forwarder(Graphics_Object *g)
         }
         else if(src == output)
         {
-            cout << RED_STDOUT << "No module may input to itself" << DEFAULT_STDOUT << endl;
+            cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
             return;
         }
 
@@ -150,7 +156,7 @@ void oscillator_function_forwarder(Graphics_Object *g)
             }
             else if(src == oscillator)
             {
-                cout << RED_STDOUT << "No module may input to itself" << DEFAULT_STDOUT << endl;
+                cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
                 return;
             }
 
@@ -168,6 +174,9 @@ void oscillator_function_forwarder(Graphics_Object *g)
     }
 }
 
+/*
+ * Add an oscillator.
+ */
 void add_oscillator()
 {
     string name = "Oscillator " + to_string(MODULES->size());
@@ -177,6 +186,9 @@ void add_oscillator()
     cout << "Added module " << name << endl;
 }
 
+/*
+ * Increment the current page.
+ */
 void next_page()
 {
     if(CURRENT_PAGE > 0)
@@ -186,6 +198,9 @@ void next_page()
     }
 }
 
+/*
+ * Decrement the current page.
+ */
 void previous_page()
 {
     if(CURRENT_PAGE < PAGES->size() - 1)

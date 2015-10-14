@@ -49,7 +49,8 @@ int open_audio_device()
 
     if(SDL_OpenAudio(&wanted, &obtained) == -1)
     {
-        cout << RED_STDOUT << "Could not open the audio device: " << SDL_GetError() << DEFAULT_STDOUT << endl;
+        cout << RED_STDOUT << "Could not open the audio device: "
+             << SDL_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 
@@ -104,14 +105,11 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 
     // Fetch the output module's latest processed audio
     // and insert it into the buffer
-    float *buffer_l = buffer;
-    float *buffer_r = buffer + 1;
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        *buffer_l = (*(output->input_l))[i];
-        *buffer_r = (*(output->input_r))[i];
-        buffer_l += 2;
-        buffer_r += 2;
+        buffer[0] = (*(output->input_l))[i];
+        buffer[1] = (*(output->input_r))[i];
+        buffer += 2;
     }
 
     for(unsigned int i = 1; i < MODULES->size(); i ++)

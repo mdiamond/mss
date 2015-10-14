@@ -19,6 +19,7 @@
 // Included files
 #include "image_processing.hpp"
 #include "main.hpp"
+#include "main_helpers.hpp"
 #include "signal_processing.hpp"
 
 // Included classes
@@ -45,11 +46,11 @@ int open_window()
                               SDL_WINDOWPOS_UNDEFINED,
                               WINDOW_WIDTH,
                               WINDOW_HEIGHT,
-                              SDL_WINDOW_OPENGL
-                             );
+                              SDL_WINDOW_OPENGL);
 
     if (WINDOW == NULL) {
-        cout << RED_STDOUT << "Could not create window: " << SDL_GetError() << DEFAULT_STDOUT << endl;
+        cout << RED_STDOUT << "Could not create window: "
+             << SDL_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 
@@ -66,7 +67,8 @@ int create_renderer()
     RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED);
 
     if (WINDOW == NULL) {
-        cout << RED_STDOUT << "Could not create renderer: " << SDL_GetError() << DEFAULT_STDOUT << endl;
+        cout << RED_STDOUT << "Could not create renderer: "
+             << SDL_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 
@@ -86,7 +88,8 @@ int load_fonts()
 
     if(!FONT_REGULAR || !FONT_BOLD)
     {
-        cout << RED_STDOUT << "Could not open one of the TTF fonts: " << TTF_GetError() << DEFAULT_STDOUT << endl;
+        cout << RED_STDOUT << "Could not open one of the TTF fonts: "
+             << TTF_GetError() << DEFAULT_STDOUT << endl;
         return 0;
     }
 
@@ -113,10 +116,16 @@ void calculate_graphics_objects()
     MODULES_CHANGED = 0;
 }
 
+/*
+ * Create the very first sub page on every page, the utilities sub page.
+ * This sub page contains the buttons for adding new modules, switching
+ * pages, and saving or loading the current patch.
+ */
 void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_objects,
                                    vector<Page *> *sub_pages, Page *current_sub_page)
 {
     int x = 2;
+
     // Create the background and add it to the list of graphics
     // objects
     string object_name = "background (rect)";
@@ -219,8 +228,8 @@ void calculate_pages()
 
         // If this is the last sub page in the current page, or
         // if there are no more modules to take into consideration
-        if(i % (unsigned) ((MODULES_PER_COLUMN * MODULES_PER_ROW)) ==
-           ((MODULES_PER_COLUMN * MODULES_PER_ROW)) - 1 ||
+        if(i % (MODULES_PER_COLUMN * MODULES_PER_ROW) ==
+           (unsigned) (MODULES_PER_COLUMN * MODULES_PER_ROW) - 1 ||
            i == MODULES->size() - 1)
         {
             // Figure out the name of the current page

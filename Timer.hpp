@@ -1,7 +1,8 @@
 /*
  * Matthew Diamond 2015
  * The header for the Timer class. This class is used to measure
- * framerate and time how long functions are taking.
+ * framerate and time how long functions are taking. This file
+ * defines the class.
  */
 
 #ifndef synth_timer_h

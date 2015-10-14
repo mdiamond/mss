@@ -57,7 +57,7 @@ Module::Module()
 Module::~Module()
 {
     delete dependencies;
-    for (int i = 0; i < graphics_objects->size(); i ++)
+    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
         delete (*graphics_objects)[i];
     delete graphics_objects;
     delete output;
@@ -114,7 +114,6 @@ void Module::calculate_graphics_objects()
     // If the graphics objects have not yet been initialized
     if(graphics_objects->size() == 0)
     {
-        cout << name << " got here" << endl;
         // graphics_object[0] is the outermost rectangle used to represent the module
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
         string object_name = "border (rect)";

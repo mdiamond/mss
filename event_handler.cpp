@@ -56,6 +56,56 @@ bool check_click()
     return clicked;
 }
 
+/*
+ * Handle SDL_KEYDOWN events.
+ */
+void keydown_event(SDL_Event *e)
+{
+    // If a keyboard combination for creating a module or switching
+    // pages is entered, handle that
+    if(e->key.keysym.sym == SDLK_1)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            add_oscillator();
+    }
+    else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            next_page();
+    }
+    else if(e->key.keysym.sym == SDLK_RIGHTBRACKET)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            previous_page();
+    }
+    // If that key is the return key, and there is an active
+    // text box, call its entered() function and pass it the
+    // text that's been recorded from the keyboard previously
+    else if(ACTIVE_TEXT_BOX != NULL && e->key.keysym.sym == SDLK_RETURN)
+    {
+        ACTIVE_TEXT_BOX->entered();
+    }
+
+    // If that key is backspace, just remove a character
+    // from the typing buffer
+    else if(e->key.keysym.sym == SDLK_BACKSPACE && ACTIVE_TEXT_BOX != NULL)
+    {
+        ACTIVE_TEXT_BOX->delete_character();
+    }
+}
+
+/*
+ * Handle SDL_MOUSEBUTTONDOWN and SDL_MOUSEMOTION
+ * events.
+ */
+void mouse_event(SDL_Event *e)
+{
+    MOUSE_X = e->motion.x;
+    MOUSE_Y = e->motion.y;
+    if(e->type == SDL_MOUSEBUTTONDOWN)
+        check_click();
+}
+
 /*****************
  * EVENT HANDLER *
  *****************/
@@ -75,46 +125,11 @@ bool event_handler(SDL_Event *e)
         // out of the event handler loop, and the calling function
         // will terminate the program
         if(e->type == SDL_QUIT)
-        {
             quit = true;
-            break;
-        }
 
         // Otherwise, if a keyboard key is pressed...
         else if(e->type == SDL_KEYDOWN)
-        {
-            // If a keyboard combination for creating a module or switching
-            // pages is entered, handle that
-            if(e->key.keysym.sym == SDLK_1)
-            {
-                if(e->key.keysym.mod & KMOD_LCTRL)
-                    add_oscillator();
-            }
-            else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
-            {
-                if(e->key.keysym.mod & KMOD_LCTRL)
-                    next_page();
-            }
-            else if(e->key.keysym.sym == SDLK_RIGHTBRACKET)
-            {
-                if(e->key.keysym.mod & KMOD_LCTRL)
-                    previous_page();
-            }
-            // If that key is the return key, and there is an active
-            // text box, call its entered() function and pass it the
-            // text that's been recorded from the keyboard previously
-            else if(ACTIVE_TEXT_BOX != NULL && e->key.keysym.sym == SDLK_RETURN)
-            {
-                ACTIVE_TEXT_BOX->entered();
-            }
-
-            // If that key is backspace, just remove a character
-            // from the typing buffer
-            else if(e->key.keysym.sym == SDLK_BACKSPACE && ACTIVE_TEXT_BOX != NULL)
-            {
-                ACTIVE_TEXT_BOX->delete_character();
-            }
-        }
+            keydown_event(e);
 
         // If neither an SDL_QUIT or SDL_KEYDOWN event has been received,
         // but a SDL_TEXTINPUT event has been received, add the typed text
@@ -122,21 +137,14 @@ bool event_handler(SDL_Event *e)
         // impossible to receive an event of this type if no text box is
         // current active)
         else if(e->type == SDL_TEXTINPUT && ACTIVE_TEXT_BOX != NULL)
-        {
             ACTIVE_TEXT_BOX->typed(e->text.text);
-        }
 
         // If none of the above events have been received, but any kind of
         // mouse event has been received, get the mouse coordinates, and
         // if the event is an SDL_MOUSEBUTTONDOWN, check for clicked objects
         else if(e->type == SDL_MOUSEBUTTONDOWN ||
-                e->type == SDL_MOUSEBUTTONUP ||
                 e->type == SDL_MOUSEMOTION)
-        {
-            SDL_GetMouseState(&MOUSE_X, &MOUSE_Y);
-            if(e->type == SDL_MOUSEBUTTONDOWN)
-                check_click();
-        }
+            mouse_event(e);
     }
 
     return quit;
