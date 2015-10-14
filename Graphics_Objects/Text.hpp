@@ -29,7 +29,6 @@ class Text: public Graphics_Object
              std::string *, TTF_Font *);
         virtual ~Text();
         // Member functions
-        virtual void update_graphics_object();
         virtual void render_graphics_object();
         virtual void clicked();
 };

@@ -96,6 +96,11 @@ void output_function_forwarder(Graphics_Object *g)
             cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
             return;
         }
+        else if(src == output)
+        {
+            cout << RED_STDOUT << "No module may input to itself" << DEFAULT_STDOUT << endl;
+            return;
+        }
 
         if(g->name == "output input left (text_box)")
             output->set_input_l(src);
@@ -141,6 +146,11 @@ void oscillator_function_forwarder(Graphics_Object *g)
             if(src == NULL)
             {
                 cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
+                return;
+            }
+            else if(src == oscillator)
+            {
+                cout << RED_STDOUT << "No module may input to itself" << DEFAULT_STDOUT << endl;
                 return;
             }
 

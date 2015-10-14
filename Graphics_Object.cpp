@@ -40,7 +40,7 @@ Graphics_Object::Graphics_Object()
  */
 Graphics_Object::~Graphics_Object()
 {
-	cout << "Destroying " << name << "." << endl;
+
 }
 
 /*
@@ -54,4 +54,9 @@ bool Graphics_Object::was_clicked()
         return true;
 
     return false;
+}
+
+void Graphics_Object::update_location(SDL_Rect *_location)
+{
+	location = *_location;
 }

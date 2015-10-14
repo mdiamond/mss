@@ -34,7 +34,6 @@ class Toggle_Button: public Graphics_Object
                       bool *, Module *);
         virtual ~Toggle_Button();
         // Member functions
-        virtual void update_graphics_object();
         virtual void render_graphics_object();
         virtual void clicked();
 };

@@ -56,8 +56,6 @@ Module::Module()
  */
 Module::~Module()
 {
-    cout << "Destroying " << name << "." << endl;
-
     delete dependencies;
     for (int i = 0; i < graphics_objects->size(); i ++)
         delete (*graphics_objects)[i];
@@ -116,6 +114,7 @@ void Module::calculate_graphics_objects()
     // If the graphics objects have not yet been initialized
     if(graphics_objects->size() == 0)
     {
+        cout << name << " got here" << endl;
         // graphics_object[0] is the outermost rectangle used to represent the module
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
         string object_name = "border (rect)";
@@ -134,7 +133,7 @@ void Module::calculate_graphics_objects()
 
         // graphics_object[2] is the objects name
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-                             upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
+                    upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
         object_name = "module name (text)";
         text = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
         graphics_objects->push_back(text);
@@ -143,17 +142,17 @@ void Module::calculate_graphics_objects()
     else
     {
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-        (*graphics_objects)[MODULE_BORDER_RECT]->location = location;
+        (*graphics_objects)[MODULE_BORDER_RECT]->update_location(&location);
 
         location = {upper_left.x + MODULE_BORDER_WIDTH,
                     upper_left.y + MODULE_BORDER_WIDTH,
                     MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-        (*graphics_objects)[MODULE_INNER_BORDER_RECT]->location = location;
+        (*graphics_objects)[MODULE_INNER_BORDER_RECT]->update_location(&location);
 
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-                             upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
-        (*graphics_objects)[MODULE_NAME_TEXT]->location = location;
+            upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
+        (*graphics_objects)[MODULE_NAME_TEXT]->update_location(&location);
     }
 
     calculate_unique_graphics_objects();

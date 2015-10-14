@@ -32,7 +32,6 @@ class Button: public Graphics_Object
                Module *);
         virtual ~Button();
         // Member functions
-        virtual void update_graphics_object();
         virtual void render_graphics_object();
         virtual void clicked();
 };

@@ -3,7 +3,7 @@ CFLAGS = -std=c++11
 LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJFLAGS = $(CC) $(CFLAGS) -o $@ -c
 EXEFLAGS = $(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
-MAINOBJ = obj/main.o
+MAINOBJ = obj/main.o obj/main_helpers.o
 MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/image_processing.o obj/signal_processing.o obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
@@ -17,6 +17,8 @@ synth : $(OBJECTS)
 	$(EXEFLAGS)
 
 # Main
+obj/main_helpers.o : main_helpers.cpp main_helpers.hpp
+	$(OBJFLAGS) main_helpers.cpp
 obj/main.o : main.cpp main.hpp
 	$(OBJFLAGS) main.cpp 
 

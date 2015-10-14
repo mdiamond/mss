@@ -62,33 +62,14 @@ Page::~Page()
 }
 
 /*
- * Update the graphics objects.
- */
-void Page::update_graphics_object()
-{
-    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
-    {
-        (*graphics_objects)[i]->update_graphics_object();
-    }
-    for(unsigned int i = 0; i < sub_pages->size(); i ++)
-    {
-        (*sub_pages)[i]->update_graphics_object();
-    }
-}
-
-/*
  * Render the graphics objects.
  */
 void Page::render_graphics_object()
 {
     for(unsigned int i = 0; i < graphics_objects->size(); i ++)
-    {
         (*graphics_objects)[i]->render_graphics_object();
-    }
     for(unsigned int i = 0; i < sub_pages->size(); i ++)
-    {
         (*sub_pages)[i]->render_graphics_object();
-    }
 }
 
 /*
@@ -97,13 +78,9 @@ void Page::render_graphics_object()
 void Page::clicked()
 {
     for(unsigned int i = 0; i < graphics_objects->size(); i ++)
-    {
         if((*graphics_objects)[i]->was_clicked())
             (*graphics_objects)[i]->clicked();
-    }
     for(unsigned int i = 0; i < sub_pages->size(); i ++)
-    {
         if((*sub_pages)[i]->was_clicked())
             (*sub_pages)[i]->clicked();
-    }
 }

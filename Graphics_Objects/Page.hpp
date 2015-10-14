@@ -30,7 +30,6 @@ class Page: public Graphics_Object
              std::vector<Page *> *);
         virtual ~Page();
         // Member functions
-        virtual void update_graphics_object();
         virtual void render_graphics_object();
         virtual void clicked();
 };

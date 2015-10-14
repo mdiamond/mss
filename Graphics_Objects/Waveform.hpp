@@ -26,7 +26,6 @@ class Waveform: public Graphics_Object
         Waveform(std::string *, SDL_Rect *, SDL_Color *, std::vector<float> *);
         virtual ~Waveform();
         // Member functions
-        virtual void update_graphics_object();
         virtual void render_graphics_object();
         virtual void clicked();
         float calculate_y(int, int);

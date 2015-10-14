@@ -178,28 +178,28 @@ void Output::calculate_unique_graphics_objects()
     else
     {
         location = {x_text, y3, 8, 15};
-        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TEXT]->location = location;
+        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TEXT]->update_location(&location);
 
         location = {x_button, y4, 8, 15};
-        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]->location = location;
+        (*graphics_objects)[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y5, w_waveform, h_waveform};
-        (*graphics_objects)[OUTPUT_INPUT_L_WAVEFORM]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_L_WAVEFORM]->update_location(&location);
 
         location = {x_text, y6, 0, 0};
-        (*graphics_objects)[OUTPUT_INPUT_L_TEXT]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_L_TEXT]->update_location(&location);
 
         location = {x_text_box, y7, w_text_box, h_text_box};
-        (*graphics_objects)[OUTPUT_INPUT_L_TEXT_BOX]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_L_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y8, w_waveform, h_waveform};
-        (*graphics_objects)[OUTPUT_INPUT_R_WAVEFORM]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_R_WAVEFORM]->update_location(&location);
 
         location = {x_text, y9, 0, 0};
-        (*graphics_objects)[OUTPUT_INPUT_R_TEXT]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_R_TEXT]->update_location(&location);
 
         location = {x_text_box, y10, w_text_box, h_text_box};
-        (*graphics_objects)[OUTPUT_INPUT_R_TEXT_BOX]->location = location;
+        (*graphics_objects)[OUTPUT_INPUT_R_TEXT_BOX]->update_location(&location);
     }
 }
 

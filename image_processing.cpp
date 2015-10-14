@@ -268,8 +268,11 @@ void draw_surface()
     // Clear the renderer
     SDL_RenderClear(RENDERER);
 
-    // Update graphics objects for the current page
-    (*PAGES)[CURRENT_PAGE]->update_graphics_object();
+    // Update graphics objects for all modules
+    for(unsigned int i = CURRENT_PAGE * MODULES_PER_PAGE;
+        i < (CURRENT_PAGE + 1) * MODULES_PER_PAGE && i < MODULES->size();
+        i ++)
+        (*MODULES)[i]->update_graphics_objects();
 
     // Render graphics objects for the current page
     (*PAGES)[CURRENT_PAGE]->render_graphics_object();

@@ -287,34 +287,34 @@ void Oscillator::calculate_unique_graphics_objects()
     else
     {
         location = {x_text_box, y3, w_waveform, h_waveform};
-        (*graphics_objects)[OSCILLATOR_OUTPUT_WAVEFORM]->location = location;
+        (*graphics_objects)[OSCILLATOR_OUTPUT_WAVEFORM]->update_location(&location);
 
         location = {x_text, y4, 0, 0};
-        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT]->location = location;
+        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT]->update_location(&location);
 
         location = {x_text_box, y5, w_text_box, h_text_box};
-        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX]->location = location;
+        (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX]->update_location(&location);
 
         location = {x_text, y6, 0, 0};
-        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT]->location = location;
+        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT]->update_location(&location);
 
         location = {x_text_box, y7, w_text_box, h_text_box};
-        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX]->location = location;
+        (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX]->update_location(&location);
 
         location = {x_text, y8, 0, 0};
-        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT]->location = location;
+        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT]->update_location(&location);
 
         location = {x_text_box, y9, w_text_box, h_text_box};
-        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX]->location = location;
+        (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX]->update_location(&location);
 
         location = {x_text, y10, 0, 0};
-        (*graphics_objects)[OSCILLATOR_RANGE_TEXT]->location = location;
+        (*graphics_objects)[OSCILLATOR_RANGE_TEXT]->update_location(&location);
 
         location = {x_text_box, y11, w_range, h_text_box};
-        (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX]->location = location;
+        (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX]->update_location(&location);
 
         location = {x_range_high, y11, w_range, h_text_box};
-        (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX]->location = location;
+        (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX]->update_location(&location);
     }
 }
 

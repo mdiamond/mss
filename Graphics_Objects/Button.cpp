@@ -64,14 +64,6 @@ Button::~Button()
 }
 
 /*
- * Dummy function.
- */
-void Button::update_graphics_object()
-{
-
-}
-
-/*
  * Render the Button.
  */
 void Button::render_graphics_object()

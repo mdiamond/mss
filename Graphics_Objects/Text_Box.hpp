@@ -35,7 +35,6 @@ class Text_Box: public Graphics_Object
                  TTF_Font *, Module *);
         virtual ~Text_Box();
         // Member functions
-        virtual void update_graphics_object();
         virtual void render_graphics_object();
         virtual void clicked();
         void typed(char *);
