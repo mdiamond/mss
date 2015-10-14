@@ -174,6 +174,7 @@ void Output::calculate_unique_graphics_objects()
                                 &contents, &prompt, FONT_REGULAR, this);
         graphics_objects->push_back(text_box);
     }
+
     // Otherwise, simply update the locations of all of the graphics objects
     else
     {
@@ -221,6 +222,7 @@ void Output::set_input_l(Module *src)
 
     set(src, &input_l, OUTPUT_INPUT_L_DEPENDENCY);
     waveform->buffer = src->output;
+
     cout << name << " input left is now coming from " << src->name << endl;
 }
 
@@ -230,5 +232,6 @@ void Output::set_input_r(Module *src)
 
     set(src, &input_r, OUTPUT_INPUT_R_DEPENDENCY);
     waveform->buffer = src->output;
+
     cout << name << " input right is now coming from " << src->name << endl;
 }

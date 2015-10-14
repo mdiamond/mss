@@ -283,6 +283,7 @@ void Oscillator::calculate_unique_graphics_objects()
                                 &contents, &prompt, FONT_REGULAR, this);
         graphics_objects->push_back(text_box);
     }
+
     // Otherwise, simply update the locations of all of the graphics objects
     else
     {

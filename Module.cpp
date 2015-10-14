@@ -137,6 +137,7 @@ void Module::calculate_graphics_objects()
         text = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
         graphics_objects->push_back(text);
     }
+
     // If they have already been initialized, just update their locations
     else
     {
