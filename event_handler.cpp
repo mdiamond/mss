@@ -68,6 +68,11 @@ void keydown_event(SDL_Event *e)
         if(e->key.keysym.mod & KMOD_LCTRL)
             add_oscillator();
     }
+    if(e->key.keysym.sym == SDLK_2)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            add_VCA();
+    }
     else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
@@ -78,6 +83,7 @@ void keydown_event(SDL_Event *e)
         if(e->key.keysym.mod & KMOD_LCTRL)
             previous_page();
     }
+
     // If that key is the return key, and there is an active
     // text box, call its entered() function and pass it the
     // text that's been recorded from the keyboard previously

@@ -30,6 +30,7 @@
 #include "Module.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
+#include "Modules/VCA.hpp"
 
 using namespace std;
 
@@ -187,13 +188,70 @@ void oscillator_function_forwarder(Graphics_Object *g)
 }
 
 /*
+ * Handle functions for the VCA module.
+ */
+void VCA_function_forwarder(Graphics_Object *g)
+{
+    Vca *vca = (Vca *) g->parent;
+    Text_Box *text_box = NULL;
+    Module *src = NULL;
+    float val = 0;
+
+    if(g->type == TEXT_BOX)
+    {
+        text_box = (Text_Box *) g;
+
+        if(can_floatify(&text_box->typing_text->text))
+        {
+            val = stof(text_box->typing_text->text.c_str());
+
+            if(g->name == "vca cv scale (text_box)")
+                vca->set_cv_scale(val);
+        }
+        else
+        {
+            src = find_module(&text_box->typing_text->text, MODULES);
+            if(src == NULL)
+            {
+                cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
+                return;
+            }
+            else if(src == vca)
+            {
+                cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
+                return;
+            }
+
+            if(g->name == "vca signal (text_box)")
+                vca->set_signal(src);
+            else if(g->name == "vca cv (text_box)")
+                vca->set_cv(src);
+            else if(g->name == "vca cv scale (text_box)")
+                vca->set_cv_scale(src);
+        }
+    }
+}
+
+/*
  * Add an oscillator.
  */
 void add_oscillator()
 {
-    string name = "Oscillator " + to_string(MODULES->size());
+    string name = to_string(MODULES->size()) + " Oscillator";
     Oscillator *oscillator = new Oscillator(name, MODULES->size());
     MODULES->push_back(oscillator);
+    MODULES_CHANGED = true;
+    cout << "Added module " << name << endl;
+}
+
+/*
+ * Add a VCA module.
+ */
+void add_VCA()
+{
+    string name = to_string(MODULES->size()) + " VCA";
+    Vca *vca = new Vca(name, MODULES->size());
+    MODULES->push_back(vca);
     MODULES_CHANGED = true;
     cout << "Added module " << name << endl;
 }
@@ -230,6 +288,8 @@ void no_parent_function_forwarder(Graphics_Object *g)
 {
     if(g->name == "add oscillator (button)")
         add_oscillator();
+    else if(g->name == "add vca (button)")
+        add_VCA();
     else if(g->name == "previous page (button)")
         next_page();
     else if(g->name == "next page (button)")
@@ -248,4 +308,6 @@ void function_forwarder(Graphics_Object *g)
         output_function_forwarder(g);
     else if(g->parent->type == OSCILLATOR)
         oscillator_function_forwarder(g);
+    else if(g->parent->type == VCA)
+        VCA_function_forwarder(g);
 }

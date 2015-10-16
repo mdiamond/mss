@@ -26,6 +26,7 @@ enum Modules
 {
     OUTPUT = 0,
     OSCILLATOR,
+    VCA
 };
 
 /********************************

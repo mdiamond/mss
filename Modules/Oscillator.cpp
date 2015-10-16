@@ -191,28 +191,28 @@ void Oscillator::update_unique_graphics_objects()
     // Update text boxes
     if((*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[5])->text->text = to_string(frequency);
-        ((Text_Box *) (*graphics_objects)[5])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->text->text = to_string(frequency);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[7])->text->text = to_string(phase_offset);
-        ((Text_Box *) (*graphics_objects)[7])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->text->text = to_string(phase_offset);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[9])->text->text = to_string(pulse_width);
-        ((Text_Box *) (*graphics_objects)[9])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->text->text = to_string(pulse_width);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[11])->text->text = to_string(range_low);
-        ((Text_Box *) (*graphics_objects)[11])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->text->text = to_string(range_low);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[12])->text->text = to_string(range_high);
-        ((Text_Box *) (*graphics_objects)[12])->text->updated = true;
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->text->text = to_string(range_high);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->text->updated = true;
     }
 }
 

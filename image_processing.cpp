@@ -134,10 +134,19 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     // Create the "add module" button and add it to the
     // list of graphics objects
     SDL_Rect location = {x , WINDOW_HEIGHT - 17, 100, 15};
-    x += 100;
+    x += 102;
     Module *parent = NULL;
     Button *button = new Button("add oscillator (button)", &location, &WHITE,
                                 "ADD OSCILLATOR", parent);
+    sub_page_graphics_objects->push_back(button);
+
+    // Create the "add VCA" button and add it to the
+    // list of graphics objects
+    location = {x, WINDOW_HEIGHT - 17, 51, 15};
+    x += 100;
+    parent = NULL;
+    button = new Button("add vca (button)", &location, &WHITE,
+                                "ADD VCA", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "previous page" button and add it to the
