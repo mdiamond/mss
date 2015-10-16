@@ -45,7 +45,11 @@ enum Oscillator_Graphics_Objects
     OSCILLATOR_PULSE_WIDTH_TEXT_BOX,
     OSCILLATOR_RANGE_TEXT,
     OSCILLATOR_RANGE_LOW_TEXT_BOX,
-    OSCILLATOR_RANGE_HIGH_TEXT_BOX
+    OSCILLATOR_RANGE_HIGH_TEXT_BOX,
+    OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON,
+    OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON,
+    OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON,
+    OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON
 };
 
 /********************************
@@ -86,6 +90,10 @@ class Oscillator: public Module
         int waveform_type;
         // A pointer to the wavetable currently in use
         std::vector<float> *wavetable;
+        // A record of the previous phase offset value
+        float previous_phase_offset;
+        // Whether or not each waveform is in use
+        bool sin_on, tri_on, saw_on, sqr_on;
 
         // Constructor and destructor
         Oscillator(std::string, int);
@@ -96,6 +104,10 @@ class Oscillator: public Module
         virtual void calculate_unique_graphics_objects();
         virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
+        float produce_sin_sample(float);
+        float produce_tri_sample(float);
+        float produce_saw_sample(float);
+        float produce_sqr_sample(float);
         void set_frequency(float);
         void set_frequency(Module *);
         void set_phase_offset(float);
@@ -106,6 +118,7 @@ class Oscillator: public Module
         void set_range_low(Module *);
         void set_range_high(float);
         void set_range_high(Module *);
+        void switch_waveform(int);
 };
 
 #endif

@@ -49,6 +49,32 @@ void populate_tri()
     }
 }
 
+void populate_saw()
+{
+    for(unsigned int i = 0; i < SAW_WAVE->size(); i ++)
+    {
+        float half = (SAW_WAVE->size() / 2);
+
+        if(i < half)
+            (*SAW_WAVE)[i] = 1 - (i / half);
+        else
+            (*SAW_WAVE)[i] = 0 - ((i - half) / half);
+    }
+}
+
+void populate_sqr()
+{
+    for(unsigned int i = 0; i < SQR_WAVE->size(); i ++)
+    {
+        float half = (SQR_WAVE->size() / 2);
+
+        if(i < half)
+            (*SQR_WAVE)[i] = 1;
+        else
+            (*SQR_WAVE)[i] = -1;
+    }
+}
+
 /***********************
  * POPULATE WAVETABLES *
  ***********************/
@@ -57,6 +83,8 @@ void populate_wavetables()
 {
     populate_sin();
     populate_tri();
+    populate_saw();
+    populate_sqr();
 
     cout << "Wavetables populated." << endl;
 }

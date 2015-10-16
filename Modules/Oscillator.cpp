@@ -27,6 +27,7 @@
 #include "../Module.hpp"
 #include "Oscillator.hpp"
 #include "../Graphics_Objects/Text.hpp"
+#include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
 
 using namespace std;
@@ -43,7 +44,9 @@ Oscillator::Oscillator(string _name, int _number)
     name = _name;
     type = OSCILLATOR;
     number = _number;
+
     current_phase = 0;
+    previous_phase_offset = 0;
 
     dependencies = new vector<Module *>(5, NULL);
 
@@ -55,8 +58,8 @@ Oscillator::Oscillator(string _name, int _number)
     phase_offset_str = "0";
     input_phase_offset = new vector<float>(BUFFER_SIZE, 0);
 
-    pulse_width = 0;
-    pulse_width_str = "0";
+    pulse_width = .5;
+    pulse_width_str = ".5";
     input_pulse_width = new vector<float>(BUFFER_SIZE, 0);
 
     range_low = -1;
@@ -71,7 +74,12 @@ Oscillator::Oscillator(string _name, int _number)
 
     waveform_type = SIN;
 
-    wavetable = TRI_WAVE;
+    wavetable = SIN_WAVE;
+
+    sin_on = true;
+    tri_on = false;
+    saw_on = false;
+    sqr_on = false;
 }
 
 /*
@@ -80,6 +88,39 @@ Oscillator::Oscillator(string _name, int _number)
 Oscillator::~Oscillator()
 {
 
+}
+
+float Oscillator::produce_sin_sample(float phase)
+{
+    return sin(2 * M_PI * phase);
+}
+
+float Oscillator::produce_tri_sample(float phase)
+{
+    if(phase < .25)
+        return phase / .25;
+    else if(phase < .5)
+        return 1 - ((phase - .25) / .25);
+    else if(phase < .75)
+        return 0 - ((phase - .5) / .25);
+    else
+        return ((phase - .75) / .25) - 1;
+}
+
+float Oscillator::produce_saw_sample(float phase)
+{
+    if(phase < .5)
+        return 1 - (phase / .5);
+    else
+        return 0 - ((phase - .5) / .5);
+}
+
+float Oscillator::produce_sqr_sample(float phase)
+{
+    if(phase < pulse_width)
+        return 1;
+    else
+        return -1;
 }
 
 /*
@@ -93,14 +134,20 @@ void Oscillator::process()
     // Process any dependencies
     process_dependencies();
 
+    float phase_offset_diff;
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < BUFFER_SIZE; i ++)
     {
+
         // Update any control values
         if((*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] != NULL)
             frequency = (*(input_frequency))[i];
         if((*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] != NULL)
+        {
+            previous_phase_offset = phase_offset;
             phase_offset = (*(input_phase_offset))[i];
+            phase_offset_diff = phase_offset - previous_phase_offset;
+        }
         if((*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] != NULL)
             pulse_width = (*(input_pulse_width))[i];
         if((*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] != NULL)
@@ -111,10 +158,23 @@ void Oscillator::process()
         // Calculate and store the current samples amplitude
         // based on phase
         if(frequency < 1 && frequency > -1)
-            (*output)[i] = sin(current_phase * 2 * M_PI);
+        {
+            if(waveform_type == SIN)
+                (*output)[i] = produce_sin_sample(current_phase);
+            else if(waveform_type == TRI)
+                (*output)[i] = produce_tri_sample(current_phase);
+            else if(waveform_type == SAW)
+                (*output)[i] = produce_saw_sample(current_phase);
+            else if(waveform_type == SQR)
+                (*output)[i] = produce_sqr_sample(current_phase);
+        }
         else
-            (*output)[i] = (*wavetable)[(int) (current_phase * wavetable->size())];
-        current_phase += (float) frequency / SAMPLE_RATE;
+            if(waveform_type != SQR || pulse_width == .5)
+                (*output)[i] = (*wavetable)[(int) (current_phase * wavetable->size())];
+            else
+                (*output)[i] = produce_sqr_sample(current_phase);
+
+        current_phase += ((float) frequency / SAMPLE_RATE) + phase_offset_diff;
         if(current_phase > 1)
             current_phase -= 1;
     }
@@ -179,30 +239,34 @@ void Oscillator::calculate_unique_graphics_objects()
 {
     int x_text, x_text_box, w_text_box, h_text_box,
         w_waveform, h_waveform,
-        y3, y4, y5, y6, y7, y8, y9, y10, y11,
-        x_range_high, w_range;
+        y3, y4, y5, y6, y7, y8, y9, y10, y11, y12,
+        x_range_high, w_range,
+        w_wave_selector;
     SDL_Rect location;
     Text *text;
     Text_Box *text_box;
     Waveform *waveform;
+    Toggle_Button *toggle_button;
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 5;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
     w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
     h_text_box = 15;
     w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
-    h_waveform = 55;
+    h_waveform = 45;
     y3 = upper_left.y + MODULE_BORDER_WIDTH + 23;
-    y4 = upper_left.y + MODULE_BORDER_WIDTH + 80;
-    y5 = upper_left.y + MODULE_BORDER_WIDTH + 97;   
-    y6 = upper_left.y + MODULE_BORDER_WIDTH + 117;
-    y7 = upper_left.y + MODULE_BORDER_WIDTH + 134;
-    y8 = upper_left.y + MODULE_BORDER_WIDTH + 152;
-    y9 = upper_left.y + MODULE_BORDER_WIDTH + 169;
-    y10 = upper_left.y + MODULE_BORDER_WIDTH + 187;
-    y11 = upper_left.y + MODULE_BORDER_WIDTH + 204;
+    y4 = y3 + 46;
+    y5 = y4 + 15;   
+    y6 = y5 + 16;
+    y7 = y6 + 15;
+    y8 = y7 + 16;
+    y9 = y8 + 15;
+    y10 = y9 + 16;
+    y11 = y10 + 15;
+    y12 = y11 + 26;
     x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
     w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3);
+    w_wave_selector = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) / 4) - 2;
 
     // If the 4th graphics object is null, that means the graphics objects have not
     // been calculated before, and we must make them from scratch
@@ -262,6 +326,30 @@ void Oscillator::calculate_unique_graphics_objects()
         text_box = new Text_Box("oscillator range high (text_box)", &location, &text_color,
                                 "", "# or input", FONT_REGULAR, this);
         graphics_objects->push_back(text_box);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box, y12, w_wave_selector, h_text_box};
+        toggle_button = new Toggle_Button("oscillator sin toggle (toggle button)", &location,
+                                          &WHITE, &BLACK, "SIN", "SIN", &sin_on, this);
+        graphics_objects->push_back(toggle_button);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box};
+        toggle_button = new Toggle_Button("oscillator tri toggle (toggle button)", &location,
+                                          &WHITE, &BLACK, "TRI", "TRI", &tri_on, this);
+        graphics_objects->push_back(toggle_button);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box};
+        toggle_button = new Toggle_Button("oscillator saw toggle (toggle button)", &location,
+                                          &WHITE, &BLACK, "SAW", "SAW", &saw_on, this);
+        graphics_objects->push_back(toggle_button);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box};
+        toggle_button = new Toggle_Button("oscillator sqr toggle (toggle button)", &location,
+                                          &WHITE, &BLACK, "SQR", "SQR", &sqr_on, this);
+        graphics_objects->push_back(toggle_button);
     }
 
     // Otherwise, simply update the locations of all of the graphics objects
@@ -296,6 +384,22 @@ void Oscillator::calculate_unique_graphics_objects()
 
         location = {x_range_high, y11, w_range, h_text_box};
         (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX]->update_location(&location);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box, y12, w_wave_selector, h_text_box};
+        (*graphics_objects)[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON]->update_location(&location);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box};
+        (*graphics_objects)[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON]->update_location(&location);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box};
+        (*graphics_objects)[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON]->update_location(&location);
+
+        // graphics_objects[13] is the button for selecting sine wave output
+        location = {x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box};
+        (*graphics_objects)[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON]->update_location(&location);
     }
 }
 
@@ -357,4 +461,41 @@ void Oscillator::set_range_high(Module *src)
 {
     set(src, &input_range_high, OSCILLATOR_RANGE_HIGH_DEPENDENCY);
     cout << name << " range high is now coming from " << src->name << endl;
+}
+
+void Oscillator::switch_waveform(int _waveform_type)
+{
+    sin_on = false;
+    tri_on = false;
+    saw_on = false;
+    sqr_on = false;
+
+    if(_waveform_type == SIN)
+    {
+        wavetable = SIN_WAVE;
+        waveform_type = SIN;
+        sin_on = true;
+        cout << name << " is now outputting a sine wave" << endl;
+    }
+    else if(_waveform_type == TRI)
+    {
+        wavetable = TRI_WAVE;
+        waveform_type = TRI;
+        tri_on = true;
+        cout << name << " is now outputting a triangle wave" << endl;
+    }
+    else if(_waveform_type == SAW)
+    {
+        wavetable = SAW_WAVE;
+        waveform_type = SAW;
+        saw_on = true;
+        cout << name << " is now outputting a sawtooth wave" << endl;
+    }
+    else
+    {
+        wavetable = SQR_WAVE;
+        waveform_type = SQR;
+        sqr_on = true;
+        cout << name << " is now outputting a square wave" << endl;
+    }
 }

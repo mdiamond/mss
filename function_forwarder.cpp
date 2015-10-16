@@ -25,6 +25,7 @@
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Button.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
+#include "Graphics_Objects/Toggle_Button.hpp"
 #include "Graphics_Objects/Waveform.hpp"
 #include "Module.hpp"
 #include "Modules/Oscillator.hpp"
@@ -171,6 +172,17 @@ void oscillator_function_forwarder(Graphics_Object *g)
             else if(g->name == "oscillator range high (text_box)")
                 oscillator->set_range_high(src);
         }
+    }
+    else
+    {
+        if(g->name == "oscillator sin toggle (toggle button)")
+            oscillator->switch_waveform(SIN);
+        else if(g->name == "oscillator tri toggle (toggle button)")
+            oscillator->switch_waveform(TRI);
+        else if(g->name == "oscillator saw toggle (toggle button)")
+            oscillator->switch_waveform(SAW);
+        else
+            oscillator->switch_waveform(SQR);
     }
 }
 
