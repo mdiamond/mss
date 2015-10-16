@@ -116,8 +116,7 @@ void Module::calculate_graphics_objects()
     {
         // graphics_object[0] is the outermost rectangle used to represent the module
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-        string object_name = "border (rect)";
-        rect = new Rect(&object_name, &location, &WHITE);
+        rect = new Rect("border (rect)", &location, &WHITE);
         graphics_objects->push_back(rect);
 
         // graphics_object[1] is the slightly smaller rectangle within the outermost
@@ -126,15 +125,13 @@ void Module::calculate_graphics_objects()
                     upper_left.y + MODULE_BORDER_WIDTH,
                     MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-        object_name = "inner_border (rect)";
-        rect = new Rect(&object_name, &location, &color);
+        rect = new Rect("inner_border (rect)", &location, &color);
         graphics_objects->push_back(rect);
 
         // graphics_object[2] is the objects name
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                     upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
-        object_name = "module name (text)";
-        text = new Text(&object_name, &location, &text_color, &name, FONT_BOLD);
+        text = new Text("module name (text)", &location, &text_color, name, FONT_BOLD);
         graphics_objects->push_back(text);
     }
 

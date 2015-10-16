@@ -88,7 +88,6 @@ void Output::calculate_unique_graphics_objects()
         w_waveform, h_waveform,
         y3, y4, y5, y6, y7, y8, y9, y10;
     SDL_Rect location;
-    string object_name, contents, prompt, text_off;
     Text *text;
     Text_Box *text_box;
     Waveform *waveform;
@@ -115,63 +114,46 @@ void Output::calculate_unique_graphics_objects()
     {
         // graphics_objects[3] is the display text "AUDIO ON":
         location = {x_text, y3, 8, 15};
-        object_name = "on_off (text)";
-        contents = "AUDIO ON:";
-        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
+        text = new Text("on_off (text)", &location, &text_color, "AUDIO ON:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[4] is the toggle button to turn audio on or off
         location = {x_button, y4, 8, 15};
-        object_name = "on/off button (toggle_button)";
-        contents = "1";
-        text_off = "0";
-        Toggle_Button *toggle_button = new Toggle_Button(&object_name, &location, &WHITE,
-                                                  &BLACK, &contents, &text_off,
+        Toggle_Button *toggle_button = new Toggle_Button("on/off button (toggle_button)", &location, &WHITE,
+                                                  &BLACK, "1", "0",
                                                   &AUDIO_ON, this);
         graphics_objects->push_back(toggle_button);
 
         // graphics_objects[5] is the waveform visualizer for the left speaker
         location = {x_text_box, y5, w_waveform, h_waveform};
-        object_name = "waveform visualizer l (waveform)";
-        waveform = new Waveform(&object_name, &location, &WHITE, input_l);
+        waveform = new Waveform("waveform visualizer l (waveform)", &location, &WHITE, input_l);
         graphics_objects->push_back(waveform);
 
         // graphics_objects[6] is the display text "LEFT INPUT:"
         location = {x_text, y6, 0, 0};
-        object_name = "output input left (text)";
-        contents = "INPUT LEFT:";
-        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
+        text = new Text("output input left (text)", &location, &text_color, "INPUT LEFT:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[7] is the text box for entering and displaying input right
         location = {x_text_box, y7, w_text_box, h_text_box};
-        object_name = "output input left (text_box)";
-        contents = "";
-        prompt = "input";
-        text_box = new Text_Box(&object_name, &location, &text_color, NULL,
-                                &contents, &prompt, FONT_REGULAR, this);
+        text_box = new Text_Box("output input left (text_box)", &location, &text_color,
+                                "", "input", FONT_REGULAR, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[8] is the waveform visualizer for the right speaker
         location = {x_text_box, y8, w_waveform, h_waveform};
-        object_name = "waveform visualizer r (waveform)";
-        waveform = new Waveform(&object_name, &location, &WHITE, input_r);
+        waveform = new Waveform("waveform visualizer r (waveform)", &location, &WHITE, input_r);
         graphics_objects->push_back(waveform);
 
         // graphics_objects[9] is the display text "PHASE OFFSET:"
         location = {x_text, y9, 0, 0};
-        object_name = "output input right (text)";
-        contents = "INPUT RIGHT:";
-        text = new Text(&object_name, &location, &text_color, &contents, FONT_REGULAR);
+        text = new Text("output input right (text)", &location, &text_color, "INPUT RIGHT:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[10] is the text box for entering and displaying input left
         location = {x_text_box, y10, w_text_box, h_text_box};
-        object_name = "output input right (text_box)";
-        contents = "";
-        prompt = "input";
-        text_box = new Text_Box(&object_name, &location, &text_color, NULL,
-                                &contents, &prompt, FONT_REGULAR, this);
+        text_box = new Text_Box("output input right (text_box)", &location, &text_color,
+                                "", "input", FONT_REGULAR, this);
         graphics_objects->push_back(text_box);
     }
 

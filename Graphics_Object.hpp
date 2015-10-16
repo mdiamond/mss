@@ -61,7 +61,7 @@ class Graphics_Object
         //   render() is called each time a new frame is needed for
         //   the window to display, it should render the graphics object in
         //   the window
-        virtual void render_graphics_object() = 0;
+        virtual void render() = 0;
         virtual void clicked() = 0;
         bool was_clicked();
         void update_location(SDL_Rect *);

@@ -28,11 +28,11 @@ class Button: public Graphics_Object
         std::string text_str;
         Text *text;
         // Constructor and destructor
-        Button(std::string *, SDL_Rect *, SDL_Color *, std::string *,
+        Button(std::string, SDL_Rect *, SDL_Color *, std::string,
                Module *);
         virtual ~Button();
         // Member functions
-        virtual void render_graphics_object();
+        virtual void render();
         virtual void clicked();
 };
 

@@ -21,6 +21,7 @@
 
 // Included classes
 #include "../Graphics_Object.hpp"
+#include "Rect.hpp"
 #include "Text_Box.hpp"
 
 using namespace std;
@@ -32,23 +33,21 @@ using namespace std;
 /*
  * Constructor.
  */
-Text_Box::Text_Box(string *_name, SDL_Rect *_location, SDL_Color *_color,
-                   string *_live_text, string *_original_text,
-                   string *_prompt_text, TTF_Font *_font, Module *_parent)
+Text_Box::Text_Box(string _name, SDL_Rect *_location, SDL_Color *_color,
+                   string _original_text,
+                   string _prompt_text, TTF_Font *_font, Module *_parent)
 {
-    name = *_name;
+    name = _name;
     type = TEXT_BOX;
     location = *_location;
     color = *_color;
     parent = _parent;
 
     font = _font;
-    string idle_text_name = "idle text (text)";
-    string prompt_text_name = "prompt text (text)";
-    string typing_text_name = "typing text (text)";
-    text = new Text(&idle_text_name, _location, &BLACK, _original_text, _font);
-    prompt_text = new Text(&prompt_text_name, _location, &BLACK, _prompt_text, _font);
-    typing_text = new Text(&typing_text_name, _location, &BLACK, _original_text, _font);
+    background = new Rect("background rect (rect)", &location, &WHITE);
+    text = new Text("idle text (text)", _location, &BLACK, _original_text, _font);
+    prompt_text = new Text("prompt text (text)", _location, &BLACK, _prompt_text, _font);
+    typing_text = new Text("typing text (text)", _location, &BLACK, _original_text, _font);
 
     active = false;
 }
@@ -68,25 +67,27 @@ Text_Box::~Text_Box()
  * update the text. If the text box is active, draw a flashing
  * cursor within it.
  */
-void Text_Box::render_graphics_object()
+void Text_Box::render()
 {
-    SDL_SetRenderDrawColor(RENDERER,
-                           WHITE.r,
-                           WHITE.g,
-                           WHITE.b,
-                           WHITE.a);
-    SDL_RenderFillRect(RENDERER, &location);
+    // Render the background rectangle
+    background->render();
 
+    // The text box is active, render the typing buffer
     if(active)
-        typing_text->render_graphics_object();
+        typing_text->render();
+    // Otherwise
     else
     {
+        // The the current text is empty, render the prompt
         if(text->text == "")
-            prompt_text->render_graphics_object();
+            prompt_text->render();
+        // Otherwise, render the current text
         else
-            text->render_graphics_object();
+            text->render();
     }
 
+    // If the text box is active and the cursor is current supposed to be drawn,
+    // draw the typing cursor
     if(active && CURSOR_ON)
     {
         SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
@@ -97,12 +98,23 @@ void Text_Box::render_graphics_object()
     }
 }
 
-void Text_Box::typed(char *ch)
+void Text_Box::update_location(SDL_Rect *_location)
+{
+    background->update_location(_location);
+}
+
+/*
+ * Take a typed characters and add it to the typing buffer
+ */
+void Text_Box::add_characters(char *ch)
 {
     typing_text->text += ch;
     typing_text->updated = true;
 }
 
+/*
+ * Remove the final character from the typing buffer
+ */
 void Text_Box::delete_character()
 {
     if(!typing_text->text.empty())
@@ -111,6 +123,14 @@ void Text_Box::delete_character()
     typing_text->updated = true;
 }
 
+/*
+ * Handle clicks. Make this text box active,
+ * set the global active text box pointer,
+ * set the SDL text input rect, and finally,
+ * start SDL text input so that SDL_KEYDOWN and
+ * SDL_KEYUP events will instead be reported
+ * as SDL_TEXTINPUT until it is stopped.
+ */
 void Text_Box::clicked()
 {
     cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
@@ -124,6 +144,12 @@ void Text_Box::clicked()
     }
 }
 
+/*
+ * Stop SDL text input, send this graphics object to the function
+ * forwarder, set the current text to be what is in the typing buffer,
+ * then set this text box as updated. After that, deactivate this text box
+ * and clear the typing buffer.
+ */
 void Text_Box::entered()
 {
     SDL_StopTextInput();

@@ -15,6 +15,7 @@
 #include "SDL2/SDL.h"
 
 // Included classes
+#include "Rect.hpp"
 #include "Text.hpp"
 
 /*****************************
@@ -25,21 +26,23 @@ class Text_Box: public Graphics_Object
 {
     public:
         TTF_Font *font;
+        Rect *background;
         Text *text;
         Text *prompt_text;
         Text *typing_text;
         bool active;
         // Constructor and destructor
-        Text_Box(std::string *, SDL_Rect *, SDL_Color *,
-                 std::string *, std::string *, std::string *,
+        Text_Box(std::string, SDL_Rect *, SDL_Color *,
+                 std::string, std::string,
                  TTF_Font *, Module *);
         virtual ~Text_Box();
         // Member functions
-        virtual void render_graphics_object();
+        virtual void render();
         virtual void clicked();
-        void typed(char *);
+        void add_characters(char *);
         void delete_character();
         void entered();
+        void update_location(SDL_Rect *);
 };
 
 #endif

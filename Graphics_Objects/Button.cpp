@@ -33,10 +33,10 @@ using namespace std;
 /*
  * Constructor.
  */
-Button::Button(string *_name, SDL_Rect *_location, SDL_Color *_color,
-               string *_text, Module *_parent)
+Button::Button(string _name, SDL_Rect *_location, SDL_Color *_color,
+               string _text, Module *_parent)
 {
-    name = *_name;
+    name = _name;
     type = BUTTON;
     location = *_location;
     color = *_color;
@@ -48,9 +48,8 @@ Button::Button(string *_name, SDL_Rect *_location, SDL_Color *_color,
     opposite.b = 256 - color.b;
     opposite.a = color.a;
 
-    string object_name = "button text (text)";
-    text_str = *_text;
-    text = new Text(&object_name, &location, &opposite, &text_str, FONT_REGULAR);
+    text_str = _text;
+    text = new Text("button text (text)", &location, &opposite, _text, FONT_REGULAR);
 
     parent = _parent;
 }
@@ -66,11 +65,11 @@ Button::~Button()
 /*
  * Render the Button.
  */
-void Button::render_graphics_object()
+void Button::render()
 {
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(RENDERER, &location);
-    text->render_graphics_object();
+    text->render();
 }
 
 /*

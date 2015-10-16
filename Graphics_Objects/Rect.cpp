@@ -30,9 +30,9 @@ using namespace std;
 /*
  * Constructor.
  */
-Rect::Rect(string *_name, SDL_Rect *_location, SDL_Color *_color)
+Rect::Rect(string _name, SDL_Rect *_location, SDL_Color *_color)
 {
-    name = *_name;
+    name = _name;
     type = RECT;
     location = *_location;
     color = *_color;
@@ -52,7 +52,7 @@ Rect::~Rect()
  * Render the rectangle. If fill is set, fill it, otherwise,
  * just draw the outline.
  */
-void Rect::render_graphics_object()
+void Rect::render()
 {
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     if(fill)

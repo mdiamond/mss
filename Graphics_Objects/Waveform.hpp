@@ -23,10 +23,10 @@ class Waveform: public Graphics_Object
     public:
         std::vector<float> *buffer;
         // Constructor and destructor
-        Waveform(std::string *, SDL_Rect *, SDL_Color *, std::vector<float> *);
+        Waveform(std::string, SDL_Rect *, SDL_Color *, std::vector<float> *);
         virtual ~Waveform();
         // Member functions
-        virtual void render_graphics_object();
+        virtual void render();
         virtual void clicked();
         float calculate_y(int, int);
 };

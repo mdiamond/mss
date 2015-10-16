@@ -23,10 +23,10 @@ class Rect: public Graphics_Object
         // Fill the rectangle or just draw the outline
         bool fill;
         // Constructor and destructor
-        Rect(std::string *, SDL_Rect *, SDL_Color *);
+        Rect(std::string, SDL_Rect *, SDL_Color *);
         virtual ~Rect();
         // Member functions
-        virtual void render_graphics_object();
+        virtual void render();
         virtual void clicked();
 };
 

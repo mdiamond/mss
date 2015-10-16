@@ -31,10 +31,10 @@ using namespace std;
 /*
  * Constructor.
  */
-Waveform::Waveform(string *_name, SDL_Rect *_location,
+Waveform::Waveform(string _name, SDL_Rect *_location,
                    SDL_Color *_color, vector<float> *_buffer)
 {
-    name = *_name;
+    name = _name;
     type = WAVEFORM;
     location = *_location;
     color = *_color;
@@ -65,7 +65,7 @@ float Waveform::calculate_y(int i, int index)
 /*
  * Render the waveform.
  */
-void Waveform::render_graphics_object()
+void Waveform::render()
 {
     SDL_Point zero = {0, 0};
     vector<SDL_Point> points(location.w, zero);

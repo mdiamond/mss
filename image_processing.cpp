@@ -128,19 +128,16 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 
     // Create the background and add it to the list of graphics
     // objects
-    string object_name = "background (rect)";
-    Rect *background = new Rect(&object_name, &WINDOW_RECT, &BLACK);
+    Rect *background = new Rect("background (rect)", &WINDOW_RECT, &BLACK);
     sub_page_graphics_objects->push_back(background);
 
     // Create the "add module" button and add it to the
     // list of graphics objects
     SDL_Rect location = {x , WINDOW_HEIGHT - 17, 100, 15};
     x += 100;
-    object_name = "add oscillator (button)";
-    string button_text = "ADD OSCILLATOR";
     Module *parent = NULL;
-    Button *button = new Button(&object_name, &location, &WHITE,
-                                &button_text, parent);
+    Button *button = new Button("add oscillator (button)", &location, &WHITE,
+                                "ADD OSCILLATOR", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "previous page" button and add it to the
@@ -148,11 +145,9 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     x = WINDOW_WIDTH - 159;
     location = {x, WINDOW_HEIGHT - 17, 92, 15};
     x += 92;
-    object_name = "previous page (button)";
-    button_text = "PREVIOUS PAGE";
     parent = NULL;
-    button = new Button(&object_name, &location, &WHITE,
-                        &button_text, parent);
+    button = new Button("previous page (button)", &location, &WHITE,
+                        "PREVIOUS PAGE", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "next page" button and add it to the
@@ -160,17 +155,14 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     x += 2;
     location = {x, WINDOW_HEIGHT - 17, 63, 15};
     x += 65;
-    object_name = "next page (button)";
-    button_text = "NEXT PAGE";
     parent = NULL;
-    button = new Button(&object_name, &location, &WHITE,
-                        &button_text, parent);
+    button = new Button("next page (button)", &location, &WHITE,
+                        "NEXT PAGE", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the sub page and add it to the list of sub pages
     // for the current page
-    string current_sub_page_name = "utilities & background (page)";
-    current_sub_page = new Page(&current_sub_page_name, &WINDOW_RECT, &BLACK,
+    current_sub_page = new Page("utilities & background (page)", &WINDOW_RECT, &BLACK,
                                       sub_page_graphics_objects, NULL);
     sub_pages->push_back(current_sub_page);
 }
@@ -205,9 +197,6 @@ void calculate_pages()
     // For each module
     for(unsigned int i = 0; i < MODULES->size(); i ++)
     {
-        // Figure out what its name will be
-        current_sub_page_name = (*MODULES)[i]->name + " (page)";
-
         // Add each of its graphics objects to the current sub page
         for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
         {
@@ -217,7 +206,7 @@ void calculate_pages()
 
         // Create the sub page using the created vector of graphics objects,
         // add it to the list of sub pages
-        current_sub_page = new Page(&current_sub_page_name,
+        current_sub_page = new Page((*MODULES)[i]->name + " (page)",
                                     &(*(*MODULES)[i]->graphics_objects)[1]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(current_sub_page);
@@ -232,12 +221,10 @@ void calculate_pages()
            (unsigned) (MODULES_PER_COLUMN * MODULES_PER_ROW) - 1 ||
            i == MODULES->size() - 1)
         {
-            // Figure out the name of the current page
-            current_page_name = to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)";
-
             // Create the page using the created vector of sub pages, add it
             // to the global list of pages
-            current_page = new Page(&current_page_name, &WINDOW_RECT, &BLACK,
+            current_page = new Page(to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
+                                    &WINDOW_RECT, &BLACK,
                                     NULL, sub_pages);
             (*PAGES).push_back(current_page);
 
@@ -284,7 +271,7 @@ void draw_surface()
         (*MODULES)[i]->update_graphics_objects();
 
     // Render graphics objects for the current page
-    (*PAGES)[CURRENT_PAGE]->render_graphics_object();
+    (*PAGES)[CURRENT_PAGE]->render();
 
     // Present what has been rendered
     SDL_RenderPresent(RENDERER);

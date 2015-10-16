@@ -137,7 +137,7 @@ bool event_handler(SDL_Event *e)
         // impossible to receive an event of this type if no text box is
         // current active)
         else if(e->type == SDL_TEXTINPUT && ACTIVE_TEXT_BOX != NULL)
-            ACTIVE_TEXT_BOX->typed(e->text.text);
+            ACTIVE_TEXT_BOX->add_characters(e->text.text);
 
         // If none of the above events have been received, but any kind of
         // mouse event has been received, get the mouse coordinates, and

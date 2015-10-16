@@ -86,7 +86,7 @@ class Oscillator: public Module
         int waveform_type;
 
         // Constructor and destructor
-        Oscillator(std::string *, int);
+        Oscillator(std::string, int);
         virtual ~Oscillator();
 
         // Member functions

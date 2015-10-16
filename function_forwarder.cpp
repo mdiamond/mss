@@ -180,7 +180,7 @@ void oscillator_function_forwarder(Graphics_Object *g)
 void add_oscillator()
 {
     string name = "Oscillator " + to_string(MODULES->size());
-    Oscillator *oscillator = new Oscillator(&name, MODULES->size());
+    Oscillator *oscillator = new Oscillator(name, MODULES->size());
     MODULES->push_back(oscillator);
     MODULES_CHANGED = true;
     cout << "Added module " << name << endl;
