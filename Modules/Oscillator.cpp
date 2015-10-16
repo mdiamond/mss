@@ -70,6 +70,8 @@ Oscillator::Oscillator(string _name, int _number)
     output = new vector<float>(BUFFER_SIZE, 0);
 
     waveform_type = SIN;
+
+    wavetable = TRI_WAVE;
 }
 
 /*
@@ -108,15 +110,18 @@ void Oscillator::process()
 
         // Calculate and store the current samples amplitude
         // based on phase
-        (*output)[i] = sin(current_phase);
-        current_phase += (2 * M_PI * (frequency / SAMPLE_RATE));
-        if(current_phase > (2 * M_PI))
-            current_phase -= (2 * M_PI);
+        if(frequency < 1 && frequency > -1)
+            (*output)[i] = sin(current_phase * 2 * M_PI);
+        else
+            (*output)[i] = (*wavetable)[(int) (current_phase * wavetable->size())];
+        current_phase += (float) frequency / SAMPLE_RATE;
+        if(current_phase > 1)
+            current_phase -= 1;
     }
+
+    // If the oscillator has an abnormal range, scale it into that range
     if(range_low != -1 || range_high != 1)
-    {
         scale_signal(output, -1, 1, range_low, range_high);
-    }
 
     processed = true;
 }

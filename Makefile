@@ -4,7 +4,7 @@ LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJFLAGS = $(CC) $(CFLAGS) -o $@ -c
 EXEFLAGS = $(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
 MAINOBJ = obj/main.o obj/main_helpers.o
-MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/image_processing.o obj/signal_processing.o obj/tests.o
+MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/image_processing.o obj/populate_wavetables.o obj/signal_processing.o obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
 MODULEOBJ =  obj/Oscillator.o obj/Output.o
@@ -29,6 +29,8 @@ obj/function_forwarder.o : function_forwarder.cpp function_forwarder.hpp
 	$(OBJFLAGS) function_forwarder.cpp
 obj/image_processing.o : image_processing.cpp image_processing.hpp
 	$(OBJFLAGS) image_processing.cpp
+obj/populate_wavetables.o : populate_wavetables.cpp populate_wavetables.hpp
+	$(OBJFLAGS) populate_wavetables.cpp
 obj/signal_processing.o : signal_processing.cpp signal_processing.hpp
 	$(OBJFLAGS) signal_processing.cpp
 obj/tests.o : tests.cpp tests.hpp

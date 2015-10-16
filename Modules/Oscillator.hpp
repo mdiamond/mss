@@ -84,6 +84,8 @@ class Oscillator: public Module
                     range_high_str;
         // Booleans to represent whether or not each of the waveforms is enabled
         int waveform_type;
+        // A pointer to the wavetable currently in use
+        std::vector<float> *wavetable;
 
         // Constructor and destructor
         Oscillator(std::string, int);

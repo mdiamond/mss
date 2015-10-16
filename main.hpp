@@ -35,6 +35,12 @@ extern int SAMPLE_RATE;
 extern int BUFFER_SIZE;
 extern bool AUDIO_ON;
 
+// Wavetables
+extern std::vector<float> *SIN_WAVE;
+extern std::vector<float> *TRI_WAVE;
+extern std::vector<float> *SAW_WAVE;
+extern std::vector<float> *SQR_WAVE;
+
 // Graphics objects and variables
 //   SDL Window and Renderer
 extern SDL_Window *WINDOW;

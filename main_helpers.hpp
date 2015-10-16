@@ -6,6 +6,12 @@
 #ifndef synth_main_helpers_h
 #define synth_main_helpers_h
 
+/************
+ * INCLUDES *
+ ************/
+
+// No includes necessary
+
 /*************************
  * FUNCTION DECLARATIONS *
  *************************/

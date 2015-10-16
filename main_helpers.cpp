@@ -19,6 +19,7 @@
 #include "event_handler.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
+#include "populate_wavetables.hpp"
 #include "signal_processing.hpp"
 #include "tests.hpp"
 
@@ -131,6 +132,9 @@ bool initialize()
     // Open ttf fonts
     if(!load_fonts())
         return false;
+
+    // Populate wavetables
+    populate_wavetables();
 
     // Initialize the output module
     initialize_output();

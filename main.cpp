@@ -48,6 +48,12 @@ int SAMPLE_RATE = 44100;
 int BUFFER_SIZE;
 bool AUDIO_ON = true;
 
+// Wavetables
+vector<float> *SIN_WAVE = new vector<float>(SAMPLE_RATE, 0);
+vector<float> *TRI_WAVE = new vector<float>(SAMPLE_RATE, 0);
+vector<float> *SAW_WAVE = new vector<float>(SAMPLE_RATE, 0);
+vector<float> *SQR_WAVE = new vector<float>(SAMPLE_RATE, 0);
+
 // SDL Window and renderer
 SDL_Window *WINDOW;
 SDL_Renderer *RENDERER;
