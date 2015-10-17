@@ -52,9 +52,9 @@ class Vca: public Module
         //   - signal: the incoming signal to be controlled
         //   - cv: the control values to apply to the signal
         //   - cv_scale: a scale factor to apply to the cv values
-        float signal_float, cv_float, cv_scale_float;
-        std::vector<float> *signal_input, *cv_input, *cv_scale_input;
-        std::string signal_str, cv_str, cv_scale_str;
+        float signal_float, cv_float, cv_amount_float;
+        std::vector<float> *signal_input, *cv_input, *cv_amount_input;
+        std::string signal_str, cv_str, cv_amount_str;
 
         // Constructor and destructor
         Vca(std::string, int);
@@ -67,8 +67,8 @@ class Vca: public Module
         virtual void update_unique_control_values();
         void set_signal(Module *);
         void set_cv(Module *);
-        void set_cv_scale(float);
-        void set_cv_scale(Module *);
+        void set_cv_amount(float);
+        void set_cv_amount(Module *);
 };
 
 #endif

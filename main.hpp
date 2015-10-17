@@ -63,6 +63,7 @@ extern Uint32 FPS;
 extern Uint32 MSPF;
 //   Fonts
 extern TTF_Font *FONT_REGULAR;
+extern TTF_Font *FONT_SMALL;
 extern TTF_Font *FONT_BOLD;
 //   Colors
 extern SDL_Color BLACK;

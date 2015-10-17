@@ -136,7 +136,8 @@ Uint32 k_rate_callback_function(Uint32 interval, void *param)
  *******************************/
 
 /*
- * Clip a signal. Make sure no value goes above the max,
+ * Clip a signal within its own buffer.
+ * Make sure no value goes above the max,
  * and no value goes below the min.
  */
 void clip_signal(vector<float> *buffer, float min, float max)
@@ -160,7 +161,7 @@ void copy_signal(vector<float> *src, vector<float> *dst)
 }
 
 /*
- * Scale a signal.
+ * Scale a signal within its buffer.
  */
 void scale_signal(vector<float> *buffer, float original_low,
                   float original_high, float low, float high)
@@ -175,7 +176,18 @@ void scale_signal(vector<float> *buffer, float original_low,
 }
 
 /*
- * Add two signals
+ * Scale a sample.
+ */
+void scale_sample(float *sample, float original_low,
+                  float original_high, float low, float high)
+{
+    *sample = (*sample - original_low) / (original_high - original_low);
+    *sample *= high - low;
+    *sample += low;
+}
+
+/*
+ * Add two signals into a destination buffer.
  */
 void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst, int num_samples)
 {
@@ -185,11 +197,22 @@ void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *
 }
 
 /*
- * Multiply two signals
+ * Multiply two signals into a destination buffer.
  */
 void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst, int num_samples)
 {
     // For each sample
     for(int i = 0; i < num_samples; i ++)
         (*dst)[i] = (*buffer1)[i] * (*buffer2)[i];
+}
+
+/*
+ * Multiply a signal by some constant and put the resulting signal
+ * into a destination buffer.
+ */
+void multiply_signals(vector<float> *buffer, float val, vector<float> *dst, int num_samples)
+{
+    // For each sample
+    for(int i = 0; i < num_samples; i ++)
+        (*dst)[i] = (*buffer)[i] * val;
 }

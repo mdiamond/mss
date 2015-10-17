@@ -206,7 +206,7 @@ void VCA_function_forwarder(Graphics_Object *g)
             val = stof(text_box->typing_text->text.c_str());
 
             if(g->name == "vca cv scale (text_box)")
-                vca->set_cv_scale(val);
+                vca->set_cv_amount(val);
         }
         else
         {
@@ -227,7 +227,7 @@ void VCA_function_forwarder(Graphics_Object *g)
             else if(g->name == "vca cv (text_box)")
                 vca->set_cv(src);
             else if(g->name == "vca cv scale (text_box)")
-                vca->set_cv_scale(src);
+                vca->set_cv_amount(src);
         }
     }
 }
@@ -237,7 +237,7 @@ void VCA_function_forwarder(Graphics_Object *g)
  */
 void add_oscillator()
 {
-    string name = to_string(MODULES->size()) + " Oscillator";
+    string name = "Oscillator " + to_string(MODULES->size());
     Oscillator *oscillator = new Oscillator(name, MODULES->size());
     MODULES->push_back(oscillator);
     MODULES_CHANGED = true;
@@ -249,7 +249,7 @@ void add_oscillator()
  */
 void add_VCA()
 {
-    string name = to_string(MODULES->size()) + " VCA";
+    string name = "VCA " + to_string(MODULES->size());
     Vca *vca = new Vca(name, MODULES->size());
     MODULES->push_back(vca);
     MODULES_CHANGED = true;

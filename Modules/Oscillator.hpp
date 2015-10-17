@@ -81,9 +81,10 @@ class Oscillator: public Module
         //   - pulse_width: the width of the square wave pulse
         //   - range_low: the low point of oscillation
         //   - range_high: the high point of oscillation
-        float frequency, phase_offset, pulse_width, range_low, range_high;
-        std::vector<float> *input_frequency, *input_phase_offset, *input_pulse_width,
-                            *input_range_low, *input_range_high;
+        float frequency_float, phase_offset_float, pulse_width_float,
+              range_low_float, range_high_float;
+        std::vector<float> *frequency_input, *phase_offset_input, *pulse_width_input,
+                           *range_low_input, *range_high_input;
         std::string frequency_str, phase_offset_str, pulse_width_str, range_low_str,
                     range_high_str;
         // Booleans to represent whether or not each of the waveforms is enabled

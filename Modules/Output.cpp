@@ -131,13 +131,13 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[6] is the display text "LEFT INPUT:"
         location = {x_text, y6, 0, 0};
-        text = new Text("output input left (text)", &location, &text_color, "INPUT LEFT:", FONT_REGULAR);
+        text = new Text("output input left (text)", &location, &text_color, "LEFT:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[7] is the text box for entering and displaying input right
         location = {x_text_box, y7, w_text_box, h_text_box};
         text_box = new Text_Box("output input left (text_box)", &location, &text_color,
-                                "", "input", FONT_REGULAR, this);
+                                "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[8] is the waveform visualizer for the right speaker
@@ -147,13 +147,13 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[9] is the display text "PHASE OFFSET:"
         location = {x_text, y9, 0, 0};
-        text = new Text("output input right (text)", &location, &text_color, "INPUT RIGHT:", FONT_REGULAR);
+        text = new Text("output input right (text)", &location, &text_color, "RIGHT:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[10] is the text box for entering and displaying input left
         location = {x_text_box, y10, w_text_box, h_text_box};
         text_box = new Text_Box("output input right (text_box)", &location, &text_color,
-                                "", "input", FONT_REGULAR, this);
+                                "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
     }
 

@@ -55,9 +55,9 @@ Vca::Vca(string _name, int _number)
     cv_str = "1";
     cv_input = NULL;
 
-    cv_scale_float = 1;
-    cv_scale_str = "1";
-    cv_scale_input = NULL;
+    cv_amount_float = 1;
+    cv_amount_str = "1";
+    cv_amount_input = NULL;
 
     output = new vector<float>(BUFFER_SIZE, 0);
 }
@@ -80,8 +80,14 @@ void Vca::process()
 
     if(signal_input != NULL && cv_input != NULL)
     {
-        multiply_signals(cv_input, cv_scale_input, output, BUFFER_SIZE);
-        multiply_signals(output, signal_input, output, BUFFER_SIZE);
+        for(unsigned short i = 0; i < BUFFER_SIZE; i ++)
+        {
+            if((*dependencies)[VCA_CV_SCALE_DEPENDENCY] != NULL)
+                cv_amount_float = (*cv_amount_input)[i];
+
+            (*output)[i] = ((*signal_input)[i] * (1 - cv_amount_float)) +
+                           ((*signal_input)[i] * (*cv_input)[i] * cv_amount_float);
+        }
     }
 
     processed = true;
@@ -89,20 +95,9 @@ void Vca::process()
 
 void Vca::update_unique_graphics_objects()
 {
-    // Update text boxes
-    if((*dependencies)[VCA_SIGNAL_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[VCA_SIGNAL_TEXT_BOX])->text->text = to_string(signal_float);
-        ((Text_Box *) (*graphics_objects)[VCA_SIGNAL_TEXT_BOX])->text->updated = true;
-    }
-    if((*dependencies)[VCA_CV_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[VCA_CV_TEXT_BOX])->text->text = to_string(cv_float);
-        ((Text_Box *) (*graphics_objects)[VCA_CV_TEXT_BOX])->text->updated = true;
-    }
     if((*dependencies)[VCA_CV_SCALE_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[VCA_CV_SCALE_TEXT_BOX])->text->text = to_string(cv_scale_float);
+        ((Text_Box *) (*graphics_objects)[VCA_CV_SCALE_TEXT_BOX])->text->text = to_string(cv_amount_float);
         ((Text_Box *) (*graphics_objects)[VCA_CV_SCALE_TEXT_BOX])->text->updated = true;
     }
 }
@@ -159,24 +154,24 @@ void Vca::calculate_unique_graphics_objects()
         // graphics_objects[5] is the text box for entering and displaying a signal
         location = {x_text_box, y5, w_signals, h_text_box};
         text_box = new Text_Box("vca signal (text_box)", &location, &text_color,
-                                "", "input", FONT_REGULAR, this);
+                                "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[6] is the text box for entering and displaying control values
         location = {x_signal_cv, y5, w_signals, h_text_box};
         text_box = new Text_Box("vca cv (text_box)", &location, &text_color,
-                                "", "input", FONT_REGULAR, this);
+                                "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[7] is the display text "CV SCALE FACTOR:"
-        location = {x_text_box, y6, 0, 0};
-        text = new Text("vca cv scale (text)", &location, &text_color, "CV SCALE FACTOR:", FONT_REGULAR);
+        location = {x_text, y6, 0, 0};
+        text = new Text("vca cv scale (text)", &location, &text_color, "CV AMOUNT:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[8] is the text box for entering and displaying control value scale factors
         location = {x_text_box, y7, w_text_box, h_text_box};
         text_box = new Text_Box("vca cv scale (text_box)", &location, &text_color,
-                                "", "# or input", FONT_REGULAR, this);
+                                "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
     }
 
@@ -195,7 +190,7 @@ void Vca::calculate_unique_graphics_objects()
         location = {x_signal_cv, y5, w_signals, h_text_box};
         (*graphics_objects)[VCA_CV_TEXT_BOX]->update_location(&location);
 
-        location = {x_text_box, y6, 0, 0};
+        location = {x_text, y6, 0, 0};
         (*graphics_objects)[VCA_CV_SCALE_TEXT]->update_location(&location);
 
         location = {x_text_box, y7, w_text_box, h_text_box};
@@ -215,16 +210,14 @@ void Vca::set_cv(Module *src)
     cout << name << " control values are now coming from " << src->name << endl;
 }
 
-void Vca::set_cv_scale(float val)
+void Vca::set_cv_amount(float val)
 {
-    set(val, &cv_scale_float, VCA_CV_SCALE_DEPENDENCY);
-    cv_scale_input = new vector<float>(BUFFER_SIZE, cv_scale_float);
-    cout << name << " control value scale factor changed to " << cv_scale_float << endl;
+    set(val, &cv_amount_float, VCA_CV_SCALE_DEPENDENCY);
+    cout << name << " control value scale factor changed to " << cv_amount_float << endl;
 }
 
-void Vca::set_cv_scale(Module *src)
+void Vca::set_cv_amount(Module *src)
 {
-    delete cv_scale_input;
-    set(src, &cv_scale_input, VCA_CV_SCALE_DEPENDENCY);
+    set(src, &cv_amount_input, VCA_CV_SCALE_DEPENDENCY);
     cout << name << " control value scale factor is now coming from " << src->name << endl;
 }

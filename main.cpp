@@ -82,6 +82,7 @@ Uint32 MSPF = 1000 / FPS;
 
 // Fonts
 TTF_Font *FONT_REGULAR;
+TTF_Font *FONT_SMALL;
 TTF_Font *FONT_BOLD;
 
 // Colors

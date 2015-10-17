@@ -50,25 +50,25 @@ Oscillator::Oscillator(string _name, int _number)
 
     dependencies = new vector<Module *>(5, NULL);
 
-    frequency = 0;
+    frequency_float = 0;
     frequency_str = "0";
-    input_frequency = new vector<float>(BUFFER_SIZE, 0);
+    frequency_input = NULL;
 
-    phase_offset = 0;
+    phase_offset_float = 0;
     phase_offset_str = "0";
-    input_phase_offset = new vector<float>(BUFFER_SIZE, 0);
+    phase_offset_input = NULL;
 
-    pulse_width = .5;
+    pulse_width_float = .5;
     pulse_width_str = ".5";
-    input_pulse_width = new vector<float>(BUFFER_SIZE, 0);
+    pulse_width_input = NULL;
 
-    range_low = -1;
+    range_low_float = -1;
     range_low_str = "-1";
-    input_range_low = new vector<float>(BUFFER_SIZE, 0);
+    range_low_input = NULL;
 
-    range_high = 1;
+    range_high_float = 1;
     range_high_str = "1";
-    input_range_high = new vector<float>(BUFFER_SIZE, 0);
+    range_high_input = NULL;
 
     output = new vector<float>(BUFFER_SIZE, 0);
 
@@ -117,7 +117,7 @@ float Oscillator::produce_saw_sample(float phase)
 
 float Oscillator::produce_sqr_sample(float phase)
 {
-    if(phase < pulse_width)
+    if(phase < pulse_width_float)
         return 1;
     else
         return -1;
@@ -141,23 +141,23 @@ void Oscillator::process()
 
         // Update any control values
         if((*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] != NULL)
-            frequency = (*(input_frequency))[i];
+            frequency_float = (*(frequency_input))[i];
         if((*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] != NULL)
         {
-            previous_phase_offset = phase_offset;
-            phase_offset = (*(input_phase_offset))[i];
-            phase_offset_diff = phase_offset - previous_phase_offset;
+            previous_phase_offset = phase_offset_float;
+            phase_offset_float = (*(phase_offset_input))[i];
+            phase_offset_diff = phase_offset_float - previous_phase_offset;
         }
         if((*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] != NULL)
-            pulse_width = (*(input_pulse_width))[i];
+            pulse_width_float = (*(pulse_width_input))[i];
         if((*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] != NULL)
-            range_low = (*(input_range_low))[i];
+            range_low_float = (*(range_low_input))[i];
         if((*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] != NULL)
-            range_high = (*(input_range_high))[i];
+            range_high_float = (*(range_high_input))[i];
 
         // Calculate and store the current samples amplitude
         // based on phase
-        if(frequency < 1 && frequency > -1)
+        if(frequency_float < 1 && frequency_float > -1)
         {
             if(waveform_type == SIN)
                 (*output)[i] = produce_sin_sample(current_phase);
@@ -169,19 +169,22 @@ void Oscillator::process()
                 (*output)[i] = produce_sqr_sample(current_phase);
         }
         else
-            if(waveform_type != SQR || pulse_width == .5)
+            if(waveform_type != SQR || pulse_width_float == .5)
                 (*output)[i] = (*wavetable)[(int) (current_phase * wavetable->size())];
             else
                 (*output)[i] = produce_sqr_sample(current_phase);
 
-        current_phase += ((float) frequency / SAMPLE_RATE) + phase_offset_diff;
-        if(current_phase > 1)
-            current_phase -= 1;
-    }
+        // If the oscillator has an abnormal range, scale the sample to
+        // that range
+        if(range_low_float != -1 || range_high_float != 1)
+            scale_sample(&(*output)[i], -1, 1, range_low_float, range_high_float);
 
-    // If the oscillator has an abnormal range, scale it into that range
-    if(range_low != -1 || range_high != 1)
-        scale_signal(output, -1, 1, range_low, range_high);
+        current_phase += ((float) frequency_float / SAMPLE_RATE) + phase_offset_diff;
+        while(current_phase > 1)
+            current_phase -= 1;
+        while(current_phase < 0)
+            current_phase += 1;
+    }
 
     processed = true;
 }
@@ -191,27 +194,27 @@ void Oscillator::update_unique_graphics_objects()
     // Update text boxes
     if((*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->text->text = to_string(frequency);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->text->text = to_string(frequency_float);
         ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->text->text = to_string(phase_offset);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->text->text = to_string(phase_offset_float);
         ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->text->text = to_string(pulse_width);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->text->text = to_string(pulse_width_float);
         ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->text->text = to_string(range_low);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->text->text = to_string(range_low_float);
         ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->text->updated = true;
     }
     if((*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] != NULL)
     {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->text->text = to_string(range_high);
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->text->text = to_string(range_high_float);
         ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->text->updated = true;
     }
 }
@@ -220,15 +223,15 @@ void Oscillator::update_unique_control_values()
 {
     // // Update any control values
     // if(live_frequency)
-    //     frequency = (*(input_frequency))[current_sample];
+    //     frequency = (*(frequency_input))[current_sample];
     // if(live_phase_offset)
-    //     phase_offset = (*(input_phase_offset))[current_sample];
+    //     phase_offset = (*(phase_offset_input))[current_sample];
     // if(live_pulse_width)
-    //     pulse_width = (*(input_pulse_width))[current_sample];
+    //     pulse_width = (*(pulse_width_input))[current_sample];
     // if(live_range_low)
-    //     range_low = (*(input_range_low))[current_sample];
+    //     range_low = (*(range_low_input))[current_sample];
     // if(live_range_high)
-    //     range_high = (*(input_range_high))[current_sample];
+    //     range_high = (*(range_high_input))[current_sample];
 }
 
 /*
@@ -285,7 +288,7 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[5] is the text box for entering and displaying frequency
         location = {x_text_box, y5, w_text_box, h_text_box};
         text_box = new Text_Box("oscillator frequency (text_box)", &location, &text_color,
-                                "", "# or input", FONT_REGULAR, this);
+                                "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[6] is the display text "PHASE OFFSET:"
@@ -296,7 +299,7 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[7] is the text box for entering and displaying phase offset
         location = {x_text_box, y7, w_text_box, h_text_box};
         text_box = new Text_Box("oscillator phase offset (text_box)", &location, &text_color,
-                                "", "# or input", FONT_REGULAR, this);
+                                "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[8] is the display text "PULSE WIDTH:"
@@ -307,24 +310,24 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[9] is the text box for entering and displaying pulse width
         location = {x_text_box, y9, w_text_box, h_text_box};
         text_box = new Text_Box("oscillator pulse width (text_box)", &location, &text_color,
-                                "", "# or input", FONT_REGULAR, this);
+                                "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[10] is the display text "RANGE (LOW - HIGH):"
         location = {x_text, y10, 0, 0};
-        text = new Text("oscillator range low/high (text)", &location, &text_color, "RANGE (LOW-HIGH):", FONT_REGULAR);
+        text = new Text("oscillator range low/high (text)", &location, &text_color, "RANGE LOW & HIGH:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[11] is the text box for entering and displaying range low
         location = {x_text_box, y11, w_range, h_text_box};
         text_box = new Text_Box("oscillator range low (text_box)", &location, &text_color,
-                                "", "# or input", FONT_REGULAR, this);
+                                "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[12] is the text box for entering and displaying range high
         location = {x_range_high, y11, w_range, h_text_box};
         text_box = new Text_Box("oscillator range high (text_box)", &location, &text_color,
-                                "", "# or input", FONT_REGULAR, this);
+                                "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[13] is the button for selecting sine wave output
@@ -405,61 +408,61 @@ void Oscillator::calculate_unique_graphics_objects()
 
 void Oscillator::set_frequency(float val)
 {
-    set(val, &frequency, OSCILLATOR_FREQUENCY_DEPENDENCY);
-    cout << name << " frequency changed to " << frequency << endl;
+    set(val, &frequency_float, OSCILLATOR_FREQUENCY_DEPENDENCY);
+    cout << name << " frequency changed to " << frequency_float << endl;
 }
 
 void Oscillator::set_frequency(Module *src)
 {
-    set(src, &input_frequency, OSCILLATOR_FREQUENCY_DEPENDENCY);
+    set(src, &frequency_input, OSCILLATOR_FREQUENCY_DEPENDENCY);
     cout << name << " frequency is now coming from " << src->name << endl;
 }
 
 void Oscillator::set_phase_offset(float val)
 {
-    set(val, &phase_offset, OSCILLATOR_PHASE_OFFSET_DEPENDENCY);
-    cout << name << " phase offset changed to " << phase_offset << endl;
+    set(val, &phase_offset_float, OSCILLATOR_PHASE_OFFSET_DEPENDENCY);
+    cout << name << " phase offset changed to " << phase_offset_float << endl;
 }
 
 void Oscillator::set_phase_offset(Module *src)
 {
-    set(src, &input_phase_offset, OSCILLATOR_PHASE_OFFSET_DEPENDENCY);
+    set(src, &phase_offset_input, OSCILLATOR_PHASE_OFFSET_DEPENDENCY);
     cout << name << " phase offset is now coming from " << src->name << endl;
 }
 
 void Oscillator::set_pulse_width(float val)
 {
-    set(val, &pulse_width, OSCILLATOR_PULSE_WIDTH_DEPENDENCY);
-    cout << name << " pulse width changed to " << pulse_width << endl;
+    set(val, &pulse_width_float, OSCILLATOR_PULSE_WIDTH_DEPENDENCY);
+    cout << name << " pulse width changed to " << pulse_width_float << endl;
 }
 
 void Oscillator::set_pulse_width(Module *src)
 {
-    set(src, &input_pulse_width, OSCILLATOR_PULSE_WIDTH_DEPENDENCY);
+    set(src, &pulse_width_input, OSCILLATOR_PULSE_WIDTH_DEPENDENCY);
     cout << name << " pulse width is now coming from " << src->name << endl;
 }
 
 void Oscillator::set_range_low(float val)
 {
-    set(val, &range_low, OSCILLATOR_RANGE_LOW_DEPENDENCY);
-    cout << name << " range low changed to " << range_low << endl;
+    set(val, &range_low_float, OSCILLATOR_RANGE_LOW_DEPENDENCY);
+    cout << name << " range low changed to " << range_low_float << endl;
 }
 
 void Oscillator::set_range_low(Module *src)
 {
-    set(src, &input_range_low, OSCILLATOR_RANGE_LOW_DEPENDENCY);
+    set(src, &range_low_input, OSCILLATOR_RANGE_LOW_DEPENDENCY);
     cout << name << " range low is now coming from " << src->name << endl;
 }
 
 void Oscillator::set_range_high(float val)
 {
-    set(val, &range_high, OSCILLATOR_RANGE_HIGH_DEPENDENCY);
-    cout << name << " range high changed to " << range_high << endl;
+    set(val, &range_high_float, OSCILLATOR_RANGE_HIGH_DEPENDENCY);
+    cout << name << " range high changed to " << range_high_float << endl;
 }
 
 void Oscillator::set_range_high(Module *src)
 {
-    set(src, &input_range_high, OSCILLATOR_RANGE_HIGH_DEPENDENCY);
+    set(src, &range_high_input, OSCILLATOR_RANGE_HIGH_DEPENDENCY);
     cout << name << " range high is now coming from " << src->name << endl;
 }
 
