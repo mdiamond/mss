@@ -50,15 +50,29 @@ using namespace std;
  * Given the name of a module, return a pointer to it if
  * it exists, or NULL if it doesn't.
  */
-Module *find_module(string *string, vector<Module *> *modules)
+Module *find_module(string *name, vector<Module *> *modules)
 {
     for(unsigned int i = 0; i < modules->size(); i ++)
     {
-        if((*modules)[i]->name == *string)
+        if((*modules)[i]->name == *name)
             return (*modules)[i];
     }
 
     return NULL;
+}
+
+Module *find_module_as_source(string *name, vector<Module *> *modules, Module *dst)
+{
+        Module *src = find_module(name, MODULES);
+        if(src == NULL)
+            cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
+        else if(src == dst)
+        {
+            cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
+            return NULL;
+        }
+
+        return src;
 }
 
 /*
@@ -98,17 +112,9 @@ void output_function_forwarder(Graphics_Object *g)
             return;
         }
 
-        src = find_module(&text_box->typing_text->text, MODULES);
+        src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
         if(src == NULL)
-        {
-            cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
             return;
-        }
-        else if(src == output)
-        {
-            cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
-            return;
-        }
 
         if(g->name == "output input left (text_box)")
             output->set_input_l(src);
@@ -150,17 +156,9 @@ void oscillator_function_forwarder(Graphics_Object *g)
         }
         else
         {
-            src = find_module(&text_box->typing_text->text, MODULES);
+            src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
             if(src == NULL)
-            {
-                cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
                 return;
-            }
-            else if(src == oscillator)
-            {
-                cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
-                return;
-            }
 
             if(g->name == "oscillator frequency (text_box)")
                 oscillator->set_frequency(src);
@@ -205,22 +203,17 @@ void VCA_function_forwarder(Graphics_Object *g)
         {
             val = stof(text_box->typing_text->text.c_str());
 
-            if(g->name == "vca cv scale (text_box)")
+            if(g->name == "vca signal (text_box)" || g->name == "vca cv (text_box)")
+                cout << RED_STDOUT << "The VCA module's top two input fields must be other modules"
+                     << DEFAULT_STDOUT << endl;
+            else if(g->name == "vca cv scale (text_box)")
                 vca->set_cv_amount(val);
         }
         else
         {
-            src = find_module(&text_box->typing_text->text, MODULES);
+            src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
             if(src == NULL)
-            {
-                cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
                 return;
-            }
-            else if(src == vca)
-            {
-                cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
-                return;
-            }
 
             if(g->name == "vca signal (text_box)")
                 vca->set_signal(src);
