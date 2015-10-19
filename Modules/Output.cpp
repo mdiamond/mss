@@ -44,8 +44,10 @@ Output::Output(int _number)
 
     dependencies = new vector<Module *>(2, NULL);
 
-    input_l = new vector<float>(BUFFER_SIZE, 0);
-    input_r = new vector<float>(BUFFER_SIZE, 0);
+    input_l = NULL;
+    input_r = NULL;
+
+    output = NULL;
 }
 
 /*
@@ -205,7 +207,7 @@ void Output::set_input_l(Module *src)
     set(src, &input_l, OUTPUT_INPUT_L_DEPENDENCY);
     waveform->buffer = src->output;
 
-    cout << name << " input left is now coming from " << src->name << endl;
+    cout << name << " left is now coming from " << src->name << endl;
 }
 
 void Output::set_input_r(Module *src)
@@ -215,5 +217,5 @@ void Output::set_input_r(Module *src)
     set(src, &input_r, OUTPUT_INPUT_R_DEPENDENCY);
     waveform->buffer = src->output;
 
-    cout << name << " input right is now coming from " << src->name << endl;
+    cout << name << " right is now coming from " << src->name << endl;
 }

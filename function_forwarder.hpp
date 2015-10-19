@@ -24,6 +24,7 @@ bool can_floatify(std::string *);
 
 void add_oscillator();
 void add_VCA();
+void add_mixer();
 void next_page();
 void previous_page();
 

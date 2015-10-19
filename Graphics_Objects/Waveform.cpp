@@ -52,9 +52,15 @@ Waveform::~Waveform()
 
 float Waveform::calculate_y(int i, int index)
 {
-    int y = (location.y + location.h / 2) +
-    (((*(buffer))[buffer->size() - location.w + index]) * -1) *
-    (location.h / 2);
+    int y;
+    if(buffer != NULL)
+        y = (location.y + location.h / 2) +
+            (((*(buffer))[BUFFER_SIZE - location.w + index]) * -1) *
+            (location.h / 2);
+    else
+        y = (location.y + location.h / 2) +
+            0 *
+            (location.h / 2);
     if(y < location.y)
         y = location.y;
     if(y > location.y + location.h)
@@ -71,7 +77,7 @@ void Waveform::render()
     vector<SDL_Point> points(location.w, zero);
 
     int index = 0;
-    for(unsigned int i = buffer->size() - location.w; i < buffer->size(); i ++)
+    for(int i = BUFFER_SIZE - location.w; i < BUFFER_SIZE; i ++)
     {
         points[index].x = location.x + index;
         points[index].y = calculate_y(i, index);

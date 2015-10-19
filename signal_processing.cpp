@@ -107,8 +107,15 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     // and insert it into the buffer
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        buffer[0] = (*(output->input_l))[i];
-        buffer[1] = (*(output->input_r))[i];
+        if(output->input_l != NULL)
+            buffer[0] = (*(output->input_l))[i];
+        else
+            buffer[0] = 0;
+        if(output->input_r != NULL)
+            buffer[1] = (*(output->input_r))[i];
+        else
+            buffer[1] = 0;
+
         buffer += 2;
     }
 

@@ -37,7 +37,7 @@ using namespace std;
  *******************************/
 
 /*
- * Constructor
+ * Constructor.
  */
 Oscillator::Oscillator(string _name, int _number)
 {
@@ -49,6 +49,7 @@ Oscillator::Oscillator(string _name, int _number)
     previous_phase_offset = 0;
 
     dependencies = new vector<Module *>(5, NULL);
+    output = new vector<float>(BUFFER_SIZE, 0);
 
     frequency_float = 0;
     frequency_str = "0";
@@ -69,8 +70,6 @@ Oscillator::Oscillator(string _name, int _number)
     range_high_float = 1;
     range_high_str = "1";
     range_high_input = NULL;
-
-    output = new vector<float>(BUFFER_SIZE, 0);
 
     waveform_type = SIN;
 
@@ -266,7 +265,7 @@ void Oscillator::calculate_unique_graphics_objects()
     y9 = y8 + 15;
     y10 = y9 + 16;
     y11 = y10 + 15;
-    y12 = y11 + 26;
+    y12 = y11 + 27;
     x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
     w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3);
     w_wave_selector = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) / 4) - 2;

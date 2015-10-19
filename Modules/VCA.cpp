@@ -32,12 +32,12 @@
 
 using namespace std;
 
-/*******************************
+/************************
  * VCA MEMBER FUNCTIONS *
- *******************************/
+ ************************/
 
 /*
- * Constructor
+ * Constructor.
  */
 Vca::Vca(string _name, int _number)
 {
@@ -46,6 +46,7 @@ Vca::Vca(string _name, int _number)
     number = _number;
 
     dependencies = new vector<Module *>(3, NULL);
+    output = new vector<float>(BUFFER_SIZE, 0);
 
     signal_float = 0;
     signal_str = "0";
@@ -58,8 +59,6 @@ Vca::Vca(string _name, int _number)
     cv_amount_float = 1;
     cv_amount_str = "1";
     cv_amount_input = NULL;
-
-    output = new vector<float>(BUFFER_SIZE, 0);
 }
 
 /*
@@ -71,7 +70,10 @@ Vca::~Vca()
 }
 
 /*
- * Process all dependencies, then multiply the scale
+ * Process all dependencies, then multiply the original signal by
+ * 1 - the control values, and multiply the original signal by
+ * the control values scaled. One done, sum the two to get the
+ * final output signal for the VCA module.
  */
 void Vca::process()
 {
@@ -130,7 +132,7 @@ void Vca::calculate_unique_graphics_objects()
     h_waveform = 135;
     y3 = upper_left.y + MODULE_BORDER_WIDTH + 23;
     y4 = y3 + 136;
-    y5 = y4 + 15; 
+    y5 = y4 + 15;
     y6 = y5 + 15;
     y7 = y6 + 15;
     x_signal_cv = upper_left.x + (MODULE_WIDTH / 2) + 1;

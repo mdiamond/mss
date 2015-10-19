@@ -73,6 +73,11 @@ void keydown_event(SDL_Event *e)
         if(e->key.keysym.mod & KMOD_LCTRL)
             add_VCA();
     }
+    if(e->key.keysym.sym == SDLK_3)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            add_mixer();
+    }
     else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)

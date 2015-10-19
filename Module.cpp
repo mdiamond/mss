@@ -32,7 +32,7 @@ using namespace std;
  ***************************/
 
 /*
- * Dummy function.
+ * Constructor.
  */
 Module::Module()
 {
@@ -48,7 +48,7 @@ Module::Module()
 
     processed = false;
     graphics_objects = new vector<Graphics_Object *>();
-    output = new vector<float>(BUFFER_SIZE, 0);
+    output = NULL;
 }
 
 /*

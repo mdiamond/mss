@@ -25,6 +25,7 @@
 enum Modules
 {
     OUTPUT = 0,
+    MIXER,
     OSCILLATOR,
     VCA
 };

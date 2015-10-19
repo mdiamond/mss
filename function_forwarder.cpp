@@ -28,6 +28,7 @@
 #include "Graphics_Objects/Toggle_Button.hpp"
 #include "Graphics_Objects/Waveform.hpp"
 #include "Module.hpp"
+#include "Modules/Mixer.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
 #include "Modules/VCA.hpp"
@@ -66,6 +67,12 @@ Module *find_module_as_source(string *name, vector<Module *> *modules, Module *d
         Module *src = find_module(name, MODULES);
         if(src == NULL)
             cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
+        else if(src == (*MODULES)[0])
+        {
+            cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
+                               << DEFAULT_STDOUT << endl;
+            return NULL;
+        }
         else if(src == dst)
         {
             cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
@@ -160,7 +167,7 @@ void oscillator_function_forwarder(Graphics_Object *g)
             if(src == NULL)
                 return;
 
-            if(g->name == "oscillator frequency (text_box)")
+            else if(g->name == "oscillator frequency (text_box)")
                 oscillator->set_frequency(src);
             else if(g->name == "oscillator phase offset (text_box)")
                 oscillator->set_phase_offset(src);
@@ -215,12 +222,95 @@ void VCA_function_forwarder(Graphics_Object *g)
             if(src == NULL)
                 return;
 
-            if(g->name == "vca signal (text_box)")
+            else if(g->name == "vca signal (text_box)")
                 vca->set_signal(src);
             else if(g->name == "vca cv (text_box)")
                 vca->set_cv(src);
             else if(g->name == "vca cv scale (text_box)")
                 vca->set_cv_amount(src);
+        }
+    }
+}
+
+/*
+ * Handle functions for the mixer module.
+ */
+void mixer_function_forwarder(Graphics_Object *g)
+{
+    Mixer *mixer = (Mixer *) g->parent;
+    Text_Box *text_box = NULL;
+    Module *src = NULL;
+    float val = 0;
+
+    if(g->type == TEXT_BOX)
+    {
+        text_box = (Text_Box *) g;
+
+        if(can_floatify(&text_box->typing_text->text))
+        {
+            val = stof(text_box->typing_text->text.c_str());
+
+            if(g->name == "mixer signal 1 (text_box)" || g->name == "mixer signal 2 (text_box)" ||
+               g->name == "mixer signal 3 (text_box)" || g->name == "mixer signal 4 (text_box)" ||
+               g->name == "mixer signal 5 (text_box)" || g->name == "mixer signal 6 (text_box)" ||
+               g->name == "mixer signal 7 (text_box)" || g->name == "mixer signal 8 (text_box)")
+                cout << RED_STDOUT << "The mixer modules left hand input fields must be other modules"
+                     << DEFAULT_STDOUT << endl;
+            else if(g->name == "mixer signal 1 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 1);
+            else if(g->name == "mixer signal 2 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 2);
+            else if(g->name == "mixer signal 3 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 3);
+            else if(g->name == "mixer signal 4 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 4);
+            else if(g->name == "mixer signal 5 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 5);
+            else if(g->name == "mixer signal 6 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 6);
+            else if(g->name == "mixer signal 7 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 7);
+            else if(g->name == "mixer signal 8 multiplier (text_box)")
+                mixer->set_signal_multiplier(val, 8);
+        }
+        else
+        {
+            src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
+            if(src == NULL)
+                return;
+
+            else if(g->name == "mixer signal 1 (text_box)")
+                mixer->set_signal(src, 1);
+            else if(g->name == "mixer signal 1 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 1);
+            else if(g->name == "mixer signal 2 (text_box)")
+                mixer->set_signal(src, 2);
+            else if(g->name == "mixer signal 2 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 2);
+            else if(g->name == "mixer signal 3 (text_box)")
+                mixer->set_signal(src, 3);
+            else if(g->name == "mixer signal 3 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 3);
+            else if(g->name == "mixer signal 4 (text_box)")
+                mixer->set_signal(src, 4);
+            else if(g->name == "mixer signal 4 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 4);
+            else if(g->name == "mixer signal 5 (text_box)")
+                mixer->set_signal(src, 5);
+            else if(g->name == "mixer signal 5 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 5);
+            else if(g->name == "mixer signal 6 (text_box)")
+                mixer->set_signal(src, 6);
+            else if(g->name == "mixer signal 6 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 6);
+            else if(g->name == "mixer signal 7 (text_box)")
+                mixer->set_signal(src, 7);
+            else if(g->name == "mixer signal 7 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 7);
+            else if(g->name == "mixer signal 8 (text_box)")
+                mixer->set_signal(src, 8);
+            else if(g->name == "mixer signal 8 multiplier (text_box)")
+                mixer->set_signal_multiplier(src, 8);
         }
     }
 }
@@ -245,6 +335,18 @@ void add_VCA()
     string name = "VCA " + to_string(MODULES->size());
     Vca *vca = new Vca(name, MODULES->size());
     MODULES->push_back(vca);
+    MODULES_CHANGED = true;
+    cout << "Added module " << name << endl;
+}
+
+/*
+ * Add a mixer module.
+ */
+void add_mixer()
+{
+    string name = "Mixer " + to_string(MODULES->size());
+    Mixer *mixer = new Mixer(name, MODULES->size());
+    MODULES->push_back(mixer);
     MODULES_CHANGED = true;
     cout << "Added module " << name << endl;
 }
@@ -283,6 +385,8 @@ void no_parent_function_forwarder(Graphics_Object *g)
         add_oscillator();
     else if(g->name == "add vca (button)")
         add_VCA();
+    else if(g->name == "add mixer (button)")
+        add_mixer();
     else if(g->name == "previous page (button)")
         next_page();
     else if(g->name == "next page (button)")
@@ -303,4 +407,6 @@ void function_forwarder(Graphics_Object *g)
         oscillator_function_forwarder(g);
     else if(g->parent->type == VCA)
         VCA_function_forwarder(g);
+    else if(g->parent->type == MIXER)
+        mixer_function_forwarder(g);
 }

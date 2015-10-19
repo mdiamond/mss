@@ -126,6 +126,7 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
                                    vector<Page *> *sub_pages, Page *current_sub_page)
 {
     int x = 2;
+    Module *parent = NULL;
 
     // Create the background and add it to the list of graphics
     // objects
@@ -136,7 +137,6 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     // list of graphics objects
     SDL_Rect location = {x , WINDOW_HEIGHT - 17, 100, 15};
     x += 102;
-    Module *parent = NULL;
     Button *button = new Button("add oscillator (button)", &location, &WHITE,
                                 "ADD OSCILLATOR", parent);
     sub_page_graphics_objects->push_back(button);
@@ -144,10 +144,16 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     // Create the "add VCA" button and add it to the
     // list of graphics objects
     location = {x, WINDOW_HEIGHT - 17, 51, 15};
-    x += 100;
-    parent = NULL;
+    x += 53;
     button = new Button("add vca (button)", &location, &WHITE,
                                 "ADD VCA", parent);
+    sub_page_graphics_objects->push_back(button);
+
+    // Create the "add mixer" button and add it to the
+    // list of graphics objects
+    location = {x, WINDOW_HEIGHT - 17, 51, 15};
+    button = new Button("add mixer (button)", &location, &WHITE,
+                                "ADD MIXER", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "previous page" button and add it to the
@@ -155,7 +161,6 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     x = WINDOW_WIDTH - 159;
     location = {x, WINDOW_HEIGHT - 17, 92, 15};
     x += 92;
-    parent = NULL;
     button = new Button("previous page (button)", &location, &WHITE,
                         "PREVIOUS PAGE", parent);
     sub_page_graphics_objects->push_back(button);
@@ -165,7 +170,6 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     x += 2;
     location = {x, WINDOW_HEIGHT - 17, 63, 15};
     x += 65;
-    parent = NULL;
     button = new Button("next page (button)", &location, &WHITE,
                         "NEXT PAGE", parent);
     sub_page_graphics_objects->push_back(button);
