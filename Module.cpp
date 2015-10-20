@@ -37,12 +37,12 @@ using namespace std;
 Module::Module()
 {
     // Pick a random background and text color
-    color.r = rand() % 256;
-    text_color.r = 256 - color.r;
-    color.g = rand() % 256;
-    text_color.g = 256 - color.g;
-    color.b = rand() % 256;
-    text_color.b = 256 - color.b;
+    color.r = rand() % 128;
+    text_color.r = (rand() % 128) + 128;
+    color.g = rand() % 128;
+    text_color.g = (rand() % 128) + 128;
+    color.b = rand() % 128;
+    text_color.b = (rand() % 128) + 128;
     color.a = 255;
     text_color.a = 255;
 

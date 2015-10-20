@@ -84,9 +84,8 @@ void Output::update_unique_control_values()
  */
 void Output::calculate_unique_graphics_objects()
 {
-    int x_text,
+    int x_text, x_text_box, w_text_box, h_text_box,
         x_button,
-        x_text_box, w_text_box, h_text_box,
         w_waveform, h_waveform,
         y3, y4, y5, y6, y7, y8, y9, y10;
     SDL_Rect location;
@@ -94,11 +93,11 @@ void Output::calculate_unique_graphics_objects()
     Text_Box *text_box;
     Waveform *waveform;
 
-    x_text = upper_left.x + MODULE_BORDER_WIDTH + 5;
-    x_button = upper_left.x + MODULE_BORDER_WIDTH + 70;
+    x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
     w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
     h_text_box = 15;
+    x_button = upper_left.x + MODULE_BORDER_WIDTH + 70;
     w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
     h_waveform = 55;
     y3 = upper_left.y + MODULE_BORDER_WIDTH + 20;

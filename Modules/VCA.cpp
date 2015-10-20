@@ -124,7 +124,7 @@ void Vca::calculate_unique_graphics_objects()
     Text_Box *text_box;
     Waveform *waveform;
 
-    x_text = upper_left.x + MODULE_BORDER_WIDTH + 5;
+    x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
     w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
     h_text_box = 15;
