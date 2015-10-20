@@ -100,7 +100,13 @@ void Text_Box::render()
 
 void Text_Box::update_location(SDL_Rect *_location)
 {
+    location = *_location;
     background->update_location(_location);
+}
+
+void Text_Box::update_current_text(string s)
+{
+    text->update_text(s);
 }
 
 /*

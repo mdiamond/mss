@@ -201,45 +201,21 @@ void Mixer::process()
 void Mixer::update_unique_graphics_objects()
 {
     if((*dependencies)[MIXER_SIGNAL_1_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_1_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_1_multiplier_float));
     if((*dependencies)[MIXER_SIGNAL_2_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_2_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_2_multiplier_float));
     if((*dependencies)[MIXER_SIGNAL_3_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_3_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_3_multiplier_float));
     if((*dependencies)[MIXER_SIGNAL_4_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_4_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_4_multiplier_float));
     if((*dependencies)[MIXER_SIGNAL_5_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_5_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_5_multiplier_float));
     if((*dependencies)[MIXER_SIGNAL_6_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_6_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_6_multiplier_float));
     if((*dependencies)[MIXER_SIGNAL_7_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_7_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_7_multiplier_float));
     if((*dependencies)[MIXER_SIGNAL_8_MULTIPLIER_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_8_MULTIPLIER_TEXT_BOX])->text->text = to_string(signal_8_multiplier_float);
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_8_MULTIPLIER_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_8_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_8_multiplier_float));
 }
 
 void Mixer::update_unique_control_values()

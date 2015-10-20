@@ -43,6 +43,7 @@ class Text_Box: public Graphics_Object
         void delete_character();
         void entered();
         void update_location(SDL_Rect *);
+        void update_current_text(std::string);
 };
 
 #endif

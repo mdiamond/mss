@@ -192,30 +192,15 @@ void Oscillator::update_unique_graphics_objects()
 {
     // Update text boxes
     if((*dependencies)[OSCILLATOR_FREQUENCY_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->text->text = to_string(frequency_float);
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_FREQUENCY_TEXT_BOX])->update_current_text(to_string(frequency_float));
     if((*dependencies)[OSCILLATOR_PHASE_OFFSET_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->text->text = to_string(phase_offset_float);
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->update_current_text(to_string(phase_offset_float));
     if((*dependencies)[OSCILLATOR_PULSE_WIDTH_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->text->text = to_string(pulse_width_float);
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->update_current_text(to_string(pulse_width_float));
     if((*dependencies)[OSCILLATOR_RANGE_LOW_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->text->text = to_string(range_low_float);
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_LOW_TEXT_BOX])->update_current_text(to_string(range_low_float));
     if((*dependencies)[OSCILLATOR_RANGE_HIGH_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->text->text = to_string(range_high_float);
-        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->update_current_text(to_string(range_high_float));
 }
 
 void Oscillator::update_unique_control_values()

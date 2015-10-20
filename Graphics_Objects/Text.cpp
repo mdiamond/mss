@@ -90,3 +90,12 @@ void Text::clicked()
 {
 
 }
+
+/*
+ * A function for updating the text in this object
+ */
+void Text::update_text(string s)
+{
+    text = s;
+    updated = true;
+}

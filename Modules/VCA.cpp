@@ -98,10 +98,7 @@ void Vca::process()
 void Vca::update_unique_graphics_objects()
 {
     if((*dependencies)[VCA_CV_SCALE_DEPENDENCY] != NULL)
-    {
-        ((Text_Box *) (*graphics_objects)[VCA_CV_SCALE_TEXT_BOX])->text->text = to_string(cv_amount_float);
-        ((Text_Box *) (*graphics_objects)[VCA_CV_SCALE_TEXT_BOX])->text->updated = true;
-    }
+        ((Text_Box *) (*graphics_objects)[VCA_CV_SCALE_TEXT_BOX])->update_current_text(to_string(cv_amount_float));
 }
 
 void Vca::update_unique_control_values()
