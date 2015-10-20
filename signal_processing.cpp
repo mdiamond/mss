@@ -196,20 +196,20 @@ void scale_sample(float *sample, float original_low,
 /*
  * Add two signals into a destination buffer.
  */
-void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst, int num_samples)
+void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst)
 {
     // For each sample
-    for(int i = 0; i < num_samples; i ++)
+    for(int i = 0; i < buffer1->size(); i ++)
         (*dst)[i] = (*buffer1)[i] + (*buffer2)[i];
 }
 
 /*
  * Multiply two signals into a destination buffer.
  */
-void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst, int num_samples)
+void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst)
 {
     // For each sample
-    for(int i = 0; i < num_samples; i ++)
+    for(int i = 0; i < buffer1->size(); i ++)
         (*dst)[i] = (*buffer1)[i] * (*buffer2)[i];
 }
 
@@ -217,9 +217,9 @@ void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<flo
  * Multiply a signal by some constant and put the resulting signal
  * into a destination buffer.
  */
-void multiply_signals(vector<float> *buffer, float val, vector<float> *dst, int num_samples)
+void multiply_signals(vector<float> *buffer, float val, vector<float> *dst)
 {
     // For each sample
-    for(int i = 0; i < num_samples; i ++)
+    for(int i = 0; i < buffer->size(); i ++)
         (*dst)[i] = (*buffer)[i] * val;
 }

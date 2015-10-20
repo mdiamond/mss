@@ -111,7 +111,7 @@ bool test_add_signals_1()
     buffer2[3] = 3.43;
     expected_buffer[3] = -16.57;
 
-    add_signals(&buffer1, &buffer2, &result_buffer, num_samples);
+    add_signals(&buffer1, &buffer2, &result_buffer);
 
     if(compare_buffers(&expected_buffer, &result_buffer, num_samples))
         return true;
