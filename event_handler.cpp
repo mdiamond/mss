@@ -49,6 +49,8 @@ bool check_click()
         ACTIVE_TEXT_BOX = NULL;
     }
 
+    OBJECT_CLICKED = false;
+
     // If the current page was clicked, call its clicked() function
     if(p->was_clicked())
         p->clicked();

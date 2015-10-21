@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -15,6 +16,7 @@
 #include "SDL2/SDL.h"
 
 // Included files
+#include "../function_forwarder.hpp"
 #include "../main.hpp"
 
 // Included classes
@@ -66,5 +68,11 @@ void Rect::render()
  */
 void Rect::clicked()
 {
+    if(!OBJECT_CLICKED && SELECTING_SRC)
+    {
+        cout << BLUE_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
 
+        function_forwarder(this);
+        OBJECT_CLICKED = true;
+    }
 }

@@ -88,6 +88,9 @@ TTF_Font *FONT_BOLD;
 // Colors
 SDL_Color BLACK = {0, 0, 0 , 255};
 SDL_Color WHITE = {255, 255, 255, 255};
+SDL_Color RED = {255, 0, 0};
+SDL_Color GREEN = {0, 255, 0};
+SDL_Color BLUE = {0, 0, 255};
 
 // Pages
 vector<Page *> *PAGES = new vector<Page *>();
@@ -96,12 +99,20 @@ unsigned int CURRENT_PAGE = 0;
 // Mouse information
 int MOUSE_X;
 int MOUSE_Y;
+bool OBJECT_CLICKED = false;
 
 // Typing cursor status
 bool CURSOR_ON = true;
 
 // The currently active text box
 Text_Box *ACTIVE_TEXT_BOX = NULL;
+
+// Selecting a source module or not
+bool SELECTING_SRC = false;
+
+// The current source and destination modules
+Module *CURRENT_SRC = NULL;
+Module *CURRENT_DST = NULL;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

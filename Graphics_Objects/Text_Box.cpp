@@ -139,14 +139,18 @@ void Text_Box::delete_character()
  */
 void Text_Box::clicked()
 {
-    cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
-
-    if(!active)
+    if(!OBJECT_CLICKED)
     {
-        active = true;
-        ACTIVE_TEXT_BOX = this;
-        SDL_SetTextInputRect(&location);
-        SDL_StartTextInput();
+        cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+
+        if(!active)
+        {
+            active = true;
+            ACTIVE_TEXT_BOX = this;
+            SDL_SetTextInputRect(&location);
+            SDL_StartTextInput();
+        }
+        OBJECT_CLICKED = true;
     }
 }
 
@@ -158,6 +162,8 @@ void Text_Box::clicked()
  */
 void Text_Box::entered()
 {
+    cout << BLUE_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
+
     SDL_StopTextInput();
     function_forwarder(this);
     text->text = typing_text->text;

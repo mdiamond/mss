@@ -80,5 +80,10 @@ void Button::render()
 void Button::clicked()
 {
     cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
-    function_forwarder(this);
+
+    if(!OBJECT_CLICKED)
+    {
+        function_forwarder(this);
+        OBJECT_CLICKED = true;
+    }
 }

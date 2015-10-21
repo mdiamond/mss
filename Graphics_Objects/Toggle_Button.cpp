@@ -34,8 +34,9 @@ using namespace std;
  * Constructor.
  */
 Toggle_Button::Toggle_Button(string _name, SDL_Rect *_location, SDL_Color *_color,
-                             SDL_Color *_color_off, string _text_on, string _text_off,
-                             bool *_b, Module *_parent)
+                             SDL_Color *_color_off, SDL_Color *_text_color_on,
+                             SDL_Color *_text_color_off, string _text_on,
+                             string _text_off, bool *_b, Module *_parent)
 {
     name = _name;
     type = TOGGLE_BUTTON;
@@ -44,8 +45,8 @@ Toggle_Button::Toggle_Button(string _name, SDL_Rect *_location, SDL_Color *_colo
 
     color_off = *_color_off;
 
-    text_on = new Text("text on", &location, &color_off, _text_on, FONT_REGULAR);
-    text_off = new Text("text off", &location, &color, _text_off, FONT_REGULAR);
+    text_on = new Text("text on (text)", &location, _text_color_on, _text_on, FONT_REGULAR);
+    text_off = new Text("text off (text)", &location, _text_color_off, _text_off, FONT_REGULAR);
 
     b = _b;
     parent = _parent;
@@ -86,7 +87,11 @@ void Toggle_Button::render()
  */
 void Toggle_Button::clicked()
 {
-    cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+    if(!OBJECT_CLICKED)
+    {
+        cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
-    function_forwarder(this);
+        function_forwarder(this);
+        OBJECT_CLICKED = true;
+    }
 }

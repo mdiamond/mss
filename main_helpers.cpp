@@ -159,6 +159,8 @@ bool normal_mode()
         return false;
     }
 
+    SDL_SetRenderDrawBlendMode(RENDERER, SDL_BLENDMODE_BLEND);
+
     // While the user has not quit, continually draw
     // to the window, then delay until the next frame is needed.
     Uint32 frame = 0;

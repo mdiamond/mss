@@ -68,16 +68,25 @@ extern TTF_Font *FONT_BOLD;
 //   Colors
 extern SDL_Color BLACK;
 extern SDL_Color WHITE;
+extern SDL_Color RED;
+extern SDL_Color GREEN;
+extern SDL_Color BLUE;
 //   Pages
 extern std::vector<Page *> *PAGES;
 extern unsigned int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;
 extern int MOUSE_Y;
+extern bool OBJECT_CLICKED;
 //   Typing cursor status
 extern bool CURSOR_ON;
 //   The currently active text box
 extern Text_Box *ACTIVE_TEXT_BOX;
+//   Selecting a source module or not
+extern bool SELECTING_SRC;
+//   The current source and destination modules
+extern Module *CURRENT_SRC;
+extern Module *CURRENT_DST;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

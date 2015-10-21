@@ -39,13 +39,18 @@ enum Oscillator_Graphics_Objects
     OSCILLATOR_OUTPUT_WAVEFORM = 3,
     OSCILLATOR_FREQUENCY_TEXT,
     OSCILLATOR_FREQUENCY_TEXT_BOX,
+    OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON,
     OSCILLATOR_PHASE_OFFSET_TEXT,
     OSCILLATOR_PHASE_OFFSET_TEXT_BOX,
+    OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON,
     OSCILLATOR_PULSE_WIDTH_TEXT,
     OSCILLATOR_PULSE_WIDTH_TEXT_BOX,
+    OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON,
     OSCILLATOR_RANGE_TEXT,
     OSCILLATOR_RANGE_LOW_TEXT_BOX,
+    OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON,
     OSCILLATOR_RANGE_HIGH_TEXT_BOX,
+    OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON,
     OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON,
     OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON,
     OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON,
@@ -87,6 +92,8 @@ class Oscillator: public Module
                            *range_low_input, *range_high_input;
         std::string frequency_str, phase_offset_str, pulse_width_str, range_low_str,
                     range_high_str;
+        bool frequency_live, phase_offset_live, pulse_width_live,
+             range_low_live, range_high_live;
         // Booleans to represent whether or not each of the waveforms is enabled
         int waveform_type;
         // A pointer to the wavetable currently in use

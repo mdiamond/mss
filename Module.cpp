@@ -17,6 +17,7 @@
 
 // Included files
 #include "function_forwarder.hpp"
+#include "image_processing.hpp"
 #include "main.hpp"
 
 // Included classes
@@ -165,4 +166,6 @@ void Module::set(Module *src, vector<float> **dst, int dependency_num)
 {
     *dst = src->output;
     (*dependencies)[dependency_num] = src;
+    SELECTING_SRC = false;
+    reset_alphas();
 }

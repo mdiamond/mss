@@ -152,24 +152,24 @@ void Vca::calculate_unique_graphics_objects()
 
         // graphics_objects[5] is the text box for entering and displaying a signal
         location = {x_text_box, y5, w_signals, h_text_box};
-        text_box = new Text_Box("vca signal (text_box)", &location, &text_color,
+        text_box = new Text_Box("vca signal (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[6] is the text box for entering and displaying control values
         location = {x_signal_cv, y5, w_signals, h_text_box};
-        text_box = new Text_Box("vca cv (text_box)", &location, &text_color,
+        text_box = new Text_Box("vca cv (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[7] is the display text "CV SCALE FACTOR:"
         location = {x_text, y6, 0, 0};
-        text = new Text("vca cv scale (text)", &location, &text_color, "CV AMOUNT:", FONT_REGULAR);
+        text = new Text("vca cv amount (text)", &location, &text_color, "CV AMOUNT:", FONT_REGULAR);
         graphics_objects->push_back(text);
 
         // graphics_objects[8] is the text box for entering and displaying control value scale factors
         location = {x_text_box, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("vca cv scale (text_box)", &location, &text_color,
+        text_box = new Text_Box("vca cv amount (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
     }
@@ -212,11 +212,11 @@ void Vca::set_cv(Module *src)
 void Vca::set_cv_amount(float val)
 {
     set(val, &cv_amount_float, VCA_CV_SCALE_DEPENDENCY);
-    cout << name << " control value scale factor changed to " << cv_amount_float << endl;
+    cout << name << " control value amount changed to " << cv_amount_float << endl;
 }
 
 void Vca::set_cv_amount(Module *src)
 {
     set(src, &cv_amount_input, VCA_CV_SCALE_DEPENDENCY);
-    cout << name << " control value scale factor is now coming from " << src->name << endl;
+    cout << name << " control value amount is now coming from " << src->name << endl;
 }

@@ -117,6 +117,33 @@ void calculate_graphics_objects()
     MODULES_CHANGED = 0;
 }
 
+Module *hovering_over()
+{
+    for(unsigned int i = 0; i < MODULES->size(); i ++)
+        if(!(*(*MODULES)[i]->graphics_objects)[0]->was_clicked())
+            return (*MODULES)[i];
+
+    return NULL;
+}
+
+void select_input_mode()
+{
+    for(unsigned int i = 0; i < MODULES->size(); i ++)
+        if(!(*(*MODULES)[i]->graphics_objects)[0]->was_clicked())
+            for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
+                (*(*MODULES)[i]->graphics_objects)[j]->color.a = 50;
+        else
+            for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
+                (*(*MODULES)[i]->graphics_objects)[j]->color.a = 255;
+}
+
+void reset_alphas()
+{
+    for(unsigned int i = 0; i < MODULES->size(); i ++)
+        for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
+            (*(*MODULES)[i]->graphics_objects)[j]->color.a = 255;
+}
+
 /*
  * Create the very first sub page on every page, the utilities sub page.
  * This sub page contains the buttons for adding new modules, switching
@@ -283,6 +310,9 @@ void draw_surface()
         i < (CURRENT_PAGE + 1) * MODULES_PER_PAGE && i < MODULES->size();
         i ++)
         (*MODULES)[i]->update_graphics_objects();
+
+    if(SELECTING_SRC)
+        select_input_mode();
 
     // Render graphics objects for the current page
     (*PAGES)[CURRENT_PAGE]->render();

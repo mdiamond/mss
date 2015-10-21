@@ -121,7 +121,7 @@ void Output::calculate_unique_graphics_objects()
         // graphics_objects[4] is the toggle button to turn audio on or off
         location = {x_button, y4, 8, 15};
         Toggle_Button *toggle_button = new Toggle_Button("on/off button (toggle_button)", &location, &WHITE,
-                                                  &BLACK, "1", "0",
+                                                  &BLACK, &BLACK, &WHITE, "1", "0",
                                                   &AUDIO_ON, this);
         graphics_objects->push_back(toggle_button);
 
@@ -137,7 +137,7 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[7] is the text box for entering and displaying input right
         location = {x_text_box, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("output input left (text_box)", &location, &text_color,
+        text_box = new Text_Box("output input left (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
@@ -153,7 +153,7 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[10] is the text box for entering and displaying input left
         location = {x_text_box, y10, w_text_box, h_text_box};
-        text_box = new Text_Box("output input right (text_box)", &location, &text_color,
+        text_box = new Text_Box("output input right (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
     }

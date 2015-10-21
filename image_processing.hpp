@@ -11,7 +11,8 @@
  * INCLUDES *
  ************/
 
-// No includes necessary
+// Included classes
+#include "Module.hpp"
 
 /*************************
  * FUNCTION DECLARATIONS *
@@ -23,6 +24,8 @@ int create_renderer();
 int load_fonts();
 
 // Image processing functions
+Module *hovering_over();
+void reset_alphas();
 void draw_surface();
 
 #endif

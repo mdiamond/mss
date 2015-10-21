@@ -272,97 +272,97 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[5] is the text box for entering and displaying signal 1
         location = {x_text_box, y5, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 1 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 1 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[6] is the text box for entering and displaying the signal 1 channel multiplier
         location = {x_text_box_2, y5, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 1 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 1 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[7] is the text box for entering and displaying signal 2
         location = {x_text_box, y6, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 2 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 2 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[8] is the text box for entering and displaying the signal 2 channel multiplier
         location = {x_text_box_2, y6, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 2 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 2 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[9] is the text box for entering and displaying signal 3
         location = {x_text_box, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 3 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 3 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[10] is the text box for entering and displaying the signal 3 channel multiplier
         location = {x_text_box_2, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 3 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 3 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[11] is the text box for entering and displaying signal 4
         location = {x_text_box, y8, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 4 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 4 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[12] is the text box for entering and displaying the signal 4 channel multiplier
         location = {x_text_box_2, y8, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 4 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 4 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[13] is the text box for entering and displaying signal 5
         location = {x_text_box, y9, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 5 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 5 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[14] is the text box for entering and displaying the signal 5 channel multiplier
         location = {x_text_box_2, y9, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 5 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 5 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[15] is the text box for entering and displaying signal 6
         location = {x_text_box, y10, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 6 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 6 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[16] is the text box for entering and displaying the signal 6 channel multiplier
         location = {x_text_box_2, y10, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 6 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 6 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[17] is the text box for entering and displaying signal 7
         location = {x_text_box, y11, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 7 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 7 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[18] is the text box for entering and displaying the signal 7 channel multiplier
         location = {x_text_box_2, y11, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 7 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 7 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[19] is the text box for entering and displaying signal 8
         location = {x_text_box, y12, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 8 (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 8 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
 
         // graphics_objects[20] is the text box for entering and displaying the signal 8 channel multiplier
         location = {x_text_box_2, y12, w_text_box, h_text_box};
-        text_box = new Text_Box("mixer signal 8 multiplier (text_box)", &location, &text_color,
+        text_box = new Text_Box("mixer signal 8 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
         graphics_objects->push_back(text_box);
     }
