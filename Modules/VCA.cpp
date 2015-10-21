@@ -77,11 +77,11 @@ void Vca::process()
     // Process any dependencies
     process_dependencies();
 
-    if(signal_input != NULL && cv_input != NULL)
+    if(inputs_live[VCA_SIGNAL] && inputs_live[VCA_CV])
     {
         for(unsigned short i = 0; i < output.size(); i ++)
         {
-            if(dependencies[VCA_CV_AMOUNT] != NULL)
+            if(inputs_live[VCA_CV_AMOUNT])
                 input_floats[VCA_CV_AMOUNT] = inputs[VCA_CV_AMOUNT]->at(i);
 
             output[i] = (inputs[VCA_SIGNAL]->at(i) * (1 - input_floats[VCA_CV_AMOUNT])) +
