@@ -38,7 +38,7 @@ using namespace std;
  */
 Output::Output(int _number)
 {
-    name = "Output";
+    name = "output";
     type = OUTPUT;
     number = _number;
 
@@ -119,9 +119,9 @@ void Output::calculate_unique_graphics_objects()
         graphics_objects.push_back(text);
 
         // graphics_objects[4] is the toggle button to turn audio on or off
-        location = {x_button, y4, 8, 15};
-        Toggle_Button *toggle_button = new Toggle_Button("on/off button (toggle_button)", &location, &WHITE,
-                                                  &BLACK, &BLACK, &WHITE, "1", "0",
+        location = {x_button, y4, 25, 15};
+        Toggle_Button *toggle_button = new Toggle_Button("on/off button (toggle_button)", &location, &GREEN,
+                                                  &BLACK, &BLACK, &WHITE, FONT_BOLD, "ON", "OFF",
                                                   AUDIO_ON, this);
         graphics_objects.push_back(toggle_button);
 
@@ -164,7 +164,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_text, y3, 8, 15};
         graphics_objects[OUTPUT_AUDIO_TOGGLE_TEXT]->update_location(&location);
 
-        location = {x_button, y4, 8, 15};
+        location = {x_button, y4, 25, 15};
         graphics_objects[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y5, w_waveform, h_waveform};

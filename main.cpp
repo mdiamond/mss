@@ -85,9 +85,9 @@ TTF_Font *FONT_BOLD;
 // Colors
 SDL_Color BLACK = {0, 0, 0 , 255};
 SDL_Color WHITE = {255, 255, 255, 255};
-SDL_Color RED = {255, 0, 0};
-SDL_Color GREEN = {0, 255, 0};
-SDL_Color BLUE = {0, 0, 255};
+SDL_Color RED = {255, 0, 0, 255};
+SDL_Color GREEN = {0, 255, 0, 255};
+SDL_Color BLUE = {0, 0, 255, 255};
 
 // Pages
 vector<Page *> PAGES = vector<Page *>();
@@ -106,10 +106,6 @@ Text_Box *ACTIVE_TEXT_BOX = NULL;
 
 // Selecting a source module or not
 bool SELECTING_SRC = false;
-
-// The current source and destination modules
-Module *CURRENT_SRC = NULL;
-Module *CURRENT_DST = NULL;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

@@ -242,8 +242,8 @@ void Oscillator::calculate_unique_graphics_objects()
     y11 = y10 + 15;
     y12 = y11 + 27;
     x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3);
-    x_range_low_input_toggle_button = x_text_box + w_range - 10;
+    w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 10;
+    x_range_low_input_toggle_button = x_text_box + w_range;
     w_wave_selector = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) / 4) - 2;
 
     // If the 4th graphics object is null, that means the graphics objects have not
@@ -269,7 +269,7 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[6] is the toggle button for selecting or disabling frequency input
         location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
         toggle_button = new Toggle_Button("oscillator frequency input (toggle button)", &location, &WHITE,
-                                          &WHITE, &RED, &BLACK, "i", "i", inputs_live[OSCILLATOR_FREQUENCY], this);
+                                          &BLACK, &RED, &WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_FREQUENCY], this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[7] is the display text "PHASE OFFSET:"
@@ -286,7 +286,7 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[9] is the toggle button for selecting or disabling phase offset input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
         toggle_button = new Toggle_Button("oscillator phase offset input (toggle button)", &location, &WHITE,
-                                          &WHITE, &RED, &BLACK, "i", "i", inputs_live[OSCILLATOR_PHASE_OFFSET], this);
+                                          &BLACK, &RED, &WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_PHASE_OFFSET], this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[10] is the display text "PULSE WIDTH:"
@@ -303,7 +303,7 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[12] is the toggle button for selecting or disabling pulse width input
         location = {x_input_toggle_button, y9, w_input_toggle_button, h_text_box};
         toggle_button = new Toggle_Button("oscillator pulse width input (toggle button)", &location, &WHITE,
-                                          &WHITE, &RED, &BLACK, "i", "i", inputs_live[OSCILLATOR_PULSE_WIDTH], this);
+                                          &BLACK, &RED, &WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_PULSE_WIDTH], this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[13] is the display text "RANGE (LOW - HIGH):"
@@ -320,7 +320,7 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[15] is the toggle button for selecting or disabling range low input
         location = {x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box};
         toggle_button = new Toggle_Button("oscillator range low input (toggle button)", &location, &WHITE,
-                                          &WHITE, &RED, &BLACK, "i", "i", inputs_live[OSCILLATOR_RANGE_LOW], this);
+                                          &BLACK, &RED, &WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_RANGE_LOW], this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[16] is the text box for entering and displaying range high
@@ -332,34 +332,34 @@ void Oscillator::calculate_unique_graphics_objects()
         // graphics_objects[17] is the toggle button for selecting or disabling range high input
         location = {x_input_toggle_button, y11, w_input_toggle_button, h_text_box};
         toggle_button = new Toggle_Button("oscillator range high input (toggle button)", &location, &WHITE,
-                                          &WHITE, &RED, &BLACK, "i", "i", inputs_live[OSCILLATOR_RANGE_HIGH], this);
+                                          &BLACK, &RED, &WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_RANGE_HIGH], this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[18] is the button for selecting sine wave output
         location = {x_text_box, y12, w_wave_selector, h_text_box};
         toggle_button = new Toggle_Button("oscillator sin toggle (toggle button)", &location,
-                                          &WHITE, &BLACK, &BLACK, &WHITE, "SIN",
+                                          &WHITE, &BLACK, &BLACK, &WHITE, FONT_SMALL, "SIN",
                                           "SIN", sin_on, this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[19] is the button for selecting sine wave output
         location = {x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box};
         toggle_button = new Toggle_Button("oscillator tri toggle (toggle button)", &location,
-                                          &WHITE, &BLACK, &BLACK, &WHITE, "TRI",
+                                          &WHITE, &BLACK, &BLACK, &WHITE, FONT_SMALL, "TRI",
                                           "TRI", tri_on, this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[20] is the button for selecting sine wave output
         location = {x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box};
         toggle_button = new Toggle_Button("oscillator saw toggle (toggle button)", &location,
-                                          &WHITE, &BLACK, &BLACK, &WHITE, "SAW",
+                                          &WHITE, &BLACK, &BLACK, &WHITE, FONT_SMALL, "SAW",
                                           "SAW", saw_on, this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[21] is the button for selecting sine wave output
         location = {x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box};
         toggle_button = new Toggle_Button("oscillator sqr toggle (toggle button)", &location,
-                                          &WHITE, &BLACK, &BLACK, &WHITE, "SQR",
+                                          &WHITE, &BLACK, &BLACK, &WHITE, FONT_SMALL, "SQR",
                                           "SQR", sqr_on, this);
         graphics_objects.push_back(toggle_button);
     }
@@ -403,7 +403,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_text_box, y11, w_range, h_text_box};
         graphics_objects[OSCILLATOR_RANGE_LOW_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y11, w_input_toggle_button, h_text_box};
+        location = {x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box};
         graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_range_high, y11, w_range, h_text_box};
@@ -412,19 +412,15 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y11, w_input_toggle_button, h_text_box};
         graphics_objects[OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
-        // graphics_objects[13] is the button for selecting sine wave output
         location = {x_text_box, y12, w_wave_selector, h_text_box};
         graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON]->update_location(&location);
 
-        // graphics_objects[13] is the button for selecting sine wave output
         location = {x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box};
         graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON]->update_location(&location);
 
-        // graphics_objects[13] is the button for selecting sine wave output
         location = {x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box};
         graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON]->update_location(&location);
 
-        // graphics_objects[13] is the button for selecting sine wave output
         location = {x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box};
         graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON]->update_location(&location);
     }

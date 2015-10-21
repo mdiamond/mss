@@ -68,11 +68,11 @@ void Rect::render()
  */
 void Rect::clicked()
 {
-    if(!OBJECT_CLICKED && SELECTING_SRC)
-    {
-        cout << BLUE_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
+    // if(!OBJECT_CLICKED && SELECTING_SRC)
+    // {
+    //     cout << BLUE_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
 
-        function_forwarder(this);
-        OBJECT_CLICKED = true;
-    }
+    //     function_forwarder(this);
+    //     OBJECT_CLICKED = true;
+    // }
 }

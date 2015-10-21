@@ -323,7 +323,7 @@ void mixer_function_forwarder(Graphics_Object *g)
  */
 void add_oscillator()
 {
-    string name = "Oscillator " + to_string(MODULES.size());
+    string name = "oscillator " + to_string(MODULES.size());
     Oscillator *oscillator = new Oscillator(name, MODULES.size());
     MODULES.push_back(oscillator);
     MODULES_CHANGED = true;
@@ -335,7 +335,7 @@ void add_oscillator()
  */
 void add_VCA()
 {
-    string name = "VCA " + to_string(MODULES.size());
+    string name = "vca " + to_string(MODULES.size());
     Vca *vca = new Vca(name, MODULES.size());
     MODULES.push_back(vca);
     MODULES_CHANGED = true;
@@ -347,7 +347,7 @@ void add_VCA()
  */
 void add_mixer()
 {
-    string name = "Mixer " + to_string(MODULES.size());
+    string name = "mixer " + to_string(MODULES.size());
     Mixer *mixer = new Mixer(name, MODULES.size());
     MODULES.push_back(mixer);
     MODULES_CHANGED = true;
@@ -402,25 +402,6 @@ void no_parent_function_forwarder(Graphics_Object *g)
  */
 void function_forwarder(Graphics_Object *g)
 {
-    if(g->type == RECT)
-    {
-        CURRENT_SRC = g->parent;
-
-        CURRENT_SRC = NULL;
-        CURRENT_DST = NULL;
-    }
-
-    if(g->type == TOGGLE_BUTTON && g->name.substr(g->name.size() - 21) == "input (toggle button)")
-    {
-        SELECTING_SRC = !SELECTING_SRC;
-        if(SELECTING_SRC == false)
-            reset_alphas();
-        else
-            CURRENT_DST = g->parent;
-
-        return;
-    }
-
     if(g->parent == NULL)
         no_parent_function_forwarder(g);
     else if(g->parent->type == OUTPUT)

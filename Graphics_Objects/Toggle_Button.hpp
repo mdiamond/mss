@@ -31,6 +31,7 @@ class Toggle_Button: public Graphics_Object
         // Constructor and destructor
         Toggle_Button(std::string, SDL_Rect *, SDL_Color *,
                       SDL_Color *, SDL_Color *, SDL_Color *,
+                      TTF_Font *,
                       std::string, std::string,
                       bool, Module *);
         virtual ~Toggle_Button();
