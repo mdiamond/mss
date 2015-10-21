@@ -2,7 +2,7 @@
  * Matthew Diamond 2015
  * The VCA module. This module applies control values
  * to another signal. Essentially, it just multiplies two signals,
- * but it is also possible to specify a scale factor for the
+ * but it is also possible to specify an amount to apply for the
  * control values signal.
  */
 
@@ -25,8 +25,8 @@ enum VCA_Graphics_Objects
     VCA_INPUT_TEXT,
     VCA_SIGNAL_TEXT_BOX,
     VCA_CV_TEXT_BOX,
-    VCA_CV_SCALE_TEXT,
-    VCA_CV_SCALE_TEXT_BOX
+    VCA_CV_AMOUNT_TEXT,
+    VCA_CV_AMOUNT_TEXT_BOX
 };
 
 /*************************
@@ -35,9 +35,9 @@ enum VCA_Graphics_Objects
 
 enum VCA_Dependencies
 {
-    VCA_SIGNAL_DEPENDENCY = 0,
-    VCA_CV_DEPENDENCY,
-    VCA_CV_SCALE_DEPENDENCY
+    VCA_SIGNAL = 0,
+    VCA_CV,
+    VCA_CV_AMOUNT
 };
 
 /************************
@@ -51,7 +51,7 @@ class Vca: public Module
         // characteristics of the VCA module:
         //   - signal: the incoming signal to be controlled
         //   - cv: the control values to apply to the signal
-        //   - cv_scale: a scale factor to apply to the cv values
+        //   - cv_amount: how much of the modulation to apply
         float signal_float, cv_float, cv_amount_float;
         std::vector<float> *signal_input, *cv_input, *cv_amount_input;
         std::string signal_str, cv_str, cv_amount_str;

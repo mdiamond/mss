@@ -27,12 +27,12 @@ class Toggle_Button: public Graphics_Object
     public:
         Text *text_on, *text_off;
         SDL_Color color_off;
-        bool *b;
+        bool b;
         // Constructor and destructor
         Toggle_Button(std::string, SDL_Rect *, SDL_Color *,
                       SDL_Color *, SDL_Color *, SDL_Color *,
                       std::string, std::string,
-                      bool *, Module *);
+                      bool, Module *);
         virtual ~Toggle_Button();
         // Member functions
         virtual void render();

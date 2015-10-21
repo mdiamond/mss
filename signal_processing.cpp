@@ -71,8 +71,8 @@ int open_audio_device()
 void initialize_output()
 {
     // Create the output module
-    Output *output = new Output(MODULES->size());
-    MODULES->push_back(output);
+    Output *output = new Output(MODULES.size());
+    MODULES.push_back(output);
 
     cout << "Output initialized." << endl;
 }
@@ -95,7 +95,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     float *buffer = (float *) _buffer;
 
     // Get the address of the output module for later use
-    Output *output = (Output *) (*MODULES)[0];
+    Output *output = (Output *) MODULES[0];
 
     // Process audio for the output module
     // This will recursively call upon depended modules
@@ -107,20 +107,20 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     // and insert it into the buffer
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        if(output->input_l != NULL)
-            buffer[0] = (*(output->input_l))[i];
+        if((output->inputs)[OUTPUT_INPUT_L] != NULL)
+            buffer[0] = (output->inputs)[OUTPUT_INPUT_L]->at(i);
         else
             buffer[0] = 0;
-        if(output->input_r != NULL)
-            buffer[1] = (*(output->input_r))[i];
+        if((output->inputs)[OUTPUT_INPUT_R] != NULL)
+            buffer[1] = (output->inputs)[OUTPUT_INPUT_R]->at(i);
         else
             buffer[1] = 0;
 
         buffer += 2;
     }
 
-    for(unsigned int i = 1; i < MODULES->size(); i ++)
-        (*MODULES)[i]->processed = false;
+    for(unsigned int i = 1; i < MODULES.size(); i ++)
+        MODULES[i]->processed = false;
 }
 
 /*
@@ -132,8 +132,8 @@ Uint32 k_rate_callback_function(Uint32 interval, void *param)
     if(SDL_GetAudioStatus() == SDL_AUDIO_PAUSED)
         return 0;
 
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
-        (*MODULES)[i]->update_control_values();
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+        MODULES[i]->update_control_values();
 
     return interval;
 }
@@ -199,7 +199,7 @@ void scale_sample(float *sample, float original_low,
 void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst)
 {
     // For each sample
-    for(int i = 0; i < buffer1->size(); i ++)
+    for(unsigned int i = 0; i < buffer1->size(); i ++)
         (*dst)[i] = (*buffer1)[i] + (*buffer2)[i];
 }
 
@@ -209,7 +209,7 @@ void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *
 void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst)
 {
     // For each sample
-    for(int i = 0; i < buffer1->size(); i ++)
+    for(unsigned int i = 0; i < buffer1->size(); i ++)
         (*dst)[i] = (*buffer1)[i] * (*buffer2)[i];
 }
 
@@ -220,6 +220,6 @@ void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<flo
 void multiply_signals(vector<float> *buffer, float val, vector<float> *dst)
 {
     // For each sample
-    for(int i = 0; i < buffer->size(); i ++)
+    for(unsigned int i = 0; i < buffer->size(); i ++)
         (*dst)[i] = (*buffer)[i] * val;
 }

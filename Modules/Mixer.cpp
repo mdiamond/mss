@@ -45,66 +45,20 @@ Mixer::Mixer(string _name, int _number)
     type = MIXER;
     number = _number;
 
-    dependencies = new vector<Module *>(16, NULL);
-    output = new vector<float>(BUFFER_SIZE, 0);
+    dependencies = vector<Module *>(16, NULL);
+    output = vector<float>(BUFFER_SIZE, 0);
 
     auto_attenuate = true;
 
-    signal_1_float = 0;
-    signal_1_multiplier_float = 1;
-    signal_1_str = "0";
-    signal_1_multiplier_str = "1";
-    signal_1_input = NULL;
-    signal_1_multiplier_input = NULL;
+    input_floats = vector<float>(16, 0);
+    input_strs = vector<string>(16, "");
+    inputs = vector<vector<float> *>(16, NULL);
+    inputs_live = vector<bool>(16, false);
 
-    signal_2_float = 0;
-    signal_2_multiplier_float = 1;
-    signal_2_str = "0";
-    signal_2_multiplier_str = "1";
-    signal_2_input = NULL;
-    signal_2_multiplier_input = NULL;
-
-    signal_3_float = 0;
-    signal_3_multiplier_float = 1;
-    signal_3_str = "0";
-    signal_3_multiplier_str = "1";
-    signal_3_input = NULL;
-    signal_3_multiplier_input = NULL;
-
-    signal_4_float = 0;
-    signal_4_multiplier_float = 1;
-    signal_4_str = "0";
-    signal_4_multiplier_str = "1";
-    signal_4_input = NULL;
-    signal_4_multiplier_input = NULL;
-
-    signal_5_float = 0;
-    signal_5_multiplier_float = 1;
-    signal_5_str = "0";
-    signal_5_multiplier_str = "1";
-    signal_5_input = NULL;
-    signal_5_multiplier_input = NULL;
-
-    signal_6_float = 0;
-    signal_6_multiplier_float = 1;
-    signal_6_str = "0";
-    signal_6_multiplier_str = "1";
-    signal_6_input = NULL;
-    signal_6_multiplier_input = NULL;
-
-    signal_7_float = 0;
-    signal_7_multiplier_float = 1;
-    signal_7_str = "0";
-    signal_7_multiplier_str = "1";
-    signal_7_input = NULL;
-    signal_7_multiplier_input = NULL;
-
-    signal_8_float = 0;
-    signal_8_multiplier_float = 1;
-    signal_8_str = "0";
-    signal_8_multiplier_str = "1";
-    signal_8_input = NULL;
-    signal_8_multiplier_input = NULL;
+    // All multiplier floats should start at 1
+    for(unsigned int i = 0; i < input_floats.size(); i ++)
+        if(i % 2 == 1)
+            input_floats[i] = 1;
 }
 
 /*
@@ -127,72 +81,73 @@ void Mixer::process()
 
     // Reset the output buffer
     for(int i = 0; i < BUFFER_SIZE; i ++)
-        (*output)[i] = 0;
+        output[i] = 0;
 
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         num_channels = 0;
 
-        if((*dependencies)[MIXER_SIGNAL_1_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_1_multiplier_float = (*signal_1_multiplier_input)[i];
-        if((*dependencies)[MIXER_SIGNAL_2_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_2_multiplier_float = (*signal_2_multiplier_input)[i];
-        if((*dependencies)[MIXER_SIGNAL_3_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_3_multiplier_float = (*signal_3_multiplier_input)[i];
-        if((*dependencies)[MIXER_SIGNAL_4_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_4_multiplier_float = (*signal_4_multiplier_input)[i];
-        if((*dependencies)[MIXER_SIGNAL_5_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_5_multiplier_float = (*signal_5_multiplier_input)[i];
-        if((*dependencies)[MIXER_SIGNAL_6_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_6_multiplier_float = (*signal_6_multiplier_input)[i];
-        if((*dependencies)[MIXER_SIGNAL_7_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_7_multiplier_float = (*signal_7_multiplier_input)[i];
-        if((*dependencies)[MIXER_SIGNAL_8_MULTIPLIER_DEPENDENCY] != NULL)
-            signal_8_multiplier_float = (*signal_8_multiplier_input)[i];
+        if(dependencies[MIXER_SIGNAL_1_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_1_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_1_MULTIPLIER]))[i];
+        if(dependencies[MIXER_SIGNAL_2_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_2_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_2_MULTIPLIER]))[i];
+        if(dependencies[MIXER_SIGNAL_3_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_3_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_3_MULTIPLIER]))[i];
+        if(dependencies[MIXER_SIGNAL_4_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_4_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_4_MULTIPLIER]))[i];
+        if(dependencies[MIXER_SIGNAL_5_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_5_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_5_MULTIPLIER]))[i];
+        if(dependencies[MIXER_SIGNAL_6_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_6_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_6_MULTIPLIER]))[i];
+        if(dependencies[MIXER_SIGNAL_7_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_7_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_7_MULTIPLIER]))[i];
+        if(dependencies[MIXER_SIGNAL_8_MULTIPLIER] != NULL)
+            input_floats[MIXER_SIGNAL_8_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_8_MULTIPLIER]))[i];
 
-        if((*dependencies)[MIXER_SIGNAL_1_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_1] != NULL)
         {
-            (*output)[i] += (*signal_1_input)[i] * signal_1_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_1]))[i] * input_floats[MIXER_SIGNAL_1_MULTIPLIER];
             num_channels ++;
         }
-        if((*dependencies)[MIXER_SIGNAL_2_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_2] != NULL)
         {
-            (*output)[i] += (*signal_2_input)[i] * signal_2_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_2]))[i] * input_floats[MIXER_SIGNAL_2_MULTIPLIER];
             num_channels ++;
         }
-        if((*dependencies)[MIXER_SIGNAL_3_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_3] != NULL)
         {
-            (*output)[i] += (*signal_3_input)[i] * signal_3_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_3]))[i] * input_floats[MIXER_SIGNAL_3_MULTIPLIER];
             num_channels ++;
         }
-        if((*dependencies)[MIXER_SIGNAL_4_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_4] != NULL)
         {
-            (*output)[i] += (*signal_4_input)[i] * signal_4_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_4]))[i] * input_floats[MIXER_SIGNAL_4_MULTIPLIER];
             num_channels ++;
         }
-        if((*dependencies)[MIXER_SIGNAL_5_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_5] != NULL)
         {
-            (*output)[i] += (*signal_5_input)[i] * signal_5_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_5]))[i] * input_floats[MIXER_SIGNAL_5_MULTIPLIER];
             num_channels ++;
         }
-        if((*dependencies)[MIXER_SIGNAL_6_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_6] != NULL)
         {
-            (*output)[i] += (*signal_6_input)[i] * signal_6_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_6]))[i] * input_floats[MIXER_SIGNAL_6_MULTIPLIER];
             num_channels ++;
         }
-        if((*dependencies)[MIXER_SIGNAL_7_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_7] != NULL)
         {
-            (*output)[i] += (*signal_7_input)[i] * signal_7_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_7]))[i] * input_floats[MIXER_SIGNAL_7_MULTIPLIER];
             num_channels ++;
         }
-        if((*dependencies)[MIXER_SIGNAL_8_DEPENDENCY] != NULL)
+        if(dependencies[MIXER_SIGNAL_8] != NULL)
         {
-            (*output)[i] += (*signal_8_input)[i] * signal_8_multiplier_float;
+            output[i] += (*(inputs[MIXER_SIGNAL_8]))[i] * input_floats[MIXER_SIGNAL_8_MULTIPLIER];
             num_channels ++;
         }
+
 
         if(auto_attenuate)
-            (*output)[i] /= num_channels;
+            output[i] /= num_channels;
     }
 
     processed = true;
@@ -200,22 +155,22 @@ void Mixer::process()
 
 void Mixer::update_unique_graphics_objects()
 {
-    if((*dependencies)[MIXER_SIGNAL_1_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_1_multiplier_float));
-    if((*dependencies)[MIXER_SIGNAL_2_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_2_multiplier_float));
-    if((*dependencies)[MIXER_SIGNAL_3_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_3_multiplier_float));
-    if((*dependencies)[MIXER_SIGNAL_4_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_4_multiplier_float));
-    if((*dependencies)[MIXER_SIGNAL_5_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_5_multiplier_float));
-    if((*dependencies)[MIXER_SIGNAL_6_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_6_multiplier_float));
-    if((*dependencies)[MIXER_SIGNAL_7_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_7_multiplier_float));
-    if((*dependencies)[MIXER_SIGNAL_8_MULTIPLIER_DEPENDENCY] != NULL)
-        ((Text_Box *) (*graphics_objects)[MIXER_SIGNAL_8_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(signal_8_multiplier_float));
+    if(dependencies[MIXER_SIGNAL_1_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_1_MULTIPLIER]));
+    if(dependencies[MIXER_SIGNAL_2_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_2_MULTIPLIER]));
+    if(dependencies[MIXER_SIGNAL_3_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_3_MULTIPLIER]));
+    if(dependencies[MIXER_SIGNAL_4_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_4_MULTIPLIER]));
+    if(dependencies[MIXER_SIGNAL_5_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_5_MULTIPLIER]));
+    if(dependencies[MIXER_SIGNAL_6_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_6_MULTIPLIER]));
+    if(dependencies[MIXER_SIGNAL_7_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_7_MULTIPLIER]));
+    if(dependencies[MIXER_SIGNAL_8_MULTIPLIER] != NULL)
+        ((Text_Box *) graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_TEXT_BOX])->update_current_text(to_string(input_floats[MIXER_SIGNAL_8_MULTIPLIER]));
 }
 
 void Mixer::update_unique_control_values()
@@ -258,113 +213,113 @@ void Mixer::calculate_unique_graphics_objects()
 
     // If the 4th graphics object is null, that means the graphics objects have not
     // been calculated before, and we must make them from scratch
-    if(graphics_objects->size() == 3)
+    if(graphics_objects.size() == 3)
     {
         // graphics_objects[3] is the waveform visualizer
         location = {x_text_box, y3, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, output);
-        graphics_objects->push_back(waveform);
+        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, &output);
+        graphics_objects.push_back(waveform);
 
         // graphics_objects[4] is the display text "SIGNAL & MULTIPLIER:"
         location = {x_text, y4, 0, 0};
         text = new Text("mixer signal 1 (text)", &location, &text_color, "SIGNAL & MULTIPLIER:", FONT_REGULAR);
-        graphics_objects->push_back(text);
+        graphics_objects.push_back(text);
 
         // graphics_objects[5] is the text box for entering and displaying signal 1
         location = {x_text_box, y5, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 1 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[6] is the text box for entering and displaying the signal 1 channel multiplier
         location = {x_text_box_2, y5, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 1 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[7] is the text box for entering and displaying signal 2
         location = {x_text_box, y6, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 2 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[8] is the text box for entering and displaying the signal 2 channel multiplier
         location = {x_text_box_2, y6, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 2 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[9] is the text box for entering and displaying signal 3
         location = {x_text_box, y7, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 3 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[10] is the text box for entering and displaying the signal 3 channel multiplier
         location = {x_text_box_2, y7, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 3 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[11] is the text box for entering and displaying signal 4
         location = {x_text_box, y8, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 4 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[12] is the text box for entering and displaying the signal 4 channel multiplier
         location = {x_text_box_2, y8, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 4 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[13] is the text box for entering and displaying signal 5
         location = {x_text_box, y9, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 5 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[14] is the text box for entering and displaying the signal 5 channel multiplier
         location = {x_text_box_2, y9, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 5 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[15] is the text box for entering and displaying signal 6
         location = {x_text_box, y10, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 6 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[16] is the text box for entering and displaying the signal 6 channel multiplier
         location = {x_text_box_2, y10, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 6 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[17] is the text box for entering and displaying signal 7
         location = {x_text_box, y11, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 7 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[18] is the text box for entering and displaying the signal 7 channel multiplier
         location = {x_text_box_2, y11, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 7 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[19] is the text box for entering and displaying signal 8
         location = {x_text_box, y12, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 8 (text box)", &location, &text_color,
                                 "", "input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
 
         // graphics_objects[20] is the text box for entering and displaying the signal 8 channel multiplier
         location = {x_text_box_2, y12, w_text_box, h_text_box};
         text_box = new Text_Box("mixer signal 8 multiplier (text box)", &location, &text_color,
                                 "", "# or input", FONT_SMALL, this);
-        graphics_objects->push_back(text_box);
+        graphics_objects.push_back(text_box);
     }
 
     // Otherwise, simply update the locations of all of the graphics objects
@@ -372,58 +327,58 @@ void Mixer::calculate_unique_graphics_objects()
     {
 
         location = {x_text_box, y3, w_waveform, h_waveform};
-        (*graphics_objects)[MIXER_OUTPUT_WAVEFORM]->update_location(&location);
+        graphics_objects[MIXER_OUTPUT_WAVEFORM]->update_location(&location);
 
         location = {x_text, y4, 0, 0};
-        (*graphics_objects)[MIXER_SIGNAL_1_TEXT]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_1_TEXT]->update_location(&location);
 
         location = {x_text_box, y5, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_1_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_1_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y5, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y6, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_2_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_2_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y6, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y7, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_3_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_3_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y7, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y8, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_4_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_4_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y8, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y9, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_5_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_5_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y9, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y10, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_6_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_6_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y10, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y11, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_7_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_7_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y11, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box, y12, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_8_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_8_TEXT_BOX]->update_location(&location);
 
         location = {x_text_box_2, y12, w_text_box, h_text_box};
-        (*graphics_objects)[MIXER_SIGNAL_8_MULTIPLIER_TEXT_BOX]->update_location(&location);
+        graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
     }
 }
@@ -433,28 +388,28 @@ void Mixer::set_signal(Module *src, short signal_num)
     switch(signal_num)
     {
         case 1:
-            set(src, &signal_1_input, MIXER_SIGNAL_1_DEPENDENCY);
+            set(src, MIXER_SIGNAL_1);
             break;
         case 2:
-            set(src, &signal_2_input, MIXER_SIGNAL_2_DEPENDENCY);
+            set(src, MIXER_SIGNAL_2);
             break;
         case 3:
-            set(src, &signal_3_input, MIXER_SIGNAL_3_DEPENDENCY);
+            set(src, MIXER_SIGNAL_3);
             break;
         case 4:
-            set(src, &signal_4_input, MIXER_SIGNAL_4_DEPENDENCY);
+            set(src, MIXER_SIGNAL_4);
             break;
         case 5:
-            set(src, &signal_5_input, MIXER_SIGNAL_5_DEPENDENCY);
+            set(src, MIXER_SIGNAL_5);
             break;
         case 6:
-            set(src, &signal_6_input, MIXER_SIGNAL_6_DEPENDENCY);
+            set(src, MIXER_SIGNAL_6);
             break;
         case 7:
-            set(src, &signal_7_input, MIXER_SIGNAL_7_DEPENDENCY);
+            set(src, MIXER_SIGNAL_7);
             break;
         case 8:
-            set(src, &signal_8_input, MIXER_SIGNAL_8_DEPENDENCY);
+            set(src, MIXER_SIGNAL_8);
             break;
     }
 
@@ -466,28 +421,28 @@ void Mixer::set_signal_multiplier(Module *src, short signal_num)
     switch(signal_num)
     {
         case 1:
-            set(src, &signal_1_multiplier_input, MIXER_SIGNAL_1_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_1_MULTIPLIER);
             break;
         case 2:
-            set(src, &signal_3_multiplier_input, MIXER_SIGNAL_2_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_2_MULTIPLIER);
             break;
         case 3:
-            set(src, &signal_3_multiplier_input, MIXER_SIGNAL_3_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_3_MULTIPLIER);
             break;
         case 4:
-            set(src, &signal_4_multiplier_input, MIXER_SIGNAL_4_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_4_MULTIPLIER);
             break;
         case 5:
-            set(src, &signal_5_multiplier_input, MIXER_SIGNAL_5_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_5_MULTIPLIER);
             break;
         case 6:
-            set(src, &signal_6_multiplier_input, MIXER_SIGNAL_6_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_6_MULTIPLIER);
             break;
         case 7:
-            set(src, &signal_7_multiplier_input, MIXER_SIGNAL_7_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_7_MULTIPLIER);
             break;
         case 8:
-            set(src, &signal_8_multiplier_input, MIXER_SIGNAL_8_MULTIPLIER_DEPENDENCY);
+            set(src, MIXER_SIGNAL_8_MULTIPLIER);
             break;
     }
 
@@ -499,28 +454,28 @@ void Mixer::set_signal_multiplier(float val, short signal_num)
     switch(signal_num)
     {
         case 1:
-            set(val, &signal_1_multiplier_float, MIXER_SIGNAL_1_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_1_MULTIPLIER);
             break;
         case 2:
-            set(val, &signal_3_multiplier_float, MIXER_SIGNAL_2_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_2_MULTIPLIER);
             break;
         case 3:
-            set(val, &signal_3_multiplier_float, MIXER_SIGNAL_3_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_3_MULTIPLIER);
             break;
         case 4:
-            set(val, &signal_4_multiplier_float, MIXER_SIGNAL_4_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_4_MULTIPLIER);
             break;
         case 5:
-            set(val, &signal_5_multiplier_float, MIXER_SIGNAL_5_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_5_MULTIPLIER);
             break;
         case 6:
-            set(val, &signal_6_multiplier_float, MIXER_SIGNAL_6_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_6_MULTIPLIER);
             break;
         case 7:
-            set(val, &signal_7_multiplier_float, MIXER_SIGNAL_7_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_7_MULTIPLIER);
             break;
         case 8:
-            set(val, &signal_8_multiplier_float, MIXER_SIGNAL_8_MULTIPLIER_DEPENDENCY);
+            set(val, MIXER_SIGNAL_8_MULTIPLIER);
             break;
     }
 

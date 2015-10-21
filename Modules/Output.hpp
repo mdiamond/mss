@@ -38,8 +38,8 @@ enum Ouput_Graphics_Objects
 
 enum Ouput_Dependencies
 {
-    OUTPUT_INPUT_L_DEPENDENCY = 0,
-    OUTPUT_INPUT_R_DEPENDENCY
+    OUTPUT_INPUT_L = 0,
+    OUTPUT_INPUT_R
 };
 
 /***************************
@@ -49,11 +49,6 @@ enum Ouput_Dependencies
 class Output: public Module
 {
     public:
-        // Input buffers
-        std::vector<float> *input_l, *input_r;
-        // Strings representing the value of the current sample in the inputs
-        std::string input_l_str, input_r_str;
-
         // Constructor and destructor
         Output(int);
         virtual ~Output();

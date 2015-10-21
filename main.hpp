@@ -35,12 +35,16 @@ extern int SAMPLE_RATE;
 extern int BUFFER_SIZE;
 extern bool AUDIO_ON;
 
+// Types of waveforms enum
+enum Waveforms
+{
+    SIN = 0,
+    TRI,
+    SAW,
+    SQR
+};
 // Wavetables
-extern std::vector<float> *SIN_WAVE;
-extern std::vector<float> *TRI_WAVE;
-extern std::vector<float> *SAW_WAVE;
-extern std::vector<float> *SQR_WAVE;
-
+extern std::vector<std::vector<float> > WAVETABLES; 
 // Graphics objects and variables
 //   SDL Window and Renderer
 extern SDL_Window *WINDOW;
@@ -72,7 +76,7 @@ extern SDL_Color RED;
 extern SDL_Color GREEN;
 extern SDL_Color BLUE;
 //   Pages
-extern std::vector<Page *> *PAGES;
+extern std::vector<Page *> PAGES;
 extern unsigned int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;
@@ -90,7 +94,7 @@ extern Module *CURRENT_DST;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
-extern std::vector<Module *> *MODULES;
+extern std::vector<Module *> MODULES;
 extern bool MODULES_CHANGED;
 
 #endif

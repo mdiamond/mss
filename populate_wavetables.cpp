@@ -26,52 +26,52 @@ using namespace std;
 
 void populate_sin()
 {
-    for(unsigned int i = 0; i < SIN_WAVE->size(); i ++)
-        (*SIN_WAVE)[i] = sin(((float) i / SAMPLE_RATE) * (2 * M_PI));
+    for(unsigned int i = 0; i < WAVETABLES[SIN].size(); i ++)
+        WAVETABLES[SIN][i] = sin(((float) i / SAMPLE_RATE) * (2 * M_PI));
 }
 
 void populate_tri()
 {
-    for(unsigned int i = 0; i < TRI_WAVE->size(); i ++)
+    for(unsigned int i = 0; i < WAVETABLES[TRI].size(); i ++)
     {
-        float one_fourth = (TRI_WAVE->size() / 4);
-        float half = (TRI_WAVE->size() / 2);
+        float one_fourth = (WAVETABLES[TRI].size() / 4);
+        float half = (WAVETABLES[TRI].size() / 2);
         float three_fourths = one_fourth * 3;
 
         if(i < one_fourth)
-            (*TRI_WAVE)[i] = i / one_fourth;
+            WAVETABLES[TRI][i] = i / one_fourth;
         else if(i < half)
-            (*TRI_WAVE)[i] = (1 - ((i - one_fourth) / (one_fourth)));
+            WAVETABLES[TRI][i] = (1 - ((i - one_fourth) / (one_fourth)));
         else if(i < three_fourths)
-            (*TRI_WAVE)[i] = ((i - half) / one_fourth) * -1;
+            WAVETABLES[TRI][i] = ((i - half) / one_fourth) * -1;
         else
-            (*TRI_WAVE)[i] = ((1 - ((i - three_fourths) / (one_fourth))) * -1);
+            WAVETABLES[TRI][i] = ((1 - ((i - three_fourths) / (one_fourth))) * -1);
     }
 }
 
 void populate_saw()
 {
-    for(unsigned int i = 0; i < SAW_WAVE->size(); i ++)
+    for(unsigned int i = 0; i < WAVETABLES[SAW].size(); i ++)
     {
-        float half = (SAW_WAVE->size() / 2);
+        float half = (WAVETABLES[SAW].size() / 2);
 
         if(i < half)
-            (*SAW_WAVE)[i] = 1 - (i / half);
+            WAVETABLES[SAW][i] = 1 - (i / half);
         else
-            (*SAW_WAVE)[i] = 0 - ((i - half) / half);
+            WAVETABLES[SAW][i] = 0 - ((i - half) / half);
     }
 }
 
 void populate_sqr()
 {
-    for(unsigned int i = 0; i < SQR_WAVE->size(); i ++)
+    for(unsigned int i = 0; i < WAVETABLES[SQR].size(); i ++)
     {
-        float half = (SQR_WAVE->size() / 2);
+        float half = (WAVETABLES[SQR].size() / 2);
 
         if(i < half)
-            (*SQR_WAVE)[i] = 1;
+            WAVETABLES[SQR][i] = 1;
         else
-            (*SQR_WAVE)[i] = -1;
+            WAVETABLES[SQR][i] = -1;
     }
 }
 

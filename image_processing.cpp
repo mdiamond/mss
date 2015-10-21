@@ -109,9 +109,9 @@ int load_fonts()
  */
 void calculate_graphics_objects()
 {
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        (*MODULES)[i]->calculate_graphics_objects();
+        MODULES[i]->calculate_graphics_objects();
     }
 
     MODULES_CHANGED = 0;
@@ -119,29 +119,29 @@ void calculate_graphics_objects()
 
 Module *hovering_over()
 {
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
-        if(!(*(*MODULES)[i]->graphics_objects)[0]->was_clicked())
-            return (*MODULES)[i];
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+        if(!MODULES[i]->graphics_objects[0]->was_clicked())
+            return MODULES[i];
 
     return NULL;
 }
 
 void select_input_mode()
 {
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
-        if(!(*(*MODULES)[i]->graphics_objects)[0]->was_clicked())
-            for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
-                (*(*MODULES)[i]->graphics_objects)[j]->color.a = 50;
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+        if(!MODULES[i]->graphics_objects[0]->was_clicked())
+            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+                MODULES[i]->graphics_objects[j]->color.a = 50;
         else
-            for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
-                (*(*MODULES)[i]->graphics_objects)[j]->color.a = 255;
+            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+                MODULES[i]->graphics_objects[j]->color.a = 255;
 }
 
 void reset_alphas()
 {
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
-        for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
-            (*(*MODULES)[i]->graphics_objects)[j]->color.a = 255;
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+            MODULES[i]->graphics_objects[j]->color.a = 255;
 }
 
 /*
@@ -214,7 +214,7 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 void calculate_pages()
 {
     destroy_pages();
-    PAGES->clear();
+    PAGES.clear();
 
     // Variables for the current sub page, its sub pages,
     // its sub pages graphics objects, and the current page
@@ -236,19 +236,19 @@ void calculate_pages()
     sub_page_graphics_objects = new vector<Graphics_Object *>();
 
     // For each module
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         // Add each of its graphics objects to the current sub page
-        for(unsigned int j = 0; j < (*MODULES)[i]->graphics_objects->size(); j ++)
+        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
         {
-            sub_page_graphics_objects->push_back((*(*MODULES)[i]->graphics_objects)[j]);
-            (*(*MODULES)[i]->graphics_objects)[j]->updated = true;
+            sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
+            MODULES[i]->graphics_objects[j]->updated = true;
         }
 
         // Create the sub page using the created vector of graphics objects,
         // add it to the list of sub pages
-        current_sub_page = new Page((*MODULES)[i]->name + " (page)",
-                                    &(*(*MODULES)[i]->graphics_objects)[1]->location, &BLACK,
+        current_sub_page = new Page(MODULES[i]->name + " (page)",
+                                    &MODULES[i]->graphics_objects[1]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(current_sub_page);
 
@@ -260,21 +260,21 @@ void calculate_pages()
         // if there are no more modules to take into consideration
         if(i % (MODULES_PER_COLUMN * MODULES_PER_ROW) ==
            (unsigned) (MODULES_PER_COLUMN * MODULES_PER_ROW) - 1 ||
-           i == MODULES->size() - 1)
+           i == MODULES.size() - 1)
         {
             // Create the page using the created vector of sub pages, add it
             // to the global list of pages
             current_page = new Page(to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
                                     &WINDOW_RECT, &BLACK,
                                     NULL, sub_pages);
-            (*PAGES).push_back(current_page);
+            PAGES.push_back(current_page);
 
             // Delete the vector of sub pages and sub page graphics objects,
             // only re-initialize them and restart the process of calculating a new page
             // if there are still modules left to take into consideration
             delete sub_pages;
             delete sub_page_graphics_objects;
-            if(i != MODULES->size() - 1)
+            if(i != MODULES.size() - 1)
             {
                 sub_pages = new vector<Page *>();
                 sub_page_graphics_objects = new vector<Graphics_Object *>();
@@ -307,15 +307,15 @@ void draw_surface()
 
     // Update graphics objects for all modules
     for(unsigned int i = CURRENT_PAGE * MODULES_PER_PAGE;
-        i < (CURRENT_PAGE + 1) * MODULES_PER_PAGE && i < MODULES->size();
+        i < (CURRENT_PAGE + 1) * MODULES_PER_PAGE && i < MODULES.size();
         i ++)
-        (*MODULES)[i]->update_graphics_objects();
+        MODULES[i]->update_graphics_objects();
 
     if(SELECTING_SRC)
         select_input_mode();
 
     // Render graphics objects for the current page
-    (*PAGES)[CURRENT_PAGE]->render();
+    PAGES[CURRENT_PAGE]->render();
 
     // Present what has been rendered
     SDL_RenderPresent(RENDERER);

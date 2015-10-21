@@ -58,12 +58,19 @@ class Module
         SDL_Color text_color;
         // A vector containing pointers to any module that must
         // be processed before this module
-        std::vector<Module *> *dependencies;
+        std::vector<Module *> dependencies;
         // A vector containing any graphics objects
         // necessary for rendering this module
-        std::vector<Graphics_Object *> *graphics_objects;
+        std::vector<Graphics_Object *> graphics_objects;
+        // Vectors containing representations of the inputs as
+        // floats, strings and input buffers, as well as booleans
+        // representing whether or not that input is a live signal
+        std::vector<float> input_floats;
+        std::vector<std::string> input_strs;
+        std::vector<std::vector<float> *> inputs;
+        std::vector<bool> inputs_live;
         // Output buffer
-        std::vector<float> *output;
+        std::vector<float> output;
 
         // Constructor and destructor
         Module();
@@ -89,8 +96,9 @@ class Module
         void update_control_values();
         void calculate_graphics_objects();
         void update_graphics_objects();
-        void set(float, float *, int);
-        void set(Module *, std::vector<float> **, int);
+        void set(float, int);
+        void set(Module *, int);
+        void cancel_input(int);
 };
 
 #endif

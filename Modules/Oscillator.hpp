@@ -18,18 +18,6 @@
 
 // No includes necessary
 
-/***************************
- * TYPES OF WAVEFORMS ENUM *
- ***************************/
-
-enum Waveforms
-{
-    SIN = 0,
-    TRI,
-    SAW,
-    SQR
-};
-
 /************************************
  * OSCILLATOR GRAPHICS OBJECTS ENUM *
  ************************************/
@@ -63,11 +51,11 @@ enum Oscillator_Graphics_Objects
 
 enum Oscillator_Dependencies
 {
-    OSCILLATOR_FREQUENCY_DEPENDENCY = 0,
-    OSCILLATOR_PHASE_OFFSET_DEPENDENCY,
-    OSCILLATOR_PULSE_WIDTH_DEPENDENCY,
-    OSCILLATOR_RANGE_LOW_DEPENDENCY,
-    OSCILLATOR_RANGE_HIGH_DEPENDENCY
+    OSCILLATOR_FREQUENCY = 0,
+    OSCILLATOR_PHASE_OFFSET,
+    OSCILLATOR_PULSE_WIDTH,
+    OSCILLATOR_RANGE_LOW,
+    OSCILLATOR_RANGE_HIGH
 };
 
 /*******************************
@@ -79,25 +67,8 @@ class Oscillator: public Module
     public:
         // The current phase of the oscillator
         float current_phase;
-        // Set up floats, buffers, and strings to represent the various
-        // characteristics of the oscillator:
-        //   - frequency: the frequency at which it oscillates
-        //   - phase_offset: what point in oscillation at which to begin oscillating
-        //   - pulse_width: the width of the square wave pulse
-        //   - range_low: the low point of oscillation
-        //   - range_high: the high point of oscillation
-        float frequency_float, phase_offset_float, pulse_width_float,
-              range_low_float, range_high_float;
-        std::vector<float> *frequency_input, *phase_offset_input, *pulse_width_input,
-                           *range_low_input, *range_high_input;
-        std::string frequency_str, phase_offset_str, pulse_width_str, range_low_str,
-                    range_high_str;
-        bool frequency_live, phase_offset_live, pulse_width_live,
-             range_low_live, range_high_live;
         // Booleans to represent whether or not each of the waveforms is enabled
         int waveform_type;
-        // A pointer to the wavetable currently in use
-        std::vector<float> *wavetable;
         // A record of the previous phase offset value
         float previous_phase_offset;
         // Whether or not each waveform is in use

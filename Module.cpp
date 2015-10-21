@@ -48,8 +48,6 @@ Module::Module()
     text_color.a = 255;
 
     processed = false;
-    graphics_objects = new vector<Graphics_Object *>();
-    output = NULL;
 }
 
 /*
@@ -57,11 +55,8 @@ Module::Module()
  */
 Module::~Module()
 {
-    delete dependencies;
-    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
-        delete (*graphics_objects)[i];
-    delete graphics_objects;
-    delete output;
+    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+        delete graphics_objects[i];
 }
 
 /*
@@ -70,9 +65,9 @@ Module::~Module()
  */
 void Module::process_dependencies()
 {
-    for(unsigned int i = 0; i < dependencies->size(); i ++)
-        if((*dependencies)[i] != NULL && !(*dependencies)[i]->processed)
-            (*dependencies)[i]->process();
+    for(unsigned int i = 0; i < dependencies.size(); i ++)
+        if(dependencies[i] != NULL && !dependencies[i]->processed)
+            dependencies[i]->process();
 }
 
 void Module::calculate_upper_left()
@@ -113,12 +108,12 @@ void Module::calculate_graphics_objects()
     calculate_upper_left();
 
     // If the graphics objects have not yet been initialized
-    if(graphics_objects->size() == 0)
+    if(graphics_objects.size() == 0)
     {
         // graphics_object[0] is the outermost rectangle used to represent the module
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
         rect = new Rect("border (rect)", &location, &WHITE);
-        graphics_objects->push_back(rect);
+        graphics_objects.push_back(rect);
 
         // graphics_object[1] is the slightly smaller rectangle within the outermost
         // rectangle
@@ -127,45 +122,55 @@ void Module::calculate_graphics_objects()
                     MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
         rect = new Rect("inner_border (rect)", &location, &color);
-        graphics_objects->push_back(rect);
+        graphics_objects.push_back(rect);
 
         // graphics_object[2] is the objects name
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
                     upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
         text = new Text("module name (text)", &location, &text_color, name, FONT_BOLD);
-        graphics_objects->push_back(text);
+        graphics_objects.push_back(text);
     }
 
     // If they have already been initialized, just update their locations
     else
     {
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-        (*graphics_objects)[MODULE_BORDER_RECT]->update_location(&location);
+        graphics_objects[MODULE_BORDER_RECT]->update_location(&location);
 
         location = {upper_left.x + MODULE_BORDER_WIDTH,
                     upper_left.y + MODULE_BORDER_WIDTH,
                     MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-        (*graphics_objects)[MODULE_INNER_BORDER_RECT]->update_location(&location);
+        graphics_objects[MODULE_INNER_BORDER_RECT]->update_location(&location);
 
         location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
             upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
-        (*graphics_objects)[MODULE_NAME_TEXT]->update_location(&location);
+        graphics_objects[MODULE_NAME_TEXT]->update_location(&location);
     }
 
     calculate_unique_graphics_objects();
 }
 
-void Module::set(float val, float *dst, int dependency_num)
+void Module::set(float val, int input_num)
 {
-    *dst = val;
-    (*dependencies)[dependency_num] = NULL;
+    inputs[input_num] = NULL;
+    dependencies[input_num] = NULL;
+    input_floats[input_num] = val;
+    inputs_live[input_num] = false;
 }
 
-void Module::set(Module *src, vector<float> **dst, int dependency_num)
+void Module::set(Module *src, int input_num)
 {
-    *dst = src->output;
-    (*dependencies)[dependency_num] = src;
+    inputs[input_num] = &src->output;
+    dependencies[input_num] = src;
+    inputs_live[input_num] = true;
     SELECTING_SRC = false;
     reset_alphas();
+}
+
+void Module::cancel_input(int input_num)
+{
+    inputs[input_num] = NULL;
+    dependencies[input_num] = NULL;
+    inputs_live[input_num] = false;
 }

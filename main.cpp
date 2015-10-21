@@ -49,10 +49,7 @@ int BUFFER_SIZE;
 bool AUDIO_ON = true;
 
 // Wavetables
-vector<float> *SIN_WAVE = new vector<float>(SAMPLE_RATE, 0);
-vector<float> *TRI_WAVE = new vector<float>(SAMPLE_RATE, 0);
-vector<float> *SAW_WAVE = new vector<float>(SAMPLE_RATE, 0);
-vector<float> *SQR_WAVE = new vector<float>(SAMPLE_RATE, 0);
+vector<vector<float> > WAVETABLES(4, vector<float>(SAMPLE_RATE, 0));
 
 // SDL Window and renderer
 SDL_Window *WINDOW;
@@ -93,7 +90,7 @@ SDL_Color GREEN = {0, 255, 0};
 SDL_Color BLUE = {0, 0, 255};
 
 // Pages
-vector<Page *> *PAGES = new vector<Page *>();
+vector<Page *> PAGES = vector<Page *>();
 unsigned int CURRENT_PAGE = 0;
 
 // Mouse information
@@ -116,7 +113,7 @@ Module *CURRENT_DST = NULL;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
-vector<Module *> *MODULES = new vector<Module *>();
+vector<Module *> MODULES = vector<Module *>();
 bool MODULES_CHANGED = true;
 
 /***********************

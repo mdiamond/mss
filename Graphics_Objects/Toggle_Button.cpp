@@ -36,7 +36,7 @@ using namespace std;
 Toggle_Button::Toggle_Button(string _name, SDL_Rect *_location, SDL_Color *_color,
                              SDL_Color *_color_off, SDL_Color *_text_color_on,
                              SDL_Color *_text_color_off, string _text_on,
-                             string _text_off, bool *_b, Module *_parent)
+                             string _text_off, bool _b, Module *_parent)
 {
     name = _name;
     type = TOGGLE_BUTTON;
@@ -66,7 +66,7 @@ Toggle_Button::~Toggle_Button()
  */
 void Toggle_Button::render()
 {
-    if(*b)
+    if(b)
     {
         SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
         SDL_RenderFillRect(RENDERER, &location);
@@ -92,6 +92,7 @@ void Toggle_Button::clicked()
         cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
         function_forwarder(this);
+        b = !b;
         OBJECT_CLICKED = true;
     }
 }

@@ -45,14 +45,14 @@ bool testing_mode()
 
 void destroy_pages()
 {
-    for(unsigned int i = 0; i < PAGES->size(); i ++)
-        delete (*PAGES)[i];
+    for(unsigned int i = 0; i < PAGES.size(); i ++)
+        delete PAGES[i];
 }
 
 void destroy_modules()
 {
-    for(unsigned int i = 0; i < MODULES->size(); i ++)
-        delete (*MODULES)[i];
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+        delete MODULES[i];
 }
 
 /*
@@ -62,12 +62,10 @@ void cleanup()
 {
     // Destroy the modules
     destroy_modules();
-    delete MODULES;
     cout << "Destroyed all modules." << endl;
 
     // Destroy all pages
     destroy_pages();
-    delete PAGES;
     cout << "Destroyed all pages." << endl;
 
     // Destroy the window

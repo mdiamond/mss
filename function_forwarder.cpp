@@ -65,10 +65,10 @@ Module *find_module(string *name, vector<Module *> *modules)
 
 Module *find_module_as_source(string *name, vector<Module *> *modules, Module *dst)
 {
-        Module *src = find_module(name, MODULES);
+        Module *src = find_module(name, &MODULES);
         if(src == NULL)
             cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
-        else if(src == (*MODULES)[0])
+        else if(src == MODULES[0])
         {
             cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
                                << DEFAULT_STDOUT << endl;
@@ -120,7 +120,7 @@ void output_function_forwarder(Graphics_Object *g)
             return;
         }
 
-        src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
+        src = find_module_as_source(&text_box->typing_text->text, &MODULES, g->parent);
         if(src == NULL)
             return;
 
@@ -164,7 +164,7 @@ void oscillator_function_forwarder(Graphics_Object *g)
         }
         else
         {
-            src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
+            src = find_module_as_source(&text_box->typing_text->text, &MODULES, g->parent);
             if(src == NULL)
                 return;
 
@@ -221,7 +221,7 @@ void VCA_function_forwarder(Graphics_Object *g)
         }
         else
         {
-            src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
+            src = find_module_as_source(&text_box->typing_text->text, &MODULES, g->parent);
             if(src == NULL)
                 return;
 
@@ -278,7 +278,7 @@ void mixer_function_forwarder(Graphics_Object *g)
         }
         else
         {
-            src = find_module_as_source(&text_box->typing_text->text, MODULES, g->parent);
+            src = find_module_as_source(&text_box->typing_text->text, &MODULES, g->parent);
             if(src == NULL)
                 return;
 
@@ -323,9 +323,9 @@ void mixer_function_forwarder(Graphics_Object *g)
  */
 void add_oscillator()
 {
-    string name = "Oscillator " + to_string(MODULES->size());
-    Oscillator *oscillator = new Oscillator(name, MODULES->size());
-    MODULES->push_back(oscillator);
+    string name = "Oscillator " + to_string(MODULES.size());
+    Oscillator *oscillator = new Oscillator(name, MODULES.size());
+    MODULES.push_back(oscillator);
     MODULES_CHANGED = true;
     cout << "Added module " << name << endl;
 }
@@ -335,9 +335,9 @@ void add_oscillator()
  */
 void add_VCA()
 {
-    string name = "VCA " + to_string(MODULES->size());
-    Vca *vca = new Vca(name, MODULES->size());
-    MODULES->push_back(vca);
+    string name = "VCA " + to_string(MODULES.size());
+    Vca *vca = new Vca(name, MODULES.size());
+    MODULES.push_back(vca);
     MODULES_CHANGED = true;
     cout << "Added module " << name << endl;
 }
@@ -347,9 +347,9 @@ void add_VCA()
  */
 void add_mixer()
 {
-    string name = "Mixer " + to_string(MODULES->size());
-    Mixer *mixer = new Mixer(name, MODULES->size());
-    MODULES->push_back(mixer);
+    string name = "Mixer " + to_string(MODULES.size());
+    Mixer *mixer = new Mixer(name, MODULES.size());
+    MODULES.push_back(mixer);
     MODULES_CHANGED = true;
     cout << "Added module " << name << endl;
 }
@@ -371,7 +371,7 @@ void next_page()
  */
 void previous_page()
 {
-    if(CURRENT_PAGE < PAGES->size() - 1)
+    if(CURRENT_PAGE < PAGES.size() - 1)
     {
         CURRENT_PAGE ++;
         cout << "Switched to page " << CURRENT_PAGE << endl;
@@ -396,47 +396,6 @@ void no_parent_function_forwarder(Graphics_Object *g)
         previous_page();
 }
 
-vector<float> **get_dst_buffer(Graphics_Object *g)
-{
-    Output *output;
-    Oscillator *oscillator;
-    Vca *vca;
-
-    switch(g->parent->type)
-    {
-        case OUTPUT:
-            output = (Output *) g->parent;
-            break;
-        case OSCILLATOR:
-            oscillator = (Oscillator *) g->parent;
-            break;
-        case VCA:
-            vca = (Vca *) g->parent;
-    }
-
-    switch(g->name)
-    {
-        case "oscillator frequency input (toggle button)":
-            return &oscillator->frequency_input;
-        case "oscillator phase offset input (toggle button)":
-            return &oscillator->phase_offset_input;
-        case "oscillator pulse width input (toggle button)":
-            return &oscillator->pulse_width_input;
-        case "oscillator range low input (toggle button)":
-            return &oscillator->range_low_input;
-        case "oscillator range high input (toggle button)":
-            return &oscillator->range_high_input;
-        case "vca signal input (toggle button)":
-            return &vca->signal_input;
-        case "vca cv input (toggle button)":
-            return &vca->cv_input;
-        case "vca cv amount input (toggle button)":
-            return &vca->cv_amount_input;
-    }
-
-    return NULL;
-}
-
 /*
  * Whenever an object with an associated function is
  * clicked, call that function.
@@ -446,12 +405,9 @@ void function_forwarder(Graphics_Object *g)
     if(g->type == RECT)
     {
         CURRENT_SRC = g->parent;
-        CURRENT_SRC = g->parent->output;
 
         CURRENT_SRC = NULL;
-        CURRENT_SRC_BUFFER = NULL;
         CURRENT_DST = NULL;
-        CURRENT_DST_BUFFER = NULL;
     }
 
     if(g->type == TOGGLE_BUTTON && g->name.substr(g->name.size() - 21) == "input (toggle button)")

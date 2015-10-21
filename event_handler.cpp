@@ -39,7 +39,7 @@ using namespace std;
 bool check_click()
 {
     bool clicked = false;
-    Page *p = (*PAGES)[CURRENT_PAGE];
+    Page *p = PAGES[CURRENT_PAGE];
 
     // If there is an active text box, and it is not what was clicked,
     // make the text box inactive
