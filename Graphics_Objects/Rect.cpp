@@ -32,12 +32,13 @@ using namespace std;
 /*
  * Constructor.
  */
-Rect::Rect(string _name, SDL_Rect *_location, SDL_Color *_color)
+Rect::Rect(string _name, SDL_Rect *_location, SDL_Color *_color, Module *_parent)
 {
     name = _name;
     type = RECT;
     location = *_location;
     color = *_color;
+    parent = _parent;
 
     fill = true;
 }
@@ -68,11 +69,11 @@ void Rect::render()
  */
 void Rect::clicked()
 {
-    // if(!OBJECT_CLICKED && SELECTING_SRC)
-    // {
-    //     cout << BLUE_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
+    if(SELECTING_SRC && parent != NULL && name == "border (rect)")
+    {
+        cout << BLUE_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
 
-    //     function_forwarder(this);
-    //     OBJECT_CLICKED = true;
-    // }
+        function_forwarder(this);
+        OBJECT_CLICKED = true;
+    }
 }

@@ -44,7 +44,7 @@ Text_Box::Text_Box(string _name, SDL_Rect *_location, SDL_Color *_color,
     parent = _parent;
 
     font = _font;
-    background = new Rect("background rect (rect)", &location, &WHITE);
+    background = new Rect("background rect (rect)", &location, &WHITE, NULL);
     text = new Text("idle text (text)", _location, &BLACK, _original_text, _font);
     prompt_text = new Text("prompt text (text)", _location, &BLACK, _prompt_text, _font);
     typing_text = new Text("typing text (text)", _location, &BLACK, _original_text, _font);
@@ -149,6 +149,7 @@ void Text_Box::clicked()
             ACTIVE_TEXT_BOX = this;
             SDL_SetTextInputRect(&location);
             SDL_StartTextInput();
+            typing_text->render();
         }
         OBJECT_CLICKED = true;
     }

@@ -33,6 +33,7 @@ using namespace std;
 Graphics_Object::Graphics_Object()
 {
     updated = true;
+    parent = NULL;
 }
 
 /*

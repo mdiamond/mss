@@ -88,6 +88,7 @@ extern bool CURSOR_ON;
 extern Text_Box *ACTIVE_TEXT_BOX;
 //   Selecting a source module or not
 extern bool SELECTING_SRC;
+extern Text_Box *CURRENT_DST_TEXT_BOX;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

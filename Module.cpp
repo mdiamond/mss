@@ -112,7 +112,7 @@ void Module::calculate_graphics_objects()
     {
         // graphics_object[0] is the outermost rectangle used to represent the module
         location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-        rect = new Rect("border (rect)", &location, &WHITE);
+        rect = new Rect("border (rect)", &location, &WHITE, this);
         graphics_objects.push_back(rect);
 
         // graphics_object[1] is the slightly smaller rectangle within the outermost
@@ -121,7 +121,7 @@ void Module::calculate_graphics_objects()
                     upper_left.y + MODULE_BORDER_WIDTH,
                     MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
                     MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-        rect = new Rect("inner_border (rect)", &location, &color);
+        rect = new Rect("inner_border (rect)", &location, &color, this);
         graphics_objects.push_back(rect);
 
         // graphics_object[2] is the objects name

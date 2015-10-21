@@ -18,6 +18,7 @@
 
 // Included files
 #include "function_forwarder.hpp"
+#include "image_processing.hpp"
 #include "main.hpp"
 
 // Included classes
@@ -89,6 +90,14 @@ void keydown_event(SDL_Event *e)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             previous_page();
+    }
+
+    else if((ACTIVE_TEXT_BOX != NULL || SELECTING_SRC) && e->key.keysym.sym == SDLK_ESCAPE)
+    {
+        ACTIVE_TEXT_BOX = NULL;
+        SELECTING_SRC = false;
+        CURRENT_DST_TEXT_BOX = NULL;
+        reset_alphas();
     }
 
     // If that key is the return key, and there is an active

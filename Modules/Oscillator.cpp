@@ -430,60 +430,70 @@ void Oscillator::set_frequency(float val)
 {
     set(val, OSCILLATOR_FREQUENCY);
     cout << name << " frequency changed to " << val << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON])->b = false;
 }
 
 void Oscillator::set_frequency(Module *src)
 {
     set(src, OSCILLATOR_FREQUENCY);
     cout << name << " frequency is now coming from " << src->name << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON])->b = true;
 }
 
 void Oscillator::set_phase_offset(float val)
 {
     set(val, OSCILLATOR_PHASE_OFFSET);
     cout << name << " phase offset changed to " << val << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON])->b = false;
 }
 
 void Oscillator::set_phase_offset(Module *src)
 {
     set(src, OSCILLATOR_PHASE_OFFSET);
     cout << name << " phase offset is now coming from " << src->name << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON])->b = true;
 }
 
 void Oscillator::set_pulse_width(float val)
 {
     set(val, OSCILLATOR_PULSE_WIDTH);
     cout << name << " pulse width changed to " << val << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON])->b = false;
 }
 
 void Oscillator::set_pulse_width(Module *src)
 {
     set(src, OSCILLATOR_PULSE_WIDTH);
     cout << name << " pulse width is now coming from " << src->name << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON])->b = true;
 }
 
 void Oscillator::set_range_low(float val)
 {
     set(val, OSCILLATOR_RANGE_LOW);
     cout << name << " range low changed to " << val << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON])->b = false;
 }
 
 void Oscillator::set_range_low(Module *src)
 {
     set(src, OSCILLATOR_RANGE_LOW);
     cout << name << " range low is now coming from " << src->name << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON])->b = true;
 }
 
 void Oscillator::set_range_high(float val)
 {
     set(val, OSCILLATOR_RANGE_HIGH);
     cout << name << " range high changed to " << val << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON])->b = false;
 }
 
 void Oscillator::set_range_high(Module *src)
 {
     set(src, OSCILLATOR_RANGE_HIGH);
     cout << name << " range high is now coming from " << src->name << endl;
+    ((Toggle_Button *) graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON])->b = true;
 }
 
 void Oscillator::switch_waveform(int _waveform_type)
@@ -501,28 +511,28 @@ void Oscillator::switch_waveform(int _waveform_type)
     {
         waveform_type = SIN;
         sin_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])->b = false;
+        ((Toggle_Button *) graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])->b = true;
         cout << name << " is now outputting a sine wave" << endl;
     }
     else if(_waveform_type == TRI)
     {
         waveform_type = TRI;
         tri_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])->b = false;
+        ((Toggle_Button *) graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])->b = true;
         cout << name << " is now outputting a triangle wave" << endl;
     }
     else if(_waveform_type == SAW)
     {
         waveform_type = SAW;
         saw_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])->b = false;
+        ((Toggle_Button *) graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])->b = true;
         cout << name << " is now outputting a sawtooth wave" << endl;
     }
     else
     {
         waveform_type = SQR;
         sqr_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b = false;
+        ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b = true;
         cout << name << " is now outputting a square wave" << endl;
     }
 }

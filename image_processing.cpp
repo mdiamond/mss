@@ -157,7 +157,7 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 
     // Create the background and add it to the list of graphics
     // objects
-    Rect *background = new Rect("background (rect)", &WINDOW_RECT, &BLACK);
+    Rect *background = new Rect("background (rect)", &WINDOW_RECT, &BLACK, NULL);
     sub_page_graphics_objects->push_back(background);
 
     // Create the "add module" button and add it to the

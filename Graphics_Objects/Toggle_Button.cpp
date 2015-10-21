@@ -96,7 +96,11 @@ void Toggle_Button::clicked()
         cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
         function_forwarder(this);
-        b = !b;
         OBJECT_CLICKED = true;
     }
+}
+
+void Toggle_Button::toggle()
+{
+    b = !b;
 }

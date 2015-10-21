@@ -130,7 +130,11 @@ void output_function_forwarder(Graphics_Object *g)
             output->set_input_r(src);
     }
     else if(g->name == "on/off button (toggle_button)")
+    {
         output->toggle_audio_on();
+        Toggle_Button *toggle_button = (Toggle_Button *) g;
+        toggle_button->toggle();
+    }
 }
 
 /*
@@ -190,8 +194,6 @@ void oscillator_function_forwarder(Graphics_Object *g)
             oscillator->switch_waveform(SAW);
         else if(g->name == "oscillator sqr toggle (toggle button)")
             oscillator->switch_waveform(SQR);
-        // else if(g->name == "oscillator frequency input (toggle button)")
-
     }
 }
 
@@ -396,20 +398,61 @@ void no_parent_function_forwarder(Graphics_Object *g)
         previous_page();
 }
 
+Text_Box *get_associated_input_box(Graphics_Object *g)
+{
+    for(unsigned int i = 0; i < g->parent->graphics_objects.size(); i ++)
+    {
+        if(g->parent->graphics_objects[i] == g)
+        {
+            return (Text_Box *) g->parent->graphics_objects[i - 1];
+        }
+    }
+
+    return NULL;
+}
+
 /*
  * Whenever an object with an associated function is
  * clicked, call that function.
  */
 void function_forwarder(Graphics_Object *g)
 {
-    if(g->parent == NULL)
-        no_parent_function_forwarder(g);
-    else if(g->parent->type == OUTPUT)
-        output_function_forwarder(g);
-    else if(g->parent->type == OSCILLATOR)
-        oscillator_function_forwarder(g);
-    else if(g->parent->type == VCA)
-        VCA_function_forwarder(g);
-    else if(g->parent->type == MIXER)
-        mixer_function_forwarder(g);
+    if(g->type == RECT && SELECTING_SRC && CURRENT_DST_TEXT_BOX != NULL)
+    {
+        if(CURRENT_DST_TEXT_BOX->parent != g->parent)
+        {
+            CURRENT_DST_TEXT_BOX->typing_text->text = g->parent->name;
+            if(CURRENT_DST_TEXT_BOX->parent != g->parent)
+                function_forwarder(CURRENT_DST_TEXT_BOX);
+            CURRENT_DST_TEXT_BOX = NULL;
+        }
+        else
+            cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
+    }
+
+    else if(g->type == TOGGLE_BUTTON && g->name.size() >= 21 && 
+            g->name.substr(g->name.size() - 21) == "input (toggle button)")
+    {
+        SELECTING_SRC = !SELECTING_SRC;
+        if(SELECTING_SRC == false)
+            reset_alphas();
+        else
+            CURRENT_DST_TEXT_BOX = get_associated_input_box(g);
+
+        return;
+    }
+
+    else if(g->type != RECT)
+    {
+        if(g->parent == NULL)
+            no_parent_function_forwarder(g);
+        else if(g->parent->type == OUTPUT)
+            output_function_forwarder(g);
+        else if(g->parent->type == OSCILLATOR)
+            oscillator_function_forwarder(g);
+        else if(g->parent->type == VCA)
+            VCA_function_forwarder(g);
+        else if(g->parent->type == MIXER)
+            mixer_function_forwarder(g);
+    }
 }

@@ -106,6 +106,7 @@ Text_Box *ACTIVE_TEXT_BOX = NULL;
 
 // Selecting a source module or not
 bool SELECTING_SRC = false;
+Text_Box *CURRENT_DST_TEXT_BOX = NULL;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

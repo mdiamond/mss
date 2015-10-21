@@ -38,6 +38,7 @@ class Toggle_Button: public Graphics_Object
         // Member functions
         virtual void render();
         virtual void clicked();
+        void toggle();
 };
 
 #endif
