@@ -178,16 +178,16 @@ void Oscillator::process()
 void Oscillator::update_unique_graphics_objects()
 {
     // Update text boxes
-    if(inputs_live[OSCILLATOR_FREQUENCY])
-        ((Text_Box *) graphics_objects[OSCILLATOR_FREQUENCY_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_FREQUENCY]));
-    if(inputs_live[OSCILLATOR_PHASE_OFFSET])
-        ((Text_Box *) graphics_objects[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_PHASE_OFFSET]));
-    if(inputs_live[OSCILLATOR_PULSE_WIDTH])
-        ((Text_Box *) graphics_objects[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_PULSE_WIDTH]));
-    if(inputs_live[OSCILLATOR_RANGE_LOW])
-        ((Text_Box *) graphics_objects[OSCILLATOR_RANGE_LOW_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_RANGE_LOW]));
-    if(inputs_live[OSCILLATOR_RANGE_HIGH])
-        ((Text_Box *) graphics_objects[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_RANGE_HIGH]));
+    // if(inputs_live[OSCILLATOR_FREQUENCY])
+    //     ((Text_Box *) graphics_objects[OSCILLATOR_FREQUENCY_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_FREQUENCY]));
+    // if(inputs_live[OSCILLATOR_PHASE_OFFSET])
+    //     ((Text_Box *) graphics_objects[OSCILLATOR_PHASE_OFFSET_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_PHASE_OFFSET]));
+    // if(inputs_live[OSCILLATOR_PULSE_WIDTH])
+    //     ((Text_Box *) graphics_objects[OSCILLATOR_PULSE_WIDTH_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_PULSE_WIDTH]));
+    // if(inputs_live[OSCILLATOR_RANGE_LOW])
+    //     ((Text_Box *) graphics_objects[OSCILLATOR_RANGE_LOW_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_RANGE_LOW]));
+    // if(inputs_live[OSCILLATOR_RANGE_HIGH])
+    //     ((Text_Box *) graphics_objects[OSCILLATOR_RANGE_HIGH_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_RANGE_HIGH]));
 }
 
 void Oscillator::update_unique_control_values()

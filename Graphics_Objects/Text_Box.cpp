@@ -71,6 +71,8 @@ void Text_Box::render()
 {
     // Render the background rectangle
     background->render();
+    SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    SDL_RenderDrawRect(RENDERER, &location);
 
     // The text box is active, render the typing buffer
     if(active)
@@ -149,7 +151,7 @@ void Text_Box::clicked()
             ACTIVE_TEXT_BOX = this;
             SDL_SetTextInputRect(&location);
             SDL_StartTextInput();
-            typing_text->render();
+
         }
         OBJECT_CLICKED = true;
     }
@@ -166,8 +168,10 @@ void Text_Box::entered()
     cout << BLUE_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
 
     SDL_StopTextInput();
-    function_forwarder(this);
     text->text = typing_text->text;
+    function_forwarder(this);
+    if(!can_floatify(&text->text))
+        text->text = text->text.substr(0, 3) + " " + text->text.substr(text->text.find(" ") + 1);
     text->updated = true;
     ACTIVE_TEXT_BOX = NULL;
     active = false;
