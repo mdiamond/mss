@@ -222,7 +222,7 @@ void Mixer::calculate_unique_graphics_objects()
     {
         // graphics_objects[3] is the waveform visualizer
         location = {x_text_box, y3, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, &output);
+        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, -1, 1, &output);
         graphics_objects.push_back(waveform);
 
         // graphics_objects[4] is the display text "SIGNAL & MULTIPLIER:"
@@ -436,85 +436,85 @@ void Mixer::calculate_unique_graphics_objects()
         location = {x_text_box, y5, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_1_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_1_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box_2, y5, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button_2, y5, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y6, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_2_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button, y6, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_2_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box_2, y6, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button_2, y6, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y7, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_3_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_3_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box_2, y7, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button_2, y7, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y8, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_4_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button, y8, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_4_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box_2, y8, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button_2, y8, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y9, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_5_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button, y9, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_5_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box_2, y9, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button_2, y9, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y10, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_6_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_6_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box_2, y10, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button_2, y10, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y11, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_7_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button, y11, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_7_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box_2, y11, w_text_box, h_text_box};
         graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_TEXT_BOX]->update_location(&location);
 
-        location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
+        location = {x_input_toggle_button_2, y11, w_input_toggle_button, h_text_box};
         graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(&location);
 
         location = {x_text_box, y12, w_text_box, h_text_box};

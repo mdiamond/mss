@@ -21,9 +21,10 @@
 class Waveform: public Graphics_Object
 {
     public:
+        float range_low, range_high;
         std::vector<float> *buffer;
         // Constructor and destructor
-        Waveform(std::string, SDL_Rect *, SDL_Color *, std::vector<float> *);
+        Waveform(std::string, SDL_Rect *, SDL_Color *, float, float, std::vector<float> *);
         virtual ~Waveform();
         // Member functions
         virtual void render();

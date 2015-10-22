@@ -144,7 +144,7 @@ void Vca::calculate_unique_graphics_objects()
     {
         // graphics_objects[3] is the waveform visualizer
         location = {x_text_box, y3, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, &output);
+        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, -1, 1, &output);
         graphics_objects.push_back(waveform);
 
         // graphics_objects[4] is the display text "SIGNAL & CV INPUT:"

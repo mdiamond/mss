@@ -161,9 +161,9 @@ void Oscillator::process()
         // that range
         if(input_floats[OSCILLATOR_RANGE_LOW] != -1
            || input_floats[OSCILLATOR_RANGE_HIGH] != 1)
-            scale_sample(&output[i], -1, 1,
-                         input_floats[OSCILLATOR_RANGE_LOW],
-                         input_floats[OSCILLATOR_RANGE_HIGH]);
+            output[i] = scale_sample(output[i], -1, 1,
+                                     input_floats[OSCILLATOR_RANGE_LOW],
+                                     input_floats[OSCILLATOR_RANGE_HIGH]);
 
         current_phase += ((float) input_floats[OSCILLATOR_FREQUENCY] / SAMPLE_RATE) + phase_offset_diff;
         while(current_phase > 1)
@@ -177,6 +177,9 @@ void Oscillator::process()
 
 void Oscillator::update_unique_graphics_objects()
 {
+    // Update the range of the waveform viewer
+    ((Waveform *) graphics_objects[OSCILLATOR_OUTPUT_WAVEFORM])->range_low = input_floats[OSCILLATOR_RANGE_LOW];
+    ((Waveform *) graphics_objects[OSCILLATOR_OUTPUT_WAVEFORM])->range_high = input_floats[OSCILLATOR_RANGE_HIGH];
     // Update text boxes
     // if(inputs_live[OSCILLATOR_FREQUENCY])
     //     ((Text_Box *) graphics_objects[OSCILLATOR_FREQUENCY_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_FREQUENCY]));
@@ -252,7 +255,7 @@ void Oscillator::calculate_unique_graphics_objects()
     {
         // graphics_objects[3] is the waveform visualizer
         location = {x_text_box, y3, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, &output);
+        waveform = new Waveform("waveform visualizer (waveform)", &location, &WHITE, -1, 1, &output);
         graphics_objects.push_back(waveform);
 
         // graphics_objects[4] is the display text "FREQUENCY:"

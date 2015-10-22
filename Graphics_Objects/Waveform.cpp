@@ -32,13 +32,16 @@ using namespace std;
  * Constructor.
  */
 Waveform::Waveform(string _name, SDL_Rect *_location,
-                   SDL_Color *_color, vector<float> *_buffer)
+                   SDL_Color *_color, float _range_low,
+                   float _range_high, vector<float> *_buffer)
 {
     name = _name;
     type = WAVEFORM;
     location = *_location;
     color = *_color;
 
+    range_low = _range_low;
+    range_high = _range_high;
     buffer = _buffer;
 }
 
@@ -52,11 +55,18 @@ Waveform::~Waveform()
 
 float Waveform::calculate_y(int i, int index)
 {
+    float sample;
+
+    if(buffer != NULL)
+        sample = scale_sample(((*(buffer))[BUFFER_SIZE - location.w + index]),
+                              range_low, range_high, -1, 1);
+    else
+        sample = 0;
+
     int y;
     if(buffer != NULL)
         y = (location.y + location.h / 2) +
-            (((*(buffer))[BUFFER_SIZE - location.w + index]) * -1) *
-            (location.h / 2);
+            (sample * -1) * (location.h / 2);
     else
         y = (location.y + location.h / 2) +
             0 *

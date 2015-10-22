@@ -130,7 +130,7 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[5] is the waveform visualizer for the left speaker
         location = {x_text_box, y5, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer l (waveform)", &location, &WHITE, inputs[OUTPUT_INPUT_L]);
+        waveform = new Waveform("waveform visualizer l (waveform)", &location, &WHITE, -1, 1, inputs[OUTPUT_INPUT_L]);
         graphics_objects.push_back(waveform);
 
         // graphics_objects[6] is the display text "LEFT INPUT:"
@@ -152,7 +152,7 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[9] is the waveform visualizer for the right speaker
         location = {x_text_box, y8, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer r (waveform)", &location, &WHITE, inputs[OUTPUT_INPUT_R]);
+        waveform = new Waveform("waveform visualizer r (waveform)", &location, &WHITE, -1, 1, inputs[OUTPUT_INPUT_R]);
         graphics_objects.push_back(waveform);
 
         // graphics_objects[10] is the display text "PHASE OFFSET:"

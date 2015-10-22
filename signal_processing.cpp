@@ -185,12 +185,14 @@ void scale_signal(vector<float> *buffer, float original_low,
 /*
  * Scale a sample.
  */
-void scale_sample(float *sample, float original_low,
+float scale_sample(float sample, float original_low,
                   float original_high, float low, float high)
 {
-    *sample = (*sample - original_low) / (original_high - original_low);
-    *sample *= high - low;
-    *sample += low;
+    sample = (sample - original_low) / (original_high - original_low);
+    sample *= high - low;
+    sample += low;
+
+    return sample;
 }
 
 /*
