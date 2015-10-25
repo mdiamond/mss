@@ -43,11 +43,18 @@ Text_Box::Text_Box(string _name, SDL_Rect *_location, SDL_Color *_color,
     color = *_color;
     parent = _parent;
 
+    SDL_Rect text_location = location;
+    text_location.x += 1;
+    text_location.y += 1;
+    text_location.w = 0;
+    text_location.h -= 2;
+
     font = _font;
     background = new Rect("background rect (rect)", &location, &WHITE, NULL);
-    text = new Text("idle text (text)", _location, &BLACK, _original_text, _font);
-    prompt_text = new Text("prompt text (text)", _location, &BLACK, _prompt_text, _font);
-    typing_text = new Text("typing text (text)", _location, &BLACK, _original_text, _font);
+    text = new Text("idle text (text)", &text_location, &BLACK, _original_text, _font);
+    prompt_text = new Text("prompt text (text)", &text_location, &BLACK, _prompt_text, _font);
+    typing_text = new Text("typing text (text)", &text_location, &BLACK, _original_text, _font);
+    typing_text->location.w = 0;
 
     active = false;
 }
@@ -94,9 +101,9 @@ void Text_Box::render()
     {
         SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
         SDL_RenderDrawLine(RENDERER, typing_text->location.x + typing_text->location.w,
-                           location.y + 2,
-                           location.x + typing_text->location.w,
-                           location.y + 11);
+                           typing_text->location.y + 2,
+                           typing_text->location.x + typing_text->location.w,
+                           typing_text->location.y + 11);
     }
 }
 

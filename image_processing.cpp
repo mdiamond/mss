@@ -26,6 +26,7 @@
 #include "Graphics_Objects/Button.hpp"
 #include "Graphics_Objects/Page.hpp"
 #include "Graphics_Objects/Rect.hpp"
+#include "Graphics_Objects/Waveform.hpp"
 #include "Module.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
@@ -311,6 +312,15 @@ void draw_surface()
         i ++)
         MODULES[i]->update_graphics_objects();
 
+    // Copy audio data into waveform objects so that they will render without hiccups
+    SDL_LockAudio();
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+            if(MODULES[i]->graphics_objects[j]->type == WAVEFORM)
+                ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
+    SDL_UnlockAudio();
+
+    // If currently selecting an input, change the graphics appropriately
     if(SELECTING_SRC)
         select_input_mode();
 
