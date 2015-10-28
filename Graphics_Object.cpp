@@ -30,10 +30,12 @@ using namespace std;
 /*
  * Dummy function.
  */
-Graphics_Object::Graphics_Object()
+Graphics_Object::Graphics_Object(string _name, int _type, Module *_parent,
+								 SDL_Rect _location, SDL_Color _color) : 
+	name(_name), type(_type), parent(_parent),
+    location(_location), color(_color), updated(true)
 {
-    updated = true;
-    parent = NULL;
+
 }
 
 /*
@@ -57,7 +59,7 @@ bool Graphics_Object::was_clicked()
     return false;
 }
 
-void Graphics_Object::update_location(SDL_Rect *_location)
+void Graphics_Object::update_location(SDL_Rect _location)
 {
-	location = *_location;
+	location = _location;
 }

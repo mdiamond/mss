@@ -33,25 +33,20 @@ using namespace std;
 /*
  * Constructor.
  */
-Button::Button(string _name, SDL_Rect *_location, SDL_Color *_color,
-               string _text, Module *_parent)
+Button::Button(string _name, SDL_Rect _location, SDL_Color _color,
+               SDL_Color _text_color, string _text, Module *_parent) :
+    Graphics_Object(_name, BUTTON, _parent, _location, _color),
+    text_str(_text),
+    text(Text("button text (text)", _location, _text_color, text_str, FONT_REGULAR))
 {
-    name = _name;
-    type = BUTTON;
-    location = *_location;
-    color = *_color;
-
     // Text is opposite the color of the button
-    SDL_Color opposite;
-    opposite.r = 256 - color.r;
-    opposite.g = 256 - color.g;
-    opposite.b = 256 - color.b;
-    opposite.a = color.a;
+    text.color.r = 256 - color.r;
+    text.color.g = 256 - color.g;
+    text.color.b = 256 - color.b;
+    text.color.a = color.a;
 
-    text_str = _text;
-    text = new Text("button text (text)", &location, &opposite, _text, FONT_REGULAR);
-
-    parent = _parent;
+    // Make the text start 1 pixel away from the edge of the containing box
+    text.location.x += 1;
 }
 
 /*
@@ -59,7 +54,7 @@ Button::Button(string _name, SDL_Rect *_location, SDL_Color *_color,
  */
 Button::~Button()
 {
-    delete text;
+
 }
 
 /*
@@ -69,7 +64,7 @@ void Button::render()
 {
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderFillRect(RENDERER, &location);
-    text->render();
+    text.render();
 }
 
 /*

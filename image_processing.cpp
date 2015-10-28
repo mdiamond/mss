@@ -158,30 +158,30 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 
     // Create the background and add it to the list of graphics
     // objects
-    Rect *background = new Rect("background (rect)", &WINDOW_RECT, &BLACK, NULL);
+    Rect *background = new Rect("background (rect)", WINDOW_RECT, BLACK, NULL);
     sub_page_graphics_objects->push_back(background);
 
     // Create the "add module" button and add it to the
     // list of graphics objects
     SDL_Rect location = {x , WINDOW_HEIGHT - 17, 100, 15};
     x += 102;
-    Button *button = new Button("add oscillator (button)", &location, &WHITE,
-                                "ADD OSCILLATOR", parent);
+    Button *button = new Button("add oscillator (button)", location, WHITE,
+                                BLACK, "ADD OSCILLATOR", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "add VCA" button and add it to the
     // list of graphics objects
     location = {x, WINDOW_HEIGHT - 17, 51, 15};
     x += 53;
-    button = new Button("add vca (button)", &location, &WHITE,
-                                "ADD VCA", parent);
+    button = new Button("add vca (button)", location, WHITE,
+                                BLACK, "ADD VCA", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "add mixer" button and add it to the
     // list of graphics objects
-    location = {x, WINDOW_HEIGHT - 17, 51, 15};
-    button = new Button("add mixer (button)", &location, &WHITE,
-                                "ADD MIXER", parent);
+    location = {x, WINDOW_HEIGHT - 17, 65, 15};
+    button = new Button("add mixer (button)", location, WHITE,
+                                BLACK, "ADD MIXER", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "previous page" button and add it to the
@@ -189,8 +189,8 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     x = WINDOW_WIDTH - 159;
     location = {x, WINDOW_HEIGHT - 17, 92, 15};
     x += 92;
-    button = new Button("previous page (button)", &location, &WHITE,
-                        "PREVIOUS PAGE", parent);
+    button = new Button("previous page (button)", location, WHITE,
+                        BLACK, "PREVIOUS PAGE", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "next page" button and add it to the
@@ -198,13 +198,13 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
     x += 2;
     location = {x, WINDOW_HEIGHT - 17, 63, 15};
     x += 65;
-    button = new Button("next page (button)", &location, &WHITE,
-                        "NEXT PAGE", parent);
+    button = new Button("next page (button)", location, WHITE,
+                        BLACK, "NEXT PAGE", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the sub page and add it to the list of sub pages
     // for the current page
-    current_sub_page = new Page("utilities & background (page)", &WINDOW_RECT, &BLACK,
+    current_sub_page = new Page("utilities & background (page)", WINDOW_RECT, BLACK,
                                       sub_page_graphics_objects, NULL);
     sub_pages->push_back(current_sub_page);
 }
@@ -249,7 +249,7 @@ void calculate_pages()
         // Create the sub page using the created vector of graphics objects,
         // add it to the list of sub pages
         current_sub_page = new Page(MODULES[i]->name + " (page)",
-                                    &MODULES[i]->graphics_objects[1]->location, &BLACK,
+                                    MODULES[i]->graphics_objects[1]->location, BLACK,
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(current_sub_page);
 
@@ -266,7 +266,7 @@ void calculate_pages()
             // Create the page using the created vector of sub pages, add it
             // to the global list of pages
             current_page = new Page(to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
-                                    &WINDOW_RECT, &BLACK,
+                                    WINDOW_RECT, BLACK,
                                     NULL, sub_pages);
             PAGES.push_back(current_page);
 

@@ -50,12 +50,13 @@ class Graphics_Object
         // Module information
         std::string name;
         int type;
+        Module *parent;
         SDL_Rect location;
         SDL_Color color;
-        Module *parent;
         bool updated;
         // Constructor and destructor
-        Graphics_Object();
+        Graphics_Object(std::string, int type, Module *,
+                        SDL_Rect, SDL_Color);
         virtual ~Graphics_Object();
         // Virtual member functions
         //   render() is called each time a new frame is needed for
@@ -64,7 +65,7 @@ class Graphics_Object
         virtual void render() = 0;
         virtual void clicked() = 0;
         bool was_clicked();
-        void update_location(SDL_Rect *);
+        void update_location(SDL_Rect);
 };
 
 #endif

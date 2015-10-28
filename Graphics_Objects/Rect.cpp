@@ -32,14 +32,9 @@ using namespace std;
 /*
  * Constructor.
  */
-Rect::Rect(string _name, SDL_Rect *_location, SDL_Color *_color, Module *_parent)
+Rect::Rect(string _name, SDL_Rect _location, SDL_Color _color, Module *_parent) :
+    Graphics_Object(_name, RECT, _parent, _location, _color)
 {
-    name = _name;
-    type = RECT;
-    location = *_location;
-    color = *_color;
-    parent = _parent;
-
     fill = true;
 }
 

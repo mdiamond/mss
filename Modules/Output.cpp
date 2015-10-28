@@ -118,58 +118,58 @@ void Output::calculate_unique_graphics_objects()
     {
         // graphics_objects[3] is the display text "AUDIO ON":
         location = {x_text, y3, 8, 15};
-        text = new Text("on_off (text)", &location, &text_color, "AUDIO ON:", FONT_REGULAR);
+        text = new Text("on_off (text)", location, text_color, "AUDIO ON:", FONT_REGULAR);
         graphics_objects.push_back(text);
 
         // graphics_objects[4] is the toggle button to turn audio on or off
         location = {x_button, y4, 25, 15};
-        Toggle_Button *toggle_button = new Toggle_Button("on/off button (toggle_button)", &location, &GREEN,
-                                                  &BLACK, &BLACK, &WHITE, FONT_BOLD, "ON", "OFF",
+        Toggle_Button *toggle_button = new Toggle_Button("on/off button (toggle_button)", location, GREEN,
+                                                  BLACK, BLACK, WHITE, FONT_BOLD, "ON", "OFF",
                                                   AUDIO_ON, this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[5] is the waveform visualizer for the left speaker
         location = {x_text_box, y5, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer l (waveform)", &location, &WHITE, -1, 1, inputs[OUTPUT_INPUT_L]);
+        waveform = new Waveform("waveform visualizer l (waveform)", location, WHITE, -1, 1, inputs[OUTPUT_INPUT_L]);
         graphics_objects.push_back(waveform);
 
         // graphics_objects[6] is the display text "LEFT INPUT:"
         location = {x_text, y6, 0, 0};
-        text = new Text("output input left (text)", &location, &text_color, "LEFT:", FONT_REGULAR);
+        text = new Text("output input left (text)", location, text_color, "LEFT:", FONT_REGULAR);
         graphics_objects.push_back(text);
 
         // graphics_objects[7] is the text box for entering and displaying input right
         location = {x_text_box, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("output input left (text box)", &location, &text_color,
+        text_box = new Text_Box("output input left (text box)", location, text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects.push_back(text_box);
 
         // graphics_objects[8] is the toggle button for selecting or disabling the left input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("output left input (toggle button)", &location, &WHITE,
-                                          &BLACK, &RED, &WHITE, FONT_SMALL, "I", "I", inputs_live[OUTPUT_INPUT_L], this);
+        toggle_button = new Toggle_Button("output left input (toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OUTPUT_INPUT_L], this);
         graphics_objects.push_back(toggle_button);
 
         // graphics_objects[9] is the waveform visualizer for the right speaker
         location = {x_text_box, y8, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer r (waveform)", &location, &WHITE, -1, 1, inputs[OUTPUT_INPUT_R]);
+        waveform = new Waveform("waveform visualizer r (waveform)", location, WHITE, -1, 1, inputs[OUTPUT_INPUT_R]);
         graphics_objects.push_back(waveform);
 
         // graphics_objects[10] is the display text "PHASE OFFSET:"
         location = {x_text, y9, 0, 0};
-        text = new Text("output input right (text)", &location, &text_color, "RIGHT:", FONT_REGULAR);
+        text = new Text("output input right (text)", location, text_color, "RIGHT:", FONT_REGULAR);
         graphics_objects.push_back(text);
 
         // graphics_objects[11] is the text box for entering and displaying input left
         location = {x_text_box, y10, w_text_box, h_text_box};
-        text_box = new Text_Box("output input right (text box)", &location, &text_color,
+        text_box = new Text_Box("output input right (text box)", location, text_color,
                                 "", "input", FONT_SMALL, this);
         graphics_objects.push_back(text_box);
 
         // graphics_objects[12] is the toggle button for selecting or disabling frequency input
         location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("output right input (toggle button)", &location, &WHITE,
-                                          &BLACK, &RED, &WHITE, FONT_SMALL, "I", "I", inputs_live[OUTPUT_INPUT_R], this);
+        toggle_button = new Toggle_Button("output right input (toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OUTPUT_INPUT_R], this);
         graphics_objects.push_back(toggle_button);
     }
 
@@ -177,34 +177,34 @@ void Output::calculate_unique_graphics_objects()
     else
     {
         location = {x_text, y3, 8, 15};
-        graphics_objects[OUTPUT_AUDIO_TOGGLE_TEXT]->update_location(&location);
+        graphics_objects[OUTPUT_AUDIO_TOGGLE_TEXT]->update_location(location);
 
         location = {x_button, y4, 25, 15};
-        graphics_objects[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]->update_location(&location);
+        graphics_objects[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]->update_location(location);
 
         location = {x_text_box, y5, w_waveform, h_waveform};
-        graphics_objects[OUTPUT_INPUT_L_WAVEFORM]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_L_WAVEFORM]->update_location(location);
 
         location = {x_text, y6, 0, 0};
-        graphics_objects[OUTPUT_INPUT_L_TEXT]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_L_TEXT]->update_location(location);
 
         location = {x_text_box, y7, w_text_box, h_text_box};
-        graphics_objects[OUTPUT_INPUT_L_TEXT_BOX]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_L_TEXT_BOX]->update_location(location);
 
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        graphics_objects[OUTPUT_INPUT_L_TOGGLE_BUTTON]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_L_TOGGLE_BUTTON]->update_location(location);
 
         location = {x_text_box, y8, w_waveform, h_waveform};
-        graphics_objects[OUTPUT_INPUT_R_WAVEFORM]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_R_WAVEFORM]->update_location(location);
 
         location = {x_text, y9, 0, 0};
-        graphics_objects[OUTPUT_INPUT_R_TEXT]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_R_TEXT]->update_location(location);
 
         location = {x_text_box, y10, w_text_box, h_text_box};
-        graphics_objects[OUTPUT_INPUT_R_TEXT_BOX]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_R_TEXT_BOX]->update_location(location);
 
         location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
-        graphics_objects[OUTPUT_INPUT_R_TOGGLE_BUTTON]->update_location(&location);
+        graphics_objects[OUTPUT_INPUT_R_TOGGLE_BUTTON]->update_location(location);
     }
 }
 

@@ -31,22 +31,19 @@ using namespace std;
 /*
  * Constructor.
  */
-Page::Page(string _name, SDL_Rect *_location, SDL_Color *_color,
-           vector<Graphics_Object *> *_graphics_objects, vector<Page *> *_sub_pages)
+Page::Page(string _name, SDL_Rect _location, SDL_Color _color,
+           vector<Graphics_Object *> *_graphics_objects,
+           vector<Page *> *_sub_pages) :
+    Graphics_Object(_name, PAGE, NULL, _location, _color)
 {
-    name = _name;
-    type = PAGE;
-    location = *_location;
-    color = *_color;
-
     if(_sub_pages != NULL)
-        sub_pages = new vector<Page *>(*_sub_pages);
+        sub_pages = vector<Page *>(*_sub_pages);
     else
-        sub_pages = new vector<Page *>();
+        sub_pages = vector<Page *>();
     if(_graphics_objects != NULL)
-        graphics_objects = new vector<Graphics_Object *>(*_graphics_objects);
+        graphics_objects = vector<Graphics_Object *>(*_graphics_objects);
     else
-        graphics_objects = new vector<Graphics_Object *>();
+        graphics_objects = vector<Graphics_Object *>();
 }
 
 /*
@@ -54,11 +51,8 @@ Page::Page(string _name, SDL_Rect *_location, SDL_Color *_color,
  */
 Page::~Page()
 {
-    delete graphics_objects;
-
-    for(unsigned int i = 0; i < sub_pages->size(); i ++)
-        delete (*sub_pages)[i];
-    delete sub_pages;
+    for(unsigned int i = 0; i < sub_pages.size(); i ++)
+        delete sub_pages[i];
 }
 
 /*
@@ -66,10 +60,10 @@ Page::~Page()
  */
 void Page::render()
 {
-    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
-        (*graphics_objects)[i]->render();
-    for(unsigned int i = 0; i < sub_pages->size(); i ++)
-        (*sub_pages)[i]->render();
+    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+        graphics_objects[i]->render();
+    for(unsigned int i = 0; i < sub_pages.size(); i ++)
+        sub_pages[i]->render();
 }
 
 /*
@@ -77,10 +71,10 @@ void Page::render()
  */
 void Page::clicked()
 {
-    for(unsigned int i = 0; i < graphics_objects->size(); i ++)
-        if((*graphics_objects)[i]->was_clicked())
-            (*graphics_objects)[i]->clicked();
-    for(unsigned int i = 0; i < sub_pages->size(); i ++)
-        if((*sub_pages)[i]->was_clicked())
-            (*sub_pages)[i]->clicked();
+    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+        if(graphics_objects[i]->was_clicked())
+            graphics_objects[i]->clicked();
+    for(unsigned int i = 0; i < sub_pages.size(); i ++)
+        if(sub_pages[i]->was_clicked())
+            sub_pages[i]->clicked();
 }

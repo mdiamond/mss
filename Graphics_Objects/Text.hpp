@@ -25,7 +25,7 @@ class Text: public Graphics_Object
         std::string text;
         SDL_Texture *texture;
         // Constructor and destructor
-        Text(std::string, SDL_Rect *, SDL_Color *,
+        Text(std::string, SDL_Rect, SDL_Color,
              std::string, TTF_Font *);
         virtual ~Text();
         // Member functions

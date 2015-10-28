@@ -25,12 +25,12 @@
 class Toggle_Button: public Graphics_Object
 {
     public:
-        Text *text_on, *text_off;
-        SDL_Color color_off;
         bool b;
+        SDL_Color color_off;
+        Text text_on, text_off;
         // Constructor and destructor
-        Toggle_Button(std::string, SDL_Rect *, SDL_Color *,
-                      SDL_Color *, SDL_Color *, SDL_Color *,
+        Toggle_Button(std::string, SDL_Rect, SDL_Color,
+                      SDL_Color, SDL_Color, SDL_Color,
                       TTF_Font *,
                       std::string, std::string,
                       bool, Module *);

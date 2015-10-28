@@ -31,17 +31,11 @@ using namespace std;
 /*
  * Constructor.
  */
-Text::Text(string _name, SDL_Rect *_location, SDL_Color *_color,
-           string _text, TTF_Font *_font)
+Text::Text(string _name, SDL_Rect _location, SDL_Color _color,
+           string _text, TTF_Font *_font) :
+    Graphics_Object(_name, TEXT, NULL, _location, _color),
+    font(_font), text(_text)
 {
-    name = _name;
-    type = TEXT;
-    location = *_location;
-    color = *_color;
-
-    font = _font;
-    text = _text;
-
     SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
     texture = SDL_CreateTextureFromSurface(RENDERER, surface);
     int width, height;

@@ -32,18 +32,12 @@ using namespace std;
 /*
  * Constructor.
  */
-Waveform::Waveform(string _name, SDL_Rect *_location,
-                   SDL_Color *_color, float _range_low,
-                   float _range_high, vector<float> *_buffer)
+Waveform::Waveform(string _name, SDL_Rect _location,
+                   SDL_Color _color, float _range_low,
+                   float _range_high, vector<float> *_buffer) :
+    Graphics_Object(_name, WAVEFORM, NULL, _location, _color), 
+    range_low(_range_low), range_high(_range_high), buffer(_buffer)
 {
-    name = _name;
-    type = WAVEFORM;
-    location = *_location;
-    color = *_color;
-
-    range_low = _range_low;
-    range_high = _range_high;
-    buffer = _buffer;
     render_buffer = vector<float>(location.w, 0);
 }
 

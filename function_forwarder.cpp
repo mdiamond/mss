@@ -114,13 +114,13 @@ void output_function_forwarder(Graphics_Object *g)
     {
         text_box = (Text_Box *) g;
 
-        if(can_floatify(&text_box->text->text))
+        if(can_floatify(&text_box->text.text))
         {
             cout << RED_STDOUT << "The output module can only take other modules' output as input" << DEFAULT_STDOUT << endl;
             return;
         }
 
-        src = find_module_as_source(&text_box->text->text, &MODULES, g->parent);
+        src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
         if(src == NULL)
             return;
 
@@ -151,9 +151,9 @@ void oscillator_function_forwarder(Graphics_Object *g)
     {
         text_box = (Text_Box *) g;
 
-        if(can_floatify(&text_box->text->text))
+        if(can_floatify(&text_box->text.text))
         {
-            val = stof(text_box->text->text.c_str());
+            val = stof(text_box->text.text.c_str());
 
             if(g->name == "oscillator frequency (text box)")
                 oscillator->set_frequency(val);
@@ -168,7 +168,7 @@ void oscillator_function_forwarder(Graphics_Object *g)
         }
         else
         {
-            src = find_module_as_source(&text_box->text->text, &MODULES, g->parent);
+            src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
             if(src == NULL)
                 return;
 
@@ -211,9 +211,9 @@ void VCA_function_forwarder(Graphics_Object *g)
     {
         text_box = (Text_Box *) g;
 
-        if(can_floatify(&text_box->text->text))
+        if(can_floatify(&text_box->text.text))
         {
-            val = stof(text_box->text->text.c_str());
+            val = stof(text_box->text.text.c_str());
 
             if(g->name == "vca signal (text box)" || g->name == "vca cv (text box)")
                 cout << RED_STDOUT << "The VCA module's top two input fields must be other modules"
@@ -223,7 +223,7 @@ void VCA_function_forwarder(Graphics_Object *g)
         }
         else
         {
-            src = find_module_as_source(&text_box->text->text, &MODULES, g->parent);
+            src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
             if(src == NULL)
                 return;
 
@@ -251,9 +251,9 @@ void mixer_function_forwarder(Graphics_Object *g)
     {
         text_box = (Text_Box *) g;
 
-        if(can_floatify(&text_box->text->text))
+        if(can_floatify(&text_box->text.text))
         {
-            val = stof(text_box->text->text.c_str());
+            val = stof(text_box->text.text.c_str());
 
             if(g->name == "mixer signal 1 (text box)" || g->name == "mixer signal 2 (text box)" ||
                g->name == "mixer signal 3 (text box)" || g->name == "mixer signal 4 (text box)" ||
@@ -280,7 +280,7 @@ void mixer_function_forwarder(Graphics_Object *g)
         }
         else
         {
-            src = find_module_as_source(&text_box->text->text, &MODULES, g->parent);
+            src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
             if(src == NULL)
                 return;
 
@@ -419,7 +419,7 @@ void function_forwarder(Graphics_Object *g)
 {
     if(g->type == RECT && SELECTING_SRC && CURRENT_DST_TEXT_BOX != NULL)
     {
-        CURRENT_DST_TEXT_BOX->typing_text->text = g->parent->name;
+        CURRENT_DST_TEXT_BOX->typing_text.text = g->parent->name;
         CURRENT_DST_TEXT_BOX->entered();
         SELECTING_SRC = false;
         reset_alphas();

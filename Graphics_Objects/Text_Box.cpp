@@ -33,15 +33,16 @@ using namespace std;
 /*
  * Constructor.
  */
-Text_Box::Text_Box(string _name, SDL_Rect *_location, SDL_Color *_color,
+Text_Box::Text_Box(string _name, SDL_Rect _location, SDL_Color _color,
                    string _original_text,
-                   string _prompt_text, TTF_Font *_font, Module *_parent)
+                   string _prompt_text, TTF_Font *_font, Module *_parent) :
+    Graphics_Object(_name, TEXT_BOX, _parent, _location, _color),
+    active(false), font(_font),
+    background(Rect("background rect (rect)", location, WHITE, NULL)),
+    text(Text("idle text (text)", _location, BLACK, _original_text, _font)),
+    prompt_text(Text("prompt text (text)", _location, BLACK, _prompt_text, _font)),
+    typing_text(Text("typing text (text)", _location, BLACK, _original_text, _font))
 {
-    name = _name;
-    type = TEXT_BOX;
-    location = *_location;
-    color = *_color;
-    parent = _parent;
 
     SDL_Rect text_location = location;
     text_location.x += 1;
@@ -49,14 +50,15 @@ Text_Box::Text_Box(string _name, SDL_Rect *_location, SDL_Color *_color,
     text_location.w = 0;
     text_location.h -= 2;
 
-    font = _font;
-    background = new Rect("background rect (rect)", &location, &WHITE, NULL);
-    text = new Text("idle text (text)", &text_location, &BLACK, _original_text, _font);
-    prompt_text = new Text("prompt text (text)", &text_location, &BLACK, _prompt_text, _font);
-    typing_text = new Text("typing text (text)", &text_location, &BLACK, _original_text, _font);
-    typing_text->location.w = 0;
+    text.location = text_location;
+    prompt_text.location = text_location;
+    typing_text.location = text_location;
 
-    active = false;
+    typing_text.location.w = 0;
+
+    text.updated = true;
+    prompt_text.updated = true;
+    typing_text.updated = true;
 }
 
 /*
@@ -64,9 +66,7 @@ Text_Box::Text_Box(string _name, SDL_Rect *_location, SDL_Color *_color,
  */
 Text_Box::~Text_Box()
 {
-    delete text;
-    delete prompt_text;
-    delete typing_text;
+
 }
 
 /*
@@ -77,22 +77,22 @@ Text_Box::~Text_Box()
 void Text_Box::render()
 {
     // Render the background rectangle
-    background->render();
+    background.render();
     SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
     SDL_RenderDrawRect(RENDERER, &location);
 
     // The text box is active, render the typing buffer
     if(active)
-        typing_text->render();
+        typing_text.render();
     // Otherwise
     else
     {
         // The the current text is empty, render the prompt
-        if(text->text == "")
-            prompt_text->render();
+        if(text.text == "")
+            prompt_text.render();
         // Otherwise, render the current text
         else
-            text->render();
+            text.render();
     }
 
     // If the text box is active and the cursor is current supposed to be drawn,
@@ -100,22 +100,22 @@ void Text_Box::render()
     if(active && CURSOR_ON)
     {
         SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
-        SDL_RenderDrawLine(RENDERER, typing_text->location.x + typing_text->location.w,
-                           typing_text->location.y + 2,
-                           typing_text->location.x + typing_text->location.w,
-                           typing_text->location.y + 11);
+        SDL_RenderDrawLine(RENDERER, typing_text.location.x + typing_text.location.w,
+                           typing_text.location.y + 2,
+                           typing_text.location.x + typing_text.location.w,
+                           typing_text.location.y + 11);
     }
 }
 
-void Text_Box::update_location(SDL_Rect *_location)
+void Text_Box::update_location(SDL_Rect _location)
 {
-    location = *_location;
-    background->update_location(_location);
+    location = _location;
+    background.update_location(_location);
 }
 
 void Text_Box::update_current_text(string s)
 {
-    text->update_text(s);
+    text.update_text(s);
 }
 
 /*
@@ -123,8 +123,8 @@ void Text_Box::update_current_text(string s)
  */
 void Text_Box::add_characters(char *ch)
 {
-    typing_text->text += ch;
-    typing_text->updated = true;
+    typing_text.text += ch;
+    typing_text.updated = true;
 }
 
 /*
@@ -132,10 +132,10 @@ void Text_Box::add_characters(char *ch)
  */
 void Text_Box::delete_character()
 {
-    if(!typing_text->text.empty())
-        typing_text->text.pop_back();
+    if(!typing_text.text.empty())
+        typing_text.text.pop_back();
 
-    typing_text->updated = true;
+    typing_text.updated = true;
 }
 
 /*
@@ -175,12 +175,12 @@ void Text_Box::entered()
     cout << BLUE_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
 
     SDL_StopTextInput();
-    text->text = typing_text->text;
+    text.text = typing_text.text;
     function_forwarder(this);
-    if(!can_floatify(&text->text))
-        text->text = text->text.substr(0, 3) + " " + text->text.substr(text->text.find(" ") + 1);
-    text->updated = true;
+    if(!can_floatify(&text.text))
+        text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
+    text.updated = true;
     ACTIVE_TEXT_BOX = NULL;
     active = false;
-    typing_text->text = "";
+    typing_text.text = "";
 }
