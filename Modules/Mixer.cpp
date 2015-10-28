@@ -147,7 +147,8 @@ void Mixer::process()
 
 
         if(auto_attenuate)
-            output[i] /= num_channels;
+            if(num_channels != 0)
+                output[i] /= num_channels;
     }
 
     processed = true;
