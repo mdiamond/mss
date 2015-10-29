@@ -92,7 +92,7 @@ void Waveform::render()
     SDL_Point zero = {0, 0};
     vector<SDL_Point> points(location.w, zero);
 
-    for(int i = 0; i < render_buffer.size(); i ++)
+    for(unsigned int i = 0; i < render_buffer.size(); i ++)
     {
         points[i].x = location.x + i;
         points[i].y = calculate_y(i);
