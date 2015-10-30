@@ -35,9 +35,25 @@ using namespace std;
 /*
  * Constructor.
  */
-Module::Module()
+Module::Module(int _type) :
+    type(_type), number(MODULES.size()), processed(false)
 {
-    // Pick a random background and text color
+    switch(_type)
+    {
+        case OUTPUT:
+            name = "output";
+            break;
+        case MIXER:
+            name = "mixer " + to_string(number);
+            break;
+        case OSCILLATOR:
+            name = "oscillator " + to_string(number);
+            break;
+        case VCA:
+            name = "vca " + to_string(number);
+            break;
+    }
+
     color.r = rand() % 128;
     text_color.r = (rand() % 128) + 128;
     color.g = rand() % 128;
@@ -46,8 +62,6 @@ Module::Module()
     text_color.b = (rand() % 128) + 128;
     color.a = 255;
     text_color.a = 255;
-
-    processed = false;
 }
 
 /*

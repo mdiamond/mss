@@ -75,7 +75,7 @@ class Oscillator: public Module
         bool sin_on, tri_on, saw_on, sqr_on;
 
         // Constructor and destructor
-        Oscillator(std::string, int);
+        Oscillator();
         virtual ~Oscillator();
 
         // Member functions

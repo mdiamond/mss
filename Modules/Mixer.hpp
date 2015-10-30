@@ -118,7 +118,7 @@ class Mixer: public Module
         bool auto_attenuate;
 
         // Constructor and destructor
-        Mixer(std::string, int);
+        Mixer();
         virtual ~Mixer();
 
         // Member functions

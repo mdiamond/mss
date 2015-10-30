@@ -73,14 +73,15 @@ class Module
         std::vector<float> output;
 
         // Constructor and destructor
-        Module();
+        Module(int);
         virtual ~Module();
 
         // Virtual member functions
         //   process() is called during each callback function to
         //   populate the modules output buffer and make it available
         //   to other modules
-        virtual void process() = 0;        //   update_control_values() is called during each k rate callback
+        virtual void process() = 0;
+        //   update_control_values() is called during each k rate callback
         //   to make sure that the modules all get their most up to date control
         //   values in order to synthesize sound properly
         virtual void update_unique_control_values() = 0;

@@ -36,18 +36,17 @@ using namespace std;
 /*
  * Constructor.
  */
-Output::Output(int _number)
+Output::Output() :
+    Module(OUTPUT)
 {
-    name = "output";
-    type = OUTPUT;
-    number = _number;
+    int num_inputs = 2;
 
-    dependencies = vector<Module *>(2, NULL);
+    dependencies = vector<Module *>(num_inputs, NULL);
 
-    input_floats = vector<float>(2, 0);
-    input_strs = vector<string>(2, "");
-    inputs = vector<vector<float> *>(2, NULL);
-    inputs_live = vector<bool>(2, false);
+    input_floats = vector<float>(num_inputs, 0);
+    input_strs = vector<string>(num_inputs, "");
+    inputs = vector<vector<float> *>(num_inputs, NULL);
+    inputs_live = vector<bool>(num_inputs, false);
 }
 
 /*

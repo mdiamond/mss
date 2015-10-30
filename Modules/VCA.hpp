@@ -60,7 +60,7 @@ class Vca: public Module
         std::string signal_str, cv_str, cv_amount_str;
 
         // Constructor and destructor
-        Vca(std::string, int);
+        Vca();
         virtual ~Vca();
 
         // Member functions

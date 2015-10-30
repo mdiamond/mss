@@ -39,21 +39,20 @@ using namespace std;
 /*
  * Constructor.
  */
-Mixer::Mixer(string _name, int _number)
+Mixer::Mixer() :
+    Module(MIXER)
 {
-    name = _name;
-    type = MIXER;
-    number = _number;
+    int num_inputs = 16;
 
-    dependencies = vector<Module *>(16, NULL);
+    dependencies = vector<Module *>(num_inputs, NULL);
     output = vector<float>(BUFFER_SIZE, 0);
 
     auto_attenuate = true;
 
-    input_floats = vector<float>(16, 0);
-    input_strs = vector<string>(16, "");
-    inputs = vector<vector<float> *>(16, NULL);
-    inputs_live = vector<bool>(16, false);
+    input_floats = vector<float>(num_inputs, 0);
+    input_strs = vector<string>(num_inputs, "");
+    inputs = vector<vector<float> *>(num_inputs, NULL);
+    inputs_live = vector<bool>(num_inputs, false);
 
     // All multiplier floats should start at 1
     for(unsigned int i = 0; i < input_floats.size(); i ++)

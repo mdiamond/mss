@@ -39,22 +39,21 @@ using namespace std;
 /*
  * Constructor.
  */
-Oscillator::Oscillator(string _name, int _number)
+Oscillator::Oscillator() :
+    Module(OSCILLATOR)
 {
-    name = _name;
-    type = OSCILLATOR;
-    number = _number;
+    int num_inputs = 5;
 
     current_phase = 0;
     previous_phase_offset = 0;
 
-    dependencies = vector<Module *>(5, NULL);
+    dependencies = vector<Module *>(num_inputs, NULL);
     output = vector<float>(BUFFER_SIZE, 0);
 
-    input_floats = vector<float>(5, 0);
-    input_strs = vector<string>(5, "");
-    inputs = vector<vector<float> *>(5, NULL);
-    inputs_live = vector<bool>(5, false);
+    input_floats = vector<float>(num_inputs, 0);
+    input_strs = vector<string>(num_inputs, "");
+    inputs = vector<vector<float> *>(num_inputs, NULL);
+    inputs_live = vector<bool>(num_inputs, false);
 
     // Frequency starts at 0, phase offset at 0,
     // pulse width at .5, range low at -1, range high
@@ -178,8 +177,8 @@ void Oscillator::process()
 void Oscillator::update_unique_graphics_objects()
 {
     // Update the range of the waveform viewer
-    ((Waveform *) graphics_objects[OSCILLATOR_OUTPUT_WAVEFORM])->range_low = input_floats[OSCILLATOR_RANGE_LOW];
-    ((Waveform *) graphics_objects[OSCILLATOR_OUTPUT_WAVEFORM])->range_high = input_floats[OSCILLATOR_RANGE_HIGH];
+    // ((Waveform *) graphics_objects[OSCILLATOR_OUTPUT_WAVEFORM])->range_low = input_floats[OSCILLATOR_RANGE_LOW];
+    // ((Waveform *) graphics_objects[OSCILLATOR_OUTPUT_WAVEFORM])->range_high = input_floats[OSCILLATOR_RANGE_HIGH];
     // Update text boxes
     // if(inputs_live[OSCILLATOR_FREQUENCY])
     //     ((Text_Box *) graphics_objects[OSCILLATOR_FREQUENCY_TEXT_BOX])->update_current_text(to_string(input_floats[OSCILLATOR_FREQUENCY]));

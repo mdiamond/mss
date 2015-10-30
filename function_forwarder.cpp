@@ -325,11 +325,10 @@ void mixer_function_forwarder(Graphics_Object *g)
  */
 void add_oscillator()
 {
-    string name = "oscillator " + to_string(MODULES.size());
-    Oscillator *oscillator = new Oscillator(name, MODULES.size());
+    Oscillator *oscillator = new Oscillator();
     MODULES.push_back(oscillator);
     MODULES_CHANGED = true;
-    cout << "Added module " << name << endl;
+    cout << "Added module " << oscillator->name << endl;
 }
 
 /*
@@ -337,11 +336,10 @@ void add_oscillator()
  */
 void add_VCA()
 {
-    string name = "vca " + to_string(MODULES.size());
-    Vca *vca = new Vca(name, MODULES.size());
+    Vca *vca = new Vca();
     MODULES.push_back(vca);
     MODULES_CHANGED = true;
-    cout << "Added module " << name << endl;
+    cout << "Added module " << vca->name << endl;
 }
 
 /*
@@ -349,11 +347,10 @@ void add_VCA()
  */
 void add_mixer()
 {
-    string name = "mixer " + to_string(MODULES.size());
-    Mixer *mixer = new Mixer(name, MODULES.size());
+    Mixer *mixer = new Mixer();
     MODULES.push_back(mixer);
     MODULES_CHANGED = true;
-    cout << "Added module " << name << endl;
+    cout << "Added module " << mixer->name << endl;
 }
 
 /*

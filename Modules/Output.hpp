@@ -52,7 +52,7 @@ class Output: public Module
 {
     public:
         // Constructor and destructor
-        Output(int);
+        Output();
         virtual ~Output();
 
         // Member functions

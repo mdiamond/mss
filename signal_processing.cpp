@@ -71,7 +71,7 @@ int open_audio_device()
 void initialize_output()
 {
     // Create the output module
-    Output *output = new Output(MODULES.size());
+    Output *output = new Output();
     MODULES.push_back(output);
 
     cout << "Output initialized." << endl;

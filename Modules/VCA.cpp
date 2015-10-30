@@ -39,19 +39,18 @@ using namespace std;
 /*
  * Constructor.
  */
-Vca::Vca(string _name, int _number)
+Vca::Vca() :
+    Module(VCA)
 {
-    name = _name;
-    type = VCA;
-    number = _number;
+    int num_inputs = 3;
 
-    dependencies = vector<Module *>(3, NULL);
+    dependencies = vector<Module *>(num_inputs, NULL);
     output = vector<float>(BUFFER_SIZE, 0);
 
-    input_floats = vector<float>(3, 1);
-    input_strs = vector<string>(3, "");
-    inputs = vector<vector<float> *>(3, NULL);
-    inputs_live = vector<bool>(3, false);
+    input_floats = vector<float>(num_inputs, 1);
+    input_strs = vector<string>(num_inputs, "");
+    inputs = vector<vector<float> *>(num_inputs, NULL);
+    inputs_live = vector<bool>(num_inputs, false);
 
     // The signal input needs to be 0, while the others
     // need to be 1 to start out
