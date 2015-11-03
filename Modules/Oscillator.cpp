@@ -42,18 +42,8 @@ using namespace std;
 Oscillator::Oscillator() :
     Module(OSCILLATOR)
 {
-    int num_inputs = 5;
-
     current_phase = 0;
     previous_phase_offset = 0;
-
-    dependencies = vector<Module *>(num_inputs, NULL);
-    output = vector<float>(BUFFER_SIZE, 0);
-
-    input_floats = vector<float>(num_inputs, 0);
-    input_strs = vector<string>(num_inputs, "");
-    inputs = vector<vector<float> *>(num_inputs, NULL);
-    inputs_live = vector<bool>(num_inputs, false);
 
     // Frequency starts at 0, phase offset at 0,
     // pulse width at .5, range low at -1, range high
@@ -132,9 +122,9 @@ void Oscillator::process()
 
         if(inputs_live[OSCILLATOR_PHASE_OFFSET])
         {
-            int previous_phase_offset = input_floats[OSCILLATOR_PHASE_OFFSET];
             input_floats[OSCILLATOR_PHASE_OFFSET] = inputs[OSCILLATOR_PHASE_OFFSET]->at(i);
             phase_offset_diff = input_floats[OSCILLATOR_PHASE_OFFSET] - previous_phase_offset;
+            previous_phase_offset = input_floats[OSCILLATOR_PHASE_OFFSET];
         }
 
         // Calculate and store the current samples amplitude

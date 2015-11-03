@@ -42,16 +42,6 @@ using namespace std;
 Vca::Vca() :
     Module(VCA)
 {
-    int num_inputs = 3;
-
-    dependencies = vector<Module *>(num_inputs, NULL);
-    output = vector<float>(BUFFER_SIZE, 0);
-
-    input_floats = vector<float>(num_inputs, 1);
-    input_strs = vector<string>(num_inputs, "");
-    inputs = vector<vector<float> *>(num_inputs, NULL);
-    inputs_live = vector<bool>(num_inputs, false);
-
     // The signal input needs to be 0, while the others
     // need to be 1 to start out
     input_floats[0] = 0;

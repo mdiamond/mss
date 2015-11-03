@@ -38,21 +38,36 @@ using namespace std;
 Module::Module(int _type) :
     type(_type), number(MODULES.size()), processed(false)
 {
+    int num_inputs;
+
     switch(_type)
     {
         case OUTPUT:
             name = "output";
+            num_inputs = 2;
             break;
         case MIXER:
             name = "mixer " + to_string(number);
+            num_inputs = 16;
             break;
         case OSCILLATOR:
             name = "oscillator " + to_string(number);
+            num_inputs = 5;
             break;
         case VCA:
             name = "vca " + to_string(number);
+            num_inputs = 3;
             break;
     }
+
+    dependencies = vector<Module *>(num_inputs, NULL);
+
+    input_floats = vector<float>(num_inputs, 0);
+    input_strs = vector<string>(num_inputs, "");
+    inputs = vector<vector<float> *>(num_inputs, NULL);
+    inputs_live = vector<bool>(num_inputs, false);
+
+    output = vector<float>(BUFFER_SIZE, 0);
 
     color.r = rand() % 128;
     text_color.r = (rand() % 128) + 128;

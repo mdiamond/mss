@@ -42,17 +42,7 @@ using namespace std;
 Mixer::Mixer() :
     Module(MIXER)
 {
-    int num_inputs = 16;
-
-    dependencies = vector<Module *>(num_inputs, NULL);
-    output = vector<float>(BUFFER_SIZE, 0);
-
     auto_attenuate = true;
-
-    input_floats = vector<float>(num_inputs, 0);
-    input_strs = vector<string>(num_inputs, "");
-    inputs = vector<vector<float> *>(num_inputs, NULL);
-    inputs_live = vector<bool>(num_inputs, false);
 
     // All multiplier floats should start at 1
     for(unsigned int i = 0; i < input_floats.size(); i ++)

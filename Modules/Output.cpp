@@ -39,14 +39,7 @@ using namespace std;
 Output::Output() :
     Module(OUTPUT)
 {
-    int num_inputs = 2;
 
-    dependencies = vector<Module *>(num_inputs, NULL);
-
-    input_floats = vector<float>(num_inputs, 0);
-    input_strs = vector<string>(num_inputs, "");
-    inputs = vector<vector<float> *>(num_inputs, NULL);
-    inputs_live = vector<bool>(num_inputs, false);
 }
 
 /*
