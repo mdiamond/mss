@@ -29,6 +29,7 @@
 enum Graphics_Objects
 {
     BUTTON = 0,
+    INPUT_TOGGLE_BUTTON,
     PAGE,
     RECT,
     TEXT,

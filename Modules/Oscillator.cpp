@@ -300,7 +300,7 @@ void Oscillator::calculate_unique_graphics_objects()
 
         // graphics_objects[13] is the display text "RANGE (LOW - HIGH):"
         location = {x_text, y10, 0, 0};
-        text = new Text("oscillator range low/high (text)", location, text_color, "RANGE LOW  HIGH:", FONT_REGULAR);
+        text = new Text("oscillator range low/high (text)", location, text_color, "RANGE LOW & HIGH:", FONT_REGULAR);
         graphics_objects.push_back(text);
 
         // graphics_objects[14] is the text box for entering and displaying range low

@@ -22,6 +22,7 @@
 #include "../signal_processing.hpp"
 
 // Included classes
+#include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
 #include "../Module.hpp"
@@ -84,6 +85,8 @@ void Output::calculate_unique_graphics_objects()
     SDL_Rect location;
     Text *text;
     Text_Box *text_box;
+    Toggle_Button *toggle_button;
+    Input_Toggle_Button *input_toggle_button;
     Waveform *waveform;
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
@@ -115,7 +118,7 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[4] is the toggle button to turn audio on or off
         location = {x_button, y4, 25, 15};
-        Toggle_Button *toggle_button = new Toggle_Button("on/off button (toggle_button)", location, GREEN,
+        toggle_button = new Toggle_Button("on/off button (toggle_button)", location, GREEN,
                                                   BLACK, BLACK, WHITE, FONT_BOLD, "ON", "OFF",
                                                   AUDIO_ON, this);
         graphics_objects.push_back(toggle_button);
@@ -138,9 +141,10 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[8] is the toggle button for selecting or disabling the left input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("output left input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OUTPUT_INPUT_L], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("output left input (input toggle button)", location, WHITE,
+                                                BLACK, RED, WHITE, FONT_SMALL, "I", "I",
+                                                inputs_live[OUTPUT_INPUT_L], this, graphics_objects[OUTPUT_INPUT_L_TEXT_BOX]);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[9] is the waveform visualizer for the right speaker
         location = {x_text_box, y8, w_waveform, h_waveform};
@@ -160,9 +164,10 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[12] is the toggle button for selecting or disabling frequency input
         location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("output right input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OUTPUT_INPUT_R], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("output right input (input toggle button)", location, WHITE,
+                                                BLACK, RED, WHITE, FONT_SMALL, "I", "I",
+                                                inputs_live[OUTPUT_INPUT_R], this, graphics_objects[OUTPUT_INPUT_R_TEXT_BOX]);
+        graphics_objects.push_back(input_toggle_button);
     }
 
     // Otherwise, simply update the locations of all of the graphics objects

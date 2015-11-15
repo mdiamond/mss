@@ -25,6 +25,7 @@
 // Included classes
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Button.hpp"
+#include "Graphics_Objects/Input_Toggle_Button.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
 #include "Graphics_Objects/Toggle_Button.hpp"
 #include "Graphics_Objects/Waveform.hpp"
@@ -423,14 +424,14 @@ void function_forwarder(Graphics_Object *g)
         CURRENT_DST_TEXT_BOX = NULL;
     }
 
-    else if(g->type == TOGGLE_BUTTON && g->name.size() >= 21 && 
-            g->name.substr(g->name.size() - 21) == "input (toggle button)")
+    else if(g->type == INPUT_TOGGLE_BUTTON && g->name.size() >= 27 && 
+            g->name.substr(g->name.size() - 27) == "input (input toggle button)")
     {
         SELECTING_SRC = !SELECTING_SRC;
         if(SELECTING_SRC == false)
             reset_alphas();
         else
-            CURRENT_DST_TEXT_BOX = get_associated_input_box(g);
+            CURRENT_DST_TEXT_BOX = ((Text_Box *) ((Input_Toggle_Button *) g)->input_text_box);
 
         return;
     }
