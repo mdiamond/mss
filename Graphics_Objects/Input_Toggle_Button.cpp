@@ -26,9 +26,9 @@
 
 using namespace std;
 
-/**********************************
- * TOGGLE BUTTON MEMBER FUNCTIONS *
- **********************************/
+/****************************************
+ * INPUT TOGGLE BUTTON MEMBER FUNCTIONS *
+ ****************************************/
 
 /*
  * Constructor.
@@ -84,8 +84,8 @@ void Input_Toggle_Button::clicked()
     {
         cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
-        function_forwarder(this);
         toggle();
+        function_forwarder(this);
         OBJECT_CLICKED = true;
     }
 }

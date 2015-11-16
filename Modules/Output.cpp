@@ -22,6 +22,7 @@
 #include "../signal_processing.hpp"
 
 // Included classes
+#include "../Graphics_Objects/Input_Text_Box.hpp"
 #include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
@@ -84,7 +85,7 @@ void Output::calculate_unique_graphics_objects()
         y3, y4, y5, y6, y7, y8, y9, y10;
     SDL_Rect location;
     Text *text;
-    Text_Box *text_box;
+    Input_Text_Box *input_text_box;
     Toggle_Button *toggle_button;
     Input_Toggle_Button *input_toggle_button;
     Waveform *waveform;
@@ -135,9 +136,9 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[7] is the text box for entering and displaying input right
         location = {x_text_box, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("output input left (text box)", location, text_color,
-                                "", "input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("output input left (input text box)", location, text_color,
+                                "", "input", FONT_SMALL, this, OUTPUT_INPUT_L);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[8] is the toggle button for selecting or disabling the left input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
@@ -158,9 +159,9 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[11] is the text box for entering and displaying input left
         location = {x_text_box, y10, w_text_box, h_text_box};
-        text_box = new Text_Box("output input right (text box)", location, text_color,
-                                "", "input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("output input right (input text box)", location, text_color,
+                                "", "input", FONT_SMALL, this, OUTPUT_INPUT_R);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[12] is the toggle button for selecting or disabling frequency input
         location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};

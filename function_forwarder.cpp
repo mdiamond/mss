@@ -107,35 +107,7 @@ bool can_floatify(string *string)
  */
 void output_function_forwarder(Graphics_Object *g)
 {
-    Output *output = (Output *) g->parent;
-    Text_Box *text_box = NULL;
-    Module *src = NULL;
-
-    if(g->type == TEXT_BOX)
-    {
-        text_box = (Text_Box *) g;
-
-        if(can_floatify(&text_box->text.text))
-        {
-            cout << RED_STDOUT << "The output module can only take other modules' output as input" << DEFAULT_STDOUT << endl;
-            return;
-        }
-
-        src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
-        if(src == NULL)
-            return;
-
-        if(g->name == "output input left (text box)")
-            output->set(src, 0);
-        else if(g->name == "output input right (text box)")
-            output->set(src, 1);
-    }
-    else if(g->name == "on/off button (toggle_button)")
-    {
-        output->toggle_audio_on();
-        Toggle_Button *toggle_button = (Toggle_Button *) g;
-        toggle_button->toggle();
-    }
+    // Output *output = (Output *) g->parent;
 }
 
 /*
@@ -144,58 +116,15 @@ void output_function_forwarder(Graphics_Object *g)
 void oscillator_function_forwarder(Graphics_Object *g)
 {
     Oscillator *oscillator = (Oscillator *) g->parent;
-    Text_Box *text_box = NULL;
-    Module *src = NULL;
-    float val = 0;
 
-    if(g->type == TEXT_BOX)
-    {
-        text_box = (Text_Box *) g;
-
-        if(can_floatify(&text_box->text.text))
-        {
-            val = stof(text_box->text.text.c_str());
-
-            if(g->name == "oscillator frequency (text box)")
-                oscillator->set(val, 0);
-            else if(g->name == "oscillator phase offset (text box)")
-                oscillator->set(val, 1);
-            else if(g->name == "oscillator pulse width (text box)")
-                oscillator->set(val, 2);
-            else if(g->name == "oscillator range low (text box)")
-                oscillator->set(val, 3);
-            else if(g->name == "oscillator range high (text box)")
-                oscillator->set(val, 4);
-        }
-        else
-        {
-            src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
-            if(src == NULL)
-                return;
-
-            else if(g->name == "oscillator frequency (text box)")
-                oscillator->set(src, 0);
-            else if(g->name == "oscillator phase offset (text box)")
-                oscillator->set(src, 1);
-            else if(g->name == "oscillator pulse width (text box)")
-                oscillator->set(src, 2);
-            else if(g->name == "oscillator range low (text box)")
-                oscillator->set(src, 3);
-            else if(g->name == "oscillator range high (text box)")
-                oscillator->set(src, 4);
-        }
-    }
-    else
-    {
-        if(g->name == "oscillator sin toggle (toggle button)")
-            oscillator->switch_waveform(SIN);
-        else if(g->name == "oscillator tri toggle (toggle button)")
-            oscillator->switch_waveform(TRI);
-        else if(g->name == "oscillator saw toggle (toggle button)")
-            oscillator->switch_waveform(SAW);
-        else if(g->name == "oscillator sqr toggle (toggle button)")
-            oscillator->switch_waveform(SQR);
-    }
+    if(g->name == "oscillator sin toggle (toggle button)")
+        oscillator->switch_waveform(SIN);
+    else if(g->name == "oscillator tri toggle (toggle button)")
+        oscillator->switch_waveform(TRI);
+    else if(g->name == "oscillator saw toggle (toggle button)")
+        oscillator->switch_waveform(SAW);
+    else if(g->name == "oscillator sqr toggle (toggle button)")
+        oscillator->switch_waveform(SQR);
 }
 
 /*
@@ -203,39 +132,7 @@ void oscillator_function_forwarder(Graphics_Object *g)
  */
 void VCA_function_forwarder(Graphics_Object *g)
 {
-    Vca *vca = (Vca *) g->parent;
-    Text_Box *text_box = NULL;
-    Module *src = NULL;
-    float val = 0;
-
-    if(g->type == TEXT_BOX)
-    {
-        text_box = (Text_Box *) g;
-
-        if(can_floatify(&text_box->text.text))
-        {
-            val = stof(text_box->text.text.c_str());
-
-            if(g->name == "vca signal (text box)" || g->name == "vca cv (text box)")
-                cout << RED_STDOUT << "The VCA module's top two input fields must be other modules"
-                     << DEFAULT_STDOUT << endl;
-            else if(g->name == "vca cv amount (text box)")
-                vca->set(val, 2);
-        }
-        else
-        {
-            src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
-            if(src == NULL)
-                return;
-
-            else if(g->name == "vca signal (text box)")
-                vca->set(src, 0);
-            else if(g->name == "vca cv (text box)")
-                vca->set(src, 1);
-            else if(g->name == "vca cv amount (text box)")
-                vca->set(src, 2);
-        }
-    }
+    // Vca *vca = (Vca *) g->parent;
 }
 
 /*
@@ -243,82 +140,7 @@ void VCA_function_forwarder(Graphics_Object *g)
  */
 void mixer_function_forwarder(Graphics_Object *g)
 {
-    Mixer *mixer = (Mixer *) g->parent;
-    Text_Box *text_box = NULL;
-    Module *src = NULL;
-    float val = 0;
-
-    if(g->type == TEXT_BOX)
-    {
-        text_box = (Text_Box *) g;
-
-        if(can_floatify(&text_box->text.text))
-        {
-            val = stof(text_box->text.text.c_str());
-
-            if(g->name == "mixer signal 1 (text box)" || g->name == "mixer signal 2 (text box)" ||
-               g->name == "mixer signal 3 (text box)" || g->name == "mixer signal 4 (text box)" ||
-               g->name == "mixer signal 5 (text box)" || g->name == "mixer signal 6 (text box)" ||
-               g->name == "mixer signal 7 (text box)" || g->name == "mixer signal 8 (text box)")
-                cout << RED_STDOUT << "The mixer modules left hand input fields must be other modules"
-                     << DEFAULT_STDOUT << endl;
-            else if(g->name == "mixer signal 1 multiplier (text box)")
-                mixer->set(val, 1);
-            else if(g->name == "mixer signal 2 multiplier (text box)")
-                mixer->set(val, 3);
-            else if(g->name == "mixer signal 3 multiplier (text box)")
-                mixer->set(val, 5);
-            else if(g->name == "mixer signal 4 multiplier (text box)")
-                mixer->set(val, 7);
-            else if(g->name == "mixer signal 5 multiplier (text box)")
-                mixer->set(val, 9);
-            else if(g->name == "mixer signal 6 multiplier (text box)")
-                mixer->set(val, 11);
-            else if(g->name == "mixer signal 7 multiplier (text box)")
-                mixer->set(val, 13);
-            else if(g->name == "mixer signal 8 multiplier (text box)")
-                mixer->set(val, 15);
-        }
-        else
-        {
-            src = find_module_as_source(&text_box->text.text, &MODULES, g->parent);
-            if(src == NULL)
-                return;
-
-            else if(g->name == "mixer signal 1 (text box)")
-                mixer->set(src, 0);
-            else if(g->name == "mixer signal 1 multiplier (text box)")
-                mixer->set(src, 1);
-            else if(g->name == "mixer signal 2 (text box)")
-                mixer->set(src, 2);
-            else if(g->name == "mixer signal 2 multiplier (text box)")
-                mixer->set(src, 3);
-            else if(g->name == "mixer signal 3 (text box)")
-                mixer->set(src, 4);
-            else if(g->name == "mixer signal 3 multiplier (text box)")
-                mixer->set(src, 5);
-            else if(g->name == "mixer signal 4 (text box)")
-                mixer->set(src, 6);
-            else if(g->name == "mixer signal 4 multiplier (text box)")
-                mixer->set(src, 7);
-            else if(g->name == "mixer signal 5 (text box)")
-                mixer->set(src, 8);
-            else if(g->name == "mixer signal 5 multiplier (text box)")
-                mixer->set(src, 9);
-            else if(g->name == "mixer signal 6 (text box)")
-                mixer->set(src, 10);
-            else if(g->name == "mixer signal 6 multiplier (text box)")
-                mixer->set(src, 11);
-            else if(g->name == "mixer signal 7 (text box)")
-                mixer->set(src, 12);
-            else if(g->name == "mixer signal 7 multiplier (text box)")
-                mixer->set(src, 13);
-            else if(g->name == "mixer signal 8 (text box)")
-                mixer->set(src, 14);
-            else if(g->name == "mixer signal 8 multiplier (text box)")
-                mixer->set(src, 15);
-        }
-    }
+    // Mixer *mixer = (Mixer *) g->parent;
 }
 
 /*

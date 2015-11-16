@@ -19,6 +19,7 @@
  *************************/
 
 Module *find_module(std::string *, std::vector<Module *> *);
+Module *find_module_as_source(std::string *, std::vector<Module *> *, Module *);
 
 bool can_floatify(std::string *);
 

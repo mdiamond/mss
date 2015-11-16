@@ -1,7 +1,7 @@
 /*
  * Matthew Diamond 2015
  * The Text Box graphics object. This object allows the user
- * to type into it. The data entered can be used to change variables.
+ * to type into it. The data entered can be used to change parameters.
  */
 
 #ifndef synth_text_box_h

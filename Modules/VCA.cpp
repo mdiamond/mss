@@ -26,6 +26,7 @@
 // Included classes
 #include "../Module.hpp"
 #include "VCA.hpp"
+#include "../Graphics_Objects/Input_Text_Box.hpp"
 #include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Text.hpp"
 #include "../Graphics_Objects/Toggle_Button.hpp"
@@ -106,7 +107,7 @@ void Vca::calculate_unique_graphics_objects()
         y3, y4, y5, y6, y7;
     SDL_Rect location;
     Text *text;
-    Text_Box *text_box;
+    Input_Text_Box *input_text_box;
     Input_Toggle_Button *input_toggle_button;
     Waveform *waveform;
 
@@ -144,9 +145,9 @@ void Vca::calculate_unique_graphics_objects()
 
         // graphics_objects[5] is the text box for entering and displaying a signal
         location = {x_text_box, y5, w_signals, h_text_box};
-        text_box = new Text_Box("vca signal (text box)", location, text_color,
-                                "", "input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("vca signal (input text box)", location, text_color,
+                                "", "input", FONT_SMALL, this, VCA_SIGNAL);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[6] is the toggle button for selecting or disabling signal input
         location = {x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box};
@@ -157,9 +158,9 @@ void Vca::calculate_unique_graphics_objects()
 
         // graphics_objects[7] is the text box for entering and displaying control values
         location = {x_signal_cv, y5, w_signals, h_text_box};
-        text_box = new Text_Box("vca cv (text box)", location, text_color,
-                                "", "input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("vca cv (input text box)", location, text_color,
+                                "", "input", FONT_SMALL, this, VCA_CV);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[8] is the toggle button for selecting or disabling cv input
         location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
@@ -175,9 +176,9 @@ void Vca::calculate_unique_graphics_objects()
 
         // graphics_objects[10] is the text box for entering and displaying control value amounts
         location = {x_text_box, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("vca cv amount (text box)", location, text_color,
-                                "", "# or input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("vca cv amount (input text box)", location, text_color,
+                                "", "# or input", FONT_SMALL, this, VCA_CV_AMOUNT);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[11] is the toggle button for selecting or disabling cv amount input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};

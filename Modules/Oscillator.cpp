@@ -26,6 +26,7 @@
 // Included classes
 #include "../Module.hpp"
 #include "Oscillator.hpp"
+#include "../Graphics_Objects/Input_Text_Box.hpp"
 #include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Text.hpp"
 #include "../Graphics_Objects/Toggle_Button.hpp"
@@ -212,7 +213,7 @@ void Oscillator::calculate_unique_graphics_objects()
         w_wave_selector;
     SDL_Rect location;
     Text *text;
-    Text_Box *text_box;
+    Input_Text_Box *input_text_box;
     Waveform *waveform;
     Toggle_Button *toggle_button;
     Input_Toggle_Button *input_toggle_button;
@@ -256,9 +257,9 @@ void Oscillator::calculate_unique_graphics_objects()
 
         // graphics_objects[5] is the text box for entering and displaying frequency
         location = {x_text_box, y5, w_text_box, h_text_box};
-        text_box = new Text_Box("oscillator frequency (text box)", location, text_color,
-                                "", "# or input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("oscillator frequency (input text box)", location, text_color,
+                                "", "# or input", FONT_SMALL, this, OSCILLATOR_FREQUENCY);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[6] is the toggle button for selecting or disabling frequency input
         location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
@@ -274,9 +275,9 @@ void Oscillator::calculate_unique_graphics_objects()
 
         // graphics_objects[8] is the text box for entering and displaying phase offset
         location = {x_text_box, y7, w_text_box, h_text_box};
-        text_box = new Text_Box("oscillator phase offset (text box)", location, text_color,
-                                "", "# or input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("oscillator phase offset (input text box)", location, text_color,
+                                "", "# or input", FONT_SMALL, this, OSCILLATOR_PHASE_OFFSET);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[9] is the toggle button for selecting or disabling phase offset input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
@@ -292,9 +293,9 @@ void Oscillator::calculate_unique_graphics_objects()
 
         // graphics_objects[11] is the text box for entering and displaying pulse width
         location = {x_text_box, y9, w_text_box, h_text_box};
-        text_box = new Text_Box("oscillator pulse width (text box)", location, text_color,
-                                "", "# or input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("oscillator pulse width (input text box)", location, text_color,
+                                "", "# or input", FONT_SMALL, this, OSCILLATOR_PULSE_WIDTH);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[12] is the toggle button for selecting or disabling pulse width input
         location = {x_input_toggle_button, y9, w_input_toggle_button, h_text_box};
@@ -310,9 +311,9 @@ void Oscillator::calculate_unique_graphics_objects()
 
         // graphics_objects[14] is the text box for entering and displaying range low
         location = {x_text_box, y11, w_range, h_text_box};
-        text_box = new Text_Box("oscillator range low (text box)", location, text_color,
-                                "", "# or input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("oscillator range low (input text box)", location, text_color,
+                                "", "# or input", FONT_SMALL, this, OSCILLATOR_RANGE_LOW);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[15] is the toggle button for selecting or disabling range low input
         location = {x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box};
@@ -323,9 +324,9 @@ void Oscillator::calculate_unique_graphics_objects()
 
         // graphics_objects[16] is the text box for entering and displaying range high
         location = {x_range_high, y11, w_range, h_text_box};
-        text_box = new Text_Box("oscillator range high (text box)", location, text_color,
-                                "", "# or input", FONT_SMALL, this);
-        graphics_objects.push_back(text_box);
+        input_text_box = new Input_Text_Box("oscillator range high (input text box)", location, text_color,
+                                "", "# or input", FONT_SMALL, this, OSCILLATOR_RANGE_HIGH);
+        graphics_objects.push_back(input_text_box);
 
         // graphics_objects[17] is the toggle button for selecting or disabling range high input
         location = {x_input_toggle_button, y11, w_input_toggle_button, h_text_box};

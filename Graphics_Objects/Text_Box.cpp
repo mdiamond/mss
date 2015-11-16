@@ -21,6 +21,7 @@
 
 // Included classes
 #include "../Graphics_Object.hpp"
+#include "Input_Text_Box.hpp"
 #include "Rect.hpp"
 #include "Text_Box.hpp"
 
@@ -172,15 +173,20 @@ void Text_Box::clicked()
  */
 void Text_Box::entered()
 {
-    cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
+    if(type == TEXT_BOX)
+    {
+        cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
 
-    SDL_StopTextInput();
-    text.text = typing_text.text;
-    function_forwarder(this);
-    if(!can_floatify(&text.text))
-        text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
-    text.updated = true;
-    ACTIVE_TEXT_BOX = NULL;
-    active = false;
-    typing_text.text = "";
+        SDL_StopTextInput();
+        text.text = typing_text.text;
+        function_forwarder(this);
+        if(!can_floatify(&text.text))
+            text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
+        text.updated = true;
+        ACTIVE_TEXT_BOX = NULL;
+        active = false;
+        typing_text.text = "";
+    }
+    else
+        ((Input_Text_Box *) this)->entered();
 }
