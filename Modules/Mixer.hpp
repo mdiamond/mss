@@ -126,9 +126,6 @@ class Mixer: public Module
         virtual void calculate_unique_graphics_objects();
         virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
-        void set_signal(Module *, short);
-        void set_signal_multiplier(Module *, short);
-        void set_signal_multiplier(float, short);
 };
 
 #endif

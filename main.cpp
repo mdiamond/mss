@@ -42,6 +42,7 @@ Color_Modifier DEFAULT_STDOUT(FG_DEFAULT);
 Color_Modifier RED_STDOUT(FG_RED);
 Color_Modifier GREEN_STDOUT(FG_GREEN);
 Color_Modifier BLUE_STDOUT(FG_BLUE);
+Color_Modifier PINK_STDOUT(FG_PINK);
 
 // Audio information
 int SAMPLE_RATE = 44100;
@@ -106,7 +107,7 @@ Text_Box *ACTIVE_TEXT_BOX = NULL;
 
 // Selecting a source module or not
 bool SELECTING_SRC = false;
-Text_Box *CURRENT_DST_TEXT_BOX = NULL;
+Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON = NULL;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

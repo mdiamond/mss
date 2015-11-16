@@ -87,9 +87,10 @@ void Toggle_Button::clicked()
 {
     if(!OBJECT_CLICKED)
     {
-        cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+        cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
         function_forwarder(this);
+        toggle();
         OBJECT_CLICKED = true;
     }
 }

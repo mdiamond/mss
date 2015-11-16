@@ -126,9 +126,9 @@ void output_function_forwarder(Graphics_Object *g)
             return;
 
         if(g->name == "output input left (text box)")
-            output->set_input_l(src);
+            output->set(src, 0);
         else if(g->name == "output input right (text box)")
-            output->set_input_r(src);
+            output->set(src, 1);
     }
     else if(g->name == "on/off button (toggle_button)")
     {
@@ -157,15 +157,15 @@ void oscillator_function_forwarder(Graphics_Object *g)
             val = stof(text_box->text.text.c_str());
 
             if(g->name == "oscillator frequency (text box)")
-                oscillator->set_frequency(val);
+                oscillator->set(val, 0);
             else if(g->name == "oscillator phase offset (text box)")
-                oscillator->set_phase_offset(val);
+                oscillator->set(val, 1);
             else if(g->name == "oscillator pulse width (text box)")
-                oscillator->set_pulse_width(val);
+                oscillator->set(val, 2);
             else if(g->name == "oscillator range low (text box)")
-                oscillator->set_range_low(val);
+                oscillator->set(val, 3);
             else if(g->name == "oscillator range high (text box)")
-                oscillator->set_range_high(val);
+                oscillator->set(val, 4);
         }
         else
         {
@@ -174,15 +174,15 @@ void oscillator_function_forwarder(Graphics_Object *g)
                 return;
 
             else if(g->name == "oscillator frequency (text box)")
-                oscillator->set_frequency(src);
+                oscillator->set(src, 0);
             else if(g->name == "oscillator phase offset (text box)")
-                oscillator->set_phase_offset(src);
+                oscillator->set(src, 1);
             else if(g->name == "oscillator pulse width (text box)")
-                oscillator->set_pulse_width(src);
+                oscillator->set(src, 2);
             else if(g->name == "oscillator range low (text box)")
-                oscillator->set_range_low(src);
+                oscillator->set(src, 3);
             else if(g->name == "oscillator range high (text box)")
-                oscillator->set_range_high(src);
+                oscillator->set(src, 4);
         }
     }
     else
@@ -220,7 +220,7 @@ void VCA_function_forwarder(Graphics_Object *g)
                 cout << RED_STDOUT << "The VCA module's top two input fields must be other modules"
                      << DEFAULT_STDOUT << endl;
             else if(g->name == "vca cv amount (text box)")
-                vca->set_cv_amount(val);
+                vca->set(val, 2);
         }
         else
         {
@@ -229,11 +229,11 @@ void VCA_function_forwarder(Graphics_Object *g)
                 return;
 
             else if(g->name == "vca signal (text box)")
-                vca->set_signal(src);
+                vca->set(src, 0);
             else if(g->name == "vca cv (text box)")
-                vca->set_cv(src);
+                vca->set(src, 1);
             else if(g->name == "vca cv amount (text box)")
-                vca->set_cv_amount(src);
+                vca->set(src, 2);
         }
     }
 }
@@ -263,21 +263,21 @@ void mixer_function_forwarder(Graphics_Object *g)
                 cout << RED_STDOUT << "The mixer modules left hand input fields must be other modules"
                      << DEFAULT_STDOUT << endl;
             else if(g->name == "mixer signal 1 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 1);
+                mixer->set(val, 1);
             else if(g->name == "mixer signal 2 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 2);
+                mixer->set(val, 3);
             else if(g->name == "mixer signal 3 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 3);
+                mixer->set(val, 5);
             else if(g->name == "mixer signal 4 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 4);
+                mixer->set(val, 7);
             else if(g->name == "mixer signal 5 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 5);
+                mixer->set(val, 9);
             else if(g->name == "mixer signal 6 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 6);
+                mixer->set(val, 11);
             else if(g->name == "mixer signal 7 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 7);
+                mixer->set(val, 13);
             else if(g->name == "mixer signal 8 multiplier (text box)")
-                mixer->set_signal_multiplier(val, 8);
+                mixer->set(val, 15);
         }
         else
         {
@@ -286,37 +286,37 @@ void mixer_function_forwarder(Graphics_Object *g)
                 return;
 
             else if(g->name == "mixer signal 1 (text box)")
-                mixer->set_signal(src, 1);
+                mixer->set(src, 0);
             else if(g->name == "mixer signal 1 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 1);
+                mixer->set(src, 1);
             else if(g->name == "mixer signal 2 (text box)")
-                mixer->set_signal(src, 2);
+                mixer->set(src, 2);
             else if(g->name == "mixer signal 2 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 2);
+                mixer->set(src, 3);
             else if(g->name == "mixer signal 3 (text box)")
-                mixer->set_signal(src, 3);
+                mixer->set(src, 4);
             else if(g->name == "mixer signal 3 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 3);
+                mixer->set(src, 5);
             else if(g->name == "mixer signal 4 (text box)")
-                mixer->set_signal(src, 4);
+                mixer->set(src, 6);
             else if(g->name == "mixer signal 4 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 4);
+                mixer->set(src, 7);
             else if(g->name == "mixer signal 5 (text box)")
-                mixer->set_signal(src, 5);
+                mixer->set(src, 8);
             else if(g->name == "mixer signal 5 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 5);
+                mixer->set(src, 9);
             else if(g->name == "mixer signal 6 (text box)")
-                mixer->set_signal(src, 6);
+                mixer->set(src, 10);
             else if(g->name == "mixer signal 6 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 6);
+                mixer->set(src, 11);
             else if(g->name == "mixer signal 7 (text box)")
-                mixer->set_signal(src, 7);
+                mixer->set(src, 12);
             else if(g->name == "mixer signal 7 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 7);
+                mixer->set(src, 13);
             else if(g->name == "mixer signal 8 (text box)")
-                mixer->set_signal(src, 8);
+                mixer->set(src, 14);
             else if(g->name == "mixer signal 8 multiplier (text box)")
-                mixer->set_signal_multiplier(src, 8);
+                mixer->set(src, 15);
         }
     }
 }
@@ -396,45 +396,22 @@ void no_parent_function_forwarder(Graphics_Object *g)
         previous_page();
 }
 
-Text_Box *get_associated_input_box(Graphics_Object *g)
-{
-    for(unsigned int i = 0; i < g->parent->graphics_objects.size(); i ++)
-    {
-        if(g->parent->graphics_objects[i] == g)
-        {
-            return (Text_Box *) g->parent->graphics_objects[i - 1];
-        }
-    }
-
-    return NULL;
-}
-
 /*
  * Whenever an object with an associated function is
  * clicked, call that function.
  */
 void function_forwarder(Graphics_Object *g)
 {
-    if(g->type == RECT && SELECTING_SRC && CURRENT_DST_TEXT_BOX != NULL)
+    if(g->type == RECT && SELECTING_SRC && CURRENT_INPUT_TOGGLE_BUTTON != NULL)
     {
-        CURRENT_DST_TEXT_BOX->typing_text.text = g->parent->name;
-        CURRENT_DST_TEXT_BOX->entered();
+        CURRENT_INPUT_TOGGLE_BUTTON->parent->set(g->parent, CURRENT_INPUT_TOGGLE_BUTTON->input_num);
         SELECTING_SRC = false;
         reset_alphas();
-        CURRENT_DST_TEXT_BOX = NULL;
+        CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }
 
-    else if(g->type == INPUT_TOGGLE_BUTTON && g->name.size() >= 27 && 
-            g->name.substr(g->name.size() - 27) == "input (input toggle button)")
-    {
-        SELECTING_SRC = !SELECTING_SRC;
-        if(SELECTING_SRC == false)
-            reset_alphas();
-        else
-            CURRENT_DST_TEXT_BOX = ((Text_Box *) ((Input_Toggle_Button *) g)->input_text_box);
-
-        return;
-    }
+    // else if(((Input_Toggle_Button *) g)->b)
+    //     ((Input_Toggle_Button *) g)->b = !((Input_Toggle_Button *) g)->b;
 
     else if(g->type != RECT)
     {

@@ -26,6 +26,7 @@
 // Included classes
 #include "../Module.hpp"
 #include "VCA.hpp"
+#include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Text.hpp"
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
@@ -106,7 +107,7 @@ void Vca::calculate_unique_graphics_objects()
     SDL_Rect location;
     Text *text;
     Text_Box *text_box;
-    Toggle_Button *toggle_button;
+    Input_Toggle_Button *input_toggle_button;
     Waveform *waveform;
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
@@ -149,9 +150,10 @@ void Vca::calculate_unique_graphics_objects()
 
         // graphics_objects[6] is the toggle button for selecting or disabling signal input
         location = {x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("vca signal input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_SIGNAL], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("vca signal input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_SIGNAL],
+                                          this, VCA_SIGNAL);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[7] is the text box for entering and displaying control values
         location = {x_signal_cv, y5, w_signals, h_text_box};
@@ -161,9 +163,10 @@ void Vca::calculate_unique_graphics_objects()
 
         // graphics_objects[8] is the toggle button for selecting or disabling cv input
         location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("vca cv input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("vca cv input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV],
+                                          this, VCA_CV);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[9] is the display text "CV AMOUNT:"
         location = {x_text, y6, 0, 0};
@@ -178,9 +181,10 @@ void Vca::calculate_unique_graphics_objects()
 
         // graphics_objects[11] is the toggle button for selecting or disabling cv amount input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("vca cv amount input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV_AMOUNT], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("vca cv amount input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV_AMOUNT],
+                                          this, VCA_CV_AMOUNT);
+        graphics_objects.push_back(input_toggle_button);
     }
 
     // Otherwise, simply update the locations of all of the graphics objects
@@ -213,28 +217,4 @@ void Vca::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
         graphics_objects[VCA_CV_AMOUNT_INPUT_TOGGLE_BUTTON]->update_location(location);
     }
-}
-
-void Vca::set_signal(Module *src)
-{
-    set(src, VCA_SIGNAL);
-    cout << name << " signal is now coming from " << src->name << endl;
-}
-
-void Vca::set_cv(Module *src)
-{
-    set(src, VCA_CV);
-    cout << name << " control values are now coming from " << src->name << endl;
-}
-
-void Vca::set_cv_amount(float val)
-{
-    set(val, VCA_CV_AMOUNT);
-    cout << name << " control value amount changed to " << cv_amount_float << endl;
-}
-
-void Vca::set_cv_amount(Module *src)
-{
-    set(src, VCA_CV_AMOUNT);
-    cout << name << " control value amount is now coming from " << src->name << endl;
 }

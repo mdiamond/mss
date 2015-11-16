@@ -96,7 +96,7 @@ void keydown_event(SDL_Event *e)
     {
         ACTIVE_TEXT_BOX = NULL;
         SELECTING_SRC = false;
-        CURRENT_DST_TEXT_BOX = NULL;
+        CURRENT_INPUT_TOGGLE_BUTTON = NULL;
         reset_alphas();
     }
 

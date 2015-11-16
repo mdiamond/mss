@@ -29,14 +29,17 @@
 class Input_Toggle_Button: public Toggle_Button
 {
     public:
-        Graphics_Object* input_text_box;
+        int input_num;
         // Constructor and destructor
         Input_Toggle_Button(std::string, SDL_Rect, SDL_Color,
                             SDL_Color, SDL_Color, SDL_Color,
                             TTF_Font *,
                             std::string, std::string,
-                            bool, Module *, Graphics_Object*);
+                            bool, Module *, int);
         virtual ~Input_Toggle_Button();
+        virtual void render();
+        virtual void clicked();
+        void toggle();
 };
 
 #endif

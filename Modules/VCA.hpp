@@ -68,10 +68,6 @@ class Vca: public Module
         virtual void calculate_unique_graphics_objects();
         virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
-        void set_signal(Module *);
-        void set_cv(Module *);
-        void set_cv_amount(float);
-        void set_cv_amount(Module *);
 };
 
 #endif

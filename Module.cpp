@@ -22,9 +22,14 @@
 
 // Included classes
 #include "Module.hpp"
+#include "Modules/Mixer.hpp"
+#include "Modules/Output.hpp"
+#include "Modules/Oscillator.hpp"
+#include "Modules/VCA.hpp"
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Rect.hpp"
 #include "Graphics_Objects/Text.hpp"
+#include "Graphics_Objects/Waveform.hpp"
 
 using namespace std;
 
@@ -62,6 +67,7 @@ Module::Module(int _type) :
 
     dependencies = vector<Module *>(num_inputs, NULL);
 
+    parameter_names = vector<string>(num_inputs, "");
     input_floats = vector<float>(num_inputs, 0);
     input_strs = vector<string>(num_inputs, "");
     inputs = vector<vector<float> *>(num_inputs, NULL);
@@ -77,6 +83,44 @@ Module::Module(int _type) :
     text_color.b = (rand() % 128) + 128;
     color.a = 255;
     text_color.a = 255;
+
+    switch(_type)
+    {
+        case OUTPUT:
+            parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
+            parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
+            break;
+        case MIXER:
+            parameter_names[MIXER_SIGNAL_1] = "SIGNAL 1";
+            parameter_names[MIXER_SIGNAL_1_MULTIPLIER] = "SIGNAL 1 MULTIPLIER";
+            parameter_names[MIXER_SIGNAL_2] = "SIGNAL 2";
+            parameter_names[MIXER_SIGNAL_2_MULTIPLIER] = "SIGNAL 2 MULTIPLIER";
+            parameter_names[MIXER_SIGNAL_3] = "SIGNAL 3";
+            parameter_names[MIXER_SIGNAL_3_MULTIPLIER] = "SIGNAL 3 MULTIPLIER";
+            parameter_names[MIXER_SIGNAL_4] = "SIGNAL 4";
+            parameter_names[MIXER_SIGNAL_4_MULTIPLIER] = "SIGNAL 4 MULTIPLIER";
+            parameter_names[MIXER_SIGNAL_5] = "SIGNAL 5";
+            parameter_names[MIXER_SIGNAL_5_MULTIPLIER] = "SIGNAL 5 MULTIPLIER";
+            parameter_names[MIXER_SIGNAL_6] = "SIGNAL 6";
+            parameter_names[MIXER_SIGNAL_6_MULTIPLIER] = "SIGNAL 6 MULTIPLIER";
+            parameter_names[MIXER_SIGNAL_7] = "SIGNAL 7";
+            parameter_names[MIXER_SIGNAL_7_MULTIPLIER] = "SIGNAL 7 MULTIPLIER";
+            parameter_names[MIXER_SIGNAL_8] = "SIGNAL 8";
+            parameter_names[MIXER_SIGNAL_8_MULTIPLIER] = "SIGNAL 8 MULTIPLIER";
+            break;
+        case OSCILLATOR:
+            parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";
+            parameter_names[OSCILLATOR_PHASE_OFFSET] = "PHASE OFFSET";
+            parameter_names[OSCILLATOR_PULSE_WIDTH] = "PULSE WIDTH";
+            parameter_names[OSCILLATOR_RANGE_LOW] = "RANGE LOW";
+            parameter_names[OSCILLATOR_RANGE_HIGH] = "RANGE HIGH";
+            break;
+        case VCA:
+            parameter_names[VCA_SIGNAL] = "SIGNAL";
+            parameter_names[VCA_CV] = "CV";
+            parameter_names[VCA_CV_AMOUNT] = "CV AMOUNT";
+            break;
+    }
 }
 
 /*
@@ -186,6 +230,9 @@ void Module::set(float val, int input_num)
     dependencies[input_num] = NULL;
     input_floats[input_num] = val;
     inputs_live[input_num] = false;
+
+    cout << name << " " << parameter_names[input_num]
+         << " changed to " << val << endl;
 }
 
 void Module::set(Module *src, int input_num)
@@ -195,6 +242,20 @@ void Module::set(Module *src, int input_num)
     inputs_live[input_num] = true;
     SELECTING_SRC = false;
     reset_alphas();
+
+    if(type == OUTPUT)
+    {
+        Waveform *waveform;
+        if(input_num == OUTPUT_INPUT_L)
+            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_L_WAVEFORM];
+        else
+            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_R_WAVEFORM];
+        waveform->buffer = &src->output;
+    }
+
+
+    cout << name << " " << parameter_names[input_num]
+         << " is now coming from " << src->name << endl;
 }
 
 void Module::cancel_input(int input_num)
@@ -202,4 +263,17 @@ void Module::cancel_input(int input_num)
     inputs[input_num] = NULL;
     dependencies[input_num] = NULL;
     inputs_live[input_num] = false;
+
+    if(type == OUTPUT)
+    {
+        Waveform *waveform;
+        if(input_num == OUTPUT_INPUT_L)
+            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_L_WAVEFORM];
+        else
+            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_R_WAVEFORM];
+        waveform->buffer = NULL;
+    }
+
+    cout << name << " " << parameter_names[input_num]
+         << " input cancelled" << endl;
 }

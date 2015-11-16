@@ -74,7 +74,7 @@ void Button::render()
  */
 void Button::clicked()
 {
-    cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+    cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
     if(!OBJECT_CLICKED)
     {

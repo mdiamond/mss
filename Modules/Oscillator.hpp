@@ -87,16 +87,6 @@ class Oscillator: public Module
         float produce_tri_sample(float);
         float produce_saw_sample(float);
         float produce_sqr_sample(float);
-        void set_frequency(float);
-        void set_frequency(Module *);
-        void set_phase_offset(float);
-        void set_phase_offset(Module *);
-        void set_pulse_width(float);
-        void set_pulse_width(Module *);
-        void set_range_low(float);
-        void set_range_low(Module *);
-        void set_range_high(float);
-        void set_range_high(Module *);
         void switch_waveform(int);
 };
 

@@ -150,7 +150,7 @@ void Text_Box::clicked()
 {
     if(!OBJECT_CLICKED)
     {
-        cout << BLUE_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+        cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
         if(!active)
         {
@@ -172,7 +172,7 @@ void Text_Box::clicked()
  */
 void Text_Box::entered()
 {
-    cout << BLUE_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
+    cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
 
     SDL_StopTextInput();
     text.text = typing_text.text;

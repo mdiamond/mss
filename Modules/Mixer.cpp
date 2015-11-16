@@ -26,6 +26,7 @@
 // Included classes
 #include "../Module.hpp"
 #include "Mixer.hpp"
+#include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Text.hpp"
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
@@ -181,7 +182,7 @@ void Mixer::calculate_unique_graphics_objects()
     SDL_Rect location;
     Text *text;
     Text_Box *text_box;
-    Toggle_Button *toggle_button;
+    Input_Toggle_Button *input_toggle_button;
     Waveform *waveform;
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
@@ -228,9 +229,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[6] is the toggle button for selecting or disabling signal 1 input
         location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 1 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_1], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 1 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_1],
+                                          this, MIXER_SIGNAL_1);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[7] is the text box for entering and displaying the signal 1 channel multiplier
         location = {x_text_box_2, y5, w_text_box, h_text_box};
@@ -240,9 +242,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[8] is the toggle button for selecting or disabling signal 1 multiplier input
         location = {x_input_toggle_button_2, y5, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 1 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_1_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 1 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_1_MULTIPLIER],
+                                          this, MIXER_SIGNAL_1_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[9] is the text box for entering and displaying signal 2
         location = {x_text_box, y6, w_text_box, h_text_box};
@@ -252,9 +255,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[10] is the toggle button for selecting or disabling signal 2 input
         location = {x_input_toggle_button, y6, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 2 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_2], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 2 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_2],
+                                          this, MIXER_SIGNAL_2);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[11] is the text box for entering and displaying the signal 2 channel multiplier
         location = {x_text_box_2, y6, w_text_box, h_text_box};
@@ -264,9 +268,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[12] is the toggle button for selecting or disabling signal 2 multiplier input
         location = {x_input_toggle_button_2, y6, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 2 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_2_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 2 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_2_MULTIPLIER],
+                                          this, MIXER_SIGNAL_2_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[13] is the text box for entering and displaying signal 3
         location = {x_text_box, y7, w_text_box, h_text_box};
@@ -276,9 +281,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[14] is the toggle button for selecting or disabling signal 3 input
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 3 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_3], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 3 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_3],
+                                          this, MIXER_SIGNAL_3);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[15] is the text box for entering and displaying the signal 3 channel multiplier
         location = {x_text_box_2, y7, w_text_box, h_text_box};
@@ -288,9 +294,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[16] is the toggle button for selecting or disabling signal 3 multiplier input
         location = {x_input_toggle_button_2, y7, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 3 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_3_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 3 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_3_MULTIPLIER],
+                                          this, MIXER_SIGNAL_3_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[17] is the text box for entering and displaying signal 4
         location = {x_text_box, y8, w_text_box, h_text_box};
@@ -300,9 +307,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[18] is the toggle button for selecting or disabling signal 4 input
         location = {x_input_toggle_button, y8, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 4 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_4], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 4 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_4],
+                                          this, MIXER_SIGNAL_4);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[19] is the text box for entering and displaying the signal 4 channel multiplier
         location = {x_text_box_2, y8, w_text_box, h_text_box};
@@ -312,9 +320,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[20] is the toggle button for selecting or disabling signal 4 multiplier input
         location = {x_input_toggle_button_2, y8, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 4 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_4_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 4 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_4_MULTIPLIER],
+                                          this, MIXER_SIGNAL_4_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[21] is the text box for entering and displaying signal 5
         location = {x_text_box, y9, w_text_box, h_text_box};
@@ -324,9 +333,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[22] is the toggle button for selecting or disabling signal 5 input
         location = {x_input_toggle_button, y9, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 5 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_5], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 5 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_5],
+                                          this, MIXER_SIGNAL_5);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[23] is the text box for entering and displaying the signal 5 channel multiplier
         location = {x_text_box_2, y9, w_text_box, h_text_box};
@@ -336,9 +346,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[24] is the toggle button for selecting or disabling signal 5 multiplier input
         location = {x_input_toggle_button_2, y9, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 5 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_5_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 5 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_5_MULTIPLIER],
+                                          this, MIXER_SIGNAL_5_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[25] is the text box for entering and displaying signal 6
         location = {x_text_box, y10, w_text_box, h_text_box};
@@ -348,9 +359,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[26] is the toggle button for selecting or disabling signal 6 input
         location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 6 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_6], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 6 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_6],
+                                          this, MIXER_SIGNAL_6);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[27] is the text box for entering and displaying the signal 6 channel multiplier
         location = {x_text_box_2, y10, w_text_box, h_text_box};
@@ -360,9 +372,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[28] is the toggle button for selecting or disabling signal 6 multiplier input
         location = {x_input_toggle_button_2, y10, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 6 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_6_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 6 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_6_MULTIPLIER],
+                                          this, MIXER_SIGNAL_6_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[29] is the text box for entering and displaying signal 7
         location = {x_text_box, y11, w_text_box, h_text_box};
@@ -372,9 +385,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[30] is the toggle button for selecting or disabling signal 7 input
         location = {x_input_toggle_button, y11, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 7 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_7], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 7 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_7],
+                                          this, MIXER_SIGNAL_7);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[31] is the text box for entering and displaying the signal 7 channel multiplier
         location = {x_text_box_2, y11, w_text_box, h_text_box};
@@ -384,9 +398,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[32] is the toggle button for selecting or disabling signal 7 multiplier input
         location = {x_input_toggle_button_2, y11, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 7 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_7_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 7 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_7_MULTIPLIER],
+                                          this, MIXER_SIGNAL_7_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[33] is the text box for entering and displaying signal 8
         location = {x_text_box, y12, w_text_box, h_text_box};
@@ -396,9 +411,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[34] is the toggle button for selecting or disabling signal 8 input
         location = {x_input_toggle_button, y12, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 8 input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_8], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 8 input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_8],
+                                          this, MIXER_SIGNAL_8);
+        graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[35] is the text box for entering and displaying the signal 8 channel multiplier
         location = {x_text_box_2, y12, w_text_box, h_text_box};
@@ -408,9 +424,10 @@ void Mixer::calculate_unique_graphics_objects()
 
         // graphics_objects[36] is the toggle button for selecting or disabling signal 8 multiplier input
         location = {x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box};
-        toggle_button = new Toggle_Button("mixer signal 8 multiplier input (toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_8_MULTIPLIER], this);
-        graphics_objects.push_back(toggle_button);
+        input_toggle_button = new Input_Toggle_Button("mixer signal 8 multiplier input (input toggle button)", location, WHITE,
+                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[MIXER_SIGNAL_8_MULTIPLIER],
+                                          this, MIXER_SIGNAL_8_MULTIPLIER);
+        graphics_objects.push_back(input_toggle_button);
     }
 
     // Otherwise, simply update the locations of all of the graphics objects
@@ -520,103 +537,4 @@ void Mixer::calculate_unique_graphics_objects()
         graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON]->update_location(location);
 
     }
-}
-
-void Mixer::set_signal(Module *src, short signal_num)
-{
-    switch(signal_num)
-    {
-        case 1:
-            set(src, MIXER_SIGNAL_1);
-            break;
-        case 2:
-            set(src, MIXER_SIGNAL_2);
-            break;
-        case 3:
-            set(src, MIXER_SIGNAL_3);
-            break;
-        case 4:
-            set(src, MIXER_SIGNAL_4);
-            break;
-        case 5:
-            set(src, MIXER_SIGNAL_5);
-            break;
-        case 6:
-            set(src, MIXER_SIGNAL_6);
-            break;
-        case 7:
-            set(src, MIXER_SIGNAL_7);
-            break;
-        case 8:
-            set(src, MIXER_SIGNAL_8);
-            break;
-    }
-
-    cout << name << " signal " << signal_num << " is now coming from " << src->name << endl;
-}
-
-void Mixer::set_signal_multiplier(Module *src, short signal_num)
-{
-    switch(signal_num)
-    {
-        case 1:
-            set(src, MIXER_SIGNAL_1_MULTIPLIER);
-            break;
-        case 2:
-            set(src, MIXER_SIGNAL_2_MULTIPLIER);
-            break;
-        case 3:
-            set(src, MIXER_SIGNAL_3_MULTIPLIER);
-            break;
-        case 4:
-            set(src, MIXER_SIGNAL_4_MULTIPLIER);
-            break;
-        case 5:
-            set(src, MIXER_SIGNAL_5_MULTIPLIER);
-            break;
-        case 6:
-            set(src, MIXER_SIGNAL_6_MULTIPLIER);
-            break;
-        case 7:
-            set(src, MIXER_SIGNAL_7_MULTIPLIER);
-            break;
-        case 8:
-            set(src, MIXER_SIGNAL_8_MULTIPLIER);
-            break;
-    }
-
-    cout << name << " signal " << signal_num << " multiplier is now coming from " << src->name << endl;
-}
-
-void Mixer::set_signal_multiplier(float val, short signal_num)
-{
-    switch(signal_num)
-    {
-        case 1:
-            set(val, MIXER_SIGNAL_1_MULTIPLIER);
-            break;
-        case 2:
-            set(val, MIXER_SIGNAL_2_MULTIPLIER);
-            break;
-        case 3:
-            set(val, MIXER_SIGNAL_3_MULTIPLIER);
-            break;
-        case 4:
-            set(val, MIXER_SIGNAL_4_MULTIPLIER);
-            break;
-        case 5:
-            set(val, MIXER_SIGNAL_5_MULTIPLIER);
-            break;
-        case 6:
-            set(val, MIXER_SIGNAL_6_MULTIPLIER);
-            break;
-        case 7:
-            set(val, MIXER_SIGNAL_7_MULTIPLIER);
-            break;
-        case 8:
-            set(val, MIXER_SIGNAL_8_MULTIPLIER);
-            break;
-    }
-
-    cout << name << " signal " << signal_num << " multiplier is now " << val << endl;
 }

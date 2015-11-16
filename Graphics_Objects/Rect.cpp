@@ -66,7 +66,7 @@ void Rect::clicked()
 {
     if(SELECTING_SRC && parent != NULL && name == "border (rect)")
     {
-        cout << BLUE_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
+        cout << PINK_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
 
         function_forwarder(this);
         OBJECT_CLICKED = true;

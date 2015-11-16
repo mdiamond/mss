@@ -61,8 +61,6 @@ class Output: public Module
         virtual void update_unique_graphics_objects();
         virtual void update_unique_control_values();
         void toggle_audio_on();
-        void set_input_l(Module *);
-        void set_input_r(Module *);
 };
 
 #endif

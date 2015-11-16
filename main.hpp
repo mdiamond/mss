@@ -17,6 +17,7 @@
 // Included classes
 #include "Color_Modifier.hpp"
 #include "Module.hpp"
+#include "Graphics_Objects/Input_Toggle_Button.hpp"
 #include "Graphics_Objects/Page.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
 
@@ -29,6 +30,7 @@ extern Color_Modifier DEFAULT_STDOUT;
 extern Color_Modifier RED_STDOUT;
 extern Color_Modifier GREEN_STDOUT;
 extern Color_Modifier BLUE_STDOUT;
+extern Color_Modifier PINK_STDOUT;
 
 // Audio information
 extern int SAMPLE_RATE;
@@ -88,7 +90,7 @@ extern bool CURSOR_ON;
 extern Text_Box *ACTIVE_TEXT_BOX;
 //   Selecting a source module or not
 extern bool SELECTING_SRC;
-extern Text_Box *CURRENT_DST_TEXT_BOX;
+extern Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

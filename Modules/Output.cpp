@@ -130,7 +130,7 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[6] is the display text "LEFT INPUT:"
         location = {x_text, y6, 0, 0};
-        text = new Text("output input left (text)", location, text_color, "LEFT:", FONT_REGULAR);
+        text = new Text("output input left (text)", location, text_color, "LEFT SIGNAL:", FONT_REGULAR);
         graphics_objects.push_back(text);
 
         // graphics_objects[7] is the text box for entering and displaying input right
@@ -143,7 +143,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("output left input (input toggle button)", location, WHITE,
                                                 BLACK, RED, WHITE, FONT_SMALL, "I", "I",
-                                                inputs_live[OUTPUT_INPUT_L], this, graphics_objects[OUTPUT_INPUT_L_TEXT_BOX]);
+                                                inputs_live[OUTPUT_INPUT_L], this, OUTPUT_INPUT_L);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[9] is the waveform visualizer for the right speaker
@@ -153,7 +153,7 @@ void Output::calculate_unique_graphics_objects()
 
         // graphics_objects[10] is the display text "PHASE OFFSET:"
         location = {x_text, y9, 0, 0};
-        text = new Text("output input right (text)", location, text_color, "RIGHT:", FONT_REGULAR);
+        text = new Text("output input right (text)", location, text_color, "RIGHT SIGNAL:", FONT_REGULAR);
         graphics_objects.push_back(text);
 
         // graphics_objects[11] is the text box for entering and displaying input left
@@ -166,7 +166,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("output right input (input toggle button)", location, WHITE,
                                                 BLACK, RED, WHITE, FONT_SMALL, "I", "I",
-                                                inputs_live[OUTPUT_INPUT_R], this, graphics_objects[OUTPUT_INPUT_R_TEXT_BOX]);
+                                                inputs_live[OUTPUT_INPUT_R], this, OUTPUT_INPUT_R);
         graphics_objects.push_back(input_toggle_button);
     }
 
@@ -215,24 +215,4 @@ void Output::toggle_audio_on()
         SDL_PauseAudio(1);
 
     cout << "Audio toggled" << endl;
-}
-
-void Output::set_input_l(Module *src)
-{
-    Waveform *waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_L_WAVEFORM];
-
-    set(src, OUTPUT_INPUT_L);
-    waveform->buffer = &src->output;
-
-    cout << name << " left is now coming from " << src->name << endl;
-}
-
-void Output::set_input_r(Module *src)
-{
-    Waveform *waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_R_WAVEFORM];
-
-    set(src, OUTPUT_INPUT_R);
-    waveform->buffer = &src->output;
-
-    cout << name << " right is now coming from " << src->name << endl;
 }
