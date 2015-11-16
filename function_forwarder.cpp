@@ -107,7 +107,10 @@ bool can_floatify(string *string)
  */
 void output_function_forwarder(Graphics_Object *g)
 {
-    // Output *output = (Output *) g->parent;
+    Output *output = (Output *) g->parent;
+
+    if(g->name == "on/off button (toggle_button)")
+        output->toggle_audio_on();
 }
 
 /*

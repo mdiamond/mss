@@ -114,7 +114,7 @@ void Output::calculate_unique_graphics_objects()
     {
         // graphics_objects[3] is the display text "AUDIO ON":
         location = {x_text, y3, 8, 15};
-        text = new Text("on_off (text)", location, text_color, "AUDIO ON:", FONT_REGULAR);
+        text = new Text("on/off (text)", location, text_color, "AUDIO ON:", FONT_REGULAR);
         graphics_objects.push_back(text);
 
         // graphics_objects[4] is the toggle button to turn audio on or off
