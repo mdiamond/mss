@@ -17,6 +17,11 @@
 
 // Included classes
 #include "Graphics_Object.hpp"
+#include "Graphics_Objects/Input_Text_Box.hpp"
+#include "Graphics_Objects/Input_Toggle_Button.hpp"
+#include "Graphics_Objects/Rect.hpp"
+#include "Graphics_Objects/Text.hpp"
+#include "Graphics_Objects/Waveform.hpp"
 
 /*************************
  * TYPES OF MODULES ENUM *
@@ -96,6 +101,26 @@ class Module
         void process_dependencies();
         void calculate_upper_left();
         void update_control_values();
+        void create_text_objects(std::vector<std::string>, std::vector<SDL_Rect>,
+                                 std::vector<SDL_Color>, std::vector<std::string>,
+                                 std::vector<TTF_Font *>);
+        void create_toggle_button_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
+                                          std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<SDL_Color>,
+                                          std::vector<TTF_Font *>,
+                                          std::vector<std::string>, std::vector<std::string>,
+                                          std::vector<bool>, std::vector<Module *>);
+        void create_waveform_objects(std::vector<std::string>, std::vector<SDL_Rect>,
+                                     std::vector<SDL_Color>, std::vector<float>,
+                                     std::vector<float>, std::vector<std::vector<float> *>);
+        void create_input_text_box_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
+                                           std::vector<std::string>, std::vector<std::string>,
+                                           std::vector<TTF_Font *>, std::vector<Module *>, std::vector<int>);
+        void create_input_toggle_button_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
+                                                std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<SDL_Color>,
+                                                std::vector<TTF_Font *>,
+                                                std::vector<std::string>, std::vector<std::string>,
+                                                std::vector<bool>, std::vector<Module *>, std::vector<int>,
+                                                std::vector<Input_Text_Box *>);
         void calculate_graphics_objects();
         void update_graphics_objects();
         void set(float, int);

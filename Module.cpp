@@ -14,6 +14,7 @@
 
 // Included SDL components
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 // Included files
 #include "function_forwarder.hpp"
@@ -26,10 +27,6 @@
 #include "Modules/Output.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/VCA.hpp"
-#include "Graphics_Object.hpp"
-#include "Graphics_Objects/Rect.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Waveform.hpp"
 
 using namespace std;
 
@@ -160,9 +157,79 @@ void Module::update_control_values()
     update_unique_control_values();
 }
 
-void Module::update_graphics_objects()
+void Module::create_text_objects(vector<string> names, vector<SDL_Rect> locations,
+                         vector<SDL_Color> colors, vector<string> texts,
+                         vector<TTF_Font *> fonts)
 {
-    update_unique_graphics_objects();
+    Text *text = NULL;
+
+    for(unsigned int i = 0; i < names.size(); i ++)
+    {
+        text = new Text(names[i], locations[i], colors[i], texts[i], fonts[i]);
+        graphics_objects.push_back(text);
+    }
+}
+
+void Module::create_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
+                                  vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
+                                  vector<TTF_Font *> fonts,
+                                  vector<string> text_ons, vector<string> text_offs,
+                                  vector<bool> bs, vector<Module *> parents)
+{
+    Toggle_Button *toggle_button = NULL;
+
+    for(unsigned int i = 0; i < names.size(); i ++)
+    {
+        toggle_button = new Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
+                                          text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i]);
+        graphics_objects.push_back(toggle_button);
+    }
+}
+
+void Module::create_waveform_objects(vector<string> names, vector<SDL_Rect> locations,
+                             vector<SDL_Color> colors, vector<float> range_lows,
+                             vector<float> range_highs, vector<vector<float> *> buffers)
+{
+    Waveform *waveform = NULL;
+
+    for(unsigned int i = 0; i < names.size(); i ++)
+    {
+        waveform = new Waveform(names[i], locations[i], colors[i], range_lows[i],
+                                range_highs[i], buffers[i]);
+        graphics_objects.push_back(waveform);
+    }
+}
+
+void Module::create_input_text_box_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
+                                   vector<string> original_texts, vector<string> prompt_texts,
+                                   vector<TTF_Font *> fonts, vector<Module *> parents, vector<int> input_nums)
+{
+    Input_Text_Box *input_text_box = NULL;
+
+    for(unsigned int i = 0; i < names.size(); i ++)
+    {
+        input_text_box = new Input_Text_Box(names[i], locations[i], colors[i], original_texts[i],
+                                                      prompt_texts[i], fonts[i], parents[i], input_nums[i]);
+        graphics_objects.push_back(input_text_box);
+    }
+}
+
+void Module::create_input_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
+                                        vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
+                                        vector<TTF_Font *> fonts,
+                                        vector<string> text_ons, vector<string> text_offs,
+                                        vector<bool> bs, vector<Module *> parents, vector<int> input_nums,
+                                        vector<Input_Text_Box *> input_text_boxes)
+{
+    Input_Toggle_Button *input_toggle_button = NULL;
+
+    for(unsigned int i = 0; i < names.size(); i ++)
+    {
+        input_toggle_button = new Input_Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
+                                            text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i],
+                                            input_nums[i], input_text_boxes[i]);
+        graphics_objects.push_back(input_toggle_button);
+    }
 }
 
 /*
@@ -222,6 +289,11 @@ void Module::calculate_graphics_objects()
     }
 
     calculate_unique_graphics_objects();
+}
+
+void Module::update_graphics_objects()
+{
+    update_unique_graphics_objects();
 }
 
 void Module::set(float val, int input_num)
