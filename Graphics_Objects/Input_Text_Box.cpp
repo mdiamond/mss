@@ -67,18 +67,26 @@ void Input_Text_Box::entered()
     SDL_StopTextInput();
     text.text = typing_text.text;
 
-    if(can_floatify(&text.text))
+    if(text.text != "")
     {
-        val = stof(text.text.c_str());
-        cout << val << endl;
-        parent->set(val, input_num);
+        if(can_floatify(&text.text))
+        {
+            val = stof(text.text.c_str());
+            cout << val << endl;
+            parent->set(val, input_num);
+        }
+        else
+        {
+            src = find_module_as_source(&text.text, &MODULES, parent);
+            if(src != NULL)
+                text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
+            parent->set(src, input_num);
+        }
     }
     else
     {
-        src = find_module_as_source(&text.text, &MODULES, parent);
-        if(src != NULL)
-            text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
-        parent->set(src, input_num);
+        cout << RED_STDOUT << "entered string contained no characters, idiot"
+             << DEFAULT_STDOUT << endl;
     }
 
     text.updated = true;

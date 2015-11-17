@@ -90,7 +90,9 @@ void Waveform::copy_buffer()
 void Waveform::render()
 {
     SDL_Point zero = {0, 0};
-    vector<SDL_Point> points(location.w, zero);
+    vector<SDL_Point> points, points2, points3;
+
+    points = vector<SDL_Point>(location.w, zero);
 
     for(unsigned int i = 0; i < render_buffer.size(); i ++)
     {
@@ -98,11 +100,22 @@ void Waveform::render()
         points[i].y = calculate_y(i);
     }
 
+    points2 = points;
+    points3 = points;
+
+    for(unsigned int i = 0; i < points.size(); i ++)
+    {
+        points2[i].y += 1;
+        points3[i].y -= 1;
+    }
+
     SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
     SDL_RenderFillRect(RENDERER, &location);
 
-    SDL_SetRenderDrawColor(RENDERER, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, 255);
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
+    SDL_RenderDrawLines(RENDERER, &points2[0], points.size());
+    SDL_RenderDrawLines(RENDERER, &points3[0], points.size());
 }
 
 /*

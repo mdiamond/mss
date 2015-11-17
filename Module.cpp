@@ -218,8 +218,7 @@ void Module::create_input_toggle_button_objects(vector<string> names, vector<SDL
                                         vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
                                         vector<TTF_Font *> fonts,
                                         vector<string> text_ons, vector<string> text_offs,
-                                        vector<bool> bs, vector<Module *> parents, vector<int> input_nums,
-                                        vector<Input_Text_Box *> input_text_boxes)
+                                        vector<bool> bs, vector<Module *> parents, vector<int> input_nums)
 {
     Input_Toggle_Button *input_toggle_button = NULL;
 
@@ -228,7 +227,7 @@ void Module::create_input_toggle_button_objects(vector<string> names, vector<SDL
         input_toggle_button = new Input_Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
                                             text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i],
                                             input_nums[i],
-                                            (Input_Text_Box *) graphics_objects[graphics_objects.size() - 1 - parameter_names.size()]);
+                                            (Input_Text_Box *) graphics_objects[graphics_objects.size() - parameter_names.size()]);
         graphics_objects.push_back(input_toggle_button);
     }
 }
@@ -240,7 +239,7 @@ void Module::create_input_toggle_button_objects(vector<string> names, vector<SDL
  */
 void Module::calculate_graphics_objects()
 {
-    SDL_Rect location;
+    SDL_Rect location_border, location_inner_border, location_name;
     string object_name;
     Rect *rect;
     Text *text;
@@ -248,45 +247,39 @@ void Module::calculate_graphics_objects()
     // Calculate the modules top left pixel location in the window
     calculate_upper_left();
 
+    location_border = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
+    location_inner_border = {upper_left.x + MODULE_BORDER_WIDTH,
+                             upper_left.y + MODULE_BORDER_WIDTH,
+                             MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
+                             MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
+    location_name = {upper_left.x + MODULE_BORDER_WIDTH + 2,
+                     upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
+
     // If the graphics objects have not yet been initialized
     if(graphics_objects.size() == 0)
     {
         // graphics_object[0] is the outermost rectangle used to represent the module
-        location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-        rect = new Rect("border (rect)", location, WHITE, this);
+        rect = new Rect("border (rect)", location_border, WHITE, this);
         graphics_objects.push_back(rect);
 
         // graphics_object[1] is the slightly smaller rectangle within the outermost
         // rectangle
-        location = {upper_left.x + MODULE_BORDER_WIDTH,
-                    upper_left.y + MODULE_BORDER_WIDTH,
-                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
-                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-        rect = new Rect("inner_border (rect)", location, color, this);
+        rect = new Rect("inner_border (rect)", location_inner_border, color, this);
         graphics_objects.push_back(rect);
 
         // graphics_object[2] is the objects name
-        location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-                    upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
-        text = new Text("module name (text)", location, text_color, name, FONT_BOLD);
+        text = new Text("module name (text)", location_name, text_color, name, FONT_BOLD);
         graphics_objects.push_back(text);
     }
 
     // If they have already been initialized, just update their locations
     else
     {
-        location = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-        graphics_objects[MODULE_BORDER_RECT]->update_location(location);
+        graphics_objects[MODULE_BORDER_RECT]->update_location(location_border);
 
-        location = {upper_left.x + MODULE_BORDER_WIDTH,
-                    upper_left.y + MODULE_BORDER_WIDTH,
-                    MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
-                    MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-        graphics_objects[MODULE_INNER_BORDER_RECT]->update_location(location);
+        graphics_objects[MODULE_INNER_BORDER_RECT]->update_location(location_inner_border);
 
-        location = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-            upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
-        graphics_objects[MODULE_NAME_TEXT]->update_location(location);
+        graphics_objects[MODULE_NAME_TEXT]->update_location(location_name);
     }
 
     calculate_unique_graphics_objects();

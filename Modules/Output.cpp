@@ -14,6 +14,7 @@
 
 // Included SDL components
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 // Included files
 #include "../function_forwarder.hpp"
@@ -84,11 +85,6 @@ void Output::calculate_unique_graphics_objects()
         w_waveform, h_waveform,
         y3, y4, y5, y6, y7, y8, y9, y10;
     SDL_Rect location;
-    Text *text;
-    Input_Text_Box *input_text_box;
-    Toggle_Button *toggle_button;
-    Input_Toggle_Button *input_toggle_button;
-    Waveform *waveform;
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
@@ -112,63 +108,64 @@ void Output::calculate_unique_graphics_objects()
     // been calculated before, and we must make them from scratch
     if(graphics_objects.size() == 3)
     {
-        // graphics_objects[3] is the display text "AUDIO ON":
-        location = {x_text, y3, 8, 15};
-        text = new Text("on/off (text)", location, text_color, "AUDIO ON:", FONT_REGULAR);
-        graphics_objects.push_back(text);
+        vector<string> names, texts, prompt_texts, text_offs;
+        vector<SDL_Rect> locations;
+        vector<SDL_Color> colors, color_offs, text_color_ons, text_color_offs;
+        vector<TTF_Font *> fonts;
+        vector<float> range_lows, range_highs;
+        vector<int> input_nums;
+        vector<vector<float> *> buffers;
+        vector<Module *> parents;
+        vector<bool> bs;
+        Toggle_Button *toggle_button;
 
-        // graphics_objects[4] is the toggle button to turn audio on or off
+        names = {"on/off (text)", "output input left (text)", "output input right (text)"};
+        locations = {{x_text, y3, 8, 15}, {x_text, y6, 0, 0}, {x_text, y9, 0, 0}};
+        colors = vector<SDL_Color>(3, text_color);
+        texts = {"AUDIO ON:", "LEFT SIGNAL:", "RIGHT SIGNAL:"};
+        fonts = vector<TTF_Font *>(3, FONT_REGULAR);
+
+        create_text_objects(names, locations, colors, texts, fonts);
+
+        names = {"waveform visualizer l (waveform)", "waveform visualizer r (waveform)"};
+        locations = {{x_text_box, y5, w_waveform, h_waveform}, {x_text_box, y8, w_waveform, h_waveform}};
+        colors = vector<SDL_Color>(2, text_color);
+        range_lows = vector<float>(2, -1);
+        range_highs = vector<float>(2, 1);
+        buffers = {inputs[OUTPUT_INPUT_L], inputs[OUTPUT_INPUT_R]};
+
+        create_waveform_objects(names, locations, colors, range_lows, range_highs, buffers);
+
+        names = {"output input l (input text box)", "output input r (input text box)"};
+        locations = {{x_text_box, y7, w_text_box, h_text_box}, {x_text_box, y10, w_text_box, h_text_box}};
+        colors = vector<SDL_Color>(2, text_color);
+        texts = vector<string>(2, "");
+        prompt_texts = vector<string>(2, "input");
+        fonts = vector<TTF_Font *>(2, FONT_SMALL);
+        parents = vector<Module *>(2, this);
+        input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
+
+        create_input_text_box_objects(names, locations, colors, texts, prompt_texts, fonts, parents, input_nums);
+
+        names = {"output input l (input toggle button)", "output input r (input toggle button)"};
+        locations = {{x_input_toggle_button, y7, w_input_toggle_button, h_text_box}, {x_input_toggle_button, y10, w_input_toggle_button, h_text_box}};
+        colors = vector<SDL_Color>(2, WHITE);
+        color_offs = vector<SDL_Color>(2, BLACK);
+        text_color_ons = vector<SDL_Color>(2, RED);
+        text_color_offs = vector<SDL_Color>(2, WHITE);
+        texts = vector<string>(2, "I");
+        text_offs = texts;
+        bs = {inputs_live[OUTPUT_INPUT_L], inputs_live[OUTPUT_INPUT_R]};
+        input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
+
+        create_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+                                           text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
+
         location = {x_button, y4, 25, 15};
         toggle_button = new Toggle_Button("on/off button (toggle_button)", location, GREEN,
                                                   BLACK, BLACK, WHITE, FONT_BOLD, "ON", "OFF",
                                                   AUDIO_ON, this);
         graphics_objects.push_back(toggle_button);
-
-        // graphics_objects[5] is the waveform visualizer for the left speaker
-        location = {x_text_box, y5, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer l (waveform)", location, WHITE, -1, 1, inputs[OUTPUT_INPUT_L]);
-        graphics_objects.push_back(waveform);
-
-        // graphics_objects[6] is the display text "LEFT INPUT:"
-        location = {x_text, y6, 0, 0};
-        text = new Text("output input left (text)", location, text_color, "LEFT SIGNAL:", FONT_REGULAR);
-        graphics_objects.push_back(text);
-
-        // graphics_objects[7] is the text box for entering and displaying input right
-        location = {x_text_box, y7, w_text_box, h_text_box};
-        input_text_box = new Input_Text_Box("output input left (input text box)", location, text_color,
-                                "", "input", FONT_SMALL, this, OUTPUT_INPUT_L);
-        graphics_objects.push_back(input_text_box);
-
-        // graphics_objects[8] is the toggle button for selecting or disabling the left input
-        location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        input_toggle_button = new Input_Toggle_Button("output left input (input toggle button)", location, WHITE,
-                                                BLACK, RED, WHITE, FONT_SMALL, "I", "I",
-                                                inputs_live[OUTPUT_INPUT_L], this, OUTPUT_INPUT_L, input_text_box);
-        graphics_objects.push_back(input_toggle_button);
-
-        // graphics_objects[9] is the waveform visualizer for the right speaker
-        location = {x_text_box, y8, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer r (waveform)", location, WHITE, -1, 1, inputs[OUTPUT_INPUT_R]);
-        graphics_objects.push_back(waveform);
-
-        // graphics_objects[10] is the display text "PHASE OFFSET:"
-        location = {x_text, y9, 0, 0};
-        text = new Text("output input right (text)", location, text_color, "RIGHT SIGNAL:", FONT_REGULAR);
-        graphics_objects.push_back(text);
-
-        // graphics_objects[11] is the text box for entering and displaying input left
-        location = {x_text_box, y10, w_text_box, h_text_box};
-        input_text_box = new Input_Text_Box("output input right (input text box)", location, text_color,
-                                "", "input", FONT_SMALL, this, OUTPUT_INPUT_R);
-        graphics_objects.push_back(input_text_box);
-
-        // graphics_objects[12] is the toggle button for selecting or disabling frequency input
-        location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
-        input_toggle_button = new Input_Toggle_Button("output right input (input toggle button)", location, WHITE,
-                                                BLACK, RED, WHITE, FONT_SMALL, "I", "I",
-                                                inputs_live[OUTPUT_INPUT_R], this, OUTPUT_INPUT_R, input_text_box);
-        graphics_objects.push_back(input_toggle_button);
     }
 
     // Otherwise, simply update the locations of all of the graphics objects

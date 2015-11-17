@@ -15,6 +15,10 @@
  * INCLUDES *
  ************/
 
+// Included SDL components
+#include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
+
 // Included classes
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Input_Text_Box.hpp"
@@ -119,8 +123,7 @@ class Module
                                                 std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<SDL_Color>,
                                                 std::vector<TTF_Font *>,
                                                 std::vector<std::string>, std::vector<std::string>,
-                                                std::vector<bool>, std::vector<Module *>, std::vector<int>,
-                                                std::vector<Input_Text_Box *>);
+                                                std::vector<bool>, std::vector<Module *>, std::vector<int>);
         void calculate_graphics_objects();
         void update_graphics_objects();
         void set(float, int);
