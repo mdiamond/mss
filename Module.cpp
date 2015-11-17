@@ -227,7 +227,8 @@ void Module::create_input_toggle_button_objects(vector<string> names, vector<SDL
     {
         input_toggle_button = new Input_Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
                                             text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i],
-                                            input_nums[i], input_text_boxes[i]);
+                                            input_nums[i],
+                                            (Input_Text_Box *) graphics_objects[graphics_objects.size() - 1 - parameter_names.size()]);
         graphics_objects.push_back(input_toggle_button);
     }
 }
