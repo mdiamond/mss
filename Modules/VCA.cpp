@@ -153,7 +153,7 @@ void Vca::calculate_unique_graphics_objects()
         location = {x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("vca signal input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_SIGNAL],
-                                          this, VCA_SIGNAL);
+                                          this, VCA_SIGNAL, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[7] is the text box for entering and displaying control values
@@ -166,7 +166,7 @@ void Vca::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("vca cv input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV],
-                                          this, VCA_CV);
+                                          this, VCA_CV, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[9] is the display text "CV AMOUNT:"
@@ -184,7 +184,7 @@ void Vca::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("vca cv amount input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV_AMOUNT],
-                                          this, VCA_CV_AMOUNT);
+                                          this, VCA_CV_AMOUNT, input_text_box);
         graphics_objects.push_back(input_toggle_button);
     }
 

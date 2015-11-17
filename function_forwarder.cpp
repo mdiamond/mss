@@ -232,6 +232,7 @@ void function_forwarder(Graphics_Object *g)
         CURRENT_INPUT_TOGGLE_BUTTON->parent->set(g->parent, CURRENT_INPUT_TOGGLE_BUTTON->input_num);
         SELECTING_SRC = false;
         reset_alphas();
+        CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->text.text = g->parent->name.substr(0, 3)+ " " + g->parent->name.substr(g->parent->name.find(" ") + 1);
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }
 

@@ -144,7 +144,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("output left input (input toggle button)", location, WHITE,
                                                 BLACK, RED, WHITE, FONT_SMALL, "I", "I",
-                                                inputs_live[OUTPUT_INPUT_L], this, OUTPUT_INPUT_L);
+                                                inputs_live[OUTPUT_INPUT_L], this, OUTPUT_INPUT_L, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[9] is the waveform visualizer for the right speaker
@@ -167,7 +167,7 @@ void Output::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y10, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("output right input (input toggle button)", location, WHITE,
                                                 BLACK, RED, WHITE, FONT_SMALL, "I", "I",
-                                                inputs_live[OUTPUT_INPUT_R], this, OUTPUT_INPUT_R);
+                                                inputs_live[OUTPUT_INPUT_R], this, OUTPUT_INPUT_R, input_text_box);
         graphics_objects.push_back(input_toggle_button);
     }
 

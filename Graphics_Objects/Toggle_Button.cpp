@@ -89,7 +89,10 @@ void Toggle_Button::clicked()
     {
         cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
 
-        toggle();
+        if(type == INPUT_TOGGLE_BUTTON)
+            ((Input_Toggle_Button *) this)->toggle();
+        else
+            toggle();
         function_forwarder(this);
         OBJECT_CLICKED = true;
     }

@@ -19,6 +19,7 @@
 #include "SDL2/SDL.h"
 
 // Included classes
+#include "Input_Text_Box.hpp"
 #include "Text.hpp"
 #include "Toggle_Button.hpp"
 
@@ -30,15 +31,14 @@ class Input_Toggle_Button: public Toggle_Button
 {
     public:
         int input_num;
+        Input_Text_Box *input_text_box;
         // Constructor and destructor
         Input_Toggle_Button(std::string, SDL_Rect, SDL_Color,
                             SDL_Color, SDL_Color, SDL_Color,
                             TTF_Font *,
                             std::string, std::string,
-                            bool, Module *, int);
+                            bool, Module *, int, Input_Text_Box *);
         virtual ~Input_Toggle_Button();
-        virtual void render();
-        virtual void clicked();
         void toggle();
 };
 

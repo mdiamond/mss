@@ -265,7 +265,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("oscillator frequency input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_FREQUENCY],
-                                          this, OSCILLATOR_FREQUENCY);
+                                          this, OSCILLATOR_FREQUENCY, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[7] is the display text "PHASE OFFSET:"
@@ -283,7 +283,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("oscillator phase offset input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_PHASE_OFFSET],
-                                          this, OSCILLATOR_PHASE_OFFSET);
+                                          this, OSCILLATOR_PHASE_OFFSET, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[10] is the display text "PULSE WIDTH:"
@@ -301,7 +301,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y9, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("oscillator pulse width input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_PULSE_WIDTH],
-                                          this, OSCILLATOR_PULSE_WIDTH);
+                                          this, OSCILLATOR_PULSE_WIDTH, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[13] is the display text "RANGE (LOW - HIGH):"
@@ -319,7 +319,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("oscillator range low input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_RANGE_LOW],
-                                          this, OSCILLATOR_RANGE_LOW);
+                                          this, OSCILLATOR_RANGE_LOW, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[16] is the text box for entering and displaying range high
@@ -332,7 +332,7 @@ void Oscillator::calculate_unique_graphics_objects()
         location = {x_input_toggle_button, y11, w_input_toggle_button, h_text_box};
         input_toggle_button = new Input_Toggle_Button("oscillator range high input (input toggle button)", location, WHITE,
                                           BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[OSCILLATOR_RANGE_HIGH],
-                                          this, OSCILLATOR_RANGE_HIGH);
+                                          this, OSCILLATOR_RANGE_HIGH, input_text_box);
         graphics_objects.push_back(input_toggle_button);
 
         // graphics_objects[18] is the button for selecting sine wave output
