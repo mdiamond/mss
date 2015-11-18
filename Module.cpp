@@ -187,14 +187,15 @@ void Module::create_toggle_button_objects(vector<string> names, vector<SDL_Rect>
 }
 
 void Module::create_waveform_objects(vector<string> names, vector<SDL_Rect> locations,
-                             vector<SDL_Color> colors, vector<float> range_lows,
-                             vector<float> range_highs, vector<vector<float> *> buffers)
+                             vector<SDL_Color> colors, vector<SDL_Color> background_colors,
+                             vector<float> range_lows, vector<float> range_highs,
+                             vector<vector<float> *> buffers)
 {
     Waveform *waveform = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)
     {
-        waveform = new Waveform(names[i], locations[i], colors[i], range_lows[i],
+        waveform = new Waveform(names[i], locations[i], colors[i], background_colors[i], range_lows[i],
                                 range_highs[i], buffers[i]);
         graphics_objects.push_back(waveform);
     }

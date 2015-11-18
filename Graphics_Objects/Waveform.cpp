@@ -33,10 +33,11 @@ using namespace std;
  * Constructor.
  */
 Waveform::Waveform(string _name, SDL_Rect _location,
-                   SDL_Color _color, float _range_low,
+                   SDL_Color _color, SDL_Color _background_color, float _range_low,
                    float _range_high, vector<float> *_buffer) :
     Graphics_Object(_name, WAVEFORM, NULL, _location, _color), 
-    range_low(_range_low), range_high(_range_high), buffer(_buffer)
+    background_color(_background_color), range_low(_range_low),
+    range_high(_range_high), buffer(_buffer)
 {
     render_buffer = vector<float>(location.w, 0);
 }
@@ -109,10 +110,11 @@ void Waveform::render()
         points3[i].y -= 1;
     }
 
-    SDL_SetRenderDrawColor(RENDERER, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(RENDERER, background_color.r, background_color.g,
+                           background_color.b, background_color.a);
     SDL_RenderFillRect(RENDERER, &location);
 
-    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, 255);
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
     SDL_RenderDrawLines(RENDERER, &points2[0], points.size());
     SDL_RenderDrawLines(RENDERER, &points3[0], points.size());

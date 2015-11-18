@@ -110,14 +110,13 @@ void Output::calculate_unique_graphics_objects()
     {
         vector<string> names, texts, prompt_texts, text_offs;
         vector<SDL_Rect> locations;
-        vector<SDL_Color> colors, color_offs, text_color_ons, text_color_offs;
+        vector<SDL_Color> colors, background_colors, color_offs, text_color_ons, text_color_offs;
         vector<TTF_Font *> fonts;
         vector<float> range_lows, range_highs;
         vector<int> input_nums;
         vector<vector<float> *> buffers;
         vector<Module *> parents;
         vector<bool> bs;
-        Toggle_Button *toggle_button;
 
         names = {"on/off (text)", "output input left (text)", "output input right (text)"};
         locations = {{x_text, y3, 8, 15}, {x_text, y6, 0, 0}, {x_text, y9, 0, 0}};
@@ -129,12 +128,13 @@ void Output::calculate_unique_graphics_objects()
 
         names = {"waveform visualizer l (waveform)", "waveform visualizer r (waveform)"};
         locations = {{x_text_box, y5, w_waveform, h_waveform}, {x_text_box, y8, w_waveform, h_waveform}};
-        colors = vector<SDL_Color>(2, text_color);
+        colors = vector<SDL_Color>(2, color);
+        background_colors = vector<SDL_Color>(2, text_color);
         range_lows = vector<float>(2, -1);
         range_highs = vector<float>(2, 1);
         buffers = {inputs[OUTPUT_INPUT_L], inputs[OUTPUT_INPUT_R]};
 
-        create_waveform_objects(names, locations, colors, range_lows, range_highs, buffers);
+        create_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
 
         names = {"output input l (input text box)", "output input r (input text box)"};
         locations = {{x_text_box, y7, w_text_box, h_text_box}, {x_text_box, y10, w_text_box, h_text_box}};
@@ -153,19 +153,30 @@ void Output::calculate_unique_graphics_objects()
         color_offs = vector<SDL_Color>(2, BLACK);
         text_color_ons = vector<SDL_Color>(2, RED);
         text_color_offs = vector<SDL_Color>(2, WHITE);
+        fonts = vector<TTF_Font *>(2, FONT_SMALL);
         texts = vector<string>(2, "I");
         text_offs = texts;
         bs = {inputs_live[OUTPUT_INPUT_L], inputs_live[OUTPUT_INPUT_R]};
+        parents = vector<Module *>(2, this);
         input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
 
         create_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                            text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 
-        location = {x_button, y4, 25, 15};
-        toggle_button = new Toggle_Button("on/off button (toggle_button)", location, GREEN,
-                                                  BLACK, BLACK, WHITE, FONT_BOLD, "ON", "OFF",
-                                                  AUDIO_ON, this);
-        graphics_objects.push_back(toggle_button);
+        names = {"on/off button (toggle_button)"};
+        locations = {{x_button, y4, 25, 15}};
+        colors = vector<SDL_Color>(1, GREEN);
+        color_offs = vector<SDL_Color>(1, BLACK);
+        text_color_ons = vector<SDL_Color>(1, BLACK);
+        text_color_offs = vector<SDL_Color>(1, WHITE);
+        fonts = vector<TTF_Font *>(1, FONT_BOLD);
+        texts = vector<string>(1, "ON");
+        text_offs = vector<string>(1, "OFF");
+        bs = {AUDIO_ON};
+        parents = vector<Module *>(1, this);
+
+        create_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+                                     text_color_offs, fonts, texts, text_offs, bs, parents);
     }
 
     // Otherwise, simply update the locations of all of the graphics objects

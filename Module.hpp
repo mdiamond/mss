@@ -114,7 +114,7 @@ class Module
                                           std::vector<std::string>, std::vector<std::string>,
                                           std::vector<bool>, std::vector<Module *>);
         void create_waveform_objects(std::vector<std::string>, std::vector<SDL_Rect>,
-                                     std::vector<SDL_Color>, std::vector<float>,
+                                     std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<float>,
                                      std::vector<float>, std::vector<std::vector<float> *>);
         void create_input_text_box_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
                                            std::vector<std::string>, std::vector<std::string>,
