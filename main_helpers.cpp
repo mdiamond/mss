@@ -167,7 +167,7 @@ bool normal_mode()
     Uint32 delay_time = 0;
     Uint32 frame_previous = 0;
     Timer *frame_timer = new Timer();
-    SDL_TimerID k_rate_timer = SDL_AddTimer(100, k_rate_callback_function, NULL);
+    // SDL_TimerID k_rate_timer = SDL_AddTimer(100, k_rate_callback_function, NULL);
     frame_timer->start();
     SDL_Event e;
     while(true)

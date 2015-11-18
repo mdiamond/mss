@@ -227,7 +227,8 @@ void no_parent_function_forwarder(Graphics_Object *g)
  */
 void function_forwarder(Graphics_Object *g)
 {
-    if(g->type == RECT && SELECTING_SRC && CURRENT_INPUT_TOGGLE_BUTTON != NULL)
+    if(g->type == RECT && SELECTING_SRC && CURRENT_INPUT_TOGGLE_BUTTON != NULL &&
+       CURRENT_INPUT_TOGGLE_BUTTON->parent != g->parent)
     {
         CURRENT_INPUT_TOGGLE_BUTTON->parent->set(g->parent, CURRENT_INPUT_TOGGLE_BUTTON->input_num);
         SELECTING_SRC = false;

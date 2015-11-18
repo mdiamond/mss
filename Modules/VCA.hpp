@@ -21,14 +21,14 @@
 
 enum VCA_Graphics_Objects
 {
-    VCA_OUTPUT_WAVEFORM = 3,
-    VCA_INPUT_TEXT,
-    VCA_SIGNAL_TEXT_BOX,
-    VCA_SIGNAL_INPUT_TOGGLE_BUTTON,
-    VCA_CV_TEXT_BOX,
-    VCA_CV_INPUT_TOGGLE_BUTTON,
+    VCA_INPUT_TEXT = 3,
     VCA_CV_AMOUNT_TEXT,
-    VCA_CV_AMOUNT_TEXT_BOX,
+    VCA_OUTPUT_WAVEFORM,
+    VCA_SIGNAL_INPUT_TEXT_BOX,
+    VCA_CV_INPUT_TEXT_BOX,
+    VCA_CV_AMOUNT_INPUT_TEXT_BOX,
+    VCA_SIGNAL_INPUT_TOGGLE_BUTTON,
+    VCA_CV_INPUT_TOGGLE_BUTTON,
     VCA_CV_AMOUNT_INPUT_TOGGLE_BUTTON
 };
 
@@ -65,9 +65,9 @@ class Vca: public Module
 
         // Member functions
         virtual void process();
-        virtual void calculate_unique_graphics_objects();
-        virtual void update_unique_graphics_objects();
-        virtual void update_unique_control_values();
+        virtual void update_control_values();
+        virtual void calculate_unique_graphics_object_locations();
+        virtual void initialize_unique_graphics_objects();
 };
 
 #endif

@@ -47,6 +47,8 @@ Vca::Vca() :
     // The signal input needs to be 0, while the others
     // need to be 1 to start out
     input_floats[0] = 0;
+    input_floats[1] = 0;
+    input_floats[2] = 1;
 }
 
 /*
@@ -83,33 +85,18 @@ void Vca::process()
     processed = true;
 }
 
-void Vca::update_unique_graphics_objects()
+void Vca::update_control_values()
 {
-    // if(inputs_live[VCA_CV_AMOUNT])
-    //     ((Text_Box *) graphics_objects[VCA_CV_AMOUNT_TEXT_BOX])->update_current_text(to_string(input_floats[VCA_CV_AMOUNT]));
+    
 }
 
-void Vca::update_unique_control_values()
-{
-
-}
-
-/*
- * Calculate the locations of any graphics objects that are
- * unique to this module type.
- */
-void Vca::calculate_unique_graphics_objects()
+void Vca::calculate_unique_graphics_object_locations()
 {
     int x_text, x_text_box, w_text_box, h_text_box,
         x_input_toggle_button, w_input_toggle_button,
         w_waveform, h_waveform,
         x_signal_cv, x_signal_input_toggle_button, w_signals,
         y3, y4, y5, y6, y7;
-    SDL_Rect location;
-    Text *text;
-    Input_Text_Box *input_text_box;
-    Input_Toggle_Button *input_toggle_button;
-    Waveform *waveform;
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
@@ -128,94 +115,83 @@ void Vca::calculate_unique_graphics_objects()
     w_signals = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 10;
     x_signal_input_toggle_button = x_text_box + w_signals;
 
+    graphics_object_locations.push_back({x_text, y4, 0, 0});
+    graphics_object_locations.push_back({x_text, y6, 0, 0});
+    graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
+    graphics_object_locations.push_back({x_text_box, y5, w_signals, h_text_box});
+    graphics_object_locations.push_back({x_signal_cv, y5, w_signals, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
+}
 
-    // If the 4th graphics object is null, that means the graphics objects have not
-    // been calculated before, and we must make them from scratch
-    if(graphics_objects.size() == 3)
-    {
-        // graphics_objects[3] is the waveform visualizer
-        location = {x_text_box, y3, w_waveform, h_waveform};
-        waveform = new Waveform("waveform visualizer (waveform)", location, WHITE, BLACK, -1, 1, &output);
-        graphics_objects.push_back(waveform);
+/*
+ * Calculate the locations of any graphics objects that are
+ * unique to this module type.
+ */
+void Vca::initialize_unique_graphics_objects()
+{
+    vector<string> names, texts, prompt_texts, text_offs;
+    vector<SDL_Rect> locations;
+    vector<SDL_Color> colors, background_colors, color_offs, text_color_ons, text_color_offs;
+    vector<TTF_Font *> fonts;
+    vector<float> range_lows, range_highs;
+    vector<int> input_nums;
+    vector<vector<float> *> buffers;
+    vector<Module *> parents;
+    vector<bool> bs;
 
-        // graphics_objects[4] is the display text "SIGNAL & CV INPUT:"
-        location = {x_text, y4, 0, 0};
-        text = new Text("vca signal & cv input (text)", location, text_color, "SIGNAL & CV INPUT:", FONT_REGULAR);
-        graphics_objects.push_back(text);
+    names = {"vca signal & cv input (text)", "vca cv amount (text)"};
+    locations = {graphics_object_locations[VCA_INPUT_TEXT],
+                 graphics_object_locations[VCA_CV_AMOUNT_TEXT]};
+    colors = vector<SDL_Color>(2, text_color);
+    texts = {"SIGNAL & CV INPUT:", "CV AMOUNT:"};
+    fonts = vector<TTF_Font *>(2, FONT_REGULAR);
 
-        // graphics_objects[5] is the text box for entering and displaying a signal
-        location = {x_text_box, y5, w_signals, h_text_box};
-        input_text_box = new Input_Text_Box("vca signal (input text box)", location, text_color,
-                                "", "input", FONT_SMALL, this, VCA_SIGNAL);
-        graphics_objects.push_back(input_text_box);
+    create_text_objects(names, locations, colors, texts, fonts);
 
-        // graphics_objects[6] is the toggle button for selecting or disabling signal input
-        location = {x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box};
-        input_toggle_button = new Input_Toggle_Button("vca signal input (input toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_SIGNAL],
-                                          this, VCA_SIGNAL, input_text_box);
-        graphics_objects.push_back(input_toggle_button);
+    names = {"waveform visualizer (waveform)"};
+    locations = {graphics_object_locations[VCA_OUTPUT_WAVEFORM]};
+    colors = {color};
+    background_colors = {text_color};
+    range_lows = {-1};
+    range_highs = {1};
+    buffers = {&output};
 
-        // graphics_objects[7] is the text box for entering and displaying control values
-        location = {x_signal_cv, y5, w_signals, h_text_box};
-        input_text_box = new Input_Text_Box("vca cv (input text box)", location, text_color,
-                                "", "input", FONT_SMALL, this, VCA_CV);
-        graphics_objects.push_back(input_text_box);
+    create_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
 
-        // graphics_objects[8] is the toggle button for selecting or disabling cv input
-        location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
-        input_toggle_button = new Input_Toggle_Button("vca cv input (input toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV],
-                                          this, VCA_CV, input_text_box);
-        graphics_objects.push_back(input_toggle_button);
+    names = {"vca signal (input text box)", "vca cv (input text box)", "vca cv amount (input text box)"};
+    locations = {graphics_object_locations[VCA_SIGNAL_INPUT_TEXT_BOX],
+                 graphics_object_locations[VCA_CV_INPUT_TEXT_BOX],
+                 graphics_object_locations[VCA_CV_AMOUNT_INPUT_TEXT_BOX]};
+    colors = vector<SDL_Color>(3, text_color);
+    texts = vector<string>(3, "");
+    prompt_texts = {"input", "input", "# or input"};
+    fonts = vector<TTF_Font *>(3, FONT_SMALL);
+    parents = vector<Module *>(3, this);
+    input_nums = {VCA_SIGNAL, VCA_CV, VCA_CV_AMOUNT};
 
-        // graphics_objects[9] is the display text "CV AMOUNT:"
-        location = {x_text, y6, 0, 0};
-        text = new Text("vca cv amount (text)", location, text_color, "CV AMOUNT:", FONT_REGULAR);
-        graphics_objects.push_back(text);
+    create_input_text_box_objects(names, locations, colors, texts, prompt_texts, fonts, parents, input_nums);
 
-        // graphics_objects[10] is the text box for entering and displaying control value amounts
-        location = {x_text_box, y7, w_text_box, h_text_box};
-        input_text_box = new Input_Text_Box("vca cv amount (input text box)", location, text_color,
-                                "", "# or input", FONT_SMALL, this, VCA_CV_AMOUNT);
-        graphics_objects.push_back(input_text_box);
+    names = {"vca signal input (input toggle button)", "vca cv input (input toggle button)",
+             "vca cv amount input (input toggle button)"};
+    locations = {graphics_object_locations[VCA_SIGNAL_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[VCA_CV_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[VCA_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};
+    colors = vector<SDL_Color>(3, WHITE);
+    color_offs = vector<SDL_Color>(3, BLACK);
+    text_color_ons = vector<SDL_Color>(3, RED);
+    text_color_offs = vector<SDL_Color>(3, WHITE);
+    fonts = vector<TTF_Font *>(3, FONT_SMALL);
+    texts = vector<string>(3, "I");
+    text_offs = texts;
+    bs = {inputs_live[VCA_SIGNAL], inputs_live[VCA_CV],
+          inputs_live[VCA_CV_AMOUNT]};
+    parents = vector<Module *>(3, this);
+    input_nums = {VCA_SIGNAL, VCA_CV,
+                  VCA_CV_AMOUNT};
 
-        // graphics_objects[11] is the toggle button for selecting or disabling cv amount input
-        location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        input_toggle_button = new Input_Toggle_Button("vca cv amount input (input toggle button)", location, WHITE,
-                                          BLACK, RED, WHITE, FONT_SMALL, "I", "I", inputs_live[VCA_CV_AMOUNT],
-                                          this, VCA_CV_AMOUNT, input_text_box);
-        graphics_objects.push_back(input_toggle_button);
-    }
-
-    // Otherwise, simply update the locations of all of the graphics objects
-    else
-    {
-        location = {x_text_box, y3, w_waveform, h_waveform};
-        graphics_objects[VCA_OUTPUT_WAVEFORM]->update_location(location);
-
-        location = {x_text, y4, 0, 0};
-        graphics_objects[VCA_INPUT_TEXT]->update_location(location);
-
-        location = {x_text_box, y5, w_signals, h_text_box};
-        graphics_objects[VCA_SIGNAL_TEXT_BOX]->update_location(location);
-
-        location = {x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box};
-        graphics_objects[VCA_SIGNAL_INPUT_TOGGLE_BUTTON]->update_location(location);
-
-        location = {x_signal_cv, y5, w_signals, h_text_box};
-        graphics_objects[VCA_CV_TEXT_BOX]->update_location(location);
-
-        location = {x_input_toggle_button, y5, w_input_toggle_button, h_text_box};
-        graphics_objects[VCA_CV_INPUT_TOGGLE_BUTTON]->update_location(location);
-
-        location = {x_text, y6, 0, 0};
-        graphics_objects[VCA_CV_AMOUNT_TEXT]->update_location(location);
-
-        location = {x_text_box, y7, w_text_box, h_text_box};
-        graphics_objects[VCA_CV_AMOUNT_TEXT_BOX]->update_location(location);
-
-        location = {x_input_toggle_button, y7, w_input_toggle_button, h_text_box};
-        graphics_objects[VCA_CV_AMOUNT_INPUT_TOGGLE_BUTTON]->update_location(location);
-    }
+    create_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+                                       text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }

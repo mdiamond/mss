@@ -108,14 +108,17 @@ int load_fonts()
  * Determine where in the window each of the modules and their
  * respective graphics objects are meant to be rendered.
  */
-void calculate_graphics_objects()
+void update_graphics_objects()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        MODULES[i]->calculate_graphics_objects();
+        if(MODULES[i]->graphics_objects_initialized)
+            MODULES[i]->update_graphics_object_locations();
+        else
+            MODULES[i]->initialize_graphics_objects();
     }
 
-    MODULES_CHANGED = 0;
+    MODULES_CHANGED = false;
 }
 
 Module *hovering_over()
@@ -298,19 +301,12 @@ void draw_surface()
     // graphics objects, then calculate the pages
     if(MODULES_CHANGED)
     {
-        calculate_graphics_objects();
+        update_graphics_objects();
         calculate_pages();
-        MODULES_CHANGED = false;
     }
 
     // Clear the renderer
     SDL_RenderClear(RENDERER);
-
-    // Update graphics objects for all modules
-    for(unsigned int i = CURRENT_PAGE * MODULES_PER_PAGE;
-        i < (CURRENT_PAGE + 1) * MODULES_PER_PAGE && i < MODULES.size();
-        i ++)
-        MODULES[i]->update_graphics_objects();
 
     // Copy audio data into waveform objects so that they will render without hiccups
     SDL_LockAudio();

@@ -29,11 +29,11 @@ enum Oscillator_Graphics_Objects
     OSCILLATOR_PULSE_WIDTH_TEXT,
     OSCILLATOR_RANGE_TEXT,
     OSCILLATOR_OUTPUT_WAVEFORM,
-    OSCILLATOR_FREQUENCY_TEXT_BOX,
-    OSCILLATOR_PHASE_OFFSET_TEXT_BOX,
-    OSCILLATOR_PULSE_WIDTH_TEXT_BOX,
-    OSCILLATOR_RANGE_LOW_TEXT_BOX,
-    OSCILLATOR_RANGE_HIGH_TEXT_BOX,
+    OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX,
+    OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX,
+    OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX,
+    OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX,
+    OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX,
     OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON,
     OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON,
     OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON,
@@ -80,9 +80,9 @@ class Oscillator: public Module
 
         // Member functions
         virtual void process();
-        virtual void calculate_unique_graphics_objects();
-        virtual void update_unique_graphics_objects();
-        virtual void update_unique_control_values();
+        virtual void update_control_values();
+        virtual void calculate_unique_graphics_object_locations();
+        virtual void initialize_unique_graphics_objects();
         float produce_sin_sample(float);
         float produce_tri_sample(float);
         float produce_saw_sample(float);

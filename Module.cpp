@@ -140,21 +140,22 @@ void Module::process_dependencies()
             dependencies[i]->process();
 }
 
-void Module::calculate_upper_left()
+void Module::calculate_graphics_object_locations()
 {
+    graphics_object_locations.clear();
+
     int x, y;
     x = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) % MODULES_PER_ROW);
     y = ((number % (MODULES_PER_ROW * MODULES_PER_COLUMN)) / MODULES_PER_ROW);
     upper_left.x = ((x * MODULE_WIDTH) + (x * MODULE_SPACING));
     upper_left.y = ((y * MODULE_HEIGHT) + (y * MODULE_SPACING));
-}
 
-/*
- * Call upon each module to update its control values.
- */
-void Module::update_control_values()
-{
-    update_unique_control_values();
+    graphics_object_locations.push_back({upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT});
+    graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH, upper_left.y + MODULE_BORDER_WIDTH,
+                                        MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH), MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)});
+    graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH + 2, upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0});
+
+    calculate_unique_graphics_object_locations();
 }
 
 void Module::create_text_objects(vector<string> names, vector<SDL_Rect> locations,
@@ -238,57 +239,43 @@ void Module::create_input_toggle_button_objects(vector<string> names, vector<SDL
  * call upon the module to caluclate the locations of
  * any graphics objects that are unique to the module type.
  */
-void Module::calculate_graphics_objects()
+void Module::initialize_graphics_objects()
 {
-    SDL_Rect location_border, location_inner_border, location_name;
     string object_name;
     Rect *rect;
     Text *text;
 
     // Calculate the modules top left pixel location in the window
-    calculate_upper_left();
+    calculate_graphics_object_locations();
 
-    location_border = {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
-    location_inner_border = {upper_left.x + MODULE_BORDER_WIDTH,
-                             upper_left.y + MODULE_BORDER_WIDTH,
-                             MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH),
-                             MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)};
-    location_name = {upper_left.x + MODULE_BORDER_WIDTH + 2,
-                     upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0};
+    // graphics_object[0] is the outermost rectangle used to represent the module
+    rect = new Rect("border (rect)", graphics_object_locations[MODULE_BORDER_RECT], WHITE, this);
+    graphics_objects.push_back(rect);
 
-    // If the graphics objects have not yet been initialized
-    if(graphics_objects.size() == 0)
-    {
-        // graphics_object[0] is the outermost rectangle used to represent the module
-        rect = new Rect("border (rect)", location_border, WHITE, this);
-        graphics_objects.push_back(rect);
+    // graphics_object[1] is the slightly smaller rectangle within the outermost
+    // rectangle
+    rect = new Rect("inner_border (rect)", graphics_object_locations[MODULE_INNER_BORDER_RECT], color, this);
+    graphics_objects.push_back(rect);
 
-        // graphics_object[1] is the slightly smaller rectangle within the outermost
-        // rectangle
-        rect = new Rect("inner_border (rect)", location_inner_border, color, this);
-        graphics_objects.push_back(rect);
+    // graphics_object[2] is the objects name
+    text = new Text("module name (text)", graphics_object_locations[MODULE_NAME_TEXT], text_color, name, FONT_BOLD);
+    graphics_objects.push_back(text);
 
-        // graphics_object[2] is the objects name
-        text = new Text("module name (text)", location_name, text_color, name, FONT_BOLD);
-        graphics_objects.push_back(text);
-    }
+    initialize_unique_graphics_objects();
 
-    // If they have already been initialized, just update their locations
-    else
-    {
-        graphics_objects[MODULE_BORDER_RECT]->update_location(location_border);
-
-        graphics_objects[MODULE_INNER_BORDER_RECT]->update_location(location_inner_border);
-
-        graphics_objects[MODULE_NAME_TEXT]->update_location(location_name);
-    }
-
-    calculate_unique_graphics_objects();
+    graphics_objects_initialized = true;
 }
 
-void Module::update_graphics_objects()
+void Module::update_graphics_object_locations()
 {
-    update_unique_graphics_objects();
+    SDL_Point old_upper_left = upper_left;
+
+    calculate_graphics_object_locations();
+
+    if(old_upper_left.x != upper_left.x ||
+       old_upper_left.y != upper_left.y)
+        for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+            graphics_objects[i]->update_location(graphics_object_locations[i]);
 }
 
 void Module::set(float val, int input_num)

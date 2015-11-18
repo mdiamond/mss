@@ -65,11 +65,14 @@ class Module
         SDL_Point upper_left;
         SDL_Color color;
         SDL_Color text_color;
+        bool graphics_objects_initialized;
         // A vector containing pointers to any module that must
         // be processed before this module
         std::vector<Module *> dependencies;
         // A vector containing any graphics objects
-        // necessary for rendering this module
+        // necessary for rendering this module, and
+        // their current locations
+        std::vector<SDL_Rect> graphics_object_locations;
         std::vector<Graphics_Object *> graphics_objects;
         // Vectors containing representations of the inputs as
         // floats, strings and input buffers, as well as booleans
@@ -87,24 +90,14 @@ class Module
         virtual ~Module();
 
         // Virtual member functions
-        //   process() is called during each callback function to
-        //   populate the modules output buffer and make it available
-        //   to other modules
         virtual void process() = 0;
-        //   update_control_values() is called during each k rate callback
-        //   to make sure that the modules all get their most up to date control
-        //   values in order to synthesize sound properly
-        virtual void update_unique_control_values() = 0;
-        //   calculate_unique_graphics_objects() is called to calculate
-        //   the locations of any graphics objects that are unique
-        //   to this module type
-        virtual void calculate_unique_graphics_objects() = 0;
-        virtual void update_unique_graphics_objects() = 0;
+        virtual void update_control_values() = 0;
+        virtual void calculate_unique_graphics_object_locations() = 0;
+        virtual void initialize_unique_graphics_objects() = 0;
 
         // Member functions
         void process_dependencies();
-        void calculate_upper_left();
-        void update_control_values();
+        void calculate_graphics_object_locations();
         void create_text_objects(std::vector<std::string>, std::vector<SDL_Rect>,
                                  std::vector<SDL_Color>, std::vector<std::string>,
                                  std::vector<TTF_Font *>);
@@ -124,8 +117,8 @@ class Module
                                                 std::vector<TTF_Font *>,
                                                 std::vector<std::string>, std::vector<std::string>,
                                                 std::vector<bool>, std::vector<Module *>, std::vector<int>);
-        void calculate_graphics_objects();
-        void update_graphics_objects();
+        void initialize_graphics_objects();
+        void update_graphics_object_locations();
         void set(float, int);
         void set(Module *, int);
         void cancel_input(int);

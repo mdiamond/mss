@@ -7,8 +7,8 @@ MAINOBJ = obj/main.o obj/main_helpers.o
 MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/image_processing.o obj/populate_wavetables.o obj/signal_processing.o obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
-MODULEOBJ =  obj/Mixer.o obj/Oscillator.o obj/Output.o obj/VCA.o
-GRAPHICOBJ =  obj/Button.o obj/Input_Text_Box.o obj/Input_Toggle_Button.o obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
+MODULEOBJ = obj/Mixer.o obj/Oscillator.o obj/Output.o obj/VCA.o
+GRAPHICOBJ = obj/Button.o obj/Input_Text_Box.o obj/Input_Toggle_Button.o obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
 OBJECTS = $(MAINOBJ) $(MISCFILEOBJ) $(MISCCLASSOBJ) $(BASECLASSOBJ) $(MODULEOBJ) $(GRAPHICOBJ)
 
 all : synth
