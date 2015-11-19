@@ -100,9 +100,9 @@ void Vca::calculate_unique_graphics_object_locations()
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 10;
+    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 11;
     h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box;
+    x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
     w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
     h_waveform = 135;
@@ -112,8 +112,8 @@ void Vca::calculate_unique_graphics_object_locations()
     y6 = y5 + 15;
     y7 = y6 + 15;
     x_signal_cv = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_signals = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 10;
-    x_signal_input_toggle_button = x_text_box + w_signals;
+    w_signals = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 11;
+    x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
@@ -179,10 +179,10 @@ void Vca::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[VCA_SIGNAL_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[VCA_CV_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[VCA_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(3, WHITE);
-    color_offs = vector<SDL_Color>(3, BLACK);
-    text_color_ons = vector<SDL_Color>(3, RED);
-    text_color_offs = vector<SDL_Color>(3, WHITE);
+    colors = vector<SDL_Color>(3, RED);
+    color_offs = vector<SDL_Color>(3, text_color);
+    text_color_ons = vector<SDL_Color>(3, WHITE);
+    text_color_offs = vector<SDL_Color>(3, color);
     fonts = vector<TTF_Font *>(3, FONT_SMALL);
     texts = vector<string>(3, "I");
     text_offs = texts;

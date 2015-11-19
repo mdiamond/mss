@@ -182,9 +182,9 @@ void Oscillator::calculate_unique_graphics_object_locations()
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 10;
+    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 11;
     h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box;
+    x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
     w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
     h_waveform = 45;
@@ -199,8 +199,8 @@ void Oscillator::calculate_unique_graphics_object_locations()
     y11 = y10 + 15;
     y12 = y11 + 27;
     x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 10;
-    x_range_low_input_toggle_button = x_text_box + w_range;
+    w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 11;
+    x_range_low_input_toggle_button = x_text_box + w_range + 1;
     w_wave_selector = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) / 4) - 2;
 
     graphics_object_locations.push_back({x_text, y4, 0, 0});
@@ -286,10 +286,10 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(5, WHITE);
-    color_offs = vector<SDL_Color>(5, BLACK);
-    text_color_ons = vector<SDL_Color>(5, RED);
-    text_color_offs = vector<SDL_Color>(5, WHITE);
+    colors = vector<SDL_Color>(5, RED);
+    color_offs = vector<SDL_Color>(5, text_color);
+    text_color_ons = vector<SDL_Color>(5, WHITE);
+    text_color_offs = vector<SDL_Color>(5, color);
     fonts = vector<TTF_Font *>(5, FONT_SMALL);
     texts = vector<string>(5, "I");
     text_offs = texts;

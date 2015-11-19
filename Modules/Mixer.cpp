@@ -160,10 +160,10 @@ void Mixer::calculate_unique_graphics_object_locations()
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box_2 = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_text_box = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 10;
+    w_text_box = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 11;
     h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box;
-    x_input_toggle_button_2 = x_text_box_2 + w_text_box;
+    x_input_toggle_button = x_text_box + w_text_box + 1;
+    x_input_toggle_button_2 = x_text_box_2 + w_text_box + 1;
     w_input_toggle_button = 10;
     w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
     h_waveform = 46;
@@ -335,10 +335,10 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(16, WHITE);
-    color_offs = vector<SDL_Color>(16, BLACK);
-    text_color_ons = vector<SDL_Color>(16, RED);
-    text_color_offs = vector<SDL_Color>(16, WHITE);
+    colors = vector<SDL_Color>(16, RED);
+    color_offs = vector<SDL_Color>(16, text_color);
+    text_color_ons = vector<SDL_Color>(16, WHITE);
+    text_color_offs = vector<SDL_Color>(16, color);
     fonts = vector<TTF_Font *>(16, FONT_SMALL);
     texts = vector<string>(16, "I");
     text_offs = texts;

@@ -78,9 +78,9 @@ void Output::calculate_unique_graphics_object_locations()
 
     x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
     x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 10;
+    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 11;
     h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box;
+    x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
     x_button = upper_left.x + MODULE_BORDER_WIDTH + 70;
     w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
@@ -158,10 +158,10 @@ void Output::initialize_unique_graphics_objects()
     names = {"output input l (input toggle button)", "output input r (input toggle button)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(2, WHITE);
-    color_offs = vector<SDL_Color>(2, BLACK);
-    text_color_ons = vector<SDL_Color>(2, RED);
-    text_color_offs = vector<SDL_Color>(2, WHITE);
+    colors = vector<SDL_Color>(2, RED);
+    color_offs = vector<SDL_Color>(2, text_color);
+    text_color_ons = vector<SDL_Color>(2, WHITE);
+    text_color_offs = vector<SDL_Color>(2, color);
     fonts = vector<TTF_Font *>(2, FONT_SMALL);
     texts = vector<string>(2, "I");
     text_offs = texts;
@@ -174,10 +174,10 @@ void Output::initialize_unique_graphics_objects()
 
     names = {"on/off button (toggle_button)"};
     locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(1, GREEN);
-    color_offs = vector<SDL_Color>(1, BLACK);
-    text_color_ons = vector<SDL_Color>(1, BLACK);
-    text_color_offs = vector<SDL_Color>(1, WHITE);
+    colors = vector<SDL_Color>(1, RED);
+    color_offs = vector<SDL_Color>(1, text_color);
+    text_color_ons = vector<SDL_Color>(1, WHITE);
+    text_color_offs = vector<SDL_Color>(1, color);
     fonts = vector<TTF_Font *>(1, FONT_BOLD);
     texts = vector<string>(1, "ON");
     text_offs = vector<string>(1, "OFF");

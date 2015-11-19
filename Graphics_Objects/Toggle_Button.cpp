@@ -21,6 +21,7 @@
 
 // Included classes
 #include "../Graphics_Object.hpp"
+#include "Rect.hpp"
 #include "Text.hpp"
 #include "Toggle_Button.hpp"
 
@@ -40,7 +41,9 @@ Toggle_Button::Toggle_Button(string _name, SDL_Rect _location, SDL_Color _color,
     Graphics_Object(_name, TOGGLE_BUTTON, _parent, _location, _color),
     b(_b), color_off(_color_off),
     text_on(Text("text on (text)", location, _text_color_on, _text_on, _font)),
-    text_off(Text("text off (text)", location, _text_color_off, _text_off, _font))
+    text_off(Text("text off (text)", location, _text_color_off, _text_off, _font)),
+    background(Rect("background rect (rect)", location, color, NULL)),
+    background_off(Rect("background off rect (rect)", location, color_off, NULL))
 {
 
 }
@@ -60,19 +63,13 @@ void Toggle_Button::render()
 {
     if(b)
     {
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
-        SDL_RenderFillRect(RENDERER, &location);
-        SDL_SetRenderDrawColor(RENDERER, color_off.r, color_off.g, color_off.b, color_off.a);
-        SDL_RenderDrawRect(RENDERER, &location);
+        background.render();
         text_on.location.x = location.x + (location.w - text_on.location.w) / 2;
         text_on.render();
     }
     else
     {
-        SDL_SetRenderDrawColor(RENDERER, color_off.r, color_off.g, color_off.b, color_off.a);
-        SDL_RenderFillRect(RENDERER, &location);
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
-        SDL_RenderDrawRect(RENDERER, &location);
+        background_off.render();
         text_off.location.x = location.x + (location.w - text_off.location.w) / 2;
         text_off.render();
     }

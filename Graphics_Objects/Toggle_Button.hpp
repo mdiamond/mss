@@ -16,6 +16,7 @@
 #include "SDL2/SDL.h"
 
 // Included classes
+#include "Rect.hpp"
 #include "Text.hpp"
 
 /**********************************
@@ -28,6 +29,8 @@ class Toggle_Button: public Graphics_Object
         bool b;
         SDL_Color color_off;
         Text text_on, text_off;
+        Rect background;
+        Rect background_off;
         // Constructor and destructor
         Toggle_Button(std::string, SDL_Rect, SDL_Color,
                       SDL_Color, SDL_Color, SDL_Color,
