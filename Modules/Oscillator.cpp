@@ -19,6 +19,7 @@
 
 // Included files
 #include "../function_forwarder.hpp"
+#include "../graphics_object_utils.hpp"
 #include "../image_processing.hpp"
 #include "../main.hpp"
 #include "../signal_processing.hpp"
@@ -236,6 +237,8 @@ void Oscillator::initialize_unique_graphics_objects()
     vector<Module *> parents;
     vector<bool> bs;
 
+    vector<Graphics_Object *> tmp_graphics_objects;
+
     names = {"oscillator frequency (text)", "oscillator phase offset (text)", "oscillator pulse width (text)",
              "oscillator range low/high (text)"};
     locations = {graphics_object_locations[OSCILLATOR_FREQUENCY_TEXT],
@@ -246,7 +249,8 @@ void Oscillator::initialize_unique_graphics_objects()
     texts = {"FREQUENCY:", "PHASE OFFSET:", "PULSE WIDTH:", "RANGE LOW & HIGH:"};
     fonts = vector<TTF_Font *>(4, FONT_REGULAR);
 
-    create_text_objects(names, locations, colors, texts, fonts);
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"waveform visualizer (waveform)"};
     locations = {graphics_object_locations[OSCILLATOR_OUTPUT_WAVEFORM]};
@@ -256,7 +260,8 @@ void Oscillator::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    create_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"oscillator frequency (input text box)", "oscillator phase offset (input text box)",
              "oscillator pulse width (input text box)", "oscillator range low (input text box)",
@@ -274,7 +279,7 @@ void Oscillator::initialize_unique_graphics_objects()
     input_nums = {OSCILLATOR_FREQUENCY, OSCILLATOR_PHASE_OFFSET, OSCILLATOR_PULSE_WIDTH,
                   OSCILLATOR_RANGE_LOW, OSCILLATOR_RANGE_HIGH};
 
-    create_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
     names = {"oscillator frequency input (input toggle button)",
              "oscillator phase offset input (input toggle button)",
@@ -299,7 +304,7 @@ void Oscillator::initialize_unique_graphics_objects()
                   OSCILLATOR_PULSE_WIDTH, OSCILLATOR_RANGE_LOW,
                   OSCILLATOR_RANGE_HIGH};
 
-    create_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 
     names = {"oscillator sin toggle (toggle button)", "oscillator tri toggle (toggle button)",
@@ -318,8 +323,9 @@ void Oscillator::initialize_unique_graphics_objects()
     bs = {sin_on, tri_on, saw_on, sqr_on};
     parents = vector<Module *>(4, this);
 
-    create_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                 text_color_offs, fonts, texts, text_offs, bs, parents);
+    tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+                                                        text_color_offs, fonts, texts, text_offs, bs, parents);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 }
 
 void Oscillator::switch_waveform(int _waveform_type)

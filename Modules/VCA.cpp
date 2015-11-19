@@ -19,6 +19,7 @@
 
 // Included files
 #include "../function_forwarder.hpp"
+#include "../graphics_object_utils.hpp"
 #include "../image_processing.hpp"
 #include "../main.hpp"
 #include "../signal_processing.hpp"
@@ -142,6 +143,8 @@ void Vca::initialize_unique_graphics_objects()
     vector<Module *> parents;
     vector<bool> bs;
 
+    vector<Graphics_Object *> tmp_graphics_objects;
+
     names = {"vca signal & cv input (text)", "vca cv amount (text)"};
     locations = {graphics_object_locations[VCA_INPUT_TEXT],
                  graphics_object_locations[VCA_CV_AMOUNT_TEXT]};
@@ -149,7 +152,8 @@ void Vca::initialize_unique_graphics_objects()
     texts = {"SIGNAL & CV INPUT:", "CV AMOUNT:"};
     fonts = vector<TTF_Font *>(2, FONT_REGULAR);
 
-    create_text_objects(names, locations, colors, texts, fonts);
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"waveform visualizer (waveform)"};
     locations = {graphics_object_locations[VCA_OUTPUT_WAVEFORM]};
@@ -159,7 +163,8 @@ void Vca::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    create_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"vca signal (input text box)", "vca cv (input text box)", "vca cv amount (input text box)"};
     locations = {graphics_object_locations[VCA_SIGNAL_INPUT_TEXT_BOX],
@@ -172,7 +177,7 @@ void Vca::initialize_unique_graphics_objects()
     parents = vector<Module *>(3, this);
     input_nums = {VCA_SIGNAL, VCA_CV, VCA_CV_AMOUNT};
 
-    create_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
     names = {"vca signal input (input toggle button)", "vca cv input (input toggle button)",
              "vca cv amount input (input toggle button)"};
@@ -192,6 +197,6 @@ void Vca::initialize_unique_graphics_objects()
     input_nums = {VCA_SIGNAL, VCA_CV,
                   VCA_CV_AMOUNT};
 
-    create_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }

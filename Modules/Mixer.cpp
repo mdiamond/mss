@@ -19,6 +19,7 @@
 
 // Included files
 #include "../function_forwarder.hpp"
+#include "../graphics_object_utils.hpp"
 #include "../image_processing.hpp"
 #include "../main.hpp"
 #include "../signal_processing.hpp"
@@ -186,13 +187,16 @@ void Mixer::initialize_unique_graphics_objects()
     vector<Module *> parents;
     vector<bool> bs;
 
+    vector<Graphics_Object *> tmp_graphics_objects;
+
     names = {"mixer signal 1 (text)"};
     locations = {graphics_object_locations[MIXER_SIGNALS_TEXT]};
     colors = vector<SDL_Color>(1, text_color);
     texts = {"SIGNAL & MULTIPLIER:"};
     fonts = vector<TTF_Font *>(1, FONT_REGULAR);
 
-    create_text_objects(names, locations, colors, texts, fonts);
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MIXER_OUTPUT_WAVEFORM]};
@@ -202,7 +206,8 @@ void Mixer::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    create_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"mixer signal 1 (input text box)",
              "mixer signal 1 multiplier (input text box)",
@@ -257,7 +262,7 @@ void Mixer::initialize_unique_graphics_objects()
                   MIXER_SIGNAL_7, MIXER_SIGNAL_7_MULTIPLIER,
                   MIXER_SIGNAL_8, MIXER_SIGNAL_8_MULTIPLIER};
 
-    create_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
     names = {"mixer signal 1 (input toggle button)",
              "mixer signal 1 multiplier (input toggle button)",
@@ -309,6 +314,6 @@ void Mixer::initialize_unique_graphics_objects()
                   MIXER_SIGNAL_7, MIXER_SIGNAL_7_MULTIPLIER,
                   MIXER_SIGNAL_8, MIXER_SIGNAL_8_MULTIPLIER};
 
-    create_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }

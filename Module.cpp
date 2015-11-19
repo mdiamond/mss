@@ -193,51 +193,7 @@ void Module::calculate_graphics_object_locations()
     calculate_unique_graphics_object_locations();
 }
 
-void Module::create_text_objects(vector<string> names, vector<SDL_Rect> locations,
-                         vector<SDL_Color> colors, vector<string> texts,
-                         vector<TTF_Font *> fonts)
-{
-    Text *text = NULL;
-
-    for(unsigned int i = 0; i < names.size(); i ++)
-    {
-        text = new Text(names[i], locations[i], colors[i], texts[i], fonts[i]);
-        graphics_objects.push_back(text);
-    }
-}
-
-void Module::create_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
-                                  vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
-                                  vector<TTF_Font *> fonts,
-                                  vector<string> text_ons, vector<string> text_offs,
-                                  vector<bool> bs, vector<Module *> parents)
-{
-    Toggle_Button *toggle_button = NULL;
-
-    for(unsigned int i = 0; i < names.size(); i ++)
-    {
-        toggle_button = new Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
-                                          text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i]);
-        graphics_objects.push_back(toggle_button);
-    }
-}
-
-void Module::create_waveform_objects(vector<string> names, vector<SDL_Rect> locations,
-                             vector<SDL_Color> colors, vector<SDL_Color> background_colors,
-                             vector<float> range_lows, vector<float> range_highs,
-                             vector<vector<float> *> buffers)
-{
-    Waveform *waveform = NULL;
-
-    for(unsigned int i = 0; i < names.size(); i ++)
-    {
-        waveform = new Waveform(names[i], locations[i], colors[i], background_colors[i], range_lows[i],
-                                range_highs[i], buffers[i]);
-        graphics_objects.push_back(waveform);
-    }
-}
-
-void Module::create_input_text_box_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
+void Module::initialize_input_text_box_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
                                            vector<SDL_Color> text_colors, vector<string> prompt_texts, vector<TTF_Font *> fonts,
                                            vector<Module *> parents, vector<int> input_nums)
 {
@@ -251,7 +207,7 @@ void Module::create_input_text_box_objects(vector<string> names, vector<SDL_Rect
     }
 }
 
-void Module::create_input_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
+void Module::initialize_input_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
                                         vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
                                         vector<TTF_Font *> fonts,
                                         vector<string> text_ons, vector<string> text_offs,

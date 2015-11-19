@@ -18,6 +18,7 @@
 
 // Included files
 #include "../function_forwarder.hpp"
+#include "../graphics_object_utils.hpp"
 #include "../image_processing.hpp"
 #include "../main.hpp"
 #include "../signal_processing.hpp"
@@ -122,6 +123,8 @@ void Output::initialize_unique_graphics_objects()
     vector<Module *> parents;
     vector<bool> bs;
 
+    vector<Graphics_Object *> tmp_graphics_objects;
+
     names = {"on/off (text)", "output input left (text)", "output input right (text)"};
     locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TEXT],
                  graphics_object_locations[OUTPUT_INPUT_L_TEXT],
@@ -130,7 +133,8 @@ void Output::initialize_unique_graphics_objects()
     texts = {"AUDIO ON:", "LEFT SIGNAL:", "RIGHT SIGNAL:"};
     fonts = vector<TTF_Font *>(3, FONT_REGULAR);
 
-    create_text_objects(names, locations, colors, texts, fonts);
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"waveform visualizer l (waveform)", "waveform visualizer r (waveform)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_WAVEFORM],
@@ -141,7 +145,8 @@ void Output::initialize_unique_graphics_objects()
     range_highs = vector<float>(2, 1);
     buffers = vector<vector<float> *>(2, NULL);
 
-    create_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {"output input l (input text box)", "output input r (input text box)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TEXT_BOX],
@@ -153,7 +158,7 @@ void Output::initialize_unique_graphics_objects()
     parents = vector<Module *>(2, this);
     input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
 
-    create_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
     names = {"output input l (input toggle button)", "output input r (input toggle button)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON],
@@ -169,7 +174,7 @@ void Output::initialize_unique_graphics_objects()
     parents = vector<Module *>(2, this);
     input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
 
-    create_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 
     names = {"on/off button (toggle_button)"};
@@ -184,8 +189,9 @@ void Output::initialize_unique_graphics_objects()
     bs = {true};
     parents = vector<Module *>(1, this);
 
-    create_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                 text_color_offs, fonts, texts, text_offs, bs, parents);
+    tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+                                                        text_color_offs, fonts, texts, text_offs, bs, parents);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 }
 
 void Output::toggle_audio_on()
