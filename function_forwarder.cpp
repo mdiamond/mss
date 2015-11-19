@@ -152,6 +152,7 @@ void mixer_function_forwarder(Graphics_Object *g)
 void add_oscillator()
 {
     Oscillator *oscillator = new Oscillator();
+    oscillator->initialize_graphics_objects();
     MODULES.push_back(oscillator);
     MODULES_CHANGED = true;
     cout << "Added module " << oscillator->name << endl;
@@ -163,6 +164,7 @@ void add_oscillator()
 void add_VCA()
 {
     Vca *vca = new Vca();
+    vca->initialize_graphics_objects();
     MODULES.push_back(vca);
     MODULES_CHANGED = true;
     cout << "Added module " << vca->name << endl;
@@ -174,6 +176,7 @@ void add_VCA()
 void add_mixer()
 {
     Mixer *mixer = new Mixer();
+    mixer->initialize_graphics_objects();
     MODULES.push_back(mixer);
     MODULES_CHANGED = true;
     cout << "Added module " << mixer->name << endl;

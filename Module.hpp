@@ -110,8 +110,8 @@ class Module
                                      std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<float>,
                                      std::vector<float>, std::vector<std::vector<float> *>);
         void create_input_text_box_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
-                                           std::vector<std::string>, std::vector<std::string>,
-                                           std::vector<TTF_Font *>, std::vector<Module *>, std::vector<int>);
+                                           std::vector<SDL_Color>,std::vector<std::string>, std::vector<TTF_Font *>,
+                                           std::vector<Module *>, std::vector<int>);
         void create_input_toggle_button_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
                                                 std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<SDL_Color>,
                                                 std::vector<TTF_Font *>,

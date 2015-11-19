@@ -25,6 +25,7 @@
 class Text_Box: public Graphics_Object
 {
     public:
+        SDL_Color text_color;
         bool active;
         TTF_Font *font;
         Rect background;
@@ -32,9 +33,8 @@ class Text_Box: public Graphics_Object
         Text prompt_text;
         Text typing_text;
         // Constructor and destructor
-        Text_Box(std::string, SDL_Rect, SDL_Color,
-                 std::string, std::string,
-                 TTF_Font *, Module *);
+        Text_Box(std::string, SDL_Rect, SDL_Color, SDL_Color,
+                 std::string, TTF_Font *, Module *);
         virtual ~Text_Box();
         // Member functions
         virtual void render();

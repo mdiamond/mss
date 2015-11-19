@@ -228,7 +228,7 @@ void Oscillator::initialize_unique_graphics_objects()
 {
     vector<string> names, texts, prompt_texts, text_offs;
     vector<SDL_Rect> locations;
-    vector<SDL_Color> colors, background_colors, color_offs, text_color_ons, text_color_offs;
+    vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
     vector<TTF_Font *> fonts;
     vector<float> range_lows, range_highs;
     vector<int> input_nums;
@@ -267,14 +267,14 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX],
                  graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX]};
     colors = vector<SDL_Color>(5, text_color);
-    texts = vector<string>(5, "");
+    text_colors = vector<SDL_Color>(5, color);
     prompt_texts = vector<string>(5, "# or input");
     fonts = vector<TTF_Font *>(5, FONT_SMALL);
     parents = vector<Module *>(5, this);
     input_nums = {OSCILLATOR_FREQUENCY, OSCILLATOR_PHASE_OFFSET, OSCILLATOR_PULSE_WIDTH,
                   OSCILLATOR_RANGE_LOW, OSCILLATOR_RANGE_HIGH};
 
-    create_input_text_box_objects(names, locations, colors, texts, prompt_texts, fonts, parents, input_nums);
+    create_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
     names = {"oscillator frequency input (input toggle button)",
              "oscillator phase offset input (input toggle button)",

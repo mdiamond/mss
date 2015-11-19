@@ -112,10 +112,7 @@ void update_graphics_objects()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        if(MODULES[i]->graphics_objects_initialized)
-            MODULES[i]->update_graphics_object_locations();
-        else
-            MODULES[i]->initialize_graphics_objects();
+        MODULES[i]->update_graphics_object_locations();
     }
 
     MODULES_CHANGED = false;

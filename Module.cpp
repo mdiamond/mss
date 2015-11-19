@@ -78,6 +78,17 @@ Module::Module(int _type) :
     text_color.g = (rand() % 128) + 128;
     color.b = rand() % 128;
     text_color.b = (rand() % 128) + 128;
+
+    if(text_color.r - color.r < 40)
+        text_color.r += 20;
+        color.r -= 20;
+    if(text_color.g - color.g < 40)
+        text_color.g += 20;
+        color.g -= 20;
+    if(text_color.b - color.b < 40)
+        text_color.b += 20;
+        color.b -= 20;
+
     color.a = 255;
     text_color.a = 255;
 
@@ -86,6 +97,12 @@ Module::Module(int _type) :
         case OUTPUT:
             parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
             parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
+            color.r = 48;
+            color.g = 219;
+            color.b = 68;
+            text_color.r = 219;
+            text_color.g = 48;
+            text_color.b = 199;
             break;
         case MIXER:
             parameter_names[MIXER_SIGNAL_1] = "SIGNAL 1";
@@ -104,6 +121,12 @@ Module::Module(int _type) :
             parameter_names[MIXER_SIGNAL_7_MULTIPLIER] = "SIGNAL 7 MULTIPLIER";
             parameter_names[MIXER_SIGNAL_8] = "SIGNAL 8";
             parameter_names[MIXER_SIGNAL_8_MULTIPLIER] = "SIGNAL 8 MULTIPLIER";
+            color.r = 219;
+            color.g = 116;
+            color.b = 48;
+            text_color.r = 48;
+            text_color.g = 151;
+            text_color.b = 219;
             break;
         case OSCILLATOR:
             parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";
@@ -111,11 +134,23 @@ Module::Module(int _type) :
             parameter_names[OSCILLATOR_PULSE_WIDTH] = "PULSE WIDTH";
             parameter_names[OSCILLATOR_RANGE_LOW] = "RANGE LOW";
             parameter_names[OSCILLATOR_RANGE_HIGH] = "RANGE HIGH";
+            color.r = 48;
+            color.g = 59;
+            color.b = 219;
+            text_color.r = 219;
+            text_color.g = 208;
+            text_color.b = 48;
             break;
         case VCA:
             parameter_names[VCA_SIGNAL] = "SIGNAL";
             parameter_names[VCA_CV] = "CV";
             parameter_names[VCA_CV_AMOUNT] = "CV AMOUNT";
+            color.r = 48;
+            color.g = 219;
+            color.b = 199;
+            text_color.r = 219;
+            text_color.g = 48;
+            text_color.b = 68;
             break;
     }
 }
@@ -203,15 +238,15 @@ void Module::create_waveform_objects(vector<string> names, vector<SDL_Rect> loca
 }
 
 void Module::create_input_text_box_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
-                                   vector<string> original_texts, vector<string> prompt_texts,
-                                   vector<TTF_Font *> fonts, vector<Module *> parents, vector<int> input_nums)
+                                           vector<SDL_Color> text_colors, vector<string> prompt_texts, vector<TTF_Font *> fonts,
+                                           vector<Module *> parents, vector<int> input_nums)
 {
     Input_Text_Box *input_text_box = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)
     {
-        input_text_box = new Input_Text_Box(names[i], locations[i], colors[i], original_texts[i],
-                                                      prompt_texts[i], fonts[i], parents[i], input_nums[i]);
+        input_text_box = new Input_Text_Box(names[i], locations[i], colors[i], text_colors[i],
+                                            prompt_texts[i], fonts[i], parents[i], input_nums[i]);
         graphics_objects.push_back(input_text_box);
     }
 }
@@ -263,6 +298,10 @@ void Module::initialize_graphics_objects()
 
     initialize_unique_graphics_objects();
 
+    // for(vector<Graphics_Object *>::iterator graphics_object = graphics_objects.begin();
+    //     graphics_object < graphics_objects.end(); graphics_object ++)
+    //     cout << (*graphics_object)->name << endl;
+
     graphics_objects_initialized = true;
 }
 
@@ -274,8 +313,13 @@ void Module::update_graphics_object_locations()
 
     if(old_upper_left.x != upper_left.x ||
        old_upper_left.y != upper_left.y)
+    {
         for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+        {
             graphics_objects[i]->update_location(graphics_object_locations[i]);
+            cout << i << ": " << graphics_objects[i]->name << ": " << graphics_object_locations[i].x << ", " << graphics_object_locations[i].y << endl;
+        }
+    }
 }
 
 void Module::set(float val, int input_num)

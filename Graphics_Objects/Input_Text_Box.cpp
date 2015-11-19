@@ -34,9 +34,9 @@ using namespace std;
  * Constructor.
  */
 Input_Text_Box::Input_Text_Box(string _name, SDL_Rect _location, SDL_Color _color,
-                   string _original_text, string _prompt_text, TTF_Font *_font,
-                   Module *_parent, int _input_num) :
-    Text_Box(_name, _location, _color, _original_text, _prompt_text, _font, _parent),
+                               SDL_Color _text_color, string _prompt_text, TTF_Font *_font,
+                               Module *_parent, int _input_num) :
+    Text_Box(_name, _location, _color, _text_color, _prompt_text, _font, _parent),
     input_num(_input_num)
 {
     // Override the default type of a text box

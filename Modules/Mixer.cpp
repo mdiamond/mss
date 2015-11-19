@@ -222,7 +222,7 @@ void Mixer::initialize_unique_graphics_objects()
 {
     vector<string> names, texts, prompt_texts, text_offs;
     vector<SDL_Rect> locations;
-    vector<SDL_Color> colors, background_colors, color_offs, text_color_ons, text_color_offs;
+    vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
     vector<TTF_Font *> fonts;
     vector<float> range_lows, range_highs;
     vector<int> input_nums;
@@ -281,7 +281,7 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]};
     colors = vector<SDL_Color>(16, text_color);
-    texts = vector<string>(16, "");
+    text_colors = vector<SDL_Color>(16, color);
     prompt_texts = {"input", "# or input",
                     "input", "# or input",
                     "input", "# or input",
@@ -301,7 +301,7 @@ void Mixer::initialize_unique_graphics_objects()
                   MIXER_SIGNAL_7, MIXER_SIGNAL_7_MULTIPLIER,
                   MIXER_SIGNAL_8, MIXER_SIGNAL_8_MULTIPLIER};
 
-    create_input_text_box_objects(names, locations, colors, texts, prompt_texts, fonts, parents, input_nums);
+    create_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
     names = {"mixer signal 1 (input toggle button)",
              "mixer signal 1 multiplier (input toggle button)",

@@ -35,14 +35,15 @@ using namespace std;
  * Constructor.
  */
 Text_Box::Text_Box(string _name, SDL_Rect _location, SDL_Color _color,
-                   string _original_text,
-                   string _prompt_text, TTF_Font *_font, Module *_parent) :
+                   SDL_Color _text_color, string _prompt_text,
+                   TTF_Font *_font, Module *_parent) :
     Graphics_Object(_name, TEXT_BOX, _parent, _location, _color),
+    text_color(_text_color),
     active(false), font(_font),
-    background(Rect("background rect (rect)", location, WHITE, NULL)),
-    text(Text("idle text (text)", _location, BLACK, _original_text, _font)),
-    prompt_text(Text("prompt text (text)", _location, BLACK, _prompt_text, _font)),
-    typing_text(Text("typing text (text)", _location, BLACK, _original_text, _font))
+    background(Rect("background rect (rect)", location, color, NULL)),
+    text(Text("idle text (text)", _location, text_color, "", _font)),
+    prompt_text(Text("prompt text (text)", _location, text_color, _prompt_text, _font)),
+    typing_text(Text("typing text (text)", _location, text_color, "", _font))
 {
 
     SDL_Rect text_location = location;
@@ -79,8 +80,6 @@ void Text_Box::render()
 {
     // Render the background rectangle
     background.render();
-    SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
-    SDL_RenderDrawRect(RENDERER, &location);
 
     // The text box is active, render the typing buffer
     if(active)

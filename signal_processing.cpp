@@ -72,6 +72,7 @@ void initialize_output()
 {
     // Create the output module
     Output *output = new Output();
+    output->initialize_graphics_objects();
     MODULES.push_back(output);
 
     cout << "Output initialized." << endl;

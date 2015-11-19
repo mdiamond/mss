@@ -42,6 +42,7 @@ Text::Text(string _name, SDL_Rect _location, SDL_Color _color,
     SDL_QueryTexture(texture, NULL, NULL, &width, &height);
     location.w = width;
     location.h = height;
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
     updated = false;
 }
@@ -69,6 +70,7 @@ void Text::render()
         SDL_QueryTexture(texture, NULL, NULL, &width, &height);
         location.w = width;
         location.h = height;
+        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
         SDL_RenderCopy(RENDERER, texture, NULL, &location);
         updated = false;
     }

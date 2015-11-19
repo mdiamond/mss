@@ -134,7 +134,7 @@ void Vca::initialize_unique_graphics_objects()
 {
     vector<string> names, texts, prompt_texts, text_offs;
     vector<SDL_Rect> locations;
-    vector<SDL_Color> colors, background_colors, color_offs, text_color_ons, text_color_offs;
+    vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
     vector<TTF_Font *> fonts;
     vector<float> range_lows, range_highs;
     vector<int> input_nums;
@@ -166,13 +166,13 @@ void Vca::initialize_unique_graphics_objects()
                  graphics_object_locations[VCA_CV_INPUT_TEXT_BOX],
                  graphics_object_locations[VCA_CV_AMOUNT_INPUT_TEXT_BOX]};
     colors = vector<SDL_Color>(3, text_color);
-    texts = vector<string>(3, "");
+    text_colors = vector<SDL_Color>(3, color);
     prompt_texts = {"input", "input", "# or input"};
     fonts = vector<TTF_Font *>(3, FONT_SMALL);
     parents = vector<Module *>(3, this);
     input_nums = {VCA_SIGNAL, VCA_CV, VCA_CV_AMOUNT};
 
-    create_input_text_box_objects(names, locations, colors, texts, prompt_texts, fonts, parents, input_nums);
+    create_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
     names = {"vca signal input (input toggle button)", "vca cv input (input toggle button)",
              "vca cv amount input (input toggle button)"};
