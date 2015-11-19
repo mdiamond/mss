@@ -78,64 +78,20 @@ void Mixer::process()
     {
         num_channels = 0;
 
-        if(dependencies[MIXER_SIGNAL_1_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_1_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_1_MULTIPLIER]))[i];
-        if(dependencies[MIXER_SIGNAL_2_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_2_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_2_MULTIPLIER]))[i];
-        if(dependencies[MIXER_SIGNAL_3_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_3_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_3_MULTIPLIER]))[i];
-        if(dependencies[MIXER_SIGNAL_4_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_4_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_4_MULTIPLIER]))[i];
-        if(dependencies[MIXER_SIGNAL_5_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_5_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_5_MULTIPLIER]))[i];
-        if(dependencies[MIXER_SIGNAL_6_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_6_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_6_MULTIPLIER]))[i];
-        if(dependencies[MIXER_SIGNAL_7_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_7_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_7_MULTIPLIER]))[i];
-        if(dependencies[MIXER_SIGNAL_8_MULTIPLIER] != NULL)
-            input_floats[MIXER_SIGNAL_8_MULTIPLIER] = (*(inputs[MIXER_SIGNAL_8_MULTIPLIER]))[i];
-
-        if(dependencies[MIXER_SIGNAL_1] != NULL)
+        for(unsigned int j = 1; j < inputs_live.size(); j += 2)
         {
-            output[i] += (*(inputs[MIXER_SIGNAL_1]))[i] * input_floats[MIXER_SIGNAL_1_MULTIPLIER];
-            num_channels ++;
-        }
-        if(dependencies[MIXER_SIGNAL_2] != NULL)
-        {
-            output[i] += (*(inputs[MIXER_SIGNAL_2]))[i] * input_floats[MIXER_SIGNAL_2_MULTIPLIER];
-            num_channels ++;
-        }
-        if(dependencies[MIXER_SIGNAL_3] != NULL)
-        {
-            output[i] += (*(inputs[MIXER_SIGNAL_3]))[i] * input_floats[MIXER_SIGNAL_3_MULTIPLIER];
-            num_channels ++;
-        }
-        if(dependencies[MIXER_SIGNAL_4] != NULL)
-        {
-            output[i] += (*(inputs[MIXER_SIGNAL_4]))[i] * input_floats[MIXER_SIGNAL_4_MULTIPLIER];
-            num_channels ++;
-        }
-        if(dependencies[MIXER_SIGNAL_5] != NULL)
-        {
-            output[i] += (*(inputs[MIXER_SIGNAL_5]))[i] * input_floats[MIXER_SIGNAL_5_MULTIPLIER];
-            num_channels ++;
-        }
-        if(dependencies[MIXER_SIGNAL_6] != NULL)
-        {
-            output[i] += (*(inputs[MIXER_SIGNAL_6]))[i] * input_floats[MIXER_SIGNAL_6_MULTIPLIER];
-            num_channels ++;
-        }
-        if(dependencies[MIXER_SIGNAL_7] != NULL)
-        {
-            output[i] += (*(inputs[MIXER_SIGNAL_7]))[i] * input_floats[MIXER_SIGNAL_7_MULTIPLIER];
-            num_channels ++;
-        }
-        if(dependencies[MIXER_SIGNAL_8] != NULL)
-        {
-            output[i] += (*(inputs[MIXER_SIGNAL_8]))[i] * input_floats[MIXER_SIGNAL_8_MULTIPLIER];
-            num_channels ++;
+            if(dependencies[j] != NULL)
+                input_floats[j] = (*(inputs[j]))[i];
         }
 
+        for(unsigned int j = 0; j < inputs_live.size(); j += 2)
+        {
+            if(dependencies[j] != NULL)
+            {
+                output[i] += (*(inputs[j]))[i] * input_floats[j + 1];
+                num_channels ++;
+            }
+        }
 
         if(auto_attenuate)
             if(num_channels != 0)
