@@ -70,9 +70,6 @@ void Input_Toggle_Button::toggle()
             input_text_box->update_current_text("");
         else
             input_text_box->update_current_text(to_string(parent->input_floats[input_num]));
-        // input_text_box->text.updated = true;
-        // input_text_box->updated = true;
-        // updated = true;
         b = false;
     }
 
