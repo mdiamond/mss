@@ -62,6 +62,7 @@ class Output: public Module
         virtual void initialize_unique_graphics_objects();
 
         // Member functions particular to this module
+        //   Toggle audio processing
         void toggle_audio_on();
 };
 

@@ -8,8 +8,8 @@
  *   - Page
  *   - Rect
  *   - Text
- *   - Toggle_Button
  *   - Text_Box
+ *   - Toggle_Button
  *   - Waveform
  */
 
@@ -60,13 +60,17 @@ class Graphics_Object
         Graphics_Object(std::string, int type, Module *,
                         SDL_Rect, SDL_Color);
         virtual ~Graphics_Object();
+
         // Virtual member functions
-        //   render() is called each time a new frame is needed for
-        //   the window to display, it should render the graphics object in
-        //   the window
+        //   Render the module
         virtual void render() = 0;
+        //   Execute on click
         virtual void clicked() = 0;
+
+        // Member functions
+        //   Return true if clicked, 0 otherwise
         bool was_clicked();
+        //   Update this module's location
         void update_location(SDL_Rect);
 };
 

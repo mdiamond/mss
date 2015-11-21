@@ -60,7 +60,9 @@ void Rect::render()
 }
 
 /*
- * Dummy function.
+ * Rectangles only respond to clicks during input select mode.
+ * When a rectangle is clicked it will send itself to the function forwarder,
+ * which will use the parent of the rectangle as the source module for input.
  */
 void Rect::clicked()
 {

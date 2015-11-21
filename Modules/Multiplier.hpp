@@ -50,15 +50,6 @@ enum Multiplier_Dependencies
 class Multiplier: public Module
 {
     public:
-        // Set up floats, buffers, and strings to represent the various
-        // characteristics of the multiplier module:
-        //   - signal: the incoming signal to be controlled
-        //   - cv: the control values to apply to the signal
-        //   - cv_amount: how much of the modulation to apply
-        float signal_float, cv_float, cv_amount_float;
-        std::vector<float> *signal_input, *cv_input, *cv_amount_input;
-        std::string signal_str, cv_str, cv_amount_str;
-
         // Constructor and destructor
         Multiplier();
         virtual ~Multiplier();

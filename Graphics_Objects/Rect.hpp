@@ -1,7 +1,8 @@
 /*
  * Matthew Diamond 2015
  * The Rect graphics object. This object is just a rectangle
- * in some place in the window, with some color.
+ * in some place in the window, with some color. It also
+ * makes it possible to select input modules by clicking.
  */
 
 #ifndef synth_rect_h
@@ -22,10 +23,12 @@ class Rect: public Graphics_Object
     public:
         // Fill the rectangle or just draw the outline
         bool fill;
+
         // Constructor and destructor
         Rect(std::string, SDL_Rect, SDL_Color, Module *);
         virtual ~Rect();
-        // Member functions
+
+        // Virtual member functions
         virtual void render();
         virtual void clicked();
 };

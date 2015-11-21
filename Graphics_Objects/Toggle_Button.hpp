@@ -26,21 +26,29 @@
 class Toggle_Button: public Graphics_Object
 {
     public:
+        // The boolean variable, the background color when off,
+        // the text when on, the text when off, the background when on,
+        // and the background when off
         bool b;
         SDL_Color color_off;
         Text text_on, text_off;
         Rect background;
         Rect background_off;
         // Constructor and destructor
+
         Toggle_Button(std::string, SDL_Rect, SDL_Color,
                       SDL_Color, SDL_Color, SDL_Color,
                       TTF_Font *,
                       std::string, std::string,
                       bool, Module *);
         virtual ~Toggle_Button();
-        // Member functions
+
+        // Virtual member functions
         virtual void render();
         virtual void clicked();
+
+        // Member functions
+        //   Override the default toggle buttons toggle() function
         void toggle();
 };
 

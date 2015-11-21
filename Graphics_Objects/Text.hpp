@@ -21,16 +21,23 @@
 class Text: public Graphics_Object
 {
     public:
+        // The font of the text, the text as a string,
+        // and the text as a texture
         TTF_Font *font;
         std::string text;
         SDL_Texture *texture;
+
         // Constructor and destructor
         Text(std::string, SDL_Rect, SDL_Color,
              std::string, TTF_Font *);
         virtual ~Text();
-        // Member functions
+
+        // Virtual member functions
         virtual void render();
         virtual void clicked();
+
+        // Member functions
+        //   Update the text displayed
         void update_text(std::string);
 };
 

@@ -55,12 +55,25 @@ Input_Toggle_Button::~Input_Toggle_Button()
 
 }
 
+/*
+ * If the input is live, cancel input,
+ * otherwise, enter input select mode and
+ * set this as the current text box.
+ */
 void Input_Toggle_Button::toggle()
 {
     if(parent->inputs_live[input_num])
     {
         parent->cancel_input(input_num);
         input_text_box->text.text = input_text_box->prompt_text.text;
+        if(input_text_box->prompt_text.text == "input")
+            input_text_box->update_current_text("");
+        else
+            input_text_box->update_current_text(to_string(parent->input_floats[input_num]));
+        // input_text_box->text.updated = true;
+        // input_text_box->updated = true;
+        // updated = true;
+        b = false;
     }
 
     else

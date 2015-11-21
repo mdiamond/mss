@@ -50,6 +50,10 @@ Waveform::~Waveform()
 
 }
 
+/*
+ * Calculate the y pixel location in the waveform line at
+ * the given sample i.
+ */
 float Waveform::calculate_y(int i)
 {
     float sample;
@@ -72,6 +76,11 @@ float Waveform::calculate_y(int i)
     return y;
 }
 
+/*
+ * Copy the buffer to be rendered to inside of this waveform object.
+ * This should always be done with audio locked before rendering to
+ * avoid interleaving between the main thread and the audio thread.
+ */
 void Waveform::copy_buffer()
 {
     int index = 0;
@@ -121,7 +130,7 @@ void Waveform::render()
 }
 
 /*
- * Dummy function.
+ * Waveforms do not respond to clicks.
  */
 void Waveform::clicked()
 {

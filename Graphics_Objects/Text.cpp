@@ -36,6 +36,7 @@ Text::Text(string _name, SDL_Rect _location, SDL_Color _color,
     Graphics_Object(_name, TEXT, NULL, _location, _color),
     font(_font), text(_text)
 {
+    // Render the text for the first time
     SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
     texture = SDL_CreateTextureFromSurface(RENDERER, surface);
     int width, height;
@@ -80,7 +81,7 @@ void Text::render()
 }
 
 /*
- * Dummy function.
+ * Text objects do not respond to clicks.
  */
 void Text::clicked()
 {
@@ -88,7 +89,7 @@ void Text::clicked()
 }
 
 /*
- * A function for updating the text in this object
+ * A function for updating the text in this object.
  */
 void Text::update_text(string s)
 {

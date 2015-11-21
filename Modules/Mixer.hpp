@@ -87,32 +87,6 @@ enum Mixer_Dependencies
 class Mixer: public Module
 {
     public:
-        // Set up floats, buffers, and strings to represent the
-        // different channels and their respective attenuations
-        float signal_1_float, signal_1_multiplier_float,
-              signal_2_float, signal_2_multiplier_float,
-              signal_3_float, signal_3_multiplier_float,
-              signal_4_float, signal_4_multiplier_float,
-              signal_5_float, signal_5_multiplier_float,
-              signal_6_float, signal_6_multiplier_float,
-              signal_7_float, signal_7_multiplier_float,
-              signal_8_float, signal_8_multiplier_float;
-        std::vector<float> *signal_1_input, *signal_1_multiplier_input,
-                           *signal_2_input, *signal_2_multiplier_input,
-                           *signal_3_input, *signal_3_multiplier_input,
-                           *signal_4_input, *signal_4_multiplier_input,
-                           *signal_5_input, *signal_5_multiplier_input,
-                           *signal_6_input, *signal_6_multiplier_input,
-                           *signal_7_input, *signal_7_multiplier_input,
-                           *signal_8_input, *signal_8_multiplier_input;
-        std::string signal_1_str, signal_1_multiplier_str,
-                    signal_2_str, signal_2_multiplier_str,
-                    signal_3_str, signal_3_multiplier_str,
-                    signal_4_str, signal_4_multiplier_str,
-                    signal_5_str, signal_5_multiplier_str,
-                    signal_6_str, signal_6_multiplier_str,
-                    signal_7_str, signal_7_multiplier_str,
-                    signal_8_str, signal_8_multiplier_str;
         // A boolean to represent whether or not auto attenuation
         // should be used
         bool auto_attenuate;

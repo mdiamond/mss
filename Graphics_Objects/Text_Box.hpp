@@ -25,6 +25,9 @@
 class Text_Box: public Graphics_Object
 {
     public:
+        // The text color, whether or not this text box
+        // is active, the font, the background rectangle,
+        // the text, the prompt text, and the typing text
         SDL_Color text_color;
         bool active;
         TTF_Font *font;
@@ -32,17 +35,26 @@ class Text_Box: public Graphics_Object
         Text text;
         Text prompt_text;
         Text typing_text;
+
         // Constructor and destructor
         Text_Box(std::string, SDL_Rect, SDL_Color, SDL_Color,
                  std::string, TTF_Font *, Module *);
         virtual ~Text_Box();
-        // Member functions
+
+        // Virtual member functions
         virtual void render();
         virtual void clicked();
+
+        // Member functions
+        //   Add character to the typing buffer
         void add_characters(char *);
+        //   Delete the final character from the typing buffer
         void delete_character();
+        //   Confirm the entry in the text box
         void entered();
+        //   Override the default graphics object update_location() function
         void update_location(SDL_Rect);
+        //   Update the currently displayed text
         void update_current_text(std::string);
 };
 

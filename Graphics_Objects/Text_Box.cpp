@@ -45,7 +45,6 @@ Text_Box::Text_Box(string _name, SDL_Rect _location, SDL_Color _color,
     prompt_text(Text("prompt text (text)", _location, text_color, _prompt_text, _font)),
     typing_text(Text("typing text (text)", _location, text_color, "", _font))
 {
-
     SDL_Rect text_location = location;
     text_location.x += 1;
     text_location.y += 1;
@@ -107,19 +106,25 @@ void Text_Box::render()
     }
 }
 
+/*
+ * Update the location of this text box.
+ */
 void Text_Box::update_location(SDL_Rect _location)
 {
     location = _location;
     background.update_location(_location);
 }
 
+/*
+ * Update the current text displayed in this text box.
+ */
 void Text_Box::update_current_text(string s)
 {
     text.update_text(s);
 }
 
 /*
- * Take a typed characters and add it to the typing buffer
+ * Take typed characters and add them to the typing buffer.
  */
 void Text_Box::add_characters(char *ch)
 {
@@ -128,7 +133,7 @@ void Text_Box::add_characters(char *ch)
 }
 
 /*
- * Remove the final character from the typing buffer
+ * Remove the final character from the typing buffer.
  */
 void Text_Box::delete_character()
 {
@@ -158,7 +163,6 @@ void Text_Box::clicked()
             ACTIVE_TEXT_BOX = this;
             SDL_SetTextInputRect(&location);
             SDL_StartTextInput();
-
         }
         OBJECT_CLICKED = true;
     }

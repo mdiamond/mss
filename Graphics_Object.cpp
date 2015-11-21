@@ -28,7 +28,7 @@ using namespace std;
  ************************************/
 
 /*
- * Dummy function.
+ * Constructor.
  */
 Graphics_Object::Graphics_Object(string _name, int _type, Module *_parent,
 								 SDL_Rect _location, SDL_Color _color) : 
@@ -59,6 +59,9 @@ bool Graphics_Object::was_clicked()
     return false;
 }
 
+/*
+ * Update the location of this graphics object to the one given.
+ */
 void Graphics_Object::update_location(SDL_Rect _location)
 {
 	location = _location;

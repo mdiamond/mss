@@ -95,6 +95,9 @@ void Toggle_Button::clicked()
     }
 }
 
+/*
+ * Toggle the stored boolean variable
+ */
 void Toggle_Button::toggle()
 {
     b = !b;

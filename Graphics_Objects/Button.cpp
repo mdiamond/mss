@@ -39,12 +39,6 @@ Button::Button(string _name, SDL_Rect _location, SDL_Color _color,
     text_str(_text),
     text(Text("button text (text)", _location, _text_color, text_str, FONT_REGULAR))
 {
-    // Text is opposite the color of the button
-    text.color.r = 256 - color.r;
-    text.color.g = 256 - color.g;
-    text.color.b = 256 - color.b;
-    text.color.a = color.a;
-
     // Make the text start 1 pixel away from the edge of the containing box
     text.location.x += 1;
 }
@@ -70,7 +64,7 @@ void Button::render()
 /*
  * Send this graphics object to the function forwarder,
  * which will determine what its intended functionality is
- * and call the appropriate functions
+ * and call the appropriate functions.
  */
 void Button::clicked()
 {
