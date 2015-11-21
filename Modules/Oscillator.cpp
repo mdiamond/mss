@@ -55,8 +55,10 @@ Oscillator::Oscillator() :
     input_floats[OSCILLATOR_RANGE_LOW] = -1;
     input_floats[OSCILLATOR_RANGE_HIGH] = 1;
 
+    // Start out set to output sine waves
     waveform_type = SIN;
 
+    // Set the boolean for the sine wave on, and all others off
     sin_on = true;
     tri_on = false;
     saw_on = false;
@@ -71,11 +73,19 @@ Oscillator::~Oscillator()
 
 }
 
+/*
+ * Given a phase from 0 to 1, calculate 
+ * and return a sine wave sample.
+ */
 float Oscillator::produce_sin_sample(float phase)
 {
     return sin(2 * M_PI * phase);
 }
 
+/*
+ * Given a phase from 0 to 1, calculate 
+ * and return a triangle wave sample.
+ */
 float Oscillator::produce_tri_sample(float phase)
 {
     if(phase < .25)
@@ -88,6 +98,10 @@ float Oscillator::produce_tri_sample(float phase)
         return ((phase - .75) / .25) - 1;
 }
 
+/*
+ * Given a phase from 0 to 1, calculate 
+ * and return a saw wave sample.
+ */
 float Oscillator::produce_saw_sample(float phase)
 {
     if(phase < .5)
@@ -96,6 +110,10 @@ float Oscillator::produce_saw_sample(float phase)
         return 0 - ((phase - .5) / .5);
 }
 
+/*
+ * Given a phase from 0 to 1, calculate 
+ * and return a square wave sample.
+ */
 float Oscillator::produce_sqr_sample(float phase)
 {
     if(phase < input_floats[OSCILLATOR_PULSE_WIDTH])
@@ -157,7 +175,10 @@ void Oscillator::process()
                                      input_floats[OSCILLATOR_RANGE_LOW],
                                      input_floats[OSCILLATOR_RANGE_HIGH]);
 
+        // Increment the current phase according to the frequency, sample rate, and difference in phase offset
+        // since the last sample was calculated
         current_phase += ((float) input_floats[OSCILLATOR_FREQUENCY] / SAMPLE_RATE) + phase_offset_diff;
+        // Wrap around if the phase goes above 1 or below 0
         while(current_phase > 1)
             current_phase -= 1;
         while(current_phase < 0)
@@ -167,11 +188,17 @@ void Oscillator::process()
     processed = true;
 }
 
+/*
+ * Update parameters at the k rate.
+ */
 void Oscillator::update_control_values()
 {
     
 }
 
+/*
+ * Calculate the locations of graphics objects unique to this module type.
+ */
 void Oscillator::calculate_unique_graphics_object_locations()
 {
     int x_text, x_text_box, w_text_box, h_text_box,
@@ -225,6 +252,10 @@ void Oscillator::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box});
 }
 
+/*
+ * Initialize all graphics objects unique to this module type, and add them to the array
+ * of graphics objects.
+ */
 void Oscillator::initialize_unique_graphics_objects()
 {
     vector<string> names, texts, prompt_texts, text_offs;
@@ -328,6 +359,9 @@ void Oscillator::initialize_unique_graphics_objects()
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 }
 
+/*
+ * Switch to outputting the given waveform type.
+ */
 void Oscillator::switch_waveform(int _waveform_type)
 {
     sin_on = false;

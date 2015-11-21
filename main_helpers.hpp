@@ -16,8 +16,11 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
-bool testing_mode();
+// Helper functions
 void destroy_pages();
+
+// Main helper functions
+bool testing_mode();
 bool normal_mode();
 
 #endif

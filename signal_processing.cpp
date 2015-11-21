@@ -66,6 +66,9 @@ int open_audio_device()
     return 1;
 }
 
+/*
+ * Initialize the one and only output module.
+ */
 void initialize_output()
 {
     // Create the output module
@@ -124,7 +127,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 
 /*
  * K rate callback is triggered by an SDL_Timer, and simply updates
- * control values for all modules at 1/100th of a second.
+ * control values for all modules at a rate specified in main.cpp.
  */
 Uint32 k_rate_callback_function(Uint32 interval, void *param)
 {
@@ -142,7 +145,7 @@ Uint32 k_rate_callback_function(Uint32 interval, void *param)
  *******************************/
 
 /*
- * Clip a signal within its own buffer.
+ * Clip a signal within its buffer.
  * Make sure no value goes above the max,
  * and no value goes below the min.
  */
@@ -182,7 +185,7 @@ void scale_signal(vector<float> *buffer, float original_low,
 }
 
 /*
- * Scale a sample.
+ * Scale a sample and return the scaled sample.
  */
 float scale_sample(float sample, float original_low,
                   float original_high, float low, float high)

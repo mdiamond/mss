@@ -35,20 +35,17 @@ using namespace std;
  ********************/
 
 /*
- * Run in testing mode. If all tests pass, return 1.
- * Otherwise, return 0;
+ * Destroy all pages of graphics objects.
  */
-bool testing_mode()
-{
-    return run_tests();
-}
-
 void destroy_pages()
 {
     for(unsigned int i = 0; i < PAGES.size(); i ++)
         delete PAGES[i];
 }
 
+/*
+ * Destroy all modules.
+ */
 void destroy_modules()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
@@ -143,6 +140,19 @@ bool initialize()
     cout << "Audio unpaused." << endl;
 
     return true;
+}
+
+/*************************
+ * MAIN HELPER FUNCTIONS *
+ *************************/
+
+/*
+ * Run in testing mode. If all tests pass, return 1.
+ * Otherwise, return 0;
+ */
+bool testing_mode()
+{
+    return run_tests();
 }
 
 /*

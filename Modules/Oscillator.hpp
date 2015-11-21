@@ -78,15 +78,19 @@ class Oscillator: public Module
         Oscillator();
         virtual ~Oscillator();
 
-        // Member functions
+        // Member functions, explained in Module.hpp
         virtual void process();
         virtual void update_control_values();
         virtual void calculate_unique_graphics_object_locations();
         virtual void initialize_unique_graphics_objects();
+
+        // Member functions particular to this module
+        //   Produce samples for the various types of waveforms given a phase
         float produce_sin_sample(float);
         float produce_tri_sample(float);
         float produce_saw_sample(float);
         float produce_sqr_sample(float);
+        //   Switch to outputting the given waveform type
         void switch_waveform(int);
 };
 

@@ -92,26 +92,42 @@ class Module
         virtual ~Module();
 
         // Virtual member functions
+        //   Process audio for the output buffer
         virtual void process() = 0;
+        //   Update parameters at the k rate
         virtual void update_control_values() = 0;
+        //   Calculate the locations of graphics objects unique to this module type
         virtual void calculate_unique_graphics_object_locations() = 0;
+        //   Initialize the graphics objects unique to this module type
         virtual void initialize_unique_graphics_objects() = 0;
 
         // Member functions
+        //   Process all modules that this module depends upon
         void process_dependencies();
+        //   Calculate the locations of all graphics objects in this module
         void calculate_graphics_object_locations();
+        //   Initialize input text box graphics objects
         void initialize_input_text_box_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
                                                std::vector<SDL_Color>,std::vector<std::string>, std::vector<TTF_Font *>,
                                                std::vector<Module *>, std::vector<int>);
+        //   Initialize input toggle button graphics objects
+        //   (must always be used immediately after, and with the same size arrays for input
+        //    as initialize_input_text_box_objects() because each input toggle button depends
+        //    on and must be able to reference a particular input text object)
         void initialize_input_toggle_button_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
                                                     std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<SDL_Color>,
                                                     std::vector<TTF_Font *>,
                                                     std::vector<std::string>, std::vector<std::string>,
                                                     std::vector<bool>, std::vector<Module *>, std::vector<int>);
+        //   Initialize all graphics objects in this module
         void initialize_graphics_objects();
+        //   Update the locations of all graphics objects in this module
         void update_graphics_object_locations();
+        //   Set a parameter to a certain value
         void set(float, int);
+        //   Set a parameter to be updated by another module's output
         void set(Module *, int);
+        //   Cancel input for a certain parameter
         void cancel_input(int);
 };
 

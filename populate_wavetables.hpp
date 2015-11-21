@@ -16,6 +16,7 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
+// Populate wavetables
 void populate_wavetables();
 
 #endif

@@ -24,12 +24,18 @@ using namespace std;
  * HELPER FUNCTIONS *
  ********************/
 
+/*
+ * Populate the sine wave wavetable with a 1 second long, 1 Hz waveform.
+ */
 void populate_sin()
 {
     for(unsigned int i = 0; i < WAVETABLES[SIN].size(); i ++)
         WAVETABLES[SIN][i] = sin(((float) i / SAMPLE_RATE) * (2 * M_PI));
 }
 
+/*
+ * Populate the triangle wave wavetable with a 1 second long, 1 Hz waveform.
+ */
 void populate_tri()
 {
     for(unsigned int i = 0; i < WAVETABLES[TRI].size(); i ++)
@@ -49,6 +55,9 @@ void populate_tri()
     }
 }
 
+/*
+ * Populate the saw wave wavetable with a 1 second long, 1 Hz waveform.
+ */
 void populate_saw()
 {
     for(unsigned int i = 0; i < WAVETABLES[SAW].size(); i ++)
@@ -62,6 +71,9 @@ void populate_saw()
     }
 }
 
+/*
+ * Populate the square wave wavetable with a 1 second long, 1 Hz waveform.
+ */
 void populate_sqr()
 {
     for(unsigned int i = 0; i < WAVETABLES[SQR].size(); i ++)
@@ -79,6 +91,9 @@ void populate_sqr()
  * POPULATE WAVETABLES *
  ***********************/
 
+/*
+ * Populate all wavetables with 1 second long, 1 Hz waveforms.
+ */
 void populate_wavetables()
 {
     populate_sin();

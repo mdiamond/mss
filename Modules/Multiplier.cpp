@@ -86,11 +86,17 @@ void Multiplier::process()
     processed = true;
 }
 
+/*
+ * Update parameters at the k rate.
+ */
 void Multiplier::update_control_values()
 {
     
 }
 
+/*
+ * Calculate the locations of graphics objects unique to this module type.
+ */
 void Multiplier::calculate_unique_graphics_object_locations()
 {
     int x_text, x_text_box, w_text_box, h_text_box,
@@ -128,8 +134,8 @@ void Multiplier::calculate_unique_graphics_object_locations()
 }
 
 /*
- * Calculate the locations of any graphics objects that are
- * unique to this module type.
+ * Initialize all graphics objects unique to this module type, and add them to the array
+ * of graphics objects.
  */
 void Multiplier::initialize_unique_graphics_objects()
 {

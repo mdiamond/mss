@@ -40,8 +40,10 @@ using namespace std;
 Module::Module(int _type) :
     type(_type), number(MODULES.size()), processed(false)
 {
+    // The number of inputs this module has
     int num_inputs;
 
+    // Set the number of inputs depending on the module type
     switch(_type)
     {
         case MIXER:
@@ -62,36 +64,33 @@ Module::Module(int _type) :
             break;
     }
 
+    // Initialize the dependencies vector
     dependencies = vector<Module *>(num_inputs, NULL);
 
+    // Initialize the module parameters as floats, strings, and
+    // input buffers, and booleans to represent whether or not
+    // the input for a certain parameter is live
     parameter_names = vector<string>(num_inputs, "");
     input_floats = vector<float>(num_inputs, 0);
     input_strs = vector<string>(num_inputs, "");
     inputs = vector<vector<float> *>(num_inputs, NULL);
     inputs_live = vector<bool>(num_inputs, false);
 
+    // Initialize the output buffer
     output = vector<float>(BUFFER_SIZE, 0);
 
+    // Set this module's color randomly, but with enough contrast
     color.r = rand() % 128;
-    text_color.r = (rand() % 128) + 128;
     color.g = rand() % 128;
-    text_color.g = (rand() % 128) + 128;
     color.b = rand() % 128;
-    text_color.b = (rand() % 128) + 128;
-
-    if(text_color.r - color.r < 40)
-        text_color.r += 20;
-        color.r -= 20;
-    if(text_color.g - color.g < 40)
-        text_color.g += 20;
-        color.g -= 20;
-    if(text_color.b - color.b < 40)
-        text_color.b += 20;
-        color.b -= 20;
+    text_color.r = 255 - color.g;
+    text_color.g = 255 - color.b;
+    text_color.b = 255 - color.r;
 
     color.a = 255;
     text_color.a = 255;
 
+    // Set parameter names and module colors based on the module type
     switch(_type)
     {
         case MIXER:
@@ -111,23 +110,23 @@ Module::Module(int _type) :
             parameter_names[MIXER_SIGNAL_7_MULTIPLIER] = "SIGNAL 7 MULTIPLIER";
             parameter_names[MIXER_SIGNAL_8] = "SIGNAL 8";
             parameter_names[MIXER_SIGNAL_8_MULTIPLIER] = "SIGNAL 8 MULTIPLIER";
-            color.r = 219;
-            color.g = 116;
-            color.b = 48;
-            text_color.r = 48;
-            text_color.g = 151;
-            text_color.b = 219;
+            // color.r = 219;
+            // color.g = 116;
+            // color.b = 48;
+            // text_color.r = 48;
+            // text_color.g = 151;
+            // text_color.b = 219;
             break;
         case MULTIPLIER:
             parameter_names[MULTIPLIER_SIGNAL] = "SIGNAL";
             parameter_names[MULTIPLIER_CV] = "CV";
             parameter_names[MULTIPLIER_CV_AMOUNT] = "CV AMOUNT";
-            color.r = 48;
-            color.g = 219;
-            color.b = 199;
-            text_color.r = 219;
-            text_color.g = 48;
-            text_color.b = 68;
+            // color.r = 48;
+            // color.g = 219;
+            // color.b = 199;
+            // text_color.r = 219;
+            // text_color.g = 48;
+            // text_color.b = 68;
             break;
         case OSCILLATOR:
             parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";
@@ -135,22 +134,22 @@ Module::Module(int _type) :
             parameter_names[OSCILLATOR_PULSE_WIDTH] = "PULSE WIDTH";
             parameter_names[OSCILLATOR_RANGE_LOW] = "RANGE LOW";
             parameter_names[OSCILLATOR_RANGE_HIGH] = "RANGE HIGH";
-            color.r = 48;
-            color.g = 59;
-            color.b = 219;
-            text_color.r = 219;
-            text_color.g = 208;
-            text_color.b = 48;
+            // color.r = 48;
+            // color.g = 59;
+            // color.b = 219;
+            // text_color.r = 219;
+            // text_color.g = 208;
+            // text_color.b = 48;
             break;
         case OUTPUT:
             parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
             parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
-            color.r = 48;
-            color.g = 219;
-            color.b = 68;
-            text_color.r = 219;
-            text_color.g = 48;
-            text_color.b = 199;
+            // color.r = 48;
+            // color.g = 219;
+            // color.b = 68;
+            // text_color.r = 219;
+            // text_color.g = 48;
+            // text_color.b = 199;
             break;
     }
 }
@@ -175,6 +174,11 @@ void Module::process_dependencies()
             dependencies[i]->process();
 }
 
+/*
+ * Use the upper left pixel of the module to calculate the locations of all
+ * graphics objects, including those unique to this module type via
+ * calculate_unique_graphics_objects()
+ */
 void Module::calculate_graphics_object_locations()
 {
     graphics_object_locations.clear();
@@ -193,6 +197,10 @@ void Module::calculate_graphics_object_locations()
     calculate_unique_graphics_object_locations();
 }
 
+/*
+ * Initialize a batch of input text box objects given arrays of contructor inputs.
+ * Return a vector of the contructed graphics objects.
+ */
 void Module::initialize_input_text_box_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
                                            vector<SDL_Color> text_colors, vector<string> prompt_texts, vector<TTF_Font *> fonts,
                                            vector<Module *> parents, vector<int> input_nums)
@@ -207,6 +215,10 @@ void Module::initialize_input_text_box_objects(vector<string> names, vector<SDL_
     }
 }
 
+/*
+ * Initialize a batch of input toggle button objects given arrays of contructor inputs.
+ * Return a vector of the contructed graphics objects.
+ */
 void Module::initialize_input_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
                                         vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
                                         vector<TTF_Font *> fonts,
@@ -226,9 +238,11 @@ void Module::initialize_input_toggle_button_objects(vector<string> names, vector
 }
 
 /*
- * Calculate the locations of all graphics objects, then
- * call upon the module to caluclate the locations of
- * any graphics objects that are unique to the module type.
+ * Calculate the locations of all graphics objects in this module
+ * via calculate_graphics_object_locations(), then initialize the
+ * graphics objects required for all module types, and finally
+ * initialize the graphics objects specific to this module type via
+ * initialize_inique_graphics_objects().
  */
 void Module::initialize_graphics_objects()
 {
@@ -236,7 +250,7 @@ void Module::initialize_graphics_objects()
     Rect *rect;
     Text *text;
 
-    // Calculate the modules top left pixel location in the window
+    // Calculate the locations of all graphics objects
     calculate_graphics_object_locations();
 
     // graphics_object[0] is the outermost rectangle used to represent the module
@@ -252,34 +266,34 @@ void Module::initialize_graphics_objects()
     text = new Text("module name (text)", graphics_object_locations[MODULE_NAME_TEXT], text_color, name, FONT_BOLD);
     graphics_objects.push_back(text);
 
+    // Initialize all graphics objects specific to this module type
     initialize_unique_graphics_objects();
 
-    // for(vector<Graphics_Object *>::iterator graphics_object = graphics_objects.begin();
-    //     graphics_object < graphics_objects.end(); graphics_object ++)
-    //     cout << (*graphics_object)->name << endl;
-
+    // Mark this function as complete so that running it again can easily be avoided
     graphics_objects_initialized = true;
 }
 
+/*
+ * Update the locations of all graphics object.
+ */
 void Module::update_graphics_object_locations()
 {
-    SDL_Point old_upper_left = upper_left;
-
+    // Calculate graphics object locations
     calculate_graphics_object_locations();
 
-    if(old_upper_left.x != upper_left.x ||
-       old_upper_left.y != upper_left.y)
-    {
-        for(unsigned int i = 0; i < graphics_objects.size(); i ++)
-        {
-            graphics_objects[i]->update_location(graphics_object_locations[i]);
-            cout << i << ": " << graphics_objects[i]->name << ": " << graphics_object_locations[i].x << ", " << graphics_object_locations[i].y << endl;
-        }
-    }
+    // Update graphics object locations
+    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+        graphics_objects[i]->update_location(graphics_object_locations[i]);
 }
 
+/*
+ * Set the parameter specified by input num to the value
+ * specified by val.
+ */
 void Module::set(float val, int input_num)
 {
+    // Set the input and dependency to NULL,
+    // the float to val, and the live boolean to false
     inputs[input_num] = NULL;
     dependencies[input_num] = NULL;
     input_floats[input_num] = val;
@@ -289,14 +303,25 @@ void Module::set(float val, int input_num)
          << " changed to " << val << endl;
 }
 
+/*
+ * Set the parameter specified to be updated by the output of
+ * the module specified.
+ */
 void Module::set(Module *src, int input_num)
 {
+    // Set the input to the output of src, the dependency to src,
+    // the live boolean to true, and the SELECTING_SRC program state variable
+    // to false
     inputs[input_num] = &src->output;
     dependencies[input_num] = src;
     inputs_live[input_num] = true;
     SELECTING_SRC = false;
+
+    // Reset the transparencies for all graphics objects
     reset_alphas();
 
+    // If this is the output module, update the waveforms to display
+    // the proper audio buffers
     if(type == OUTPUT)
     {
         Waveform *waveform;
@@ -307,17 +332,25 @@ void Module::set(Module *src, int input_num)
         waveform->buffer = &src->output;
     }
 
-
     cout << name << " " << parameter_names[input_num]
          << " is now coming from " << src->name << endl;
 }
 
+/*
+ * Cancel input from another module, reverting to a constant value for the
+ * parameter specified by input num. The value will stay at whatever it was
+ * most recently.
+ */
 void Module::cancel_input(int input_num)
 {
+    // Set the input and dependency to NULL,
+    // and the live boolean to false
     inputs[input_num] = NULL;
     dependencies[input_num] = NULL;
     inputs_live[input_num] = false;
 
+    // If this is the output module, update the waveforms to display
+    // an empty audio buffer
     if(type == OUTPUT)
     {
         Waveform *waveform;

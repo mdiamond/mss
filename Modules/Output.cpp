@@ -64,11 +64,17 @@ void Output::process()
     process_dependencies();
 }
 
+/*
+ * Update parameters at the k rate.
+ */
 void Output::update_control_values()
 {
 
 }
 
+/*
+ * Calculate the locations of graphics objects unique to this module type.
+ */
 void Output::calculate_unique_graphics_object_locations()
 {
     int x_text, x_text_box, w_text_box, h_text_box,
@@ -108,8 +114,8 @@ void Output::calculate_unique_graphics_object_locations()
 }
 
 /*
- * Calculate the locations of any graphics objects that are
- * unique to this module type.
+ * Initialize all graphics objects unique to this module type, and add them to the array
+ * of graphics objects.
  */
 void Output::initialize_unique_graphics_objects()
 {
@@ -194,6 +200,10 @@ void Output::initialize_unique_graphics_objects()
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 }
 
+/*
+ * Toggle audio processing by either starting or pausing SDL
+ * audio, which will halt or start calling of the callback function.
+ */
 void Output::toggle_audio_on()
 {
     AUDIO_ON = !AUDIO_ON;

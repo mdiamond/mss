@@ -118,6 +118,10 @@ void update_graphics_objects()
     MODULES_CHANGED = false;
 }
 
+/*
+ * Return the module (if any) that is currently
+ * being hovered over by the mouse.
+ */
 Module *hovering_over()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
@@ -127,6 +131,10 @@ Module *hovering_over()
     return NULL;
 }
 
+/*
+ * Make all modules slightly transparent unless currently being
+ * hovered over.
+ */
 void select_input_mode()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
@@ -138,6 +146,9 @@ void select_input_mode()
                 MODULES[i]->graphics_objects[j]->color.a = 255;
 }
 
+/*
+ * Reset all modules to a non-transparent state
+ */
 void reset_alphas()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)

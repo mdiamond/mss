@@ -77,7 +77,7 @@ extern SDL_Color WHITE;
 extern SDL_Color RED;
 extern SDL_Color GREEN;
 extern SDL_Color BLUE;
-//   Pages
+//   Pages of graphics objects
 extern std::vector<Page *> PAGES;
 extern unsigned int CURRENT_PAGE;
 //   Mouse information

@@ -62,7 +62,7 @@ Mixer::~Mixer()
 }
 
 /*
- * Process all dependencies, then sum and attenuate all signal inputs
+ * Process all dependencies, then sum and attenuate all signal inputs.
  */
 void Mixer::process()
 {
@@ -75,16 +75,23 @@ void Mixer::process()
     for(int i = 0; i < BUFFER_SIZE; i ++)
         output[i] = 0;
 
+    // For each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
+        // Reset the number of channels to 0
         num_channels = 0;
 
+        // For each live signal multiplier input, update its associated float
+        // for the current sample
         for(unsigned int j = 1; j < inputs_live.size(); j += 2)
         {
             if(dependencies[j] != NULL)
                 input_floats[j] = (*(inputs[j]))[i];
         }
 
+        // For each live signal, fetch the relevant sample, multiply by the
+        // associated input multiplier, then add it to the associated sample
+        // in the output buffer
         for(unsigned int j = 0; j < inputs_live.size(); j += 2)
         {
             if(dependencies[j] != NULL)
@@ -94,6 +101,8 @@ void Mixer::process()
             }
         }
 
+        // If auto attenuation is enabled, divide the signal by the number
+        // of signals active
         if(auto_attenuate)
             if(num_channels != 0)
                 output[i] /= num_channels;
@@ -102,11 +111,17 @@ void Mixer::process()
     processed = true;
 }
 
+/*
+ * Update parameters at the k rate.
+ */
 void Mixer::update_control_values()
 {
     
 }
 
+/*
+ * Calculate the locations of graphics objects unique to this module type.
+ */
 void Mixer::calculate_unique_graphics_object_locations()
 {
     int x_text, x_text_box, x_text_box_2, w_text_box, h_text_box,
@@ -172,8 +187,8 @@ void Mixer::calculate_unique_graphics_object_locations()
 }
 
 /*
- * Calculate the locations of any graphics objects that are
- * unique to this module type.
+ * Initialize all graphics objects unique to this module type, and add them to the array
+ * of graphics objects.
  */
 void Mixer::initialize_unique_graphics_objects()
 {

@@ -60,6 +60,11 @@ Module *find_module(string *name, vector<Module *> *modules)
     return NULL;
 }
 
+/*
+ * Given the name of a module, return a pointer to it if it exists,
+ * is not the same module as the destination module, and is not the
+ * output module. Otherwise, return NULL and print an error message.
+ */
 Module *find_module_as_source(string *name, vector<Module *> *modules, Module *dst)
 {
         Module *src = find_module(name, &MODULES);
@@ -240,9 +245,6 @@ void function_forwarder(Graphics_Object *g)
         CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->text.text = g->parent->name.substr(0, 3)+ " " + g->parent->name.substr(g->parent->name.find(" ") + 1);
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }
-
-    // else if(((Input_Toggle_Button *) g)->b)
-    //     ((Input_Toggle_Button *) g)->b = !((Input_Toggle_Button *) g)->b;
 
     else if(g->type != RECT)
     {

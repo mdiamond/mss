@@ -22,6 +22,7 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
+// Batch graphics object constructors
 std::vector<Graphics_Object *> initialize_text_objects(std::vector<std::string>, std::vector<SDL_Rect>,
 													   std::vector<SDL_Color>, std::vector<std::string>,
 													   std::vector<TTF_Font *>);

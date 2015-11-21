@@ -25,6 +25,10 @@ using namespace std;
  * BATCH GRAPHICS OBJECT CREATORS *
  **********************************/
 
+/*
+ * Initialize a batch of text objects given arrays of contructor inputs.
+ * Return a vector of the contructed graphics objects.
+ */
 vector<Graphics_Object *> initialize_text_objects(vector<string> names, vector<SDL_Rect> locations,
                          vector<SDL_Color> colors, vector<string> texts,
                          vector<TTF_Font *> fonts)
@@ -41,6 +45,10 @@ vector<Graphics_Object *> initialize_text_objects(vector<string> names, vector<S
     return graphics_objects;
 }
 
+/*
+ * Initialize a batch of toggle button objects given arrays of contructor inputs.
+ * Return a vector of the contructed graphics objects.
+ */
 vector<Graphics_Object *> initialize_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
                                   vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
                                   vector<TTF_Font *> fonts,
@@ -60,6 +68,10 @@ vector<Graphics_Object *> initialize_toggle_button_objects(vector<string> names,
     return graphics_objects;
 }
 
+/*
+ * Initialize a batch of waveform objects given arrays of contructor inputs.
+ * Return a vector of the contructed graphics objects.
+ */
 vector<Graphics_Object *> initialize_waveform_objects(vector<string> names, vector<SDL_Rect> locations,
                              vector<SDL_Color> colors, vector<SDL_Color> background_colors,
                              vector<float> range_lows, vector<float> range_highs,
