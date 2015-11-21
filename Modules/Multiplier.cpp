@@ -151,7 +151,7 @@ void Multiplier::initialize_unique_graphics_objects()
 
     vector<Graphics_Object *> tmp_graphics_objects;
 
-    names = {"multiplier signal & cv input (text)", "multiplier cv amount (text)"};
+    names = {name + " signal & cv input (text)", name + " cv amount (text)"};
     locations = {graphics_object_locations[MULTIPLIER_INPUT_TEXT],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_TEXT]};
     colors = vector<SDL_Color>(2, text_color);
@@ -161,7 +161,7 @@ void Multiplier::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"multiplier waveform visualizer (waveform)"};
+    names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MULTIPLIER_OUTPUT_WAVEFORM]};
     colors = {color};
     background_colors = {text_color};
@@ -172,7 +172,8 @@ void Multiplier::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"multiplier signal (input text box)", "multiplier cv (input text box)", "multiplier cv amount (input text box)"};
+    names = {name + " signal (input text box)", name + " cv (input text box)",
+             name + " cv amount (input text box)"};
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX],
                  graphics_object_locations[MULTIPLIER_CV_INPUT_TEXT_BOX],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TEXT_BOX]};
@@ -185,8 +186,8 @@ void Multiplier::initialize_unique_graphics_objects()
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {"multiplier signal input (input toggle button)", "multiplier cv input (input toggle button)",
-             "multiplier cv amount input (input toggle button)"};
+    names = {name + " signal input (input toggle button)", name + " cv input (input toggle button)",
+             name + " cv amount input (input toggle button)"};
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MULTIPLIER_CV_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};

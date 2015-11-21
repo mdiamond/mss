@@ -204,7 +204,7 @@ void Mixer::initialize_unique_graphics_objects()
 
     vector<Graphics_Object *> tmp_graphics_objects;
 
-    names = {"mixer signal 1 (text)"};
+    names = {name + " mixer signal 1 (text)"};
     locations = {graphics_object_locations[MIXER_SIGNALS_TEXT]};
     colors = vector<SDL_Color>(1, text_color);
     texts = {"SIGNAL & MULTIPLIER:"};
@@ -213,7 +213,7 @@ void Mixer::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"waveform visualizer (waveform)"};
+    names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MIXER_OUTPUT_WAVEFORM]};
     colors = {color};
     background_colors = {text_color};
@@ -224,22 +224,22 @@ void Mixer::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"mixer signal 1 (input text box)",
-             "mixer signal 1 multiplier (input text box)",
-             "mixer signal 2 (input text box)",
-             "mixer signal 2 multiplier (input text box)",
-             "mixer signal 3 (input text box)",
-             "mixer signal 3 multiplier (input text box)",
-             "mixer signal 4 (input text box)",
-             "mixer signal 4 multiplier (input text box)",
-             "mixer signal 5 (input text box)",
-             "mixer signal 5 multiplier (input text box)",
-             "mixer signal 6 (input text box)",
-             "mixer signal 6 multiplier (input text box)",
-             "mixer signal 7 (input text box)",
-             "mixer signal 7 multiplier (input text box)",
-             "mixer signal 8 (input text box)",
-             "mixer signal 8 multiplier (input text box)"};
+    names = {name + " signal 1 (input text box)",
+             name + " signal 1 multiplier (input text box)",
+             name + " signal 2 (input text box)",
+             name + " signal 2 multiplier (input text box)",
+             name + " signal 3 (input text box)",
+             name + " signal 3 multiplier (input text box)",
+             name + " signal 4 (input text box)",
+             name + " signal 4 multiplier (input text box)",
+             name + " signal 5 (input text box)",
+             name + " signal 5 multiplier (input text box)",
+             name + " signal 6 (input text box)",
+             name + " signal 6 multiplier (input text box)",
+             name + " signal 7 (input text box)",
+             name + " signal 7 multiplier (input text box)",
+             name + " signal 8 (input text box)",
+             name + " signal 8 multiplier (input text box)"};
     locations = {graphics_object_locations[MIXER_SIGNAL_1_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_2_INPUT_TEXT_BOX],
@@ -279,22 +279,22 @@ void Mixer::initialize_unique_graphics_objects()
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {"mixer signal 1 (input toggle button)",
-             "mixer signal 1 multiplier (input toggle button)",
-             "mixer signal 2 (input toggle button)",
-             "mixer signal 2 multiplier (input toggle button)",
-             "mixer signal 3 (input toggle button)",
-             "mixer signal 3 multiplier (input toggle button)",
-             "mixer signal 4 (input toggle button)",
-             "mixer signal 4 multiplier (input toggle button)",
-             "mixer signal 5 (input toggle button)",
-             "mixer signal 5 multiplier (input toggle button)",
-             "mixer signal 6 (input toggle button)",
-             "mixer signal 6 multiplier (input toggle button)",
-             "mixer signal 7 (input toggle button)",
-             "mixer signal 7 multiplier (input toggle button)",
-             "mixer signal 8 (input toggle button)",
-             "mixer signal 8 multiplier (input toggle button)"};
+    names = {name + " signal 1 (input toggle button)",
+             name + " signal 1 multiplier (input toggle button)",
+             name + " signal 2 (input toggle button)",
+             name + " signal 2 multiplier (input toggle button)",
+             name + " signal 3 (input toggle button)",
+             name + " signal 3 multiplier (input toggle button)",
+             name + " signal 4 (input toggle button)",
+             name + " signal 4 multiplier (input toggle button)",
+             name + " signal 5 (input toggle button)",
+             name + " signal 5 multiplier (input toggle button)",
+             name + " signal 6 (input toggle button)",
+             name + " signal 6 multiplier (input toggle button)",
+             name + " signal 7 (input toggle button)",
+             name + " signal 7 multiplier (input toggle button)",
+             name + " signal 8 (input toggle button)",
+             name + " signal 8 multiplier (input toggle button)"};
     locations = {graphics_object_locations[MIXER_SIGNAL_1_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_2_INPUT_TOGGLE_BUTTON],

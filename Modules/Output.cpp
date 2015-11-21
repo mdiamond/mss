@@ -131,7 +131,7 @@ void Output::initialize_unique_graphics_objects()
 
     vector<Graphics_Object *> tmp_graphics_objects;
 
-    names = {"on/off (text)", "output input left (text)", "output input right (text)"};
+    names = {name + " on/off (text)", name + " input left (text)", name + " input right (text)"};
     locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TEXT],
                  graphics_object_locations[OUTPUT_INPUT_L_TEXT],
                  graphics_object_locations[OUTPUT_INPUT_R_TEXT]};
@@ -142,7 +142,7 @@ void Output::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"waveform visualizer l (waveform)", "waveform visualizer r (waveform)"};
+    names = {name + " waveform visualizer l (waveform)", name + " waveform visualizer r (waveform)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_WAVEFORM],
                  graphics_object_locations[OUTPUT_INPUT_R_WAVEFORM]};
     colors = vector<SDL_Color>(2, color);
@@ -154,7 +154,7 @@ void Output::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"output input l (input text box)", "output input r (input text box)"};
+    names = {name + " input l (input text box)", name + " input r (input text box)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TEXT_BOX],
                  graphics_object_locations[OUTPUT_INPUT_R_INPUT_TEXT_BOX]};
     colors = vector<SDL_Color>(2, text_color);
@@ -166,7 +166,7 @@ void Output::initialize_unique_graphics_objects()
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {"output input l (input toggle button)", "output input r (input toggle button)"};
+    names = {name + " input l (input toggle button)", name + " input r (input toggle button)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON]};
     colors = vector<SDL_Color>(2, RED);
@@ -183,7 +183,7 @@ void Output::initialize_unique_graphics_objects()
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 
-    names = {"on/off button (toggle_button)"};
+    names = {name + " on/off button (toggle_button)"};
     locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]};
     colors = vector<SDL_Color>(1, RED);
     color_offs = vector<SDL_Color>(1, text_color);

@@ -270,8 +270,8 @@ void Oscillator::initialize_unique_graphics_objects()
 
     vector<Graphics_Object *> tmp_graphics_objects;
 
-    names = {"oscillator frequency (text)", "oscillator phase offset (text)", "oscillator pulse width (text)",
-             "oscillator range low/high (text)"};
+    names = {name + " frequency (text)", name + " phase offset (text)",
+             name + " pulse width (text)", name + " range low/high (text)"};
     locations = {graphics_object_locations[OSCILLATOR_FREQUENCY_TEXT],
                  graphics_object_locations[OSCILLATOR_PHASE_OFFSET_TEXT],
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_TEXT],
@@ -283,7 +283,7 @@ void Oscillator::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"waveform visualizer (waveform)"};
+    names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[OSCILLATOR_OUTPUT_WAVEFORM]};
     colors = {color};
     background_colors = {text_color};
@@ -294,9 +294,9 @@ void Oscillator::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"oscillator frequency (input text box)", "oscillator phase offset (input text box)",
-             "oscillator pulse width (input text box)", "oscillator range low (input text box)",
-             "oscillator range high (input text box)"};
+    names = {name + " frequency (input text box)", name + " phase offset (input text box)",
+             name + " pulse width (input text box)", name + " range low (input text box)",
+             name + " range high (input text box)"};
     locations = {graphics_object_locations[OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX],
                  graphics_object_locations[OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX],
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX],
@@ -312,11 +312,11 @@ void Oscillator::initialize_unique_graphics_objects()
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {"oscillator frequency input (input toggle button)",
-             "oscillator phase offset input (input toggle button)",
-             "oscillator pulse width input (input toggle button)",
-             "oscillator range low input (input toggle button)",
-             "oscillator range high input (input toggle button)"};
+    names = {name + " frequency input (input toggle button)",
+             name + " phase offset input (input toggle button)",
+             name + " pulse width input (input toggle button)",
+             name + " range low input (input toggle button)",
+             name + " range high input (input toggle button)"};
     locations = {graphics_object_locations[OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON],
@@ -338,8 +338,8 @@ void Oscillator::initialize_unique_graphics_objects()
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 
-    names = {"oscillator sin toggle (toggle button)", "oscillator tri toggle (toggle button)",
-             "oscillator saw toggle (toggle button)", "oscillator sqr toggle (toggle button)"};
+    names = {name + " sin toggle (toggle button)", name + " tri toggle (toggle button)",
+             name + " saw toggle (toggle button)", name + " sqr toggle (toggle button)"};
     locations = {graphics_object_locations[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON],

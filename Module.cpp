@@ -254,16 +254,16 @@ void Module::initialize_graphics_objects()
     calculate_graphics_object_locations();
 
     // graphics_object[0] is the outermost rectangle used to represent the module
-    rect = new Rect("border (rect)", graphics_object_locations[MODULE_BORDER_RECT], WHITE, this);
+    rect = new Rect(name + " border (rect)", graphics_object_locations[MODULE_BORDER_RECT], WHITE, this);
     graphics_objects.push_back(rect);
 
     // graphics_object[1] is the slightly smaller rectangle within the outermost
     // rectangle
-    rect = new Rect("inner_border (rect)", graphics_object_locations[MODULE_INNER_BORDER_RECT], color, this);
+    rect = new Rect(name + " inner_border (rect)", graphics_object_locations[MODULE_INNER_BORDER_RECT], color, this);
     graphics_objects.push_back(rect);
 
     // graphics_object[2] is the objects name
-    text = new Text("module name (text)", graphics_object_locations[MODULE_NAME_TEXT], text_color, name, FONT_BOLD);
+    text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], text_color, name, FONT_BOLD);
     graphics_objects.push_back(text);
 
     // Initialize all graphics objects specific to this module type
