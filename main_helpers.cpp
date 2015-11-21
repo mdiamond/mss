@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * This file contains helper functions for the driver function.
+ * Helper functions for the driver function.
  */
 
 /************
@@ -146,8 +146,8 @@ bool initialize()
 }
 
 /*
- * Run in normal mode. If all objects create successfully,
- * return true. Otherwise, return false.
+ * Run in normal mode. If everything goes smoothly, return true,
+ * otherwise, return false.
  */
 bool normal_mode()
 {

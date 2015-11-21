@@ -1,7 +1,7 @@
 /*
  * Matthew Diamond 2015
- * Header file for the basic image processing functions
- * and some helpers for main(). This file declares any functions.
+ * Header file for the mage processing functions and graphics related
+ * initialization functions
  */
 
 #ifndef synth_image_processing_h

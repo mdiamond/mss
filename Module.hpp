@@ -4,8 +4,10 @@
  * Other classes will extend this class and represent different
  * types of modules. This file defines the class.
  * The following classes are derived from the Module class:
- *   - Output
+ *   - Mixer
+ *   - Multiplier
  *   - Oscillator
+ *   - Output
  */
 
 #ifndef synth_module_h
@@ -33,10 +35,10 @@
 
 enum Modules
 {
-    OUTPUT = 0,
-    MIXER,
+    MIXER = 0,
+    MULTIPLIER,
     OSCILLATOR,
-    VCA
+    OUTPUT
 };
 
 /********************************

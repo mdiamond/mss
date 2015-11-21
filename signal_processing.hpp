@@ -1,8 +1,7 @@
 /*
  * Matthew Diamond 2015
- * Header file for the basic signal processing functions and
- * some callback function helpers. This file declares
- * any functions.
+ * Header file for signal processing functions, callback functions, and
+ * audio related initialization functions.
  */
 
 #ifndef synth_signal_processing_h

@@ -1,7 +1,7 @@
 /*
  * Matthew Diamond 2015
- * This file contains all of the basic image processing functions.
- * It also contains helper functions for main().
+ * Image processing functions and graphics related
+ * initialization functions
  */
 
 /************
@@ -163,23 +163,23 @@ void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_
 
     // Create the "add module" button and add it to the
     // list of graphics objects
-    SDL_Rect location = {x , WINDOW_HEIGHT - 17, 100, 15};
-    x += 102;
+    SDL_Rect location = {x , WINDOW_HEIGHT - 17, 101, 15};
+    x += 103;
     Button *button = new Button("add oscillator (button)", location, WHITE,
                                 BLACK, "ADD OSCILLATOR", parent);
     sub_page_graphics_objects->push_back(button);
 
-    // Create the "add VCA" button and add it to the
+    // Create the "add multiplier" button and add it to the
     // list of graphics objects
-    location = {x, WINDOW_HEIGHT - 17, 51, 15};
-    x += 53;
-    button = new Button("add vca (button)", location, WHITE,
-                                BLACK, "ADD VCA", parent);
+    location = {x, WINDOW_HEIGHT - 17, 101, 15};
+    x += 103;
+    button = new Button("add multiplier (button)", location, WHITE,
+                                BLACK, "ADD MULTIPLIER", parent);
     sub_page_graphics_objects->push_back(button);
 
     // Create the "add mixer" button and add it to the
     // list of graphics objects
-    location = {x, WINDOW_HEIGHT - 17, 65, 15};
+    location = {x, WINDOW_HEIGHT - 17, 66, 15};
     button = new Button("add mixer (button)", location, WHITE,
                                 BLACK, "ADD MIXER", parent);
     sub_page_graphics_objects->push_back(button);

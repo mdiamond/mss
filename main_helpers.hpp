@@ -16,9 +16,8 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
-void destroy_pages();
-
 bool testing_mode();
+void destroy_pages();
 bool normal_mode();
 
 #endif

@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Code adapter very closely from Joel Sjögren's stack overflow post here:
+ * Code adapted very closely from Joel Sjögren's stack overflow post here:
  * https://stackoverflow.com/questions/2616906/how-do-i-output-coloured-text-to-a-linux-terminal
  * The color modifier class. Use this class to create a modifier that can be output before any
  * stdout text to change its color.

@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Header file for the functions that populate the wavetables.
+ * Header file for the functions for populating the wavetables.
  */
 
 #ifndef synth_populate_wavetables_h

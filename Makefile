@@ -7,7 +7,7 @@ MAINFILEOBJ = obj/main.o obj/main_helpers.o
 MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/graphics_object_utils.o obj/image_processing.o obj/populate_wavetables.o obj/signal_processing.o obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
-MODULECLASSOBJ = obj/Mixer.o obj/Oscillator.o obj/Output.o obj/VCA.o
+MODULECLASSOBJ = obj/Mixer.o obj/Oscillator.o obj/Output.o obj/Multiplier.o
 GRAPHICCLASSOBJ = obj/Button.o obj/Input_Text_Box.o obj/Input_Toggle_Button.o obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
 OBJECTS = $(MAINFILEOBJ) $(MISCFILEOBJ) $(MISCCLASSOBJ) $(BASECLASSOBJ) $(MODULECLASSOBJ) $(GRAPHICCLASSOBJ)
 
@@ -51,8 +51,8 @@ obj/Oscillator.o : Modules/Oscillator.cpp Modules/Oscillator.hpp
 	$(OBJCOMMAND) Modules/Oscillator.cpp
 obj/Output.o : Modules/Output.cpp Modules/Output.hpp
 	$(OBJCOMMAND) Modules/Output.cpp
-obj/VCA.o : Modules/VCA.cpp Modules/VCA.hpp
-	$(OBJCOMMAND) Modules/VCA.cpp
+obj/Multiplier.o : Modules/Multiplier.cpp Modules/Multiplier.hpp
+	$(OBJCOMMAND) Modules/Multiplier.cpp
 
 # Graphics objects classes
 obj/Graphics_Object.o : Graphics_Object.cpp Graphics_Object.hpp

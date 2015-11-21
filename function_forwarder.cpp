@@ -2,7 +2,11 @@
  * Matthew Diamond 2015
  * Functions for taking a graphics object as input, and determining
  * what should happen based on the type and naming of the graphics
- * object.
+ * object. The function forwarder is a way for graphics objects to
+ * trigger functions that are not within the context of the class.
+ * When a graphics object is clicked, it can call upon the
+ * function forwarder to call the function that is explicitly
+ * associated with the graphics object in question.
  */
 
 /************
@@ -33,21 +37,13 @@
 #include "Modules/Mixer.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
-#include "Modules/VCA.hpp"
+#include "Modules/Multiplier.hpp"
 
 using namespace std;
 
-/**********************
- * FUNCTION FORWARDER *
- **********************/
-
-/*
- * The function forwarder is a way for graphics objects to
- * trigger functions within the modules that contain them.
- * When a graphics object is clicked, it can call upon the
- * function forwarder to call the function that is explicitly
- * associated with the graphics object in question.
- */
+/********************
+ * HELPER FUNCTIONS *
+ ********************/
 
 /*
  * Given the name of a module, return a pointer to it if
@@ -131,11 +127,11 @@ void oscillator_function_forwarder(Graphics_Object *g)
 }
 
 /*
- * Handle functions for the VCA module.
+ * Handle functions for the multiplier module.
  */
-void VCA_function_forwarder(Graphics_Object *g)
+void multiplier_function_forwarder(Graphics_Object *g)
 {
-    // Vca *vca = (Vca *) g->parent;
+
 }
 
 /*
@@ -159,15 +155,15 @@ void add_oscillator()
 }
 
 /*
- * Add a VCA module.
+ * Add a multiplier module.
  */
-void add_VCA()
+void add_multiplier()
 {
-    Vca *vca = new Vca();
-    vca->initialize_graphics_objects();
-    MODULES.push_back(vca);
+    Multiplier *multiplier = new Multiplier();
+    multiplier->initialize_graphics_objects();
+    MODULES.push_back(multiplier);
     MODULES_CHANGED = true;
-    cout << "Added module " << vca->name << endl;
+    cout << "Added module " << multiplier->name << endl;
 }
 
 /*
@@ -214,8 +210,8 @@ void no_parent_function_forwarder(Graphics_Object *g)
 {
     if(g->name == "add oscillator (button)")
         add_oscillator();
-    else if(g->name == "add vca (button)")
-        add_VCA();
+    else if(g->name == "add multiplier (button)")
+        add_multiplier();
     else if(g->name == "add mixer (button)")
         add_mixer();
     else if(g->name == "previous page (button)")
@@ -223,6 +219,10 @@ void no_parent_function_forwarder(Graphics_Object *g)
     else if(g->name == "next page (button)")
         previous_page();
 }
+
+/**********************
+ * FUNCTION FORWARDER *
+ **********************/
 
 /*
  * Whenever an object with an associated function is
@@ -252,8 +252,8 @@ void function_forwarder(Graphics_Object *g)
             output_function_forwarder(g);
         else if(g->parent->type == OSCILLATOR)
             oscillator_function_forwarder(g);
-        else if(g->parent->type == VCA)
-            VCA_function_forwarder(g);
+        else if(g->parent->type == MULTIPLIER)
+            multiplier_function_forwarder(g);
         else if(g->parent->type == MIXER)
             mixer_function_forwarder(g);
     }

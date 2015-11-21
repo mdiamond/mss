@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Header file for the graphics object utilities.
+ * Header file for the functions for constructing batches of graphics objects.
  */
 
 #ifndef synth_graphics_object_utils_h

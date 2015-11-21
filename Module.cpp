@@ -26,7 +26,7 @@
 #include "Modules/Mixer.hpp"
 #include "Modules/Output.hpp"
 #include "Modules/Oscillator.hpp"
-#include "Modules/VCA.hpp"
+#include "Modules/Multiplier.hpp"
 
 using namespace std;
 
@@ -44,21 +44,21 @@ Module::Module(int _type) :
 
     switch(_type)
     {
-        case OUTPUT:
-            name = "output";
-            num_inputs = 2;
-            break;
         case MIXER:
             name = "mixer " + to_string(number);
             num_inputs = 16;
+            break;
+        case MULTIPLIER:
+            name = "multiplier " + to_string(number);
+            num_inputs = 3;
             break;
         case OSCILLATOR:
             name = "oscillator " + to_string(number);
             num_inputs = 5;
             break;
-        case VCA:
-            name = "vca " + to_string(number);
-            num_inputs = 3;
+        case OUTPUT:
+            name = "output";
+            num_inputs = 2;
             break;
     }
 
@@ -94,16 +94,6 @@ Module::Module(int _type) :
 
     switch(_type)
     {
-        case OUTPUT:
-            parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
-            parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
-            color.r = 48;
-            color.g = 219;
-            color.b = 68;
-            text_color.r = 219;
-            text_color.g = 48;
-            text_color.b = 199;
-            break;
         case MIXER:
             parameter_names[MIXER_SIGNAL_1] = "SIGNAL 1";
             parameter_names[MIXER_SIGNAL_1_MULTIPLIER] = "SIGNAL 1 MULTIPLIER";
@@ -128,6 +118,17 @@ Module::Module(int _type) :
             text_color.g = 151;
             text_color.b = 219;
             break;
+        case MULTIPLIER:
+            parameter_names[MULTIPLIER_SIGNAL] = "SIGNAL";
+            parameter_names[MULTIPLIER_CV] = "CV";
+            parameter_names[MULTIPLIER_CV_AMOUNT] = "CV AMOUNT";
+            color.r = 48;
+            color.g = 219;
+            color.b = 199;
+            text_color.r = 219;
+            text_color.g = 48;
+            text_color.b = 68;
+            break;
         case OSCILLATOR:
             parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";
             parameter_names[OSCILLATOR_PHASE_OFFSET] = "PHASE OFFSET";
@@ -141,16 +142,15 @@ Module::Module(int _type) :
             text_color.g = 208;
             text_color.b = 48;
             break;
-        case VCA:
-            parameter_names[VCA_SIGNAL] = "SIGNAL";
-            parameter_names[VCA_CV] = "CV";
-            parameter_names[VCA_CV_AMOUNT] = "CV AMOUNT";
+        case OUTPUT:
+            parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
+            parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
             color.r = 48;
             color.g = 219;
-            color.b = 199;
+            color.b = 68;
             text_color.r = 219;
             text_color.g = 48;
-            text_color.b = 68;
+            text_color.b = 199;
             break;
     }
 }

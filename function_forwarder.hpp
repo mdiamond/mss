@@ -24,7 +24,7 @@ Module *find_module_as_source(std::string *, std::vector<Module *> *, Module *);
 bool can_floatify(std::string *);
 
 void add_oscillator();
-void add_VCA();
+void add_multiplier();
 void add_mixer();
 void next_page();
 void previous_page();

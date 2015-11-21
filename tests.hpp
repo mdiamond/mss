@@ -1,7 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Header file for the testing functions. This file 
- * declares any functions.
+ * Header file for the testing functions.
  */
 
 #ifndef synth_tests_h

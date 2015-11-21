@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * This file contains functions for populating the wavetables.
+ * Functions for populating the wavetables.
  */
 
 /************

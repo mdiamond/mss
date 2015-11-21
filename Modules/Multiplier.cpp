@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Member functions for the VCA class.
+ * Member functions for the Multiplier class.
  */
 
 /************
@@ -26,7 +26,7 @@
 
 // Included classes
 #include "../Module.hpp"
-#include "VCA.hpp"
+#include "Multiplier.hpp"
 #include "../Graphics_Objects/Input_Text_Box.hpp"
 #include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Text.hpp"
@@ -35,15 +35,15 @@
 
 using namespace std;
 
-/************************
- * VCA MEMBER FUNCTIONS *
- ************************/
+/*******************************
+ * MULTIPLIER MEMBER FUNCTIONS *
+ *******************************/
 
 /*
  * Constructor.
  */
-Vca::Vca() :
-    Module(VCA)
+Multiplier::Multiplier() :
+    Module(MULTIPLIER)
 {
     // The signal input needs to be 0, while the others
     // need to be 1 to start out
@@ -55,7 +55,7 @@ Vca::Vca() :
 /*
  * Destructor.
  */
-Vca::~Vca()
+Multiplier::~Multiplier()
 {
 
 }
@@ -64,34 +64,34 @@ Vca::~Vca()
  * Process all dependencies, then multiply the original signal by
  * 1 - the control values, and multiply the original signal by
  * the control values scaled. One done, sum the two to get the
- * final output signal for the VCA module.
+ * final output signal for the multiplier module.
  */
-void Vca::process()
+void Multiplier::process()
 {
     // Process any dependencies
     process_dependencies();
 
-    if(inputs_live[VCA_SIGNAL] && inputs_live[VCA_CV])
+    if(inputs_live[MULTIPLIER_SIGNAL] && inputs_live[MULTIPLIER_CV])
     {
         for(unsigned short i = 0; i < output.size(); i ++)
         {
-            if(inputs_live[VCA_CV_AMOUNT])
-                input_floats[VCA_CV_AMOUNT] = inputs[VCA_CV_AMOUNT]->at(i);
+            if(inputs_live[MULTIPLIER_CV_AMOUNT])
+                input_floats[MULTIPLIER_CV_AMOUNT] = inputs[MULTIPLIER_CV_AMOUNT]->at(i);
 
-            output[i] = (inputs[VCA_SIGNAL]->at(i) * (1 - input_floats[VCA_CV_AMOUNT])) +
-                           (inputs[VCA_SIGNAL]->at(i) * inputs[VCA_CV]->at(i) * input_floats[VCA_CV_AMOUNT]);
+            output[i] = (inputs[MULTIPLIER_SIGNAL]->at(i) * (1 - input_floats[MULTIPLIER_CV_AMOUNT])) +
+                           (inputs[MULTIPLIER_SIGNAL]->at(i) * inputs[MULTIPLIER_CV]->at(i) * input_floats[MULTIPLIER_CV_AMOUNT]);
         }
     }
 
     processed = true;
 }
 
-void Vca::update_control_values()
+void Multiplier::update_control_values()
 {
     
 }
 
-void Vca::calculate_unique_graphics_object_locations()
+void Multiplier::calculate_unique_graphics_object_locations()
 {
     int x_text, x_text_box, w_text_box, h_text_box,
         x_input_toggle_button, w_input_toggle_button,
@@ -131,7 +131,7 @@ void Vca::calculate_unique_graphics_object_locations()
  * Calculate the locations of any graphics objects that are
  * unique to this module type.
  */
-void Vca::initialize_unique_graphics_objects()
+void Multiplier::initialize_unique_graphics_objects()
 {
     vector<string> names, texts, prompt_texts, text_offs;
     vector<SDL_Rect> locations;
@@ -145,9 +145,9 @@ void Vca::initialize_unique_graphics_objects()
 
     vector<Graphics_Object *> tmp_graphics_objects;
 
-    names = {"vca signal & cv input (text)", "vca cv amount (text)"};
-    locations = {graphics_object_locations[VCA_INPUT_TEXT],
-                 graphics_object_locations[VCA_CV_AMOUNT_TEXT]};
+    names = {"multiplier signal & cv input (text)", "multiplier cv amount (text)"};
+    locations = {graphics_object_locations[MULTIPLIER_INPUT_TEXT],
+                 graphics_object_locations[MULTIPLIER_CV_AMOUNT_TEXT]};
     colors = vector<SDL_Color>(2, text_color);
     texts = {"SIGNAL & CV INPUT:", "CV AMOUNT:"};
     fonts = vector<TTF_Font *>(2, FONT_REGULAR);
@@ -155,8 +155,8 @@ void Vca::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"waveform visualizer (waveform)"};
-    locations = {graphics_object_locations[VCA_OUTPUT_WAVEFORM]};
+    names = {"multiplier waveform visualizer (waveform)"};
+    locations = {graphics_object_locations[MULTIPLIER_OUTPUT_WAVEFORM]};
     colors = {color};
     background_colors = {text_color};
     range_lows = {-1};
@@ -166,24 +166,24 @@ void Vca::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {"vca signal (input text box)", "vca cv (input text box)", "vca cv amount (input text box)"};
-    locations = {graphics_object_locations[VCA_SIGNAL_INPUT_TEXT_BOX],
-                 graphics_object_locations[VCA_CV_INPUT_TEXT_BOX],
-                 graphics_object_locations[VCA_CV_AMOUNT_INPUT_TEXT_BOX]};
+    names = {"multiplier signal (input text box)", "multiplier cv (input text box)", "multiplier cv amount (input text box)"};
+    locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX],
+                 graphics_object_locations[MULTIPLIER_CV_INPUT_TEXT_BOX],
+                 graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TEXT_BOX]};
     colors = vector<SDL_Color>(3, text_color);
     text_colors = vector<SDL_Color>(3, color);
     prompt_texts = {"input", "input", "# or input"};
     fonts = vector<TTF_Font *>(3, FONT_SMALL);
     parents = vector<Module *>(3, this);
-    input_nums = {VCA_SIGNAL, VCA_CV, VCA_CV_AMOUNT};
+    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_CV, MULTIPLIER_CV_AMOUNT};
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {"vca signal input (input toggle button)", "vca cv input (input toggle button)",
-             "vca cv amount input (input toggle button)"};
-    locations = {graphics_object_locations[VCA_SIGNAL_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[VCA_CV_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[VCA_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};
+    names = {"multiplier signal input (input toggle button)", "multiplier cv input (input toggle button)",
+             "multiplier cv amount input (input toggle button)"};
+    locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[MULTIPLIER_CV_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};
     colors = vector<SDL_Color>(3, RED);
     color_offs = vector<SDL_Color>(3, text_color);
     text_color_ons = vector<SDL_Color>(3, WHITE);
@@ -191,11 +191,11 @@ void Vca::initialize_unique_graphics_objects()
     fonts = vector<TTF_Font *>(3, FONT_SMALL);
     texts = vector<string>(3, "I");
     text_offs = texts;
-    bs = {inputs_live[VCA_SIGNAL], inputs_live[VCA_CV],
-          inputs_live[VCA_CV_AMOUNT]};
+    bs = {inputs_live[MULTIPLIER_SIGNAL], inputs_live[MULTIPLIER_CV],
+          inputs_live[MULTIPLIER_CV_AMOUNT]};
     parents = vector<Module *>(3, this);
-    input_nums = {VCA_SIGNAL, VCA_CV,
-                  VCA_CV_AMOUNT};
+    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_CV,
+                  MULTIPLIER_CV_AMOUNT};
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);

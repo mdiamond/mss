@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * This file contains the driver function. Everything starts
+ * The driver function. Everything starts
  * and ends here. It initializes all external variables,
  * then either runs the testing functions or starts SDL and
  * begins processing.
@@ -90,7 +90,7 @@ SDL_Color RED = {255, 0, 0, 255};
 SDL_Color GREEN = {0, 255, 0, 255};
 SDL_Color BLUE = {0, 0, 255, 255};
 
-// Pages
+// Pages of graphics objects
 vector<Page *> PAGES = vector<Page *>();
 unsigned int CURRENT_PAGE = 0;
 
@@ -105,7 +105,8 @@ bool CURSOR_ON = true;
 // The currently active text box
 Text_Box *ACTIVE_TEXT_BOX = NULL;
 
-// Selecting a source module or not
+// Whether or not the user is currently selecting a source module
+// and the input toggle button for the associated parameter
 bool SELECTING_SRC = false;
 Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON = NULL;
 

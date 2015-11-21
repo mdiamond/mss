@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Functions for doing batch operations on graphics objects.
+ * Functions for constructing batches of graphics objects.
  */
 
 /************

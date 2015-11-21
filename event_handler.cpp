@@ -1,7 +1,6 @@
 /*
  * Matthew Diamond 2015
- * This file contains the functions that handle
- * events in the main thread.
+ * Functions for handling events in the main thread.
  */
 
 /************
@@ -74,7 +73,7 @@ void keydown_event(SDL_Event *e)
     if(e->key.keysym.sym == SDLK_2)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            add_VCA();
+            add_multiplier();
     }
     if(e->key.keysym.sym == SDLK_3)
     {
@@ -134,7 +133,7 @@ void mouse_event(SDL_Event *e)
 
 /*
  * Handle events. Return true if SDL_QUIT event
- * is received.
+ * is received, false otherwise.
  */
 bool event_handler(SDL_Event *e)
 {
