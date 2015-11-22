@@ -64,7 +64,7 @@ void Rect::render()
  */
 void Rect::clicked()
 {
-    if(SELECTING_SRC && parent != NULL && name == "border (rect)")
+    if(parent != NULL)
     {
         std::cout << PINK_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << std::endl;
 

@@ -108,7 +108,7 @@ void output_function_forwarder(Graphics_Object *g)
 {
     Output *output = (Output *) g->parent;
 
-    if(g->name == "on/off button (toggle_button)")
+    if(g->name == "output on/off button (toggle_button)")
         output->toggle_audio_on();
 }
 
@@ -119,13 +119,13 @@ void oscillator_function_forwarder(Graphics_Object *g)
 {
     Oscillator *oscillator = (Oscillator *) g->parent;
 
-    if(g->name == "oscillator sin toggle (toggle button)")
+    if(g->name.substr(g->name.size() - 26) == "sin toggle (toggle button)")
         oscillator->switch_waveform(SIN);
-    else if(g->name == "oscillator tri toggle (toggle button)")
+    else if(g->name.substr(g->name.size() - 26) == "tri toggle (toggle button)")
         oscillator->switch_waveform(TRI);
-    else if(g->name == "oscillator saw toggle (toggle button)")
+    else if(g->name.substr(g->name.size() - 26) == "saw toggle (toggle button)")
         oscillator->switch_waveform(SAW);
-    else if(g->name == "oscillator sqr toggle (toggle button)")
+    else if(g->name.substr(g->name.size() - 26) == "sqr toggle (toggle button)")
         oscillator->switch_waveform(SQR);
 }
 
@@ -142,7 +142,7 @@ void multiplier_function_forwarder(Graphics_Object *g)
  */
 void mixer_function_forwarder(Graphics_Object *g)
 {
-    // Mixer *mixer = (Mixer *) g->parent;
+
 }
 
 /*

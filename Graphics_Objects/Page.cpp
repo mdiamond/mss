@@ -72,7 +72,9 @@ void Page::clicked()
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
     {
         if(graphics_objects[i]->was_clicked())
-            graphics_objects[i]->clicked();
+            if((SELECTING_SRC && graphics_objects[i]->type == RECT) ||
+               !(SELECTING_SRC || graphics_objects[i]->type == RECT))
+                graphics_objects[i]->clicked();
         if(OBJECT_CLICKED)
         {
             OBJECT_CLICKED = false;
