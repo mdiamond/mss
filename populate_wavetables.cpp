@@ -18,8 +18,6 @@
 // Included files
 #include "main.hpp"
 
-using namespace std;
-
 /********************
  * HELPER FUNCTIONS *
  ********************/
@@ -101,5 +99,5 @@ void populate_wavetables()
     populate_saw();
     populate_sqr();
 
-    cout << "Wavetables populated." << endl;
+    std::cout << "Wavetables populated." << std::endl;
 }

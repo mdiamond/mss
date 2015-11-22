@@ -39,8 +39,6 @@
 #include "Modules/Output.hpp"
 #include "Modules/Multiplier.hpp"
 
-using namespace std;
-
 /********************
  * HELPER FUNCTIONS *
  ********************/
@@ -49,7 +47,7 @@ using namespace std;
  * Given the name of a module, return a pointer to it if
  * it exists, or NULL if it doesn't.
  */
-Module *find_module(string *name, vector<Module *> *modules)
+Module *find_module(std::string *name, std::vector<Module *> *modules)
 {
     for(unsigned int i = 0; i < modules->size(); i ++)
     {
@@ -65,20 +63,20 @@ Module *find_module(string *name, vector<Module *> *modules)
  * is not the same module as the destination module, and is not the
  * output module. Otherwise, return NULL and print an error message.
  */
-Module *find_module_as_source(string *name, vector<Module *> *modules, Module *dst)
+Module *find_module_as_source(std::string *name, std::vector<Module *> *modules, Module *dst)
 {
         Module *src = find_module(name, &MODULES);
         if(src == NULL)
-            cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << endl;
+            std::cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << std::endl;
         else if(src == MODULES[0])
         {
-            cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
-                               << DEFAULT_STDOUT << endl;
+            std::cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
+                               << DEFAULT_STDOUT << std::endl;
             return NULL;
         }
         else if(src == dst)
         {
-            cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << endl;
+            std::cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << std::endl;
             return NULL;
         }
 
@@ -89,7 +87,7 @@ Module *find_module_as_source(string *name, vector<Module *> *modules, Module *d
  * Return true if it is possible to turn this string into
  * a float. Return false otherwise.
  */
-bool can_floatify(string *string)
+bool can_floatify(std::string *string)
 {
     if(string->empty())
         return false;
@@ -156,7 +154,7 @@ void add_oscillator()
     oscillator->initialize_graphics_objects();
     MODULES.push_back(oscillator);
     MODULES_CHANGED = true;
-    cout << "Added module " << oscillator->name << endl;
+    std::cout << "Added module " << oscillator->name << std::endl;
 }
 
 /*
@@ -168,7 +166,7 @@ void add_multiplier()
     multiplier->initialize_graphics_objects();
     MODULES.push_back(multiplier);
     MODULES_CHANGED = true;
-    cout << "Added module " << multiplier->name << endl;
+    std::cout << "Added module " << multiplier->name << std::endl;
 }
 
 /*
@@ -180,7 +178,7 @@ void add_mixer()
     mixer->initialize_graphics_objects();
     MODULES.push_back(mixer);
     MODULES_CHANGED = true;
-    cout << "Added module " << mixer->name << endl;
+    std::cout << "Added module " << mixer->name << std::endl;
 }
 
 /*
@@ -191,7 +189,7 @@ void next_page()
     if(CURRENT_PAGE > 0)
     {
         CURRENT_PAGE --;
-        cout << "Switched to page " << CURRENT_PAGE << endl;
+        std::cout << "Switched to page " << CURRENT_PAGE << std::endl;
     }
 }
 
@@ -203,7 +201,7 @@ void previous_page()
     if(CURRENT_PAGE < PAGES.size() - 1)
     {
         CURRENT_PAGE ++;
-        cout << "Switched to page " << CURRENT_PAGE << endl;
+        std::cout << "Switched to page " << CURRENT_PAGE << std::endl;
     }
 }
 

@@ -33,8 +33,6 @@
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
 
-using namespace std;
-
 /*******************************
  * OSCILLATOR MEMBER FUNCTIONS *
  *******************************/
@@ -258,17 +256,17 @@ void Oscillator::calculate_unique_graphics_object_locations()
  */
 void Oscillator::initialize_unique_graphics_objects()
 {
-    vector<string> names, texts, prompt_texts, text_offs;
-    vector<SDL_Rect> locations;
-    vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
-    vector<TTF_Font *> fonts;
-    vector<float> range_lows, range_highs;
-    vector<int> input_nums;
-    vector<vector<float> *> buffers;
-    vector<Module *> parents;
-    vector<bool> bs;
+    std::vector<std::string> names, texts, prompt_texts, text_offs;
+    std::vector<SDL_Rect> locations;
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<TTF_Font *> fonts;
+    std::vector<float> range_lows, range_highs;
+    std::vector<int> input_nums;
+    std::vector<std::vector<float> *> buffers;
+    std::vector<Module *> parents;
+    std::vector<bool> bs;
 
-    vector<Graphics_Object *> tmp_graphics_objects;
+    std::vector<Graphics_Object *> tmp_graphics_objects;
 
     names = {name + " frequency (text)", name + " phase offset (text)",
              name + " pulse width (text)", name + " range low/high (text)"};
@@ -276,9 +274,9 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_PHASE_OFFSET_TEXT],
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_TEXT],
                  graphics_object_locations[OSCILLATOR_RANGE_TEXT]};
-    colors = vector<SDL_Color>(4, text_color);
+    colors = std::vector<SDL_Color>(4, text_color);
     texts = {"FREQUENCY:", "PHASE OFFSET:", "PULSE WIDTH:", "RANGE LOW & HIGH:"};
-    fonts = vector<TTF_Font *>(4, FONT_REGULAR);
+    fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
 
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
@@ -302,11 +300,11 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX],
                  graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX],
                  graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX]};
-    colors = vector<SDL_Color>(5, text_color);
-    text_colors = vector<SDL_Color>(5, color);
-    prompt_texts = vector<string>(5, "# or input");
-    fonts = vector<TTF_Font *>(5, FONT_SMALL);
-    parents = vector<Module *>(5, this);
+    colors = std::vector<SDL_Color>(5, text_color);
+    text_colors = std::vector<SDL_Color>(5, color);
+    prompt_texts = std::vector<std::string>(5, "# or input");
+    fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
+    parents = std::vector<Module *>(5, this);
     input_nums = {OSCILLATOR_FREQUENCY, OSCILLATOR_PHASE_OFFSET, OSCILLATOR_PULSE_WIDTH,
                   OSCILLATOR_RANGE_LOW, OSCILLATOR_RANGE_HIGH};
 
@@ -322,15 +320,15 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(5, RED);
-    color_offs = vector<SDL_Color>(5, text_color);
-    text_color_ons = vector<SDL_Color>(5, WHITE);
-    text_color_offs = vector<SDL_Color>(5, color);
-    fonts = vector<TTF_Font *>(5, FONT_SMALL);
-    texts = vector<string>(5, "I");
+    colors = std::vector<SDL_Color>(5, RED);
+    color_offs = std::vector<SDL_Color>(5, text_color);
+    text_color_ons = std::vector<SDL_Color>(5, WHITE);
+    text_color_offs = std::vector<SDL_Color>(5, color);
+    fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
+    texts = std::vector<std::string>(5, "I");
     text_offs = texts;
-    bs = vector<bool>(5, false);
-    parents = vector<Module *>(5, this);
+    bs = std::vector<bool>(5, false);
+    parents = std::vector<Module *>(5, this);
     input_nums = {OSCILLATOR_FREQUENCY, OSCILLATOR_PHASE_OFFSET,
                   OSCILLATOR_PULSE_WIDTH, OSCILLATOR_RANGE_LOW,
                   OSCILLATOR_RANGE_HIGH};
@@ -344,15 +342,15 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(4, text_color);
-    color_offs = vector<SDL_Color>(4, BLACK);
-    text_color_ons = vector<SDL_Color>(4, BLACK);
-    text_color_offs = vector<SDL_Color>(4, WHITE);
-    fonts = vector<TTF_Font *>(4, FONT_REGULAR);
+    colors = std::vector<SDL_Color>(4, text_color);
+    color_offs = std::vector<SDL_Color>(4, BLACK);
+    text_color_ons = std::vector<SDL_Color>(4, BLACK);
+    text_color_offs = std::vector<SDL_Color>(4, WHITE);
+    fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
     texts = {"SIN", "TRI", "SAW", "SQR"};
     text_offs = {"SIN", "TRI", "SAW", "SQR"};
     bs = {sin_on, tri_on, saw_on, sqr_on};
-    parents = vector<Module *>(4, this);
+    parents = std::vector<Module *>(4, this);
 
     tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                                         text_color_offs, fonts, texts, text_offs, bs, parents);
@@ -378,27 +376,27 @@ void Oscillator::switch_waveform(int _waveform_type)
         waveform_type = SIN;
         sin_on = true;
         ((Toggle_Button *) graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])->b = true;
-        cout << name << " is now outputting a sine wave" << endl;
+        std::cout << name << " is now outputting a sine wave" << std::endl;
     }
     else if(_waveform_type == TRI)
     {
         waveform_type = TRI;
         tri_on = true;
         ((Toggle_Button *) graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])->b = true;
-        cout << name << " is now outputting a triangle wave" << endl;
+        std::cout << name << " is now outputting a triangle wave" << std::endl;
     }
     else if(_waveform_type == SAW)
     {
         waveform_type = SAW;
         saw_on = true;
         ((Toggle_Button *) graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])->b = true;
-        cout << name << " is now outputting a sawtooth wave" << endl;
+        std::cout << name << " is now outputting a sawtooth wave" << std::endl;
     }
     else
     {
         waveform_type = SQR;
         sqr_on = true;
         ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b = true;
-        cout << name << " is now outputting a square wave" << endl;
+        std::cout << name << " is now outputting a square wave" << std::endl;
     }
 }

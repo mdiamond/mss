@@ -19,8 +19,6 @@
 #include "signal_processing.hpp"
 #include "tests.hpp"
 
-using namespace std;
-
 /********************
  * HELPER FUNCTIONS *
  ********************/
@@ -29,7 +27,7 @@ using namespace std;
  * Compare two buffers. Return true if they are the same,
  * false if they are not.
  */
-bool compare_buffers(vector<float> *buffer1, vector<float> *buffer2, int num_samples)
+bool compare_buffers(std::vector<float> *buffer1, std::vector<float> *buffer2, int num_samples)
 {
     bool same = true;
 
@@ -45,16 +43,16 @@ bool compare_buffers(vector<float> *buffer1, vector<float> *buffer2, int num_sam
 /*
  * Print out the results of all tests.
  */
-void print_test_results(string *names, int *results, int test_num)
+void print_test_results(std::string *names, int *results, int test_num)
 {
     for(int i = 0; i < test_num; i ++)
     {
-        cout << "Test #" << i + 1 << ": " << names[i] << " - ";
+        std::cout << "Test #" << i + 1 << ": " << names[i] << " - ";
         if(results[i])
-            cout << "PASSED!";
+            std::cout << "PASSED!";
         else
-            cout << "FAILED!"; 
-        cout << endl;
+            std::cout << "FAILED!"; 
+        std::cout << std::endl;
     }
 }
 
@@ -73,9 +71,9 @@ bool all_tests_passed(int *results, int test_num)
     }
 
     if(passed)
-        cout << "ALL TESTS PASSED!" << endl;
+        std::cout << "ALL TESTS PASSED!" << std::endl;
     else
-        cout << "TESTS FAILED!" << endl;
+        std::cout << "TESTS FAILED!" << std::endl;
 
     return passed;
 }
@@ -90,10 +88,10 @@ bool all_tests_passed(int *results, int test_num)
 bool test_add_signals_1()
 {
     int num_samples = 4;
-    vector<float> buffer1(num_samples, 0);
-    vector<float> buffer2(num_samples, 0);
-    vector<float> expected_buffer(num_samples, 0);
-    vector<float> result_buffer(num_samples, 0);
+    std::vector<float> buffer1(num_samples, 0);
+    std::vector<float> buffer2(num_samples, 0);
+    std::vector<float> expected_buffer(num_samples, 0);
+    std::vector<float> result_buffer(num_samples, 0);
 
     buffer1[0] = .5;
     buffer2[0] = .5;
@@ -128,7 +126,7 @@ bool test_add_signals_1()
  */
 bool run_tests()
 {
-    string names[1];
+    std::string names[1];
     int results[1];
     int test_num = 0;
 

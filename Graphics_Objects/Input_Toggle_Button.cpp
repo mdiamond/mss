@@ -24,8 +24,6 @@
 #include "Text.hpp"
 #include "Input_Toggle_Button.hpp"
 
-using namespace std;
-
 /****************************************
  * INPUT TOGGLE BUTTON MEMBER FUNCTIONS *
  ****************************************/
@@ -33,10 +31,10 @@ using namespace std;
 /*
  * Constructor.
  */
-Input_Toggle_Button::Input_Toggle_Button(string _name, SDL_Rect _location, SDL_Color _color,
+Input_Toggle_Button::Input_Toggle_Button(std::string _name, SDL_Rect _location, SDL_Color _color,
                              SDL_Color _color_off, SDL_Color _text_color_on,
-                             SDL_Color _text_color_off, TTF_Font *_font, string _text_on,
-                             string _text_off, bool _b, Module *_parent, int _input_num,
+                             SDL_Color _text_color_off, TTF_Font *_font, std::string _text_on,
+                             std::string _text_off, bool _b, Module *_parent, int _input_num,
                              Input_Text_Box *_input_text_box) :
     Toggle_Button(_name, _location, _color, _color_off, _text_color_on, _text_color_off,
                   _font, _text_on, _text_off, _b, _parent),
@@ -69,7 +67,7 @@ void Input_Toggle_Button::toggle()
         if(input_text_box->prompt_text.text == "input")
             input_text_box->update_current_text("");
         else
-            input_text_box->update_current_text(to_string(parent->input_floats[input_num]));
+            input_text_box->update_current_text(std::to_string(parent->input_floats[input_num]));
         b = false;
     }
 

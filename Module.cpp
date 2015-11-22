@@ -28,8 +28,6 @@
 #include "Modules/Oscillator.hpp"
 #include "Modules/Multiplier.hpp"
 
-using namespace std;
-
 /***************************
  * MODULE MEMBER FUNCTIONS *
  ***************************/
@@ -47,15 +45,15 @@ Module::Module(int _type) :
     switch(_type)
     {
         case MIXER:
-            name = "mixer " + to_string(number);
+            name = "mixer " + std::to_string(number);
             num_inputs = 16;
             break;
         case MULTIPLIER:
-            name = "multiplier " + to_string(number);
+            name = "multiplier " + std::to_string(number);
             num_inputs = 3;
             break;
         case OSCILLATOR:
-            name = "oscillator " + to_string(number);
+            name = "oscillator " + std::to_string(number);
             num_inputs = 5;
             break;
         case OUTPUT:
@@ -65,19 +63,19 @@ Module::Module(int _type) :
     }
 
     // Initialize the dependencies vector
-    dependencies = vector<Module *>(num_inputs, NULL);
+    dependencies = std::vector<Module *>(num_inputs, NULL);
 
     // Initialize the module parameters as floats, strings, and
     // input buffers, and booleans to represent whether or not
     // the input for a certain parameter is live
-    parameter_names = vector<string>(num_inputs, "");
-    input_floats = vector<float>(num_inputs, 0);
-    input_strs = vector<string>(num_inputs, "");
-    inputs = vector<vector<float> *>(num_inputs, NULL);
-    inputs_live = vector<bool>(num_inputs, false);
+    parameter_names = std::vector<std::string>(num_inputs, "");
+    input_floats = std::vector<float>(num_inputs, 0);
+    input_strs = std::vector<std::string>(num_inputs, "");
+    inputs = std::vector<std::vector<float> *>(num_inputs, NULL);
+    inputs_live = std::vector<bool>(num_inputs, false);
 
     // Initialize the output buffer
-    output = vector<float>(BUFFER_SIZE, 0);
+    output = std::vector<float>(BUFFER_SIZE, 0);
 
     // Set this module's color randomly, but with enough contrast
     color.r = rand() % 128;
@@ -201,9 +199,9 @@ void Module::calculate_graphics_object_locations()
  * Initialize a batch of input text box objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_text_box_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
-                                           vector<SDL_Color> text_colors, vector<string> prompt_texts, vector<TTF_Font *> fonts,
-                                           vector<Module *> parents, vector<int> input_nums)
+void Module::initialize_input_text_box_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color> colors,
+                                               std::vector<SDL_Color> text_colors, std::vector<std::string> prompt_texts, std::vector<TTF_Font *> fonts,
+                                               std::vector<Module *> parents, std::vector<int> input_nums)
 {
     Input_Text_Box *input_text_box = NULL;
 
@@ -219,11 +217,11 @@ void Module::initialize_input_text_box_objects(vector<string> names, vector<SDL_
  * Initialize a batch of input toggle button objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
-                                        vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
-                                        vector<TTF_Font *> fonts,
-                                        vector<string> text_ons, vector<string> text_offs,
-                                        vector<bool> bs, vector<Module *> parents, vector<int> input_nums)
+void Module::initialize_input_toggle_button_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color> colors,
+                                                    std::vector<SDL_Color> color_offs, std::vector<SDL_Color> text_color_ons,
+                                                    std::vector<SDL_Color> text_color_offs, std::vector<TTF_Font *> fonts,
+                                                    std::vector<std::string> text_ons, std::vector<std::string> text_offs,
+                                                    std::vector<bool> bs, std::vector<Module *> parents, std::vector<int> input_nums)
 {
     Input_Toggle_Button *input_toggle_button = NULL;
 
@@ -246,7 +244,7 @@ void Module::initialize_input_toggle_button_objects(vector<string> names, vector
  */
 void Module::initialize_graphics_objects()
 {
-    string object_name;
+    std::string object_name;
     Rect *rect;
     Text *text;
 
@@ -299,8 +297,8 @@ void Module::set(float val, int input_num)
     input_floats[input_num] = val;
     inputs_live[input_num] = false;
 
-    cout << name << " " << parameter_names[input_num]
-         << " changed to " << val << endl;
+    std::cout << name << " " << parameter_names[input_num]
+         << " changed to " << val << std::endl;
 }
 
 /*
@@ -332,8 +330,8 @@ void Module::set(Module *src, int input_num)
         waveform->buffer = &src->output;
     }
 
-    cout << name << " " << parameter_names[input_num]
-         << " is now coming from " << src->name << endl;
+    std::cout << name << " " << parameter_names[input_num]
+         << " is now coming from " << src->name << std::endl;
 }
 
 /*
@@ -361,6 +359,6 @@ void Module::cancel_input(int input_num)
         waveform->buffer = NULL;
     }
 
-    cout << name << " " << parameter_names[input_num]
-         << " input cancelled" << endl;
+    std::cout << name << " " << parameter_names[input_num]
+         << " input cancelled" << std::endl;
 }

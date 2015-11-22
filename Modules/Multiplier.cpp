@@ -33,8 +33,6 @@
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
 
-using namespace std;
-
 /*******************************
  * MULTIPLIER MEMBER FUNCTIONS *
  *******************************/
@@ -139,24 +137,24 @@ void Multiplier::calculate_unique_graphics_object_locations()
  */
 void Multiplier::initialize_unique_graphics_objects()
 {
-    vector<string> names, texts, prompt_texts, text_offs;
-    vector<SDL_Rect> locations;
-    vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
-    vector<TTF_Font *> fonts;
-    vector<float> range_lows, range_highs;
-    vector<int> input_nums;
-    vector<vector<float> *> buffers;
-    vector<Module *> parents;
-    vector<bool> bs;
+    std::vector<std::string> names, texts, prompt_texts, text_offs;
+    std::vector<SDL_Rect> locations;
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<TTF_Font *> fonts;
+    std::vector<float> range_lows, range_highs;
+    std::vector<int> input_nums;
+    std::vector<std::vector<float> *> buffers;
+    std::vector<Module *> parents;
+    std::vector<bool> bs;
 
-    vector<Graphics_Object *> tmp_graphics_objects;
+    std::vector<Graphics_Object *> tmp_graphics_objects;
 
     names = {name + " signal & cv input (text)", name + " cv amount (text)"};
     locations = {graphics_object_locations[MULTIPLIER_INPUT_TEXT],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_TEXT]};
-    colors = vector<SDL_Color>(2, text_color);
+    colors = std::vector<SDL_Color>(2, text_color);
     texts = {"SIGNAL & CV INPUT:", "CV AMOUNT:"};
-    fonts = vector<TTF_Font *>(2, FONT_REGULAR);
+    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
@@ -177,11 +175,11 @@ void Multiplier::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX],
                  graphics_object_locations[MULTIPLIER_CV_INPUT_TEXT_BOX],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TEXT_BOX]};
-    colors = vector<SDL_Color>(3, text_color);
-    text_colors = vector<SDL_Color>(3, color);
+    colors = std::vector<SDL_Color>(3, text_color);
+    text_colors = std::vector<SDL_Color>(3, color);
     prompt_texts = {"input", "input", "# or input"};
-    fonts = vector<TTF_Font *>(3, FONT_SMALL);
-    parents = vector<Module *>(3, this);
+    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
+    parents = std::vector<Module *>(3, this);
     input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_CV, MULTIPLIER_CV_AMOUNT};
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
@@ -191,16 +189,16 @@ void Multiplier::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MULTIPLIER_CV_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(3, RED);
-    color_offs = vector<SDL_Color>(3, text_color);
-    text_color_ons = vector<SDL_Color>(3, WHITE);
-    text_color_offs = vector<SDL_Color>(3, color);
-    fonts = vector<TTF_Font *>(3, FONT_SMALL);
-    texts = vector<string>(3, "I");
+    colors = std::vector<SDL_Color>(3, RED);
+    color_offs = std::vector<SDL_Color>(3, text_color);
+    text_color_ons = std::vector<SDL_Color>(3, WHITE);
+    text_color_offs = std::vector<SDL_Color>(3, color);
+    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
+    texts = std::vector<std::string>(3, "I");
     text_offs = texts;
     bs = {inputs_live[MULTIPLIER_SIGNAL], inputs_live[MULTIPLIER_CV],
           inputs_live[MULTIPLIER_CV_AMOUNT]};
-    parents = vector<Module *>(3, this);
+    parents = std::vector<Module *>(3, this);
     input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_CV,
                   MULTIPLIER_CV_AMOUNT};
 

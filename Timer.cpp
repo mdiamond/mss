@@ -16,8 +16,6 @@
 // Included files
 #include "Timer.hpp"
 
-using namespace std;
-
 /**************************
  * TIMER MEMBER FUNCTIONS *
  **************************/

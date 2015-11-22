@@ -25,8 +25,6 @@
 #include "Rect.hpp"
 #include "Text_Box.hpp"
 
-using namespace std;
-
 /*****************************
  * TEXT BOX MEMBER FUNCTIONS *
  *****************************/
@@ -34,8 +32,8 @@ using namespace std;
 /*
  * Constructor.
  */
-Text_Box::Text_Box(string _name, SDL_Rect _location, SDL_Color _color,
-                   SDL_Color _text_color, string _prompt_text,
+Text_Box::Text_Box(std::string _name, SDL_Rect _location, SDL_Color _color,
+                   SDL_Color _text_color, std::string _prompt_text,
                    TTF_Font *_font, Module *_parent) :
     Graphics_Object(_name, TEXT_BOX, _parent, _location, _color),
     text_color(_text_color),
@@ -118,7 +116,7 @@ void Text_Box::update_location(SDL_Rect _location)
 /*
  * Update the current text displayed in this text box.
  */
-void Text_Box::update_current_text(string s)
+void Text_Box::update_current_text(std::string s)
 {
     text.update_text(s);
 }
@@ -155,7 +153,7 @@ void Text_Box::clicked()
 {
     if(!OBJECT_CLICKED)
     {
-        cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+        std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << std::endl;
 
         if(!active)
         {
@@ -178,7 +176,7 @@ void Text_Box::entered()
 {
     if(type == TEXT_BOX)
     {
-        cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
+        std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << std::endl;
 
         SDL_StopTextInput();
         text.text = typing_text.text;

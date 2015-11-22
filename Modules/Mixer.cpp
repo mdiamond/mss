@@ -33,8 +33,6 @@
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
 
-using namespace std;
-
 /**************************
  * MIXER MEMBER FUNCTIONS *
  **************************/
@@ -192,23 +190,23 @@ void Mixer::calculate_unique_graphics_object_locations()
  */
 void Mixer::initialize_unique_graphics_objects()
 {
-    vector<string> names, texts, prompt_texts, text_offs;
-    vector<SDL_Rect> locations;
-    vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
-    vector<TTF_Font *> fonts;
-    vector<float> range_lows, range_highs;
-    vector<int> input_nums;
-    vector<vector<float> *> buffers;
-    vector<Module *> parents;
-    vector<bool> bs;
+    std::vector<std::string> names, texts, prompt_texts, text_offs;
+    std::vector<SDL_Rect> locations;
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<TTF_Font *> fonts;
+    std::vector<float> range_lows, range_highs;
+    std::vector<int> input_nums;
+    std::vector<std::vector<float> *> buffers;
+    std::vector<Module *> parents;
+    std::vector<bool> bs;
 
-    vector<Graphics_Object *> tmp_graphics_objects;
+    std::vector<Graphics_Object *> tmp_graphics_objects;
 
     names = {name + " mixer signal 1 (text)"};
     locations = {graphics_object_locations[MIXER_SIGNALS_TEXT]};
-    colors = vector<SDL_Color>(1, text_color);
+    colors = std::vector<SDL_Color>(1, text_color);
     texts = {"SIGNAL & MULTIPLIER:"};
-    fonts = vector<TTF_Font *>(1, FONT_REGULAR);
+    fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
 
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
@@ -256,8 +254,8 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]};
-    colors = vector<SDL_Color>(16, text_color);
-    text_colors = vector<SDL_Color>(16, color);
+    colors = std::vector<SDL_Color>(16, text_color);
+    text_colors = std::vector<SDL_Color>(16, color);
     prompt_texts = {"input", "# or input",
                     "input", "# or input",
                     "input", "# or input",
@@ -266,8 +264,8 @@ void Mixer::initialize_unique_graphics_objects()
                     "input", "# or input",
                     "input", "# or input",
                     "input", "# or input"};
-    fonts = vector<TTF_Font *>(16, FONT_SMALL);
-    parents = vector<Module *>(16, this);
+    fonts = std::vector<TTF_Font *>(16, FONT_SMALL);
+    parents = std::vector<Module *>(16, this);
     input_nums = {MIXER_SIGNAL_1, MIXER_SIGNAL_1_MULTIPLIER,
                   MIXER_SIGNAL_2, MIXER_SIGNAL_2_MULTIPLIER,
                   MIXER_SIGNAL_3, MIXER_SIGNAL_3_MULTIPLIER,
@@ -311,15 +309,15 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON]};
-    colors = vector<SDL_Color>(16, RED);
-    color_offs = vector<SDL_Color>(16, text_color);
-    text_color_ons = vector<SDL_Color>(16, WHITE);
-    text_color_offs = vector<SDL_Color>(16, color);
-    fonts = vector<TTF_Font *>(16, FONT_SMALL);
-    texts = vector<string>(16, "I");
+    colors = std::vector<SDL_Color>(16, RED);
+    color_offs = std::vector<SDL_Color>(16, text_color);
+    text_color_ons = std::vector<SDL_Color>(16, WHITE);
+    text_color_offs = std::vector<SDL_Color>(16, color);
+    fonts = std::vector<TTF_Font *>(16, FONT_SMALL);
+    texts = std::vector<std::string>(16, "I");
     text_offs = texts;
-    bs = vector<bool>(16, false);
-    parents = vector<Module *>(16, this);
+    bs = std::vector<bool>(16, false);
+    parents = std::vector<Module *>(16, this);
     input_nums = {MIXER_SIGNAL_1, MIXER_SIGNAL_1_MULTIPLIER,
                   MIXER_SIGNAL_2, MIXER_SIGNAL_2_MULTIPLIER,
                   MIXER_SIGNAL_3, MIXER_SIGNAL_3_MULTIPLIER,

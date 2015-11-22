@@ -21,8 +21,6 @@
 // Included classes
 #include "Graphics_Object.hpp"
 
-using namespace std;
-
 /************************************
  * GRAPHICS_OBJECT MEMBER FUNCTIONS *
  ************************************/
@@ -30,7 +28,7 @@ using namespace std;
 /*
  * Constructor.
  */
-Graphics_Object::Graphics_Object(string _name, int _type, Module *_parent,
+Graphics_Object::Graphics_Object(std::string _name, int _type, Module *_parent,
 								 SDL_Rect _location, SDL_Color _color) : 
 	name(_name), type(_type), parent(_parent),
     location(_location), color(_color), updated(true)

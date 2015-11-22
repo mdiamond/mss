@@ -25,8 +25,6 @@
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
 
-using namespace std;
-
 /****************************
  * INITIALIZATION FUNCTIONS *
  ****************************/
@@ -47,18 +45,18 @@ int open_audio_device()
 
     if(SDL_OpenAudio(&wanted, &obtained) == -1)
     {
-        cout << RED_STDOUT << "Could not open the audio device: "
-             << SDL_GetError() << DEFAULT_STDOUT << endl;
+        std::cout << RED_STDOUT << "Could not open the audio device: "
+             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
-    cout << "Audio device opened." << endl;
-    cout << "Audio details:" << endl;
-    cout << "    Sample rate: " << obtained.freq << endl;
-    cout << "    Format: " << obtained.format << endl;
-    cout << "    Channels: " << obtained.channels << endl;
-    cout << "    Buffer size in samples: " << obtained.samples << endl;
-    cout << "    Buffer size in bytes: " << obtained.size << endl;
+    std::cout << "Audio device opened." << std::endl;
+    std::cout << "Audio details:" << std::endl;
+    std::cout << "    Sample rate: " << obtained.freq << std::endl;
+    std::cout << "    Format: " << obtained.format << std::endl;
+    std::cout << "    Channels: " << obtained.channels << std::endl;
+    std::cout << "    Buffer size in samples: " << obtained.samples << std::endl;
+    std::cout << "    Buffer size in bytes: " << obtained.size << std::endl;
 
     BUFFER_SIZE = obtained.samples;
 
@@ -76,7 +74,7 @@ void initialize_output()
     output->initialize_graphics_objects();
     MODULES.push_back(output);
 
-    cout << "Output initialized." << endl;
+    std::cout << "Output initialized." << std::endl;
 }
 
 /***************************
@@ -149,7 +147,7 @@ Uint32 k_rate_callback_function(Uint32 interval, void *param)
  * Make sure no value goes above the max,
  * and no value goes below the min.
  */
-void clip_signal(vector<float> *buffer, float min, float max)
+void clip_signal(std::vector<float> *buffer, float min, float max)
 {
     for(unsigned int i = 0; i < buffer->size(); i ++)
     {
@@ -163,7 +161,7 @@ void clip_signal(vector<float> *buffer, float min, float max)
 /*
  * Copy a signal to a different buffer.
  */
-void copy_signal(vector<float> *src, vector<float> *dst)
+void copy_signal(std::vector<float> *src, std::vector<float> *dst)
 {
     for(unsigned int i = 0; i < src->size(); i ++)
         (*dst)[i] = (*src)[i];
@@ -172,7 +170,7 @@ void copy_signal(vector<float> *src, vector<float> *dst)
 /*
  * Scale a signal within its buffer.
  */
-void scale_signal(vector<float> *buffer, float original_low,
+void scale_signal(std::vector<float> *buffer, float original_low,
                   float original_high, float low, float high)
 {
     float temp_high = original_high - original_low;
@@ -200,7 +198,7 @@ float scale_sample(float sample, float original_low,
 /*
  * Add two signals into a destination buffer.
  */
-void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst)
+void add_signals(std::vector<float> *buffer1, std::vector<float> *buffer2, std::vector<float> *dst)
 {
     // For each sample
     for(unsigned int i = 0; i < buffer1->size(); i ++)
@@ -210,7 +208,7 @@ void add_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *
 /*
  * Multiply two signals into a destination buffer.
  */
-void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<float> *dst)
+void multiply_signals(std::vector<float> *buffer1, std::vector<float> *buffer2, std::vector<float> *dst)
 {
     // For each sample
     for(unsigned int i = 0; i < buffer1->size(); i ++)
@@ -221,7 +219,7 @@ void multiply_signals(vector<float> *buffer1, vector<float> *buffer2, vector<flo
  * Multiply a signal by some constant and put the resulting signal
  * into a destination buffer.
  */
-void multiply_signals(vector<float> *buffer, float val, vector<float> *dst)
+void multiply_signals(std::vector<float> *buffer, float val, std::vector<float> *dst)
 {
     // For each sample
     for(unsigned int i = 0; i < buffer->size(); i ++)

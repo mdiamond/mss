@@ -22,8 +22,6 @@
 #include "../Graphics_Object.hpp"
 #include "Text.hpp"
 
-using namespace std;
-
 /*************************
  * TEXT MEMBER FUNCTIONS *
  *************************/
@@ -31,8 +29,8 @@ using namespace std;
 /*
  * Constructor.
  */
-Text::Text(string _name, SDL_Rect _location, SDL_Color _color,
-           string _text, TTF_Font *_font) :
+Text::Text(std::string _name, SDL_Rect _location, SDL_Color _color,
+           std::string _text, TTF_Font *_font) :
     Graphics_Object(_name, TEXT, NULL, _location, _color),
     font(_font), text(_text)
 {
@@ -91,7 +89,7 @@ void Text::clicked()
 /*
  * A function for updating the text in this object.
  */
-void Text::update_text(string s)
+void Text::update_text(std::string s)
 {
     text = s;
     updated = true;

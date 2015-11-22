@@ -23,8 +23,6 @@
 #include "../Graphics_Object.hpp"
 #include "Waveform.hpp"
 
-using namespace std;
-
 /*****************************
  * WAVEFORM MEMBER FUNCTIONS *
  *****************************/
@@ -32,14 +30,14 @@ using namespace std;
 /*
  * Constructor.
  */
-Waveform::Waveform(string _name, SDL_Rect _location,
+Waveform::Waveform(std::string _name, SDL_Rect _location,
                    SDL_Color _color, SDL_Color _background_color, float _range_low,
-                   float _range_high, vector<float> *_buffer) :
+                   float _range_high, std::vector<float> *_buffer) :
     Graphics_Object(_name, WAVEFORM, NULL, _location, _color), 
     background_color(_background_color), range_low(_range_low),
     range_high(_range_high), buffer(_buffer)
 {
-    render_buffer = vector<float>(location.w, 0);
+    render_buffer = std::vector<float>(location.w, 0);
 }
 
 /*
@@ -100,9 +98,9 @@ void Waveform::copy_buffer()
 void Waveform::render()
 {
     SDL_Point zero = {0, 0};
-    vector<SDL_Point> points, points2, points3;
+    std::vector<SDL_Point> points, points2, points3;
 
-    points = vector<SDL_Point>(location.w, zero);
+    points = std::vector<SDL_Point>(location.w, zero);
 
     for(unsigned int i = 0; i < render_buffer.size(); i ++)
     {

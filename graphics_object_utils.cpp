@@ -19,8 +19,6 @@
 #include "image_processing.hpp"
 #include "main.hpp"
 
-using namespace std;
-
 /**********************************
  * BATCH GRAPHICS OBJECT CREATORS *
  **********************************/
@@ -29,11 +27,11 @@ using namespace std;
  * Initialize a batch of text objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-vector<Graphics_Object *> initialize_text_objects(vector<string> names, vector<SDL_Rect> locations,
-                         vector<SDL_Color> colors, vector<string> texts,
-                         vector<TTF_Font *> fonts)
+std::vector<Graphics_Object *> initialize_text_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations,
+                         std::vector<SDL_Color> colors, std::vector<std::string> texts,
+                         std::vector<TTF_Font *> fonts)
 {
-	vector<Graphics_Object *> graphics_objects = vector<Graphics_Object *>();
+    std::vector<Graphics_Object *> graphics_objects = std::vector<Graphics_Object *>();
     Text *text = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)
@@ -49,13 +47,13 @@ vector<Graphics_Object *> initialize_text_objects(vector<string> names, vector<S
  * Initialize a batch of toggle button objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-vector<Graphics_Object *> initialize_toggle_button_objects(vector<string> names, vector<SDL_Rect> locations, vector<SDL_Color> colors,
-                                  vector<SDL_Color> color_offs, vector<SDL_Color> text_color_ons, vector<SDL_Color> text_color_offs,
-                                  vector<TTF_Font *> fonts,
-                                  vector<string> text_ons, vector<string> text_offs,
-                                  vector<bool> bs, vector<Module *> parents)
+std::vector<Graphics_Object *> initialize_toggle_button_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color> colors,
+                                  std::vector<SDL_Color> color_offs, std::vector<SDL_Color> text_color_ons, std::vector<SDL_Color> text_color_offs,
+                                  std::vector<TTF_Font *> fonts,
+                                  std::vector<std::string> text_ons, std::vector<std::string> text_offs,
+                                  std::vector<bool> bs, std::vector<Module *> parents)
 {
-	vector<Graphics_Object *> graphics_objects = vector<Graphics_Object *>();
+    std::vector<Graphics_Object *> graphics_objects = std::vector<Graphics_Object *>();
     Toggle_Button *toggle_button = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)
@@ -72,12 +70,12 @@ vector<Graphics_Object *> initialize_toggle_button_objects(vector<string> names,
  * Initialize a batch of waveform objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-vector<Graphics_Object *> initialize_waveform_objects(vector<string> names, vector<SDL_Rect> locations,
-                             vector<SDL_Color> colors, vector<SDL_Color> background_colors,
-                             vector<float> range_lows, vector<float> range_highs,
-                             vector<vector<float> *> buffers)
+std::vector<Graphics_Object *> initialize_waveform_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations,
+                             std::vector<SDL_Color> colors, std::vector<SDL_Color> background_colors,
+                             std::vector<float> range_lows, std::vector<float> range_highs,
+                             std::vector<std::vector<float> *> buffers)
 {
-	vector<Graphics_Object *> graphics_objects = vector<Graphics_Object *>();
+    std::vector<Graphics_Object *> graphics_objects = std::vector<Graphics_Object *>();
     Waveform *waveform = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)

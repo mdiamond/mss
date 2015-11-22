@@ -31,8 +31,6 @@
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
 
-using namespace std;
-
 /****************************
  * INITIALIZATION FUNCTIONS *
  ****************************/
@@ -50,12 +48,12 @@ int open_window()
                               SDL_WINDOW_OPENGL);
 
     if (WINDOW == NULL) {
-        cout << RED_STDOUT << "Could not create window: "
-             << SDL_GetError() << DEFAULT_STDOUT << endl;
+        std::cout << RED_STDOUT << "Could not create window: "
+             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
-    cout << "Window opened." << endl;
+    std::cout << "Window opened." << std::endl;
 
     return 1;
 }
@@ -68,12 +66,12 @@ int create_renderer()
     RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED);
 
     if (WINDOW == NULL) {
-        cout << RED_STDOUT << "Could not create renderer: "
-             << SDL_GetError() << DEFAULT_STDOUT << endl;
+        std::cout << RED_STDOUT << "Could not create renderer: "
+             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
-    cout << "Renderer created." << endl;
+    std::cout << "Renderer created." << std::endl;
 
     return 1;
 }
@@ -90,12 +88,12 @@ int load_fonts()
 
     if(!FONT_REGULAR || !FONT_BOLD)
     {
-        cout << RED_STDOUT << "Could not open one of the TTF fonts: "
-             << TTF_GetError() << DEFAULT_STDOUT << endl;
+        std::cout << RED_STDOUT << "Could not open one of the TTF fonts: "
+             << TTF_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
-    cout << "Fonts loaded." << endl;
+    std::cout << "Fonts loaded." << std::endl;
 
     return 1;
 }
@@ -161,8 +159,8 @@ void reset_alphas()
  * This sub page contains the buttons for adding new modules, switching
  * pages, and saving or loading the current patch.
  */
-void initialize_utilities_sub_page(vector<Graphics_Object *> *sub_page_graphics_objects,
-                                   vector<Page *> *sub_pages, Page *current_sub_page)
+void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_graphics_objects,
+                                   std::vector<Page *> *sub_pages, Page *current_sub_page)
 {
     int x = 2;
     Module *parent = NULL;
@@ -232,11 +230,11 @@ void calculate_pages()
     // its sub pages graphics objects, and the current page
     // (no page has any graphics objects, only sub pages
     // contain graphics objects)
-    string current_sub_page_name;
+    std::string current_sub_page_name;
     Page *current_sub_page = NULL;
-    vector<Page *> *sub_pages = new vector<Page *>();
-    vector<Graphics_Object *> *sub_page_graphics_objects = new vector<Graphics_Object *>();
-    string current_page_name;
+    std::vector<Page *> *sub_pages = new std::vector<Page *>();
+    std::vector<Graphics_Object *> *sub_page_graphics_objects = new std::vector<Graphics_Object *>();
+    std::string current_page_name;
     Page *current_page = NULL;
 
     // Create the first sub page, which will contain important
@@ -245,7 +243,7 @@ void calculate_pages()
 
     // Reset the sub page graphics objects
     delete sub_page_graphics_objects;
-    sub_page_graphics_objects = new vector<Graphics_Object *>();
+    sub_page_graphics_objects = new std::vector<Graphics_Object *>();
 
     // For each module
     for(unsigned int i = 0; i < MODULES.size(); i ++)
@@ -266,7 +264,7 @@ void calculate_pages()
 
         // Reset the sub page graphics objects
         delete sub_page_graphics_objects;
-        sub_page_graphics_objects = new vector<Graphics_Object *>();
+        sub_page_graphics_objects = new std::vector<Graphics_Object *>();
 
         // If this is the last sub page in the current page, or
         // if there are no more modules to take into consideration
@@ -276,7 +274,7 @@ void calculate_pages()
         {
             // Create the page using the created vector of sub pages, add it
             // to the global list of pages
-            current_page = new Page(to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
+            current_page = new Page(std::to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
                                     WINDOW_RECT, BLACK,
                                     NULL, sub_pages);
             PAGES.push_back(current_page);
@@ -288,11 +286,11 @@ void calculate_pages()
             delete sub_page_graphics_objects;
             if(i != MODULES.size() - 1)
             {
-                sub_pages = new vector<Page *>();
-                sub_page_graphics_objects = new vector<Graphics_Object *>();
+                sub_pages = new std::vector<Page *>();
+                sub_page_graphics_objects = new std::vector<Graphics_Object *>();
                 initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
                 delete sub_page_graphics_objects;
-                sub_page_graphics_objects = new vector<Graphics_Object *>();
+                sub_page_graphics_objects = new std::vector<Graphics_Object *>();
             }
         }
     }

@@ -22,8 +22,6 @@
 #include "../Graphics_Object.hpp"
 #include "Page.hpp"
 
-using namespace std;
-
 /*************************
  * PAGE MEMBER FUNCTIONS *
  *************************/
@@ -31,19 +29,19 @@ using namespace std;
 /*
  * Constructor.
  */
-Page::Page(string _name, SDL_Rect _location, SDL_Color _color,
-           vector<Graphics_Object *> *_graphics_objects,
-           vector<Page *> *_sub_pages) :
+Page::Page(std::string _name, SDL_Rect _location, SDL_Color _color,
+           std::vector<Graphics_Object *> *_graphics_objects,
+           std::vector<Page *> *_sub_pages) :
     Graphics_Object(_name, PAGE, NULL, _location, _color)
 {
     if(_sub_pages != NULL)
-        sub_pages = vector<Page *>(*_sub_pages);
+        sub_pages = std::vector<Page *>(*_sub_pages);
     else
-        sub_pages = vector<Page *>();
+        sub_pages = std::vector<Page *>();
     if(_graphics_objects != NULL)
-        graphics_objects = vector<Graphics_Object *>(*_graphics_objects);
+        graphics_objects = std::vector<Graphics_Object *>(*_graphics_objects);
     else
-        graphics_objects = vector<Graphics_Object *>();
+        graphics_objects = std::vector<Graphics_Object *>();
 }
 
 /*

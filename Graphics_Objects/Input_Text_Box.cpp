@@ -24,8 +24,6 @@
 #include "Rect.hpp"
 #include "Input_Text_Box.hpp"
 
-using namespace std;
-
 /***********************************
  * INPUT TEXT BOX MEMBER FUNCTIONS *
  ***********************************/
@@ -33,8 +31,8 @@ using namespace std;
 /*
  * Constructor.
  */
-Input_Text_Box::Input_Text_Box(string _name, SDL_Rect _location, SDL_Color _color,
-                               SDL_Color _text_color, string _prompt_text, TTF_Font *_font,
+Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color _color,
+                               SDL_Color _text_color, std::string _prompt_text, TTF_Font *_font,
                                Module *_parent, int _input_num) :
     Text_Box(_name, _location, _color, _text_color, _prompt_text, _font, _parent),
     input_num(_input_num)
@@ -62,7 +60,7 @@ void Input_Text_Box::entered()
     Module *src = NULL;
     float val = 0;
 
-    cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << endl;
+    std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << std::endl;
 
     SDL_StopTextInput();
     text.text = typing_text.text;
@@ -71,8 +69,8 @@ void Input_Text_Box::entered()
     {
         if(can_floatify(&text.text))
         {
-            val = stof(text.text.c_str());
-            cout << val << endl;
+            val = std::stof(text.text.c_str());
+            std::cout << val << std::endl;
             parent->set(val, input_num);
         }
         else
@@ -85,8 +83,8 @@ void Input_Text_Box::entered()
     }
     else
     {
-        cout << RED_STDOUT << "entered string contained no characters, idiot"
-             << DEFAULT_STDOUT << endl;
+        std::cout << RED_STDOUT << "entered string contained no characters, idiot"
+             << DEFAULT_STDOUT << std::endl;
     }
 
     text.updated = true;

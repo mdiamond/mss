@@ -28,8 +28,6 @@
 #include "Module.hpp"
 #include "Timer.hpp"
 
-using namespace std;
-
 /********************
  * HELPER FUNCTIONS *
  ********************/
@@ -59,23 +57,23 @@ void cleanup()
 {
     // Destroy the modules
     destroy_modules();
-    cout << "Destroyed all modules." << endl;
+    std::cout << "Destroyed all modules." << std::endl;
 
     // Destroy all pages
     destroy_pages();
-    cout << "Destroyed all pages." << endl;
+    std::cout << "Destroyed all pages." << std::endl;
 
     // Destroy the window
     SDL_DestroyWindow(WINDOW);
-    cout << "Destroyed window." << endl;
+    std::cout << "Destroyed window." << std::endl;
 
     // Destroy the renderer
     SDL_DestroyRenderer(RENDERER);
-    cout << "Destroyed renderer." << endl;
+    std::cout << "Destroyed renderer." << std::endl;
 
     // Quit SDL
     SDL_Quit();
-    cout << "SDL terminated." << endl;
+    std::cout << "SDL terminated." << std::endl;
 
 }
 
@@ -97,13 +95,13 @@ bool initialize()
 {
     system("clear");
 
-    cout << "Initializing SDL." << endl;
+    std::cout << "Initializing SDL." << std::endl;
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) { 
-        cout << "Could not initialize SDL: " << SDL_GetError() << endl;
+        std::cout << "Could not initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
-    cout << "SDL initialized." << endl;
+    std::cout << "SDL initialized." << std::endl;
 
     // Initialize audio device
     if(!open_audio_device())
@@ -120,7 +118,7 @@ bool initialize()
     // Initialize truetype
     if(TTF_Init() == -1)
     {
-        cout << "Coult not initialize TTF: " << TTF_GetError() << endl;
+        std::cout << "Coult not initialize TTF: " << TTF_GetError() << std::endl;
         return false;
     }
 
@@ -135,9 +133,9 @@ bool initialize()
     initialize_output();
 
     // Unpause the audio
-    cout << "Unpausing audio." << endl;
+    std::cout << "Unpausing audio." << std::endl;
     SDL_PauseAudio(0);
-    cout << "Audio unpaused." << endl;
+    std::cout << "Audio unpaused." << std::endl;
 
     return true;
 }
@@ -208,8 +206,8 @@ bool normal_mode()
         // Every 100 frames, print out the framerate
         if(frame % 100 == 0)
         {
-            cout << GREEN_STDOUT << ((frame_success - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0))
-                 << " frames per second." << DEFAULT_STDOUT << endl;
+            std::cout << GREEN_STDOUT << ((frame_success - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0))
+                 << " frames per second." << DEFAULT_STDOUT << std::endl;
             frame_previous = frame_success;
         }
 

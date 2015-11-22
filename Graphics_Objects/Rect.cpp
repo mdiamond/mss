@@ -23,8 +23,6 @@
 #include "../Graphics_Object.hpp"
 #include "Rect.hpp"
 
-using namespace std;
-
 /*************************
  * RECT MEMBER FUNCTIONS *
  *************************/
@@ -32,7 +30,7 @@ using namespace std;
 /*
  * Constructor.
  */
-Rect::Rect(string _name, SDL_Rect _location, SDL_Color _color, Module *_parent) :
+Rect::Rect(std::string _name, SDL_Rect _location, SDL_Color _color, Module *_parent) :
     Graphics_Object(_name, RECT, _parent, _location, _color)
 {
     fill = true;
@@ -68,7 +66,7 @@ void Rect::clicked()
 {
     if(SELECTING_SRC && parent != NULL && name == "border (rect)")
     {
-        cout << PINK_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << endl;
+        std::cout << PINK_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << std::endl;
 
         function_forwarder(this);
         OBJECT_CLICKED = true;

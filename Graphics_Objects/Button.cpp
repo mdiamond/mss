@@ -24,8 +24,6 @@
 #include "Text.hpp"
 #include "Button.hpp"
 
-using namespace std;
-
 /***************************
  * BUTTON MEMBER FUNCTIONS *
  ***************************/
@@ -33,8 +31,8 @@ using namespace std;
 /*
  * Constructor.
  */
-Button::Button(string _name, SDL_Rect _location, SDL_Color _color,
-               SDL_Color _text_color, string _text, Module *_parent) :
+Button::Button(std::string _name, SDL_Rect _location, SDL_Color _color,
+               SDL_Color _text_color, std::string _text, Module *_parent) :
     Graphics_Object(_name, BUTTON, _parent, _location, _color),
     text_str(_text),
     text(Text("button text (text)", _location, _text_color, text_str, FONT_REGULAR))
@@ -68,7 +66,7 @@ void Button::render()
  */
 void Button::clicked()
 {
-    cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << endl;
+    std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << std::endl;
 
     if(!OBJECT_CLICKED)
     {

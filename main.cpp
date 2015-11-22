@@ -31,8 +31,6 @@
 #include "Module.hpp"
 #include "Timer.hpp"
 
-using namespace std;
-
 /**********************
  * EXTERNAL VARIABLES *
  **********************/
@@ -50,7 +48,7 @@ int BUFFER_SIZE;
 bool AUDIO_ON = true;
 
 // Wavetables
-vector<vector<float> > WAVETABLES(4, vector<float>(SAMPLE_RATE, 0));
+std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE, 0));
 
 // SDL Window and renderer
 SDL_Window *WINDOW;
@@ -91,7 +89,7 @@ SDL_Color GREEN = {0, 255, 0, 255};
 SDL_Color BLUE = {0, 0, 255, 255};
 
 // Pages of graphics objects
-vector<Page *> PAGES = vector<Page *>();
+std::vector<Page *> PAGES = std::vector<Page *>();
 unsigned int CURRENT_PAGE = 0;
 
 // Mouse information
@@ -112,7 +110,7 @@ Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON = NULL;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently
-vector<Module *> MODULES = vector<Module *>();
+std::vector<Module *> MODULES = std::vector<Module *>();
 bool MODULES_CHANGED = true;
 
 /***********************
@@ -153,6 +151,6 @@ int main()
 
     // Return an exit status based on whether or not
     // the function called above succeeded and terminate
-    cout << "Terminating..." << endl;
+    std::cout << "Terminating..." << std::endl;
     return exit_status;
 }

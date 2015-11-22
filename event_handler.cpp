@@ -24,8 +24,6 @@
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Page.hpp"
 
-using namespace std;
-
 /********************
  * HELPER FUNCTIONS *
  ********************/
