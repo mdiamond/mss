@@ -23,6 +23,7 @@
 
 // Included classes
 #include "Graphics_Object.hpp"
+#include "Graphics_Objects/Button.hpp"
 #include "Graphics_Objects/Input_Text_Box.hpp"
 #include "Graphics_Objects/Input_Toggle_Button.hpp"
 #include "Graphics_Objects/Rect.hpp"
@@ -50,6 +51,7 @@ enum Module_Graphics_Objects
     MODULE_BORDER_RECT = 0,
     MODULE_INNER_BORDER_RECT,
     MODULE_NAME_TEXT,
+    MODULE_REMOVE_MODULE_BUTTON
 };
 
 /***************************

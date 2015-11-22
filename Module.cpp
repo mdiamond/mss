@@ -191,6 +191,8 @@ void Module::calculate_graphics_object_locations()
     graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH, upper_left.y + MODULE_BORDER_WIDTH,
                                         MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH), MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)});
     graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH + 2, upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0});
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 15 - MODULE_BORDER_WIDTH,
+                                         upper_left.y + MODULE_BORDER_WIDTH, 15, 15});
 
     calculate_unique_graphics_object_locations();
 }
@@ -245,24 +247,30 @@ void Module::initialize_input_toggle_button_objects(std::vector<std::string> nam
 void Module::initialize_graphics_objects()
 {
     std::string object_name;
+    Button *button;
     Rect *rect;
     Text *text;
 
     // Calculate the locations of all graphics objects
     calculate_graphics_object_locations();
 
-    // graphics_object[0] is the outermost rectangle used to represent the module
+    // graphics_objects[0] is the outermost rectangle used to represent the module
     rect = new Rect(name + " border (rect)", graphics_object_locations[MODULE_BORDER_RECT], WHITE, this);
     graphics_objects.push_back(rect);
 
-    // graphics_object[1] is the slightly smaller rectangle within the outermost
+    // graphics_objects[1] is the slightly smaller rectangle within the outermost
     // rectangle
     rect = new Rect(name + " inner_border (rect)", graphics_object_locations[MODULE_INNER_BORDER_RECT], color, this);
     graphics_objects.push_back(rect);
 
-    // graphics_object[2] is the objects name
+    // graphics_objects[2] is the objects name
     text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], text_color, name, FONT_BOLD);
     graphics_objects.push_back(text);
+
+    // graphics_objects[3] is the remove module button
+    button = new Button(name + " remove module (button)", graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
+                        color, text_color, "X", this);
+    graphics_objects.push_back(button);
 
     // Initialize all graphics objects specific to this module type
     initialize_unique_graphics_objects();
