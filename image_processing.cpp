@@ -15,8 +15,10 @@
 
 // Included SDL components
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 // Included files
+#include "graphics_object_utils.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
 #include "main_helpers.hpp"
@@ -162,54 +164,39 @@ void reset_alphas()
 void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_graphics_objects,
                                    std::vector<Page *> *sub_pages, Page *current_sub_page)
 {
-    int x = 2;
-    Module *parent = NULL;
+
+    std::vector<std::string> names, texts;
+    std::vector<SDL_Rect> locations;
+    std::vector<SDL_Color> colors, text_colors;
+    std::vector<Module *> parents;
+
+    names = std::vector<std::string>();
+    locations = std::vector<SDL_Rect>();
+    colors = std::vector<SDL_Color>();
+    text_colors = std::vector<SDL_Color>();
+    texts = std::vector<std::string>();
+    parents = std::vector<Module *>();
+
+    std::vector<Graphics_Object *> tmp_graphics_objects;
 
     // Create the background and add it to the list of graphics
     // objects
     Rect *background = new Rect("background (rect)", WINDOW_RECT, BLACK, NULL);
     sub_page_graphics_objects->push_back(background);
 
-    // Create the "add module" button and add it to the
-    // list of graphics objects
-    SDL_Rect location = {x , WINDOW_HEIGHT - 17, 101, 15};
-    x += 103;
-    Button *button = new Button("add oscillator (button)", location, WHITE,
-                                BLACK, "ADD OSCILLATOR", parent);
-    sub_page_graphics_objects->push_back(button);
+    names = {"add oscillator (button)", "add multiplier (button)",
+             "add mixer (button)", "previous page (button)", "next page (button)"};
+    locations = {{2, WINDOW_HEIGHT - 17, 101, 15}, {105, WINDOW_HEIGHT - 17, 101, 15},
+                 {208, WINDOW_HEIGHT - 17, 66, 15}, {WINDOW_WIDTH - 159, WINDOW_HEIGHT - 17, 92, 15},
+                 {WINDOW_WIDTH - 159 + 94, WINDOW_HEIGHT - 17, 92, 15}};
+    colors = std::vector<SDL_Color>(5, MODULES[0]->color);
+    text_colors = std::vector<SDL_Color>(5, MODULES[0]->text_color);
+    texts = {"ADD OSCILLATOR", "ADD MULTIPLIER", "ADD MIXER", "PREVIOUS PAGE", "NEXT PAGE"};
+    parents = std::vector<Module *>(5, NULL);
 
-    // Create the "add multiplier" button and add it to the
-    // list of graphics objects
-    location = {x, WINDOW_HEIGHT - 17, 101, 15};
-    x += 103;
-    button = new Button("add multiplier (button)", location, WHITE,
-                                BLACK, "ADD MULTIPLIER", parent);
-    sub_page_graphics_objects->push_back(button);
-
-    // Create the "add mixer" button and add it to the
-    // list of graphics objects
-    location = {x, WINDOW_HEIGHT - 17, 66, 15};
-    button = new Button("add mixer (button)", location, WHITE,
-                                BLACK, "ADD MIXER", parent);
-    sub_page_graphics_objects->push_back(button);
-
-    // Create the "previous page" button and add it to the
-    // list of graphics objects
-    x = WINDOW_WIDTH - 159;
-    location = {x, WINDOW_HEIGHT - 17, 92, 15};
-    x += 92;
-    button = new Button("previous page (button)", location, WHITE,
-                        BLACK, "PREVIOUS PAGE", parent);
-    sub_page_graphics_objects->push_back(button);
-
-    // Create the "next page" button and add it to the
-    // list of graphics objects
-    x += 2;
-    location = {x, WINDOW_HEIGHT - 17, 63, 15};
-    x += 65;
-    button = new Button("next page (button)", location, WHITE,
-                        BLACK, "NEXT PAGE", parent);
-    sub_page_graphics_objects->push_back(button);
+    tmp_graphics_objects = initialize_button_objects(names, locations, colors, text_colors, texts, parents);
+    sub_page_graphics_objects->insert(sub_page_graphics_objects->end(), tmp_graphics_objects.begin(),
+                                      tmp_graphics_objects.end());
 
     // Create the sub page and add it to the list of sub pages
     // for the current page
