@@ -174,9 +174,6 @@ bool normal_mode()
     // While the user has not quit, continually draw
     // to the window, then delay until the next frame is needed.
     Uint32 frame = 0;
-    Uint32 frame_success = 0;
-    Uint32 frame_time = 0;
-    Uint32 delay_time = 0;
     Uint32 frame_previous = 0;
     Timer *frame_timer = new Timer();
     // SDL_TimerID k_rate_timer = SDL_AddTimer(100, k_rate_callback_function, NULL);
@@ -184,46 +181,25 @@ bool normal_mode()
     SDL_Event e;
     while(true)
     {
-        // Calculate the time in ms at which this frame is
-        // supposed to be displayed
-        frame_time = MSPF * frame;
-
-        // As long as the time that the frame is supposed to be displayed
-        // is in the past, move on to the next frame
-        while((frame_time = MSPF * frame) < SDL_GetTicks())
-            frame ++;
-
-        // If the frame is supposed to be rendered at some point
-        // in the future, calculate how many ms until then and delay
-        // for that many ms
-        if(frame_time > SDL_GetTicks())
-        {
-            delay_time = frame_time - SDL_GetTicks();
-            SDL_Delay(delay_time);
-        }
-
         // Handle any events
         if(event_handler(&e))
             break;
 
         // Draw the surface
         draw_surface();
+        frame ++;
 
         // Every 100 frames, print out the framerate
         if(frame % 100 == 0)
         {
-            std::cout << GREEN_STDOUT << ((frame_success - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0))
+            std::cout << GREEN_STDOUT << ((frame - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0))
                  << " frames per second." << DEFAULT_STDOUT << std::endl;
-            frame_previous = frame_success;
+            frame_previous = frame;
         }
 
         // Every 30 frames, negate the status of the typing cursor
         if(frame % 30 == 0)
             CURSOR_ON = !CURSOR_ON;
-
-        // Move on to the next frame
-        frame ++;
-        frame_success ++;
     }
 
     // Pause audio
