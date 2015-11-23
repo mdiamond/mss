@@ -42,14 +42,16 @@
  */
 int open_window()
 {
+    Uint32 window_flags = SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALLOW_HIGHDPI;
+
     WINDOW = SDL_CreateWindow("synth",
                               SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED,
                               WINDOW_WIDTH,
                               WINDOW_HEIGHT,
-                              SDL_WINDOW_OPENGL);
+                              window_flags);
 
-    if (WINDOW == NULL) {
+    if(WINDOW == NULL) {
         std::cout << RED_STDOUT << "Could not create window: "
              << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
@@ -65,15 +67,40 @@ int open_window()
  */
 int create_renderer()
 {
-    RENDERER = SDL_CreateRenderer(WINDOW, -1, SDL_RENDERER_ACCELERATED);
+    Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE |
+                          SDL_RENDERER_PRESENTVSYNC;
 
-    if (WINDOW == NULL) {
+    RENDERER = SDL_CreateRenderer(WINDOW, -1, render_flags);
+
+    if(WINDOW == NULL) {
         std::cout << RED_STDOUT << "Could not create renderer: "
              << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
     std::cout << "Renderer created." << std::endl;
+
+    return 1;
+}
+
+/*
+ * Create a texture to render to so that the GPU will be used
+ * isntead of the CPU when rendering to a surface.
+ */
+int create_texture()
+{
+    TEXTURE = SDL_CreateTexture(RENDERER, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+                                WINDOW_WIDTH, WINDOW_HEIGHT);
+
+    if(TEXTURE == NULL) {
+        std::cout << RED_STDOUT << "Could not create texture: "
+             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
+        return 0;
+    }
+
+    std::cout << "Texture created." << std::endl;
+
+    SDL_SetRenderTarget(RENDERER, TEXTURE);
 
     return 1;
 }
@@ -316,6 +343,9 @@ void draw_surface()
     // Render graphics objects for the current page
     PAGES[CURRENT_PAGE]->render();
 
-    // Present what has been rendered
+    // Copy the contents of the texture into the renderer, then present the renderer
+    SDL_SetRenderTarget(RENDERER, NULL);
+    SDL_RenderCopy(RENDERER, TEXTURE, NULL, NULL);
     SDL_RenderPresent(RENDERER);
+    SDL_SetRenderTarget(RENDERER, TEXTURE);
 }

@@ -111,6 +111,12 @@ void Text_Box::update_location(SDL_Rect _location)
 {
     location = _location;
     background.update_location(_location);
+    text.update_location(_location);
+    typing_text.update_location(_location);
+    prompt_text.update_location(_location);
+    text.updated = true;
+    typing_text.updated = true;
+    prompt_text.updated = true;
 }
 
 /*

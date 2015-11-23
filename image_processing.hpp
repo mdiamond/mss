@@ -21,6 +21,7 @@
 // Initialization functions
 int open_window();
 int create_renderer();
+int create_texture();
 int load_fonts();
 
 // Image processing functions

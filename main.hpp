@@ -51,6 +51,7 @@ extern std::vector<std::vector<float> > WAVETABLES;
 //   SDL Window and Renderer
 extern SDL_Window *WINDOW;
 extern SDL_Renderer *RENDERER;
+extern SDL_Texture *TEXTURE;
 //   Module dimensions and amount of modules per page
 extern int MODULE_WIDTH;
 extern int MODULE_HEIGHT;

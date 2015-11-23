@@ -23,6 +23,7 @@
 #include "SDL2/SDL_ttf.h"
 
 // Included files
+#include "function_forwarder.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
 
@@ -118,14 +119,22 @@ void output_function_forwarder(Graphics_Object *g)
 void oscillator_function_forwarder(Graphics_Object *g)
 {
     Oscillator *oscillator = (Oscillator *) g->parent;
+    std::vector<std::string> possible_names;
 
-    if(g->name.substr(g->name.size() - 26) == "sin toggle (toggle button)")
+    possible_names = {"sin toggle (toggle button)", "tri toggle (toggle button)",
+                      "saw toggle (toggle button)", "sqr toggle (toggle button)"};
+
+    if(g->name.size() > possible_names[0].size()
+       && g->name.substr(g->name.size() - 26) == possible_names[0])
         oscillator->switch_waveform(SIN);
-    else if(g->name.substr(g->name.size() - 26) == "tri toggle (toggle button)")
+    else if(g->name.size() > possible_names[1].size()
+            && g->name.substr(g->name.size() - 26) == possible_names[1])
         oscillator->switch_waveform(TRI);
-    else if(g->name.substr(g->name.size() - 26) == "saw toggle (toggle button)")
+    else if(g->name.size() > possible_names[2].size()
+            && g->name.substr(g->name.size() - 26) == possible_names[2])
         oscillator->switch_waveform(SAW);
-    else if(g->name.substr(g->name.size() - 26) == "sqr toggle (toggle button)")
+    else if(g->name.size() > possible_names[3].size()
+            && g->name.substr(g->name.size() - 26) == possible_names[3])
         oscillator->switch_waveform(SQR);
 }
 
@@ -143,6 +152,30 @@ void multiplier_function_forwarder(Graphics_Object *g)
 void mixer_function_forwarder(Graphics_Object *g)
 {
 
+}
+
+/*
+ * Handle functions for the graphics objects with
+ * no parent module.
+ */
+void no_parent_function_forwarder(Graphics_Object *g)
+{
+    std::vector<std::string> possible_names;
+
+    possible_names = {"add oscillator (button)", "add multiplier (button)",
+                      "add mixer (button)", "previous page (button)",
+                      "next page (button)"};
+
+    if(g->name == possible_names[0])
+        add_oscillator();
+    else if(g->name == possible_names[1])
+        add_multiplier();
+    else if(g->name == possible_names[2])
+        add_mixer();
+    else if(g->name == possible_names[3])
+        next_page();
+    else if(g->name == possible_names[4])
+        previous_page();
 }
 
 /*
@@ -205,24 +238,6 @@ void previous_page()
     }
 }
 
-/*
- * Handle functions for the graphics objects with
- * no parent module.
- */
-void no_parent_function_forwarder(Graphics_Object *g)
-{
-    if(g->name == "add oscillator (button)")
-        add_oscillator();
-    else if(g->name == "add multiplier (button)")
-        add_multiplier();
-    else if(g->name == "add mixer (button)")
-        add_mixer();
-    else if(g->name == "previous page (button)")
-        next_page();
-    else if(g->name == "next page (button)")
-        previous_page();
-}
-
 /**********************
  * FUNCTION FORWARDER *
  **********************/
@@ -233,6 +248,11 @@ void no_parent_function_forwarder(Graphics_Object *g)
  */
 void function_forwarder(Graphics_Object *g)
 {
+    // INPUT TOGGLE BUTTON HACK !!
+    // If the type of the graphics object is a rectangle, we're currently selecting a source,
+    // the current input toggle button is not NULL, and the parent of this graphics object
+    // is not the same as the parent of the current input toggle button, set the input associated with
+    // the current input toggle button to receive from the output of the parent of this graphics object
     if(g->type == RECT && SELECTING_SRC && CURRENT_INPUT_TOGGLE_BUTTON != NULL &&
        CURRENT_INPUT_TOGGLE_BUTTON->parent != g->parent)
     {
@@ -240,21 +260,38 @@ void function_forwarder(Graphics_Object *g)
         CURRENT_INPUT_TOGGLE_BUTTON->b = true;
         SELECTING_SRC = false;
         reset_alphas();
-        CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->update_current_text(g->parent->name.substr(0, 3)+ " " + g->parent->name.substr(g->parent->name.find(" ") + 1));
+        CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->update_current_text(g->parent->name.substr(0, 3)
+                                                                         + " " + g->parent->name.substr(g->parent->name.find(" ") + 1));
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }
-
-    else if(g->type != RECT)
-    {
-        if(g->parent == NULL)
-            no_parent_function_forwarder(g);
-        else if(g->parent->type == OUTPUT)
-            output_function_forwarder(g);
-        else if(g->parent->type == OSCILLATOR)
-            oscillator_function_forwarder(g);
-        else if(g->parent->type == MULTIPLIER)
-            multiplier_function_forwarder(g);
-        else if(g->parent->type == MIXER)
-            mixer_function_forwarder(g);
-    }
+    // If the input toggle button hack does not kick in, first check to see
+    // the graphics object is a remove module button, and if so, remove that module
+    else if(g->name.size() > 22
+            && g->name.substr(g->name.size() - 22) == "remove module (button)")
+        delete g->parent;
+    // If the above situations were not the case, then check if we are dealing with a
+    // graphics object from the utilities page (no parent), and then forward the graphics object
+    // along to a particular function
+    else if(g->parent == NULL)
+        no_parent_function_forwarder(g);
+    // If the above situations were not the case, then check if we are dealing with a
+    // graphics object from the output module, and then forward the graphics object
+    // along to a particular function
+    else if(g->parent->type == OUTPUT)
+        output_function_forwarder(g);
+    // If the above situations were not the case, then check if we are dealing with a
+    // graphics object from an oscillator module, and then forward the graphics object
+    // along to a particular function
+    else if(g->parent->type == OSCILLATOR)
+        oscillator_function_forwarder(g);
+    // If the above situations were not the case, then check if we are dealing with a
+    // graphics object from a multiplier module, and then forward the graphics object
+    // along to a particular function
+    else if(g->parent->type == MULTIPLIER)
+        multiplier_function_forwarder(g);
+    // If the above situations were not the case, then check if we are dealing with a
+    // graphics object from a mixer module, and then forward the graphics object
+    // along to a particular function
+    else if(g->parent->type == MIXER)
+        mixer_function_forwarder(g);
 }

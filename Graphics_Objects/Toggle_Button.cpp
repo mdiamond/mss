@@ -100,3 +100,14 @@ void Toggle_Button::toggle()
 {
     b = !b;
 }
+
+void Toggle_Button::update_location(SDL_Rect _location)
+{
+    location = _location;
+    text_on.update_location(_location);
+    text_off.update_location(_location);
+    background.update_location(_location);
+    background_off.update_location(_location);
+    text_on.updated = true;
+    text_off.updated = true;
+}

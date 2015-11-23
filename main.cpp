@@ -53,6 +53,7 @@ std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE, 0
 // SDL Window and renderer
 SDL_Window *WINDOW;
 SDL_Renderer *RENDERER;
+SDL_Texture *TEXTURE;
 
 // Module dimensions and amount of modules per page
 int MODULE_WIDTH = 150;

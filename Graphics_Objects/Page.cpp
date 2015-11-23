@@ -59,7 +59,8 @@ Page::~Page()
 void Page::render()
 {
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
-        graphics_objects[i]->render();
+        if(graphics_objects[i] != NULL)
+            graphics_objects[i]->render();
     for(unsigned int i = 0; i < sub_pages.size(); i ++)
         sub_pages[i]->render();
 }

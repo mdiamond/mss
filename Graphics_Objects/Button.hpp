@@ -36,6 +36,10 @@ class Button: public Graphics_Object
         // Virtual member functions
         virtual void render();
         virtual void clicked();
+
+        // Member functions
+        //   Override the default graphics object update_location() function
+        void update_location(SDL_Rect);
 };
 
 #endif

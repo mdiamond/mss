@@ -157,8 +157,91 @@ Module::Module(int _type) :
  */
 Module::~Module()
 {
+    // Lock audio to avoid interfering with processing
+    SDL_LockAudio();
+
+    // Cancel any inputs that this module is outputting to
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        for(unsigned int j = 0; j < MODULES[i]->dependencies.size(); j ++)
+        {
+            if(MODULES[i]->dependencies[j] == this)
+            {
+                std::cout << MODULES[i]->name << std::endl;
+                MODULES[i]->cancel_input(j);
+            }
+        }
+    }
+
+    // Erase this module from the list of modules
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        if(MODULES[i] == this)
+            MODULES.erase(MODULES.begin() + i);
+    }
+
+    // Delete all graphics objects
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
         delete graphics_objects[i];
+
+    // Recalculate module numbers and names, update the name texts
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        MODULES[i]->number = i;
+        switch(MODULES[i]->type)
+        {
+            case MIXER:
+                MODULES[i]->name = "mixer " + std::to_string(MODULES[i]->number);
+                break;
+            case MULTIPLIER:
+                MODULES[i]->name = "multiplier " + std::to_string(MODULES[i]->number);
+                break;
+            case OSCILLATOR:
+                MODULES[i]->name = "oscillator " + std::to_string(MODULES[i]->number);
+                break;
+            case OUTPUT:
+                MODULES[i]->name = "output";
+                break;
+        }
+    }
+
+    // Make sure that the text boxes in all modules accurately represent their inputs,
+    // then update the module name text object
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        int dependency_num = 0;
+        std::string dependency_name;
+        Input_Text_Box *input_text_box;
+        Text *text;
+
+        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+        {
+            if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
+               && MODULES[i]->inputs_live[dependency_num])
+            {
+                input_text_box = (Input_Text_Box *) MODULES[i]->graphics_objects[j];
+                dependency_name = MODULES[i]->dependencies[dependency_num]->name;
+                input_text_box->update_current_text(dependency_name.substr(0, 3)
+                                                    + " "
+                                                    + dependency_name.substr(dependency_name.find(" ") + 1));
+                dependency_num ++;
+            }
+            else if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
+                    && !MODULES[i]->inputs_live[dependency_num])
+                dependency_num ++;
+        }
+
+        text = (Text *) MODULES[i]->graphics_objects[MODULE_NAME_TEXT];
+        text->update_text(MODULES[i]->name);
+    }
+
+    // Mark modules changed so that they will be re-rendered
+    MODULES_CHANGED = true;
+
+    std::cout << name << " removed" << std::endl;
+
+    // Unlock audio
+    SDL_UnlockAudio();
 }
 
 /*

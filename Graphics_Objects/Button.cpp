@@ -74,3 +74,10 @@ void Button::clicked()
         OBJECT_CLICKED = true;
     }
 }
+
+void Button::update_location(SDL_Rect _location)
+{
+    location = _location;
+    text.update_location(_location);
+    text.updated = true;
+}

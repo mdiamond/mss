@@ -63,4 +63,11 @@ bool Graphics_Object::was_clicked()
 void Graphics_Object::update_location(SDL_Rect _location)
 {
 	location = _location;
+
+    if(type == BUTTON)
+        ((Button *) this)->update_location(_location);
+    if(type == TEXT_BOX || type == INPUT_TEXT_BOX)
+        ((Text_Box *) this)->update_location(_location);
+    if(type == TOGGLE_BUTTON || type == INPUT_TOGGLE_BUTTON)
+        ((Toggle_Button *) this)->update_location(_location);
 }

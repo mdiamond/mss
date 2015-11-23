@@ -50,6 +50,8 @@ class Toggle_Button: public Graphics_Object
         // Member functions
         //   Override the default toggle buttons toggle() function
         void toggle();
+        //   Override the default graphics object update_location() function
+        void update_location(SDL_Rect);
 };
 
 #endif

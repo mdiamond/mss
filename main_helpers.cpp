@@ -115,6 +115,10 @@ bool initialize()
     if(!create_renderer())
         return false;
 
+    // Create a texture to render to
+    if(!create_texture())
+        return false;
+
     // Initialize truetype
     if(TTF_Init() == -1)
     {
@@ -198,10 +202,12 @@ bool normal_mode()
             SDL_Delay(delay_time);
         }
 
-        // Draw the surface
-        draw_surface();
+        // Handle any events
         if(event_handler(&e))
             break;
+
+        // Draw the surface
+        draw_surface();
 
         // Every 100 frames, print out the framerate
         if(frame % 100 == 0)
