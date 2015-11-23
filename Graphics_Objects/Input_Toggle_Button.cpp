@@ -31,9 +31,9 @@
 /*
  * Constructor.
  */
-Input_Toggle_Button::Input_Toggle_Button(std::string _name, SDL_Rect _location, SDL_Color _color,
-                             SDL_Color _color_off, SDL_Color _text_color_on,
-                             SDL_Color _text_color_off, TTF_Font *_font, std::string _text_on,
+Input_Toggle_Button::Input_Toggle_Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
+                             SDL_Color *_color_off, SDL_Color *_text_color_on,
+                             SDL_Color *_text_color_off, TTF_Font *_font, std::string _text_on,
                              std::string _text_off, bool _b, Module *_parent, int _input_num,
                              Input_Text_Box *_input_text_box) :
     Toggle_Button(_name, _location, _color, _color_off, _text_color_on, _text_color_off,

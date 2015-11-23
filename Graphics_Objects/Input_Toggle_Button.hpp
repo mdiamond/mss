@@ -34,8 +34,8 @@ class Input_Toggle_Button: public Toggle_Button
         Input_Text_Box *input_text_box;
 
         // Constructor and destructor
-        Input_Toggle_Button(std::string, SDL_Rect, SDL_Color,
-                            SDL_Color, SDL_Color, SDL_Color,
+        Input_Toggle_Button(std::string, SDL_Rect, SDL_Color *,
+                            SDL_Color *, SDL_Color *, SDL_Color *,
                             TTF_Font *,
                             std::string, std::string,
                             bool, Module *, int, Input_Text_Box *);

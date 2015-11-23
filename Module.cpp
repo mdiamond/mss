@@ -162,23 +162,14 @@ Module::~Module()
 
     // Cancel any inputs that this module is outputting to
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-    {
         for(unsigned int j = 0; j < MODULES[i]->dependencies.size(); j ++)
-        {
             if(MODULES[i]->dependencies[j] == this)
-            {
-                std::cout << MODULES[i]->name << std::endl;
                 MODULES[i]->cancel_input(j);
-            }
-        }
-    }
 
     // Erase this module from the list of modules
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-    {
         if(MODULES[i] == this)
             MODULES.erase(MODULES.begin() + i);
-    }
 
     // Delete all graphics objects
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
@@ -188,6 +179,7 @@ Module::~Module()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         MODULES[i]->number = i;
+
         switch(MODULES[i]->type)
         {
             case MIXER:
@@ -205,12 +197,43 @@ Module::~Module()
         }
     }
 
+    // Make sure that all inputs that were using this module as a source have
+    // their associated input text boxes reset, and their input toggle buttons
+    // turned off
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        int dependency_num = 0;
+        Input_Text_Box *input_text_box;
+        Input_Toggle_Button *input_toggle_button;
+
+        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+        {
+            if(MODULES[i]->graphics_objects[j]->type == INPUT_TOGGLE_BUTTON)
+            {
+                input_toggle_button = ((Input_Toggle_Button *) MODULES[i]->graphics_objects[j]);
+                if(input_toggle_button->b)
+                {
+                    input_text_box = input_toggle_button->input_text_box;
+                    if(input_text_box->text.text == get_short_name())
+                    {
+                        if(input_text_box->prompt_text.text == "input")
+                            input_text_box->update_current_text("");
+                        else
+                            input_text_box->update_current_text(std::to_string(MODULES[i]->input_floats[dependency_num]));
+                        input_toggle_button->b = false;
+                    }
+                }
+                dependency_num ++;
+            }
+        }
+    }
+
     // Make sure that the text boxes in all modules accurately represent their inputs,
     // then update the module name text object
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         int dependency_num = 0;
-        std::string dependency_name;
+        std::string dependency_short_name;
         Input_Text_Box *input_text_box;
         Text *text;
 
@@ -220,10 +243,8 @@ Module::~Module()
                && MODULES[i]->inputs_live[dependency_num])
             {
                 input_text_box = (Input_Text_Box *) MODULES[i]->graphics_objects[j];
-                dependency_name = MODULES[i]->dependencies[dependency_num]->name;
-                input_text_box->update_current_text(dependency_name.substr(0, 3)
-                                                    + " "
-                                                    + dependency_name.substr(dependency_name.find(" ") + 1));
+                dependency_short_name = MODULES[i]->dependencies[dependency_num]->get_short_name();
+                input_text_box->update_current_text(dependency_short_name);
                 dependency_num ++;
             }
             else if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
@@ -245,7 +266,7 @@ Module::~Module()
 }
 
 /*
- * This function calls upon the modules dependencies
+ * This function calls upon this module's dependencies
  * to process samples.
  */
 void Module::process_dependencies()
@@ -274,8 +295,8 @@ void Module::calculate_graphics_object_locations()
     graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH, upper_left.y + MODULE_BORDER_WIDTH,
                                         MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH), MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)});
     graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH + 2, upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0});
-    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 15 - MODULE_BORDER_WIDTH,
-                                         upper_left.y + MODULE_BORDER_WIDTH, 15, 15});
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 10 - MODULE_BORDER_WIDTH,
+                                         upper_left.y + MODULE_BORDER_WIDTH, 10, 15});
 
     calculate_unique_graphics_object_locations();
 }
@@ -284,8 +305,8 @@ void Module::calculate_graphics_object_locations()
  * Initialize a batch of input text box objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_text_box_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color> colors,
-                                               std::vector<SDL_Color> text_colors, std::vector<std::string> prompt_texts, std::vector<TTF_Font *> fonts,
+void Module::initialize_input_text_box_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color *> colors,
+                                               std::vector<SDL_Color *> text_colors, std::vector<std::string> prompt_texts, std::vector<TTF_Font *> fonts,
                                                std::vector<Module *> parents, std::vector<int> input_nums)
 {
     Input_Text_Box *input_text_box = NULL;
@@ -302,9 +323,9 @@ void Module::initialize_input_text_box_objects(std::vector<std::string> names, s
  * Initialize a batch of input toggle button objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_toggle_button_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color> colors,
-                                                    std::vector<SDL_Color> color_offs, std::vector<SDL_Color> text_color_ons,
-                                                    std::vector<SDL_Color> text_color_offs, std::vector<TTF_Font *> fonts,
+void Module::initialize_input_toggle_button_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color *> colors,
+                                                    std::vector<SDL_Color *> color_offs, std::vector<SDL_Color *> text_color_ons,
+                                                    std::vector<SDL_Color *> text_color_offs, std::vector<TTF_Font *> fonts,
                                                     std::vector<std::string> text_ons, std::vector<std::string> text_offs,
                                                     std::vector<bool> bs, std::vector<Module *> parents, std::vector<int> input_nums)
 {
@@ -338,21 +359,21 @@ void Module::initialize_graphics_objects()
     calculate_graphics_object_locations();
 
     // graphics_objects[0] is the outermost rectangle used to represent the module
-    rect = new Rect(name + " border (rect)", graphics_object_locations[MODULE_BORDER_RECT], WHITE, this);
+    rect = new Rect(name + " border (rect)", graphics_object_locations[MODULE_BORDER_RECT], &WHITE, this);
     graphics_objects.push_back(rect);
 
     // graphics_objects[1] is the slightly smaller rectangle within the outermost
     // rectangle
-    rect = new Rect(name + " inner_border (rect)", graphics_object_locations[MODULE_INNER_BORDER_RECT], color, this);
+    rect = new Rect(name + " background (rect)", graphics_object_locations[MODULE_BACKGROUND_RECT], &color, this);
     graphics_objects.push_back(rect);
 
     // graphics_objects[2] is the objects name
-    text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], text_color, name, FONT_BOLD);
+    text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], &text_color, name, FONT_BOLD);
     graphics_objects.push_back(text);
 
     // graphics_objects[3] is the remove module button
     button = new Button(name + " remove module (button)", graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
-                        color, text_color, "X", this);
+                        &color, &text_color, "X", this);
     graphics_objects.push_back(button);
 
     // Initialize all graphics objects specific to this module type
@@ -406,9 +427,6 @@ void Module::set(Module *src, int input_num)
     inputs_live[input_num] = true;
     SELECTING_SRC = false;
 
-    // Reset the transparencies for all graphics objects
-    reset_alphas();
-
     // If this is the output module, update the waveforms to display
     // the proper audio buffers
     if(type == OUTPUT)
@@ -452,4 +470,22 @@ void Module::cancel_input(int input_num)
 
     std::cout << name << " " << parameter_names[input_num]
          << " input cancelled" << std::endl;
+}
+
+/*
+ * Return this module's name.
+ */
+std::string Module::get_name()
+{
+    return name;
+}
+
+/*
+ * Return this module's short name.
+ * For example, if this module's name is "oscillator 1", its short
+ * name will be "osc 1". A short name is always 5 characters long.
+ */
+std::string Module::get_short_name()
+{
+    return name.substr(0, 3) + " " + name.substr(name.find(" ") + 1);
 }

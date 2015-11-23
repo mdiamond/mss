@@ -32,16 +32,16 @@
 /*
  * Constructor.
  */
-Toggle_Button::Toggle_Button(std::string _name, SDL_Rect _location, SDL_Color _color,
-                             SDL_Color _color_off, SDL_Color _text_color_on,
-                             SDL_Color _text_color_off, TTF_Font *_font, std::string _text_on,
+Toggle_Button::Toggle_Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
+                             SDL_Color *_color_off, SDL_Color *_text_color_on,
+                             SDL_Color *_text_color_off, TTF_Font *_font, std::string _text_on,
                              std::string _text_off, bool _b, Module *_parent) :
     Graphics_Object(_name, TOGGLE_BUTTON, _parent, _location, _color),
     b(_b), color_off(_color_off),
-    text_on(Text("text on (text)", location, _text_color_on, _text_on, _font)),
-    text_off(Text("text off (text)", location, _text_color_off, _text_off, _font)),
-    background(Rect("background rect (rect)", location, color, NULL)),
-    background_off(Rect("background off rect (rect)", location, color_off, NULL))
+    text_on(Text(name + " text on (text)", location, _text_color_on, _text_on, _font)),
+    text_off(Text(name + " text off (text)", location, _text_color_off, _text_off, _font)),
+    background(Rect(name + " background rect (rect)", location, color, NULL)),
+    background_off(Rect(name + " background off rect (rect)", location, color_off, NULL))
 {
 
 }

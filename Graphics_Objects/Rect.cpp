@@ -30,7 +30,7 @@
 /*
  * Constructor.
  */
-Rect::Rect(std::string _name, SDL_Rect _location, SDL_Color _color, Module *_parent) :
+Rect::Rect(std::string _name, SDL_Rect _location, SDL_Color *_color, Module *_parent) :
     Graphics_Object(_name, RECT, _parent, _location, _color)
 {
     fill = true;
@@ -50,7 +50,12 @@ Rect::~Rect()
  */
 void Rect::render()
 {
-    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
+    if(!SELECTING_SRC || name == "background (rect)" 
+       || (SELECTING_SRC && parent != NULL
+       && parent->graphics_objects[0]->was_clicked()))
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
+    else
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);
     if(fill)
         SDL_RenderFillRect(RENDERER, &location);
     else

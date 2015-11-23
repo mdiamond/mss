@@ -29,19 +29,19 @@
 /*
  * Constructor.
  */
-Text::Text(std::string _name, SDL_Rect _location, SDL_Color _color,
+Text::Text(std::string _name, SDL_Rect _location, SDL_Color *_color,
            std::string _text, TTF_Font *_font) :
     Graphics_Object(_name, TEXT, NULL, _location, _color),
     font(_font), text(_text)
 {
     // Render the text for the first time
-    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), *color);
     texture = SDL_CreateTextureFromSurface(RENDERER, surface);
     int width, height;
     SDL_QueryTexture(texture, NULL, NULL, &width, &height);
     location.w = width;
     location.h = height;
-    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
+    SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
     updated = false;
 }
@@ -62,7 +62,7 @@ void Text::render()
 {
     if(updated)
     {
-        SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
+        SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), *color);
         SDL_DestroyTexture(texture);
         texture = SDL_CreateTextureFromSurface(RENDERER, surface);
         int width, height;
@@ -72,7 +72,11 @@ void Text::render()
         updated = false;
     }
 
-    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
+    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
+    else
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);
+
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
 }
 

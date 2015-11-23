@@ -25,12 +25,12 @@ class Waveform: public Graphics_Object
         // the pointer to the buffer to be rendered,
         // and an internal buffer to store the buffer
         // in the main thread
-        SDL_Color background_color;
+        SDL_Color *background_color;
         float range_low, range_high;
         std::vector<float> *buffer, render_buffer;
 
         // Constructor and destructor
-        Waveform(std::string, SDL_Rect, SDL_Color, SDL_Color,
+        Waveform(std::string, SDL_Rect, SDL_Color *, SDL_Color *,
                  float, float, std::vector<float> *);
         virtual ~Waveform();
 

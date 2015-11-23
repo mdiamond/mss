@@ -32,16 +32,16 @@
 /*
  * Constructor.
  */
-Text_Box::Text_Box(std::string _name, SDL_Rect _location, SDL_Color _color,
-                   SDL_Color _text_color, std::string _prompt_text,
+Text_Box::Text_Box(std::string _name, SDL_Rect _location, SDL_Color *_color,
+                   SDL_Color *_text_color, std::string _prompt_text,
                    TTF_Font *_font, Module *_parent) :
     Graphics_Object(_name, TEXT_BOX, _parent, _location, _color),
     text_color(_text_color),
     active(false), font(_font),
-    background(Rect("background rect (rect)", location, color, NULL)),
-    text(Text("idle text (text)", _location, text_color, "", _font)),
-    prompt_text(Text("prompt text (text)", _location, text_color, _prompt_text, _font)),
-    typing_text(Text("typing text (text)", _location, text_color, "", _font))
+    background(Rect(name + " background rect (rect)", location, color, NULL)),
+    text(Text(name + " idle text (text)", _location, text_color, "", _font)),
+    prompt_text(Text(name + " prompt text (text)", _location, text_color, _prompt_text, _font)),
+    typing_text(Text(name + " typing text (text)", _location, text_color, "", _font))
 {
     SDL_Rect text_location = location;
     text_location.x += 1;
@@ -96,7 +96,10 @@ void Text_Box::render()
     // draw the typing cursor
     if(active && CURSOR_ON)
     {
-        SDL_SetRenderDrawColor(RENDERER, BLACK.r, BLACK.g, BLACK.b, BLACK.a);
+    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
+            SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g, text_color->b, text_color->a);
+        else
+            SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g, text_color->b, text_color->a / 2);
         SDL_RenderDrawLine(RENDERER, typing_text.location.x + typing_text.location.w,
                            typing_text.location.y + 2,
                            typing_text.location.x + typing_text.location.w,

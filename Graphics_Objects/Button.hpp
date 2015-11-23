@@ -16,6 +16,7 @@
 #include "SDL2/SDL.h"
 
 // Included classes
+#include "Rect.hpp"
 #include "Text.hpp"
 
 /***************************
@@ -26,11 +27,12 @@ class Button: public Graphics_Object
 {
     public:
         std::string text_str;
+        Rect background;
         Text text;
 
         // Constructor and destructor
-        Button(std::string, SDL_Rect, SDL_Color,
-               SDL_Color, std::string, Module *);
+        Button(std::string, SDL_Rect, SDL_Color *,
+               SDL_Color *, std::string, Module *);
         virtual ~Button();
 
         // Virtual member functions

@@ -192,7 +192,7 @@ void Mixer::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -204,7 +204,7 @@ void Mixer::initialize_unique_graphics_objects()
 
     names = {name + " mixer signal 1 (text)"};
     locations = {graphics_object_locations[MIXER_SIGNALS_TEXT]};
-    colors = std::vector<SDL_Color>(1, text_color);
+    colors = std::vector<SDL_Color *>(1, &text_color);
     texts = {"SIGNAL & MULTIPLIER:"};
     fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
 
@@ -213,8 +213,8 @@ void Mixer::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MIXER_OUTPUT_WAVEFORM]};
-    colors = {color};
-    background_colors = {text_color};
+    colors = {&color};
+    background_colors = {&text_color};
     range_lows = {-1};
     range_highs = {1};
     buffers = {&output};
@@ -254,8 +254,8 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color>(16, text_color);
-    text_colors = std::vector<SDL_Color>(16, color);
+    colors = std::vector<SDL_Color *>(16, &text_color);
+    text_colors = std::vector<SDL_Color *>(16, &color);
     prompt_texts = {"input", "# or input",
                     "input", "# or input",
                     "input", "# or input",
@@ -309,10 +309,10 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON]};
-    colors = std::vector<SDL_Color>(16, RED);
-    color_offs = std::vector<SDL_Color>(16, text_color);
-    text_color_ons = std::vector<SDL_Color>(16, WHITE);
-    text_color_offs = std::vector<SDL_Color>(16, color);
+    colors = std::vector<SDL_Color *>(16, &RED);
+    color_offs = std::vector<SDL_Color *>(16, &text_color);
+    text_color_ons = std::vector<SDL_Color *>(16, &WHITE);
+    text_color_offs = std::vector<SDL_Color *>(16, &color);
     fonts = std::vector<TTF_Font *>(16, FONT_SMALL);
     texts = std::vector<std::string>(16, "I");
     text_offs = texts;

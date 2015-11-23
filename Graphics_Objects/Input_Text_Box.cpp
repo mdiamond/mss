@@ -31,8 +31,8 @@
 /*
  * Constructor.
  */
-Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color _color,
-                               SDL_Color _text_color, std::string _prompt_text, TTF_Font *_font,
+Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color *_color,
+                               SDL_Color *_text_color, std::string _prompt_text, TTF_Font *_font,
                                Module *_parent, int _input_num) :
     Text_Box(_name, _location, _color, _text_color, _prompt_text, _font, _parent),
     input_num(_input_num)

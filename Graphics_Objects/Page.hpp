@@ -26,7 +26,7 @@ class Page: public Graphics_Object
         std::vector<Page *> sub_pages;
 
         // Constructor and destructor
-        Page(std::string, SDL_Rect, SDL_Color,
+        Page(std::string, SDL_Rect, SDL_Color *,
              std::vector<Graphics_Object *> *,
              std::vector<Page *> *);
         virtual ~Page();

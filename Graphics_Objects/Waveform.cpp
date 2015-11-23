@@ -31,7 +31,7 @@
  * Constructor.
  */
 Waveform::Waveform(std::string _name, SDL_Rect _location,
-                   SDL_Color _color, SDL_Color _background_color, float _range_low,
+                   SDL_Color *_color, SDL_Color *_background_color, float _range_low,
                    float _range_high, std::vector<float> *_buffer) :
     Graphics_Object(_name, WAVEFORM, NULL, _location, _color), 
     background_color(_background_color), range_low(_range_low),
@@ -117,11 +117,16 @@ void Waveform::render()
         points3[i].y -= 1;
     }
 
-    SDL_SetRenderDrawColor(RENDERER, background_color.r, background_color.g,
-                           background_color.b, background_color.a);
+    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
+        SDL_SetRenderDrawColor(RENDERER, background_color->r, background_color->g, background_color->b, background_color->a);
+    else
+        SDL_SetRenderDrawColor(RENDERER, background_color->r, background_color->g, background_color->b, background_color->a / 2);
     SDL_RenderFillRect(RENDERER, &location);
 
-    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
+    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
+    else
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
     SDL_RenderDrawLines(RENDERER, &points2[0], points.size());
     SDL_RenderDrawLines(RENDERER, &points3[0], points.size());

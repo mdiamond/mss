@@ -31,10 +31,11 @@
 /*
  * Constructor.
  */
-Button::Button(std::string _name, SDL_Rect _location, SDL_Color _color,
-               SDL_Color _text_color, std::string _text, Module *_parent) :
+Button::Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
+               SDL_Color *_text_color, std::string _text, Module *_parent) :
     Graphics_Object(_name, BUTTON, _parent, _location, _color),
     text_str(_text),
+    background(Rect(name + " background rect (rect)", location, color, NULL)),
     text(Text("button text (text)", _location, _text_color, text_str, FONT_REGULAR))
 {
     // Make the text start 1 pixel away from the edge of the containing box
@@ -54,8 +55,7 @@ Button::~Button()
  */
 void Button::render()
 {
-    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
-    SDL_RenderFillRect(RENDERER, &location);
+    background.render();
     text.render();
 }
 
@@ -78,6 +78,7 @@ void Button::clicked()
 void Button::update_location(SDL_Rect _location)
 {
     location = _location;
+    background.update_location(_location);
     text.update_location(_location);
     text.updated = true;
 }

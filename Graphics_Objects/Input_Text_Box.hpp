@@ -29,7 +29,7 @@ class Input_Text_Box: public Text_Box
         int input_num;
 
         // Constructor and destructor
-        Input_Text_Box(std::string, SDL_Rect, SDL_Color, SDL_Color,
+        Input_Text_Box(std::string, SDL_Rect, SDL_Color *, SDL_Color *,
                        std::string, TTF_Font *, Module *, int);
         virtual ~Input_Text_Box();
 

@@ -28,7 +28,7 @@ class Text_Box: public Graphics_Object
         // The text color, whether or not this text box
         // is active, the font, the background rectangle,
         // the text, the prompt text, and the typing text
-        SDL_Color text_color;
+        SDL_Color *text_color;
         bool active;
         TTF_Font *font;
         Rect background;
@@ -37,7 +37,7 @@ class Text_Box: public Graphics_Object
         Text typing_text;
 
         // Constructor and destructor
-        Text_Box(std::string, SDL_Rect, SDL_Color, SDL_Color,
+        Text_Box(std::string, SDL_Rect, SDL_Color *, SDL_Color *,
                  std::string, TTF_Font *, Module *);
         virtual ~Text_Box();
 

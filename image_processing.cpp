@@ -159,31 +159,6 @@ Module *hovering_over()
 }
 
 /*
- * Make all modules slightly transparent unless currently being
- * hovered over.
- */
-void select_input_mode()
-{
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-        if(!MODULES[i]->graphics_objects[0]->was_clicked())
-            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-                MODULES[i]->graphics_objects[j]->color.a = 50;
-        else
-            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-                MODULES[i]->graphics_objects[j]->color.a = 255;
-}
-
-/*
- * Reset all modules to a non-transparent state
- */
-void reset_alphas()
-{
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-            MODULES[i]->graphics_objects[j]->color.a = 255;
-}
-
-/*
  * Create the very first sub page on every page, the utilities sub page.
  * This sub page contains the buttons for adding new modules, switching
  * pages, and saving or loading the current patch.
@@ -194,13 +169,13 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
 
     std::vector<std::string> names, texts;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, text_colors;
+    std::vector<SDL_Color *> colors, text_colors;
     std::vector<Module *> parents;
 
     names = std::vector<std::string>();
     locations = std::vector<SDL_Rect>();
-    colors = std::vector<SDL_Color>();
-    text_colors = std::vector<SDL_Color>();
+    colors = std::vector<SDL_Color *>();
+    text_colors = std::vector<SDL_Color *>();
     texts = std::vector<std::string>();
     parents = std::vector<Module *>();
 
@@ -208,7 +183,7 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
 
     // Create the background and add it to the list of graphics
     // objects
-    Rect *background = new Rect("background (rect)", WINDOW_RECT, BLACK, NULL);
+    Rect *background = new Rect("background (rect)", WINDOW_RECT, &BLACK, NULL);
     sub_page_graphics_objects->push_back(background);
 
     names = {"add oscillator (button)", "add multiplier (button)",
@@ -216,8 +191,8 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
     locations = {{2, WINDOW_HEIGHT - 17, 101, 15}, {105, WINDOW_HEIGHT - 17, 101, 15},
                  {208, WINDOW_HEIGHT - 17, 66, 15}, {WINDOW_WIDTH - 159, WINDOW_HEIGHT - 17, 92, 15},
                  {WINDOW_WIDTH - 159 + 94, WINDOW_HEIGHT - 17, 92, 15}};
-    colors = std::vector<SDL_Color>(5, MODULES[0]->color);
-    text_colors = std::vector<SDL_Color>(5, MODULES[0]->text_color);
+    colors = std::vector<SDL_Color *>(5, &MODULES[0]->color);
+    text_colors = std::vector<SDL_Color *>(5, &MODULES[0]->text_color);
     texts = {"ADD OSCILLATOR", "ADD MULTIPLIER", "ADD MIXER", "PREVIOUS PAGE", "NEXT PAGE"};
     parents = std::vector<Module *>(5, NULL);
 
@@ -227,7 +202,7 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
 
     // Create the sub page and add it to the list of sub pages
     // for the current page
-    current_sub_page = new Page("utilities & background (page)", WINDOW_RECT, BLACK,
+    current_sub_page = new Page("utilities & background (page)", WINDOW_RECT, &BLACK,
                                       sub_page_graphics_objects, NULL);
     sub_pages->push_back(current_sub_page);
 }
@@ -272,7 +247,7 @@ void calculate_pages()
         // Create the sub page using the created vector of graphics objects,
         // add it to the list of sub pages
         current_sub_page = new Page(MODULES[i]->name + " (page)",
-                                    MODULES[i]->graphics_objects[1]->location, BLACK,
+                                    MODULES[i]->graphics_objects[1]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(current_sub_page);
 
@@ -289,7 +264,7 @@ void calculate_pages()
             // Create the page using the created vector of sub pages, add it
             // to the global list of pages
             current_page = new Page(std::to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
-                                    WINDOW_RECT, BLACK,
+                                    WINDOW_RECT, &BLACK,
                                     NULL, sub_pages);
             PAGES.push_back(current_page);
 
@@ -335,10 +310,6 @@ void draw_surface()
             if(MODULES[i]->graphics_objects[j]->type == WAVEFORM)
                 ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
     SDL_UnlockAudio();
-
-    // If currently selecting an input, change the graphics appropriately
-    if(SELECTING_SRC)
-        select_input_mode();
 
     // Render graphics objects for the current page
     PAGES[CURRENT_PAGE]->render();

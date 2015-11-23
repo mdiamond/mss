@@ -49,7 +49,7 @@ enum Modules
 enum Module_Graphics_Objects
 {
     MODULE_BORDER_RECT = 0,
-    MODULE_INNER_BORDER_RECT,
+    MODULE_BACKGROUND_RECT,
     MODULE_NAME_TEXT,
     MODULE_REMOVE_MODULE_BUTTON
 };
@@ -109,15 +109,15 @@ class Module
         //   Calculate the locations of all graphics objects in this module
         void calculate_graphics_object_locations();
         //   Initialize input text box graphics objects
-        void initialize_input_text_box_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
-                                               std::vector<SDL_Color>,std::vector<std::string>, std::vector<TTF_Font *>,
+        void initialize_input_text_box_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color *>,
+                                               std::vector<SDL_Color *>,std::vector<std::string>, std::vector<TTF_Font *>,
                                                std::vector<Module *>, std::vector<int>);
         //   Initialize input toggle button graphics objects
         //   (must always be used immediately after, and with the same size arrays for input
         //    as initialize_input_text_box_objects() because each input toggle button depends
         //    on and must be able to reference a particular input text object)
-        void initialize_input_toggle_button_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color>,
-                                                    std::vector<SDL_Color>, std::vector<SDL_Color>, std::vector<SDL_Color>,
+        void initialize_input_toggle_button_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color *>,
+                                                    std::vector<SDL_Color *>, std::vector<SDL_Color *>, std::vector<SDL_Color *>,
                                                     std::vector<TTF_Font *>,
                                                     std::vector<std::string>, std::vector<std::string>,
                                                     std::vector<bool>, std::vector<Module *>, std::vector<int>);
@@ -131,6 +131,10 @@ class Module
         void set(Module *, int);
         //   Cancel input for a certain parameter
         void cancel_input(int);
+        //   Return module name
+        std::string get_name();
+        //   Return module short name
+        std::string get_short_name();
 };
 
 #endif

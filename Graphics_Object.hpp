@@ -54,11 +54,11 @@ class Graphics_Object
         int type;
         Module *parent;
         SDL_Rect location;
-        SDL_Color color;
+        SDL_Color *color;
         bool updated;
         // Constructor and destructor
         Graphics_Object(std::string, int type, Module *,
-                        SDL_Rect, SDL_Color);
+                        SDL_Rect, SDL_Color *);
         virtual ~Graphics_Object();
 
         // Virtual member functions
@@ -72,6 +72,7 @@ class Graphics_Object
         bool was_clicked();
         //   Update this module's location
         void update_location(SDL_Rect);
+        //   Update this module's alpha value
 };
 
 #endif

@@ -25,7 +25,7 @@ class Rect: public Graphics_Object
         bool fill;
 
         // Constructor and destructor
-        Rect(std::string, SDL_Rect, SDL_Color, Module *);
+        Rect(std::string, SDL_Rect, SDL_Color *, Module *);
         virtual ~Rect();
 
         // Virtual member functions

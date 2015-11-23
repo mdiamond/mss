@@ -139,7 +139,7 @@ void Multiplier::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -152,7 +152,7 @@ void Multiplier::initialize_unique_graphics_objects()
     names = {name + " signal & cv input (text)", name + " cv amount (text)"};
     locations = {graphics_object_locations[MULTIPLIER_INPUT_TEXT],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_TEXT]};
-    colors = std::vector<SDL_Color>(2, text_color);
+    colors = std::vector<SDL_Color *>(2, &text_color);
     texts = {"SIGNAL & CV INPUT:", "CV AMOUNT:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
@@ -161,8 +161,8 @@ void Multiplier::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MULTIPLIER_OUTPUT_WAVEFORM]};
-    colors = {color};
-    background_colors = {text_color};
+    colors = {&color};
+    background_colors = {&text_color};
     range_lows = {-1};
     range_highs = {1};
     buffers = {&output};
@@ -175,8 +175,8 @@ void Multiplier::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX],
                  graphics_object_locations[MULTIPLIER_CV_INPUT_TEXT_BOX],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color>(3, text_color);
-    text_colors = std::vector<SDL_Color>(3, color);
+    colors = std::vector<SDL_Color *>(3, &text_color);
+    text_colors = std::vector<SDL_Color *>(3, &color);
     prompt_texts = {"input", "input", "# or input"};
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     parents = std::vector<Module *>(3, this);
@@ -189,10 +189,10 @@ void Multiplier::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MULTIPLIER_CV_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};
-    colors = std::vector<SDL_Color>(3, RED);
-    color_offs = std::vector<SDL_Color>(3, text_color);
-    text_color_ons = std::vector<SDL_Color>(3, WHITE);
-    text_color_offs = std::vector<SDL_Color>(3, color);
+    colors = std::vector<SDL_Color *>(3, &RED);
+    color_offs = std::vector<SDL_Color *>(3, &text_color);
+    text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
+    text_color_offs = std::vector<SDL_Color *>(3, &color);
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     texts = std::vector<std::string>(3, "I");
     text_offs = texts;
