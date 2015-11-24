@@ -295,8 +295,8 @@ void Module::calculate_graphics_object_locations()
     graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH, upper_left.y + MODULE_BORDER_WIDTH,
                                         MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH), MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)});
     graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH + 2, upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0});
-    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 10 - MODULE_BORDER_WIDTH,
-                                         upper_left.y + MODULE_BORDER_WIDTH, 10, 15});
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 9 - MODULE_BORDER_WIDTH,
+                                         upper_left.y + MODULE_BORDER_WIDTH, 9, 15});
 
     calculate_unique_graphics_object_locations();
 }
@@ -373,7 +373,7 @@ void Module::initialize_graphics_objects()
 
     // graphics_objects[3] is the remove module button
     button = new Button(name + " remove module (button)", graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
-                        &color, &text_color, "X", this);
+                        &text_color, &color, "X", this);
     graphics_objects.push_back(button);
 
     // Initialize all graphics objects specific to this module type

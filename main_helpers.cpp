@@ -95,7 +95,6 @@ bool initialize()
 {
     system("clear");
 
-    std::cout << "Initializing SDL." << std::endl;
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) { 
         std::cout << "Could not initialize SDL: " << SDL_GetError() << std::endl;

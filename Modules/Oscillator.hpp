@@ -25,6 +25,7 @@
 enum Oscillator_Graphics_Objects
 {
     OSCILLATOR_FREQUENCY_TEXT = 4,
+    OSCILLATOR_RESET_CURRENT_PHASE_BUTTON,
     OSCILLATOR_PHASE_OFFSET_TEXT,
     OSCILLATOR_PULSE_WIDTH_TEXT,
     OSCILLATOR_RANGE_TEXT,
@@ -92,6 +93,8 @@ class Oscillator: public Module
         float produce_sqr_sample(float);
         //   Switch to outputting the given waveform type
         void switch_waveform(int);
+        //   Reset phase
+        void reset_current_phase();
 };
 
 #endif

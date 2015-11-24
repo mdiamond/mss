@@ -272,6 +272,9 @@ void function_forwarder(Graphics_Object *g)
     // If the above situations were not the case, then check if we are dealing with a
     // graphics object from the utilities page (no parent), and then forward the graphics object
     // along to a particular function
+    else if(g->name.size() > 28
+            && g->name.substr(g->name.size() - 28) == "reset current phase (button)")
+        ((Oscillator *) g->parent)->reset_current_phase();
     else if(g->parent == NULL)
         no_parent_function_forwarder(g);
     // If the above situations were not the case, then check if we are dealing with a

@@ -27,6 +27,7 @@
 // Included classes
 #include "../Module.hpp"
 #include "Oscillator.hpp"
+#include "../Graphics_Objects/Button.hpp"
 #include "../Graphics_Objects/Input_Text_Box.hpp"
 #include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Text.hpp"
@@ -229,6 +230,8 @@ void Oscillator::calculate_unique_graphics_object_locations()
     x_range_low_input_toggle_button = x_text_box + w_range + 1;
     w_wave_selector = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) / 4) - 2;
 
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - MODULE_BORDER_WIDTH - 19,
+                                         upper_left.y + MODULE_BORDER_WIDTH, 9, 15});
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
@@ -267,6 +270,12 @@ void Oscillator::initialize_unique_graphics_objects()
     std::vector<bool> bs;
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
+
+    Button *button;
+    button = new Button(name + " reset current phase (button)",
+                    graphics_object_locations[OSCILLATOR_RESET_CURRENT_PHASE_BUTTON],
+                    &text_color, &color, "0", this);
+    graphics_objects.push_back(button);
 
     names = {name + " frequency (text)", name + " phase offset (text)",
              name + " pulse width (text)", name + " range low/high (text)"};
@@ -399,4 +408,14 @@ void Oscillator::switch_waveform(int _waveform_type)
         ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b = true;
         std::cout << name << " is now outputting a square wave" << std::endl;
     }
+}
+
+/*
+ * Reset this oscillator's phase
+ */
+void Oscillator::reset_current_phase()
+{
+    current_phase = 0;
+
+    std::cout << name << " current phase reset" << std::endl;
 }
