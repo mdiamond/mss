@@ -35,7 +35,8 @@ Waveform::Waveform(std::string _name, SDL_Rect _location,
                    float _range_high, std::vector<float> *_buffer) :
     Graphics_Object(_name, WAVEFORM, NULL, _location, _color), 
     background_color(_background_color), range_low(_range_low),
-    range_high(_range_high), buffer(_buffer)
+    range_high(_range_high), buffer(_buffer),
+    background(Rect(name + " background rect (rect)", location, background_color, NULL))
 {
     render_buffer = std::vector<float>(location.w, 0);
 }
@@ -117,11 +118,7 @@ void Waveform::render()
         points3[i].y -= 1;
     }
 
-    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
-        SDL_SetRenderDrawColor(RENDERER, background_color->r, background_color->g, background_color->b, background_color->a);
-    else
-        SDL_SetRenderDrawColor(RENDERER, background_color->r, background_color->g, background_color->b, background_color->a / 2);
-    SDL_RenderFillRect(RENDERER, &location);
+    background.render();
 
     if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
         SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
@@ -138,4 +135,10 @@ void Waveform::render()
 void Waveform::clicked()
 {
 
+}
+
+void Waveform::update_location(SDL_Rect _location)
+{
+    location = _location;
+    background.update_location(_location);
 }

@@ -28,6 +28,7 @@ class Waveform: public Graphics_Object
         SDL_Color *background_color;
         float range_low, range_high;
         std::vector<float> *buffer, render_buffer;
+        Rect background;
 
         // Constructor and destructor
         Waveform(std::string, SDL_Rect, SDL_Color *, SDL_Color *,
@@ -43,6 +44,8 @@ class Waveform: public Graphics_Object
         float calculate_y(int);
         //   Copy the buffer to be rendered into internal memory
         void copy_buffer();
+        //   Override the default graphics object update_location() function
+        void update_location(SDL_Rect);
 };
 
 #endif
