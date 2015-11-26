@@ -26,7 +26,6 @@ int load_fonts();
 
 // Image processing functions
 Module *hovering_over();
-void reset_alphas();
 void draw_surface();
 
 #endif

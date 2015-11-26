@@ -25,7 +25,9 @@
 // Included files
 #include "function_forwarder.hpp"
 #include "image_processing.hpp"
+#include "load_patch.hpp"
 #include "main.hpp"
+#include "save_patch.hpp"
 
 // Included classes
 #include "Graphics_Object.hpp"
@@ -165,7 +167,8 @@ void no_parent_function_forwarder(Graphics_Object *g)
 
     possible_names = {"add oscillator (button)", "add multiplier (button)",
                       "add mixer (button)", "previous page (button)",
-                      "next page (button)"};
+                      "next page (button)", "save patch (text box)",
+                      "load patch (text box)"};
 
     if(g->name == possible_names[0])
         add_oscillator();
@@ -177,6 +180,10 @@ void no_parent_function_forwarder(Graphics_Object *g)
         next_page();
     else if(g->name == possible_names[4])
         previous_page();
+    else if(g->name == possible_names[5])
+        save_patch(((Text_Box *) g)->text.text);
+    else if(g->name == possible_names[6])
+        load_patch(((Text_Box *) g)->text.text);
 }
 
 /*
@@ -188,7 +195,6 @@ void add_oscillator()
     oscillator->initialize_graphics_objects();
     MODULES.push_back(oscillator);
     MODULES_CHANGED = true;
-    std::cout << "Added module " << oscillator->name << std::endl;
 }
 
 /*
@@ -200,7 +206,6 @@ void add_multiplier()
     multiplier->initialize_graphics_objects();
     MODULES.push_back(multiplier);
     MODULES_CHANGED = true;
-    std::cout << "Added module " << multiplier->name << std::endl;
 }
 
 /*
@@ -212,7 +217,6 @@ void add_mixer()
     mixer->initialize_graphics_objects();
     MODULES.push_back(mixer);
     MODULES_CHANGED = true;
-    std::cout << "Added module " << mixer->name << std::endl;
 }
 
 /*

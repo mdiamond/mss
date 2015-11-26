@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <fstream>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -30,12 +31,21 @@
  * SAVE PATCH *
  **************/
 
-void save_patch()
+void save_patch(std::string filename)
 {
-    std::string patch;
+    std::ofstream outfile;
 
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-        patch += MODULES[i]->get_text_representation();
+    outfile.open(filename);
 
-    std::cout << patch << std::endl;
+    if(outfile.is_open())
+    {
+        for(unsigned int i = 1; i < MODULES.size(); i ++)
+            outfile << MODULES[i]->get_text_representation();
+
+        outfile.close();
+
+        std::cout << "Patch " << filename << " saved" << std::endl;
+    }
+    else
+        std::cout << RED_STDOUT << "Patch could not be saved!" << DEFAULT_STDOUT << std::endl;
 }

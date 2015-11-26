@@ -150,6 +150,8 @@ Module::Module(int _type) :
             // text_color.b = 199;
             break;
     }
+
+    std::cout << "Module \"" << name << "\" created" << std::endl;
 }
 
 /*
@@ -259,7 +261,7 @@ Module::~Module()
     // Mark modules changed so that they will be re-rendered
     MODULES_CHANGED = true;
 
-    std::cout << name << " removed" << std::endl;
+    std::cout << "Module \"" << name << "\" removed" << std::endl;
 
     // Unlock audio
     SDL_UnlockAudio();
@@ -498,7 +500,7 @@ std::string Module::get_text_representation()
 {
     std::string result;
 
-    result += std::to_string(type) + "\n";
+    result += std::to_string(type) + " (" + name + ")" + "\n";
     for(unsigned int i = 0; i < input_floats.size(); i ++)
         result += std::to_string(input_floats[i]) + "\n";
     for(unsigned int i = 0; i < dependencies.size(); i ++)

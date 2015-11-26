@@ -408,6 +408,8 @@ void Oscillator::switch_waveform(int _waveform_type)
         ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b = true;
         std::cout << name << " is now outputting a square wave" << std::endl;
     }
+
+    waveform_type = _waveform_type;
 }
 
 /*
@@ -422,5 +424,6 @@ void Oscillator::reset_current_phase()
 
 std::string Oscillator::get_unique_text_representation()
 {
-    return std::to_string(current_phase) + "\n";
+    return std::to_string(current_phase) + "\n"
+           + std::to_string(waveform_type) + "\n";
 }

@@ -17,6 +17,6 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
-void load_patch();
+void load_patch(std::string);
 
 #endif

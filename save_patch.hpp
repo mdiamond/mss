@@ -17,6 +17,6 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
-void save_patch();
+void save_patch(std::string);
 
 #endif

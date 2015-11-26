@@ -195,8 +195,6 @@ void Text_Box::entered()
         SDL_StopTextInput();
         text.text = typing_text.text;
         function_forwarder(this);
-        if(!can_floatify(&text.text))
-            text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
         text.updated = true;
         ACTIVE_TEXT_BOX = NULL;
         active = false;
