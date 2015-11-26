@@ -100,6 +100,7 @@ class Mixer: public Module
         virtual void update_control_values();
         virtual void calculate_unique_graphics_object_locations();
         virtual void initialize_unique_graphics_objects();
+        virtual std::string unique_text_representation();
 };
 
 #endif

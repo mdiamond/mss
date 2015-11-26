@@ -489,3 +489,27 @@ std::string Module::get_short_name()
 {
     return name.substr(0, 3) + " " + name.substr(name.find(" ") + 1);
 }
+
+/*
+ * Return a text representation of this module. It should
+ * contain any information necessary to reconstruct the module.
+ */
+std::string Module::text_representation()
+{
+    std::string result;
+
+    result += std::to_string(type) + "\n";
+    for(unsigned int i = 0; i < input_floats.size(); i ++)
+        result += std::to_string(input_floats[i]) + "\n";
+    for(unsigned int i = 0; i < dependencies.size(); i ++)
+        if(dependencies[i] == NULL)
+            result += "NULL\n";
+        else
+            result += dependencies[i]->name + "\n";
+
+    result += this->unique_text_representation();
+
+    result += "DONE\n";
+
+    return result;
+}

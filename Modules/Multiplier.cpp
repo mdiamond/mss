@@ -205,3 +205,8 @@ void Multiplier::initialize_unique_graphics_objects()
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }
+
+std::string Multiplier::unique_text_representation()
+{
+    return "";
+}

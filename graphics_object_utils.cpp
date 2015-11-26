@@ -71,6 +71,28 @@ std::vector<Graphics_Object *> initialize_text_objects(std::vector<std::string> 
 }
 
 /*
+ * Initialize a batch of text box objects given arrays of contructor inputs.
+ * Return a vector of the contructed graphics objects.
+ */
+std::vector<Graphics_Object *> initialize_text_box_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations,
+                                                           std::vector<SDL_Color *> colors,std::vector<SDL_Color *> text_colors,
+                                                           std::vector<std::string> prompt_texts, std::vector<TTF_Font *> fonts,
+                                                           std::vector<Module *> parents)
+{
+    std::vector<Graphics_Object *> graphics_objects = std::vector<Graphics_Object *>();
+    Text_Box *text_box = NULL;
+
+    for(unsigned int i = 0; i < names.size(); i ++)
+    {
+        text_box = new Text_Box(names[i], locations[i], colors[i], text_colors[i],
+                                            prompt_texts[i], fonts[i], parents[i]);
+        graphics_objects.push_back(text_box);
+    }
+
+    return graphics_objects;
+}
+
+/*
  * Initialize a batch of toggle button objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */

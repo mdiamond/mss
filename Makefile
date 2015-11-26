@@ -4,12 +4,23 @@ LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJCOMMAND = $(CC) $(CFLAGS) -o $@ -c
 EXECOMMAND = $(CC) -o $@ $^ $(LDFLAGS) $(CFLAGS)
 MAINFILEOBJ = obj/main.o obj/main_helpers.o
-MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o obj/graphics_object_utils.o obj/image_processing.o obj/populate_wavetables.o obj/signal_processing.o obj/tests.o
+MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o \
+			  obj/graphics_object_utils.o obj/image_processing.o \
+			  obj/load_patch.o obj/populate_wavetables.o \
+			  obj/save_patch.o obj/signal_processing.o \
+			  obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
-MODULECLASSOBJ = obj/Mixer.o obj/Oscillator.o obj/Output.o obj/Multiplier.o
-GRAPHICCLASSOBJ = obj/Button.o obj/Input_Text_Box.o obj/Input_Toggle_Button.o obj/Page.o obj/Rect.o obj/Text.o obj/Text_Box.o obj/Toggle_Button.o obj/Waveform.o
-OBJECTS = $(MAINFILEOBJ) $(MISCFILEOBJ) $(MISCCLASSOBJ) $(BASECLASSOBJ) $(MODULECLASSOBJ) $(GRAPHICCLASSOBJ)
+MODULECLASSOBJ = obj/Mixer.o obj/Oscillator.o \
+				 obj/Output.o obj/Multiplier.o
+GRAPHICCLASSOBJ = obj/Button.o obj/Input_Text_Box.o \
+				  obj/Input_Toggle_Button.o obj/Page.o \
+				  obj/Rect.o obj/Text.o \
+				  obj/Text_Box.o obj/Toggle_Button.o \
+				  obj/Waveform.o
+OBJECTS = $(MAINFILEOBJ) $(MISCFILEOBJ) \
+		  $(MISCCLASSOBJ) $(BASECLASSOBJ) \
+		  $(MODULECLASSOBJ) $(GRAPHICCLASSOBJ)
 
 all : synth
 
@@ -31,8 +42,12 @@ obj/graphics_object_utils.o : graphics_object_utils.cpp graphics_object_utils.hp
 	$(OBJCOMMAND) graphics_object_utils.cpp
 obj/image_processing.o : image_processing.cpp image_processing.hpp
 	$(OBJCOMMAND) image_processing.cpp
+obj/load_patch.o : load_patch.cpp load_patch.hpp
+	$(OBJCOMMAND) load_patch.cpp
 obj/populate_wavetables.o : populate_wavetables.cpp populate_wavetables.hpp
 	$(OBJCOMMAND) populate_wavetables.cpp
+obj/save_patch.o : save_patch.cpp save_patch.hpp
+	$(OBJCOMMAND) save_patch.cpp
 obj/signal_processing.o : signal_processing.cpp signal_processing.hpp
 	$(OBJCOMMAND) signal_processing.cpp
 obj/tests.o : tests.cpp tests.hpp

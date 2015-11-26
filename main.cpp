@@ -70,7 +70,7 @@ int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
                    ((MODULES_PER_ROW - 1) * MODULE_SPACING);
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MODULES_PER_COLUMN * MODULE_SPACING) +
-                    MENU_HEIGHT;
+                    (MENU_HEIGHT * 2);
 SDL_Rect WINDOW_RECT = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
 // Frames per second and ms per frame

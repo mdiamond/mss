@@ -330,3 +330,8 @@ void Mixer::initialize_unique_graphics_objects()
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }
+
+std::string Mixer::unique_text_representation()
+{
+    return "";
+}

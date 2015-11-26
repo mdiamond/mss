@@ -171,12 +171,14 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
     std::vector<SDL_Rect> locations;
     std::vector<SDL_Color *> colors, text_colors;
     std::vector<Module *> parents;
+    std::vector<TTF_Font *> fonts;
 
     names = std::vector<std::string>();
     locations = std::vector<SDL_Rect>();
     colors = std::vector<SDL_Color *>();
     text_colors = std::vector<SDL_Color *>();
     texts = std::vector<std::string>();
+    fonts = std::vector<TTF_Font *>();
     parents = std::vector<Module *>();
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
@@ -188,15 +190,28 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
 
     names = {"add oscillator (button)", "add multiplier (button)",
              "add mixer (button)", "previous page (button)", "next page (button)"};
-    locations = {{2, WINDOW_HEIGHT - 17, 101, 15}, {105, WINDOW_HEIGHT - 17, 101, 15},
-                 {208, WINDOW_HEIGHT - 17, 66, 15}, {WINDOW_WIDTH - 159, WINDOW_HEIGHT - 17, 92, 15},
-                 {WINDOW_WIDTH - 159 + 94, WINDOW_HEIGHT - 17, 92, 15}};
+    locations = {{2, WINDOW_HEIGHT - MENU_HEIGHT - 17, 101, 15}, {105, WINDOW_HEIGHT - MENU_HEIGHT - 17, 101, 15},
+                 {208, WINDOW_HEIGHT - MENU_HEIGHT - 17, 66, 15}, {WINDOW_WIDTH - 159, WINDOW_HEIGHT - MENU_HEIGHT - 17, 92, 15},
+                 {WINDOW_WIDTH - 159 + 94, WINDOW_HEIGHT - MENU_HEIGHT - 17, 92, 15}};
     colors = std::vector<SDL_Color *>(5, &MODULES[0]->color);
     text_colors = std::vector<SDL_Color *>(5, &MODULES[0]->text_color);
     texts = {"ADD OSCILLATOR", "ADD MULTIPLIER", "ADD MIXER", "PREVIOUS PAGE", "NEXT PAGE"};
     parents = std::vector<Module *>(5, NULL);
 
     tmp_graphics_objects = initialize_button_objects(names, locations, colors, text_colors, texts, parents);
+    sub_page_graphics_objects->insert(sub_page_graphics_objects->end(), tmp_graphics_objects.begin(),
+                                      tmp_graphics_objects.end());
+
+    names = {"save patch (text box)", "load patch (text box)"};
+    locations = {{2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 4, 15},
+                 {(WINDOW_WIDTH / 2) + 2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 4, 15}};
+    colors = std::vector<SDL_Color *>(2, &MODULES[0]->color);
+    text_colors = std::vector<SDL_Color *>(2, &MODULES[0]->text_color);
+    texts = {"enter a name here to save your patch", "enter a patch name to load here"};
+    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
+    parents = std::vector<Module *>(2, NULL);
+
+    tmp_graphics_objects = initialize_text_box_objects(names, locations, colors, text_colors, texts, fonts, parents);
     sub_page_graphics_objects->insert(sub_page_graphics_objects->end(), tmp_graphics_objects.begin(),
                                       tmp_graphics_objects.end());
 
