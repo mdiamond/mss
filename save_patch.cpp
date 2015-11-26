@@ -35,7 +35,7 @@ void save_patch()
     std::string patch;
 
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-        patch += MODULES[i]->text_representation();
+        patch += MODULES[i]->get_text_representation();
 
     std::cout << patch << std::endl;
 }

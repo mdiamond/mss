@@ -103,7 +103,7 @@ class Module
         //   Initialize the graphics objects unique to this module type
         virtual void initialize_unique_graphics_objects() = 0;
         //   Output the module's unique information as text
-        virtual std::string unique_text_representation() = 0;
+        virtual std::string get_unique_text_representation() = 0;
 
         // Member functions
         //   Process all modules that this module depends upon
@@ -138,7 +138,7 @@ class Module
         //   Return module short name
         std::string get_short_name();
         //   Output the module as text
-        std::string text_representation();
+        std::string get_text_representation();
 };
 
 #endif

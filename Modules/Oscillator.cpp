@@ -420,7 +420,7 @@ void Oscillator::reset_current_phase()
     std::cout << name << " current phase reset" << std::endl;
 }
 
-std::string Oscillator::unique_text_representation()
+std::string Oscillator::get_unique_text_representation()
 {
     return std::to_string(current_phase) + "\n";
 }

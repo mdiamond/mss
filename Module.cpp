@@ -494,7 +494,7 @@ std::string Module::get_short_name()
  * Return a text representation of this module. It should
  * contain any information necessary to reconstruct the module.
  */
-std::string Module::text_representation()
+std::string Module::get_text_representation()
 {
     std::string result;
 
@@ -507,7 +507,7 @@ std::string Module::text_representation()
         else
             result += dependencies[i]->name + "\n";
 
-    result += this->unique_text_representation();
+    result += this->get_unique_text_representation();
 
     result += "DONE\n";
 

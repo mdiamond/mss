@@ -331,7 +331,7 @@ void Mixer::initialize_unique_graphics_objects()
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }
 
-std::string Mixer::unique_text_representation()
+std::string Mixer::get_unique_text_representation()
 {
     return "";
 }

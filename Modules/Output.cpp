@@ -214,7 +214,7 @@ void Output::toggle_audio_on()
     std::cout << "Audio toggled" << std::endl;
 }
 
-std::string Output::unique_text_representation()
+std::string Output::get_unique_text_representation()
 {
     return "";
 }

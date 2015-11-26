@@ -84,12 +84,17 @@ void Text_Box::render()
     // Otherwise
     else
     {
-        // The the current text is empty, render the prompt
-        if(text.text == "")
-            prompt_text.render();
-        // Otherwise, render the current text
-        else
+        // The current text is not empty, so render that
+        if(text.text != "")
             text.render();
+        // The current text is empty, but not the typing text,
+        // so render that
+        else if(typing_text.text != "")
+            typing_text.render();
+        // Neither the current text or the typing text contain anything,
+        // so render the prompt text
+        else
+            prompt_text.render();
     }
 
     // If the text box is active and the cursor is current supposed to be drawn,

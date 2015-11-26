@@ -206,7 +206,7 @@ void Multiplier::initialize_unique_graphics_objects()
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }
 
-std::string Multiplier::unique_text_representation()
+std::string Multiplier::get_unique_text_representation()
 {
     return "";
 }

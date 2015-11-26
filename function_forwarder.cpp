@@ -52,7 +52,8 @@ Module *find_module(std::string *name, std::vector<Module *> *modules)
 {
     for(unsigned int i = 0; i < modules->size(); i ++)
     {
-        if(modules->at(i)->name == *name)
+        if(modules->at(i)->get_name() == *name
+           || modules->at(i)->get_short_name() == *name)
             return modules->at(i);
     }
 
