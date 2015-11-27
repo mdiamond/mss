@@ -37,10 +37,11 @@
 #include "Graphics_Objects/Toggle_Button.hpp"
 #include "Graphics_Objects/Waveform.hpp"
 #include "Module.hpp"
+#include "Modules/Adsr.hpp"
 #include "Modules/Mixer.hpp"
+#include "Modules/Multiplier.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
-#include "Modules/Multiplier.hpp"
 
 /********************
  * HELPER FUNCTIONS *
@@ -165,80 +166,61 @@ void no_parent_function_forwarder(Graphics_Object *g)
 {
     std::vector<std::string> possible_names;
 
-    possible_names = {"add oscillator (button)", "add multiplier (button)",
-                      "add mixer (button)", "previous page (button)",
-                      "next page (button)", "save patch (text box)",
-                      "load patch (text box)"};
+    possible_names = {"add adsr (button)", "add mixer (button)",
+                      "add multiplier (button)", "add oscillator (button)",
+                      "previous page (button)", "next page (button)",
+                      "save patch (text box)", "load patch (text box)"};
 
     if(g->name == possible_names[0])
-        add_oscillator();
+        create_module(ADSR);
     else if(g->name == possible_names[1])
-        add_multiplier();
+        create_module(MIXER);
     else if(g->name == possible_names[2])
-        add_mixer();
+        create_module(MULTIPLIER);
     else if(g->name == possible_names[3])
-        next_page();
+        create_module(OSCILLATOR);
     else if(g->name == possible_names[4])
-        previous_page();
+        increment_page_number(-1);
     else if(g->name == possible_names[5])
-        save_patch(((Text_Box *) g)->text.text);
+        increment_page_number(1);
     else if(g->name == possible_names[6])
+        save_patch(((Text_Box *) g)->text.text);
+    else if(g->name == possible_names[7])
         load_patch(((Text_Box *) g)->text.text);
 }
 
 /*
- * Add an oscillator.
+ * Create a module of the type specified.
  */
-void add_oscillator()
+void create_module(int type)
 {
-    Oscillator *oscillator = new Oscillator();
-    oscillator->initialize_graphics_objects();
-    MODULES.push_back(oscillator);
-    MODULES_CHANGED = true;
-}
+    Module *module;
 
-/*
- * Add a multiplier module.
- */
-void add_multiplier()
-{
-    Multiplier *multiplier = new Multiplier();
-    multiplier->initialize_graphics_objects();
-    MODULES.push_back(multiplier);
-    MODULES_CHANGED = true;
-}
-
-/*
- * Add a mixer module.
- */
-void add_mixer()
-{
-    Mixer *mixer = new Mixer();
-    mixer->initialize_graphics_objects();
-    MODULES.push_back(mixer);
-    MODULES_CHANGED = true;
-}
-
-/*
- * Increment the current page.
- */
-void next_page()
-{
-    if(CURRENT_PAGE > 0)
+    switch(type)
     {
-        CURRENT_PAGE --;
-        std::cout << "Switched to page " << CURRENT_PAGE << std::endl;
+        case ADSR: module = new Adsr(); break;
+        case MIXER: module = new Mixer(); break;
+        case MULTIPLIER: module = new Multiplier(); break;
+        case OSCILLATOR: module = new Oscillator(); break;
     }
+
+    module->initialize_graphics_objects();
+    MODULES.push_back(module);
+    MODULES_CHANGED = true;
 }
 
 /*
- * Decrement the current page.
+ * Increment the current page by the amount specified.
  */
-void previous_page()
+void increment_page_number(int num)
 {
-    if(CURRENT_PAGE < PAGES.size() - 1)
+    unsigned int tmp = CURRENT_PAGE;
+
+    tmp += num;
+
+    if(tmp >= 0 && tmp < PAGES.size())
     {
-        CURRENT_PAGE ++;
+        CURRENT_PAGE = tmp;
         std::cout << "Switched to page " << CURRENT_PAGE << std::endl;
     }
 }

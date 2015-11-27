@@ -36,7 +36,8 @@
 
 enum Modules
 {
-    MIXER = 0,
+    ADSR = 0,
+    MIXER,
     MULTIPLIER,
     OSCILLATOR,
     OUTPUT

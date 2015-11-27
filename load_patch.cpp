@@ -23,10 +23,11 @@
 
 // Included classes
 #include "Module.hpp"
+#include "Modules/Adsr.hpp"
 #include "Modules/Mixer.hpp"
+#include "Modules/Multiplier.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
-#include "Modules/Multiplier.hpp"
 
 /**************
  * LOAD PATCH *
@@ -77,6 +78,7 @@ void load_patch(std::string filename)
                 // std::cout << "MODULE LINE: " << line << std::endl;
                 switch(stoi(line))
                 {
+                    case ADSR: module = new Adsr(); break;
                     case MIXER: module = new Mixer(); break;
                     case MULTIPLIER: module = new Multiplier(); break;
                     case OSCILLATOR: module = new Oscillator(); break;
@@ -117,6 +119,14 @@ void load_patch(std::string filename)
                     getline(infile, line);
                     // std::cout << "OSCILLATOR WAVEFORM TYPE LINE: " << line << std::endl;
                     oscillator_waveform_type = stoi(line);
+                }
+                if(module->type == ADSR)
+                {
+                    // std::cout << "OSCILLATOR CURRENT PHASE LINE: " << line << std::endl;
+                    ((Adsr *) module)->current_amplitude = stof(line);
+                    getline(infile, line);
+                    // std::cout << "OSCILLATOR WAVEFORM TYPE LINE: " << line << std::endl;
+                    ((Adsr *) module)->phase_num = stof(line);
                 }
             }
         }

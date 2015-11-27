@@ -23,10 +23,11 @@
 
 // Included classes
 #include "Module.hpp"
+#include "Modules/Adsr.hpp"
 #include "Modules/Mixer.hpp"
+#include "Modules/Multiplier.hpp"
 #include "Modules/Output.hpp"
 #include "Modules/Oscillator.hpp"
-#include "Modules/Multiplier.hpp"
 
 /***************************
  * MODULE MEMBER FUNCTIONS *
@@ -44,6 +45,10 @@ Module::Module(int _type) :
     // Set the number of inputs depending on the module type
     switch(_type)
     {
+        case ADSR:
+            name = "adsr " + std::to_string(number);
+            num_inputs = 5;
+            break;
         case MIXER:
             name = "mixer " + std::to_string(number);
             num_inputs = 16;
@@ -91,6 +96,13 @@ Module::Module(int _type) :
     // Set parameter names and module colors based on the module type
     switch(_type)
     {
+        case ADSR:
+            parameter_names[ADSR_A] = "ATTACK";
+            parameter_names[ADSR_D] = "DECAY";
+            parameter_names[ADSR_S] = "SUSTAIN";
+            parameter_names[ADSR_R] = "RELEASE";
+            parameter_names[ADSR_NOTE] = "NOTE ON/OFF";
+            break;
         case MIXER:
             parameter_names[MIXER_SIGNAL_1] = "SIGNAL 1";
             parameter_names[MIXER_SIGNAL_1_MULTIPLIER] = "SIGNAL 1 MULTIPLIER";
@@ -184,6 +196,9 @@ Module::~Module()
 
         switch(MODULES[i]->type)
         {
+            case ADSR:
+                MODULES[i]->name = "adsr " + std::to_string(MODULES[i]->number);
+                break;
             case MIXER:
                 MODULES[i]->name = "mixer " + std::to_string(MODULES[i]->number);
                 break;

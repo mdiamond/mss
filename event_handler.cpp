@@ -66,27 +66,32 @@ void keydown_event(SDL_Event *e)
     if(e->key.keysym.sym == SDLK_1)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            add_oscillator();
+            create_module(ADSR);
     }
     if(e->key.keysym.sym == SDLK_2)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            add_multiplier();
+            create_module(MIXER);
     }
     if(e->key.keysym.sym == SDLK_3)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            add_mixer();
+            create_module(MULTIPLIER);
+    }
+    if(e->key.keysym.sym == SDLK_4)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            create_module(OSCILLATOR);
     }
     else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            next_page();
+            increment_page_number(-1);
     }
     else if(e->key.keysym.sym == SDLK_RIGHTBRACKET)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            previous_page();
+            increment_page_number(1);
     }
 
     else if((ACTIVE_TEXT_BOX != NULL || SELECTING_SRC) && e->key.keysym.sym == SDLK_ESCAPE)
