@@ -191,8 +191,8 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
     names = {"add oscillator (button)", "add multiplier (button)",
              "add mixer (button)", "previous page (button)", "next page (button)"};
     locations = {{2, WINDOW_HEIGHT - MENU_HEIGHT - 17, 101, 15}, {105, WINDOW_HEIGHT - MENU_HEIGHT - 17, 101, 15},
-                 {208, WINDOW_HEIGHT - MENU_HEIGHT - 17, 66, 15}, {WINDOW_WIDTH - 159, WINDOW_HEIGHT - MENU_HEIGHT - 17, 92, 15},
-                 {WINDOW_WIDTH - 159 + 94, WINDOW_HEIGHT - MENU_HEIGHT - 17, 92, 15}};
+                 {208, WINDOW_HEIGHT - MENU_HEIGHT - 17, 66, 15}, {WINDOW_WIDTH - 163, WINDOW_HEIGHT - MENU_HEIGHT - 17, 92, 15},
+                 {WINDOW_WIDTH - 163 + 94, WINDOW_HEIGHT - MENU_HEIGHT - 17, 66, 15}};
     colors = std::vector<SDL_Color *>(5, &MODULES[0]->color);
     text_colors = std::vector<SDL_Color *>(5, &MODULES[0]->text_color);
     texts = {"ADD OSCILLATOR", "ADD MULTIPLIER", "ADD MIXER", "PREVIOUS PAGE", "NEXT PAGE"};
@@ -203,7 +203,7 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
                                       tmp_graphics_objects.end());
 
     names = {"save patch (text box)", "load patch (text box)"};
-    locations = {{2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 4, 15},
+    locations = {{2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 2, 15},
                  {(WINDOW_WIDTH / 2) + 2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 4, 15}};
     colors = std::vector<SDL_Color *>(2, &MODULES[0]->color);
     text_colors = std::vector<SDL_Color *>(2, &MODULES[0]->text_color);
