@@ -23,7 +23,7 @@
 
 enum Adsr_Graphics_Objects
 {
-    ADSR_A_D_TEXT = 4,
+    ADSR_A_D_TEXT = 3,
     ADSR_S_R_TEXT,
     ADSR_NOTE_TEXT,
     ADSR_OUTPUT_WAVEFORM,

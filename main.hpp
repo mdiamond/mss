@@ -59,7 +59,6 @@ extern int MODULES_PER_ROW;
 extern int MODULES_PER_COLUMN;
 extern int MODULES_PER_PAGE;
 extern int MODULE_SPACING;
-extern int MODULE_BORDER_WIDTH;
 //   Window dimensions
 extern int MENU_HEIGHT;
 extern int WINDOW_WIDTH;

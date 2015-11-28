@@ -308,12 +308,11 @@ void Module::calculate_graphics_object_locations()
     upper_left.x = ((x * MODULE_WIDTH) + (x * MODULE_SPACING));
     upper_left.y = ((y * MODULE_HEIGHT) + (y * MODULE_SPACING));
 
-    graphics_object_locations.push_back({upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT});
-    graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH, upper_left.y + MODULE_BORDER_WIDTH,
-                                        MODULE_WIDTH - (2 * MODULE_BORDER_WIDTH), MODULE_HEIGHT - (2 * MODULE_BORDER_WIDTH)});
-    graphics_object_locations.push_back({upper_left.x + MODULE_BORDER_WIDTH + 2, upper_left.y + MODULE_BORDER_WIDTH + 5, 0, 0});
-    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 9 - MODULE_BORDER_WIDTH,
-                                         upper_left.y + MODULE_BORDER_WIDTH, 9, 15});
+    graphics_object_locations.push_back({upper_left.x, upper_left.y,
+                                        MODULE_WIDTH, MODULE_HEIGHT});
+    graphics_object_locations.push_back({upper_left.x + 2, upper_left.y + 3, 0, 0});
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 9,
+                                         upper_left.y, 9, 15});
 
     calculate_unique_graphics_object_locations();
 }
@@ -375,20 +374,16 @@ void Module::initialize_graphics_objects()
     // Calculate the locations of all graphics objects
     calculate_graphics_object_locations();
 
-    // graphics_objects[0] is the outermost rectangle used to represent the module
-    rect = new Rect(name + " border (rect)", graphics_object_locations[MODULE_BORDER_RECT], &WHITE, this);
-    graphics_objects.push_back(rect);
-
-    // graphics_objects[1] is the slightly smaller rectangle within the outermost
+    // graphics_objects[0] is the slightly smaller rectangle within the outermost
     // rectangle
     rect = new Rect(name + " background (rect)", graphics_object_locations[MODULE_BACKGROUND_RECT], &color, this);
     graphics_objects.push_back(rect);
 
-    // graphics_objects[2] is the objects name
+    // graphics_objects[1] is the objects name
     text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], &text_color, name, FONT_BOLD);
     graphics_objects.push_back(text);
 
-    // graphics_objects[3] is the remove module button
+    // graphics_objects[2] is the remove module button
     button = new Button(name + " remove module (button)", graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
                         &text_color, &color, "X", this);
     graphics_objects.push_back(button);

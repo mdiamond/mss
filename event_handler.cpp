@@ -42,10 +42,7 @@ bool check_click()
     // If there is an active text box, and it is not what was clicked,
     // make the text box inactive
     if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->was_clicked())
-    {
-        ACTIVE_TEXT_BOX->active = false;
-        ACTIVE_TEXT_BOX = NULL;
-    }
+        ACTIVE_TEXT_BOX->cancel_input();
 
     OBJECT_CLICKED = false;
 
@@ -93,10 +90,12 @@ void keydown_event(SDL_Event *e)
         if(e->key.keysym.mod & KMOD_LCTRL)
             increment_page_number(1);
     }
-
-    else if((ACTIVE_TEXT_BOX != NULL || SELECTING_SRC) && e->key.keysym.sym == SDLK_ESCAPE)
+    else if(ACTIVE_TEXT_BOX != NULL && e->key.keysym.sym == SDLK_ESCAPE)
     {
-        ACTIVE_TEXT_BOX = NULL;
+        ACTIVE_TEXT_BOX->cancel_input();
+    }
+    else if(SELECTING_SRC && e->key.keysym.sym == SDLK_ESCAPE)
+    {
         SELECTING_SRC = false;
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }

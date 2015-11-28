@@ -127,17 +127,17 @@ void Mixer::calculate_unique_graphics_object_locations()
         w_waveform, h_waveform,
         y3, y4, y5, y6, y7, y8, y9, y10, y11, y12;
 
-    x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
+    x_text = upper_left.x + 2;
+    x_text_box = upper_left.x;
     x_text_box_2 = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_text_box = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 11;
+    w_text_box = (MODULE_WIDTH / 2) - 12;
     h_text_box = 15;
     x_input_toggle_button = x_text_box + w_text_box + 1;
     x_input_toggle_button_2 = x_text_box_2 + w_text_box + 1;
     w_input_toggle_button = 10;
-    w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
+    w_waveform = MODULE_WIDTH;
     h_waveform = 46;
-    y3 = upper_left.y + MODULE_BORDER_WIDTH + 23;
+    y3 = upper_left.y + 23;
     y4 = y3 + 47;
     y5 = y4 + 15;
     y6 = y5 + 17;
@@ -150,37 +150,37 @@ void Mixer::calculate_unique_graphics_object_locations()
 
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y5, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y5, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y6, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y6, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y6, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y7, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y7, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y8, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y8, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y8, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y9, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y9, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y9, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y10, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y10, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y10, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y11, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y11, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y11, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y12, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y12, w_text_box + 1, h_text_box});
     graphics_object_locations.push_back({x_text_box_2, y12, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y5, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y6, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y6, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y6, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y7, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y7, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y8, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y8, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y8, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y9, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y9, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y10, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y10, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y10, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y11, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y11, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y11, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y12, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button + 1, y12, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button_2, y12, w_input_toggle_button, h_text_box});
 }
 

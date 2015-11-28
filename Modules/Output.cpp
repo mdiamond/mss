@@ -81,23 +81,23 @@ void Output::calculate_unique_graphics_object_locations()
         w_waveform, h_waveform,
         y3, y4, y5, y6, y7, y8, y9, y10;
 
-    x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 11;
+    x_text = upper_left.x + 2;
+    x_text_box = upper_left.x;
+    w_text_box = MODULE_WIDTH - 11;
     h_text_box = 15;
     x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
-    x_button = upper_left.x + MODULE_BORDER_WIDTH + 70;
-    w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
+    x_button = upper_left.x + 70;
+    w_waveform = MODULE_WIDTH;
     h_waveform = 57;
-    y3 = upper_left.y + MODULE_BORDER_WIDTH + 20;
-    y4 = upper_left.y + MODULE_BORDER_WIDTH + 20;
-    y5 = upper_left.y + MODULE_BORDER_WIDTH + 40;   
-    y6 = upper_left.y + MODULE_BORDER_WIDTH + 97;
-    y7 = upper_left.y + MODULE_BORDER_WIDTH + 112;
-    y8 = upper_left.y + MODULE_BORDER_WIDTH + 133;
-    y9 = upper_left.y + MODULE_BORDER_WIDTH + 189;
-    y10 = upper_left.y + MODULE_BORDER_WIDTH + 204;
+    y3 = upper_left.y + 20;
+    y4 = upper_left.y + 20;
+    y5 = upper_left.y + 40;   
+    y6 = upper_left.y + 97;
+    y7 = upper_left.y + 112;
+    y8 = upper_left.y + 133;
+    y9 = upper_left.y + 189;
+    y10 = upper_left.y + 204;
 
     graphics_object_locations.push_back({x_text, y3, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});

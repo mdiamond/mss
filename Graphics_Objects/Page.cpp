@@ -76,11 +76,6 @@ void Page::clicked()
             if((SELECTING_SRC && graphics_objects[i]->type == RECT) ||
                !(SELECTING_SRC || graphics_objects[i]->type == RECT))
                 graphics_objects[i]->clicked();
-        if(OBJECT_CLICKED)
-        {
-            OBJECT_CLICKED = false;
-            break;
-        }
     }
     for(unsigned int i = 0; i < sub_pages.size(); i ++)
         if(sub_pages[i]->was_clicked())

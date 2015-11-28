@@ -145,15 +145,15 @@ void Adsr::calculate_unique_graphics_object_locations()
         x_signal_cv, x_signal_input_toggle_button, w_signals,
         y3, y4, y5, y6, y7, y8, y9;
 
-    x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 11;
+    x_text = upper_left.x + 2;
+    x_text_box = upper_left.x;
+    w_text_box = MODULE_WIDTH - 11;
     h_text_box = 15;
     x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
-    w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
+    w_waveform = MODULE_WIDTH;
     h_waveform = 104;
-    y3 = upper_left.y + MODULE_BORDER_WIDTH + 23;
+    y3 = upper_left.y + 23;
     y4 = y3 + 106;
     y5 = y4 + 15;
     y6 = y5 + 15;
@@ -161,7 +161,7 @@ void Adsr::calculate_unique_graphics_object_locations()
     y8 = y7 + 15;
     y9 = y8 + 15;
     x_signal_cv = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_signals = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 11;
+    w_signals = (MODULE_WIDTH / 2) - 11;
     x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
     graphics_object_locations.push_back({x_text, y4, 0, 0});
@@ -169,9 +169,9 @@ void Adsr::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_text, y8, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
     graphics_object_locations.push_back({x_text_box, y5, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_cv, y5, w_signals, h_text_box});
+    graphics_object_locations.push_back({x_signal_cv, y5, w_signals - 1, h_text_box});
     graphics_object_locations.push_back({x_text_box, y7, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_cv, y7, w_signals, h_text_box});
+    graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1, h_text_box});
     graphics_object_locations.push_back({x_text_box, y9, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});

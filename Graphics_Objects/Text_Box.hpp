@@ -56,6 +56,8 @@ class Text_Box: public Graphics_Object
         void update_location(SDL_Rect);
         //   Update the currently displayed text
         void update_current_text(std::string);
+        //   Cancel text input
+        void cancel_input();
 };
 
 #endif

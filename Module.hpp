@@ -49,8 +49,7 @@ enum Modules
 
 enum Module_Graphics_Objects
 {
-    MODULE_BORDER_RECT = 0,
-    MODULE_BACKGROUND_RECT,
+    MODULE_BACKGROUND_RECT = 0,
     MODULE_NAME_TEXT,
     MODULE_REMOVE_MODULE_BUTTON
 };

@@ -207,15 +207,15 @@ void Oscillator::calculate_unique_graphics_object_locations()
         x_range_high, x_range_low_input_toggle_button, w_range,
         w_wave_selector;
 
-    x_text = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    x_text_box = upper_left.x + MODULE_BORDER_WIDTH + 2;
-    w_text_box = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4) - 11;
+    x_text = upper_left.x + 2;
+    x_text_box = upper_left.x;
+    w_text_box = MODULE_WIDTH - 11;
     h_text_box = 15;
     x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
-    w_waveform = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) - 4);
+    w_waveform = MODULE_WIDTH;
     h_waveform = 45;
-    y3 = upper_left.y + MODULE_BORDER_WIDTH + 23;
+    y3 = upper_left.y + 23;
     y4 = y3 + 46;
     y5 = y4 + 15;   
     y6 = y5 + 16;
@@ -226,12 +226,12 @@ void Oscillator::calculate_unique_graphics_object_locations()
     y11 = y10 + 15;
     y12 = y11 + 27;
     x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_range = (((MODULE_WIDTH / 2) - MODULE_BORDER_WIDTH) - 3) - 11;
+    w_range = (MODULE_WIDTH / 2) - 11;
     x_range_low_input_toggle_button = x_text_box + w_range + 1;
-    w_wave_selector = ((MODULE_WIDTH - (MODULE_BORDER_WIDTH * 2)) / 4) - 2;
+    w_wave_selector = ((MODULE_WIDTH) / 4) - 1;
 
-    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - MODULE_BORDER_WIDTH - 19,
-                                         upper_left.y + MODULE_BORDER_WIDTH, 9, 15});
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
+                                         upper_left.y, 9, 15});
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
@@ -241,7 +241,7 @@ void Oscillator::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_text_box, y9, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_text_box, y11, w_range, h_text_box});
-    graphics_object_locations.push_back({x_range_high, y11, w_range, h_text_box});
+    graphics_object_locations.push_back({x_range_high, y11, w_range - 1, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});

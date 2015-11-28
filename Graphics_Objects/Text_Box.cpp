@@ -203,3 +203,18 @@ void Text_Box::entered()
     else
         ((Input_Text_Box *) this)->entered();
 }
+
+/*
+ * Cancel input to this text box.
+ * Make it inactive, stop SDL text input, etc.
+ */
+void Text_Box::cancel_input()
+{
+    std::cout << PINK_STDOUT << name << " text input cancelled" << DEFAULT_STDOUT << std::endl;
+
+    text.text = typing_text.text;
+    SDL_StopTextInput();
+    text.updated = true;
+    ACTIVE_TEXT_BOX = NULL;
+    active = false;
+}

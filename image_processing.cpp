@@ -262,7 +262,7 @@ void calculate_pages()
         // Create the sub page using the created vector of graphics objects,
         // add it to the list of sub pages
         current_sub_page = new Page(MODULES[i]->name + " (page)",
-                                    MODULES[i]->graphics_objects[1]->location, &BLACK,
+                                    MODULES[i]->graphics_objects[0]->location, &BLACK,
                                     sub_page_graphics_objects, NULL);
         sub_pages->push_back(current_sub_page);
 
