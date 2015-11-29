@@ -42,7 +42,7 @@
  */
 int open_window()
 {
-    Uint32 window_flags = SDL_WINDOW_BORDERLESS | SDL_WINDOW_ALLOW_HIGHDPI;
+    Uint32 window_flags = SDL_WINDOW_ALLOW_HIGHDPI;
 
     WINDOW = SDL_CreateWindow("synth",
                               SDL_WINDOWPOS_UNDEFINED,
