@@ -1,12 +1,7 @@
 /*
  * Matthew Diamond 2015
- * The NOISE module. This module is capable of
- * generating a sine, square, triangle, and sawtooth
- * wave given a frequency and pulse width. It can then
- * be modulated with some other NOISE. The
- * resulting waveform can then be processed or output.
- * This module fills its output buffer with the generated signal.
- * This file defines the class.
+ * The Noise module. This module is capable of
+ * generating different types of noise.
  */
 
 #ifndef synth_noise_h
@@ -18,9 +13,9 @@
 
 // No includes necessary
 
-/************************************
+/*******************************
  * NOISE GRAPHICS OBJECTS ENUM *
- ************************************/
+ *******************************/
 
 enum Noise_Graphics_Objects
 {
@@ -31,9 +26,9 @@ enum Noise_Graphics_Objects
     // NOISE_SQR_WAVE_TOGGLE_BUTTON
 };
 
-/*******************************
+/**************************
  * NOISE CLASS DEFINITION *
- *******************************/
+ **************************/
 
 class Noise: public Module
 {

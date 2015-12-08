@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Member functions for the Oscillator class.
+ * Member functions for the Noise class.
  */
 
 /************
@@ -35,7 +35,7 @@
 #include "../Graphics_Objects/Waveform.hpp"
 
 /*******************************
- * OSCILLATOR MEMBER FUNCTIONS *
+ * NOISE MEMBER FUNCTIONS *
  *******************************/
 
 /*
@@ -56,8 +56,7 @@ Noise::~Noise()
 }
 
 /*
- * Given a phase from 0 to 1, calculate 
- * and return a sine wave sample.
+ * Produce a random number in the range [-1, 1].
  */
 double Noise::produce_white_noise_sample()
 {
@@ -65,10 +64,8 @@ double Noise::produce_white_noise_sample()
 }
 
 /*
- * Process all dependencies, then
- * fill the output buffer with a waveform given
- * the data contained within this class and the
- * audio device information.
+ * Fill the output buffer with samples depending on the type
+ * of noise selected.
  */
 void Noise::process()
 {
@@ -181,7 +178,7 @@ void Noise::initialize_unique_graphics_objects()
 }
 
 /*
- * Switch to outputting the given waveform type.
+ * Switch to outputting the given noise type.
  */
 void Noise::switch_noise_type(int _noise_type)
 {
