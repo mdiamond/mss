@@ -40,7 +40,8 @@ enum Modules
     MIXER,
     MULTIPLIER,
     OSCILLATOR,
-    OUTPUT
+    OUTPUT,
+    NOISE,
 };
 
 /********************************

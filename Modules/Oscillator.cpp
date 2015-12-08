@@ -67,7 +67,7 @@ Oscillator::~Oscillator()
  * Given a phase from 0 to 1, calculate 
  * and return a sine wave sample.
  */
-float Oscillator::produce_sin_sample(float phase)
+double Oscillator::produce_sin_sample(double phase)
 {
     return sin(2 * M_PI * phase);
 }
@@ -76,7 +76,7 @@ float Oscillator::produce_sin_sample(float phase)
  * Given a phase from 0 to 1, calculate 
  * and return a triangle wave sample.
  */
-float Oscillator::produce_tri_sample(float phase)
+double Oscillator::produce_tri_sample(double phase)
 {
     if(phase < .25)
         return phase / .25;
@@ -89,10 +89,10 @@ float Oscillator::produce_tri_sample(float phase)
 }
 
 /*
- * Given a phase from 0 to 1, calculate 
+ * Given a phase from 0 to 1, calculate
  * and return a saw wave sample.
  */
-float Oscillator::produce_saw_sample(float phase)
+double Oscillator::produce_saw_sample(double phase)
 {
     if(phase < .5)
         return 1 - (phase / .5);
@@ -104,7 +104,7 @@ float Oscillator::produce_saw_sample(float phase)
  * Given a phase from 0 to 1, calculate 
  * and return a square wave sample.
  */
-float Oscillator::produce_sqr_sample(float phase)
+double Oscillator::produce_sqr_sample(double phase)
 {
     if(phase < input_floats[OSCILLATOR_PULSE_WIDTH])
         return 1;
@@ -123,7 +123,7 @@ void Oscillator::process()
     // Process any dependencies
     process_dependencies();
 
-    float phase_offset_diff;
+    double phase_offset_diff;
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < output.size(); i ++)
     {
@@ -167,7 +167,7 @@ void Oscillator::process()
 
         // Increment the current phase according to the frequency, sample rate, and difference in phase offset
         // since the last sample was calculated
-        current_phase += ((float) input_floats[OSCILLATOR_FREQUENCY] / SAMPLE_RATE) + phase_offset_diff;
+        current_phase += ((double) input_floats[OSCILLATOR_FREQUENCY] / SAMPLE_RATE) + phase_offset_diff;
         // Wrap around if the phase goes above 1 or below 0
         while(current_phase > 1)
             current_phase -= 1;

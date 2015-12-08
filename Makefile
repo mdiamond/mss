@@ -11,8 +11,8 @@ MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o \
 			  obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
-MODULECLASSOBJ = obj/Adsr.o obj/Mixer.o obj/Oscillator.o \
-				 obj/Output.o obj/Multiplier.o
+MODULECLASSOBJ = obj/Adsr.o obj/Mixer.o obj/Multiplier.o \
+				 obj/Noise.o obj/Oscillator.o obj/Output.o
 GRAPHICCLASSOBJ = obj/Button.o obj/Input_Text_Box.o \
 				  obj/Input_Toggle_Button.o obj/Page.o \
 				  obj/Rect.o obj/Text.o \
@@ -64,12 +64,14 @@ obj/Adsr.o : Modules/Adsr.cpp Modules/Adsr.hpp
 	$(OBJCOMMAND) Modules/Adsr.cpp
 obj/Mixer.o : Modules/Mixer.cpp Modules/Mixer.hpp
 	$(OBJCOMMAND) Modules/Mixer.cpp
+obj/Multiplier.o : Modules/Multiplier.cpp Modules/Multiplier.hpp
+	$(OBJCOMMAND) Modules/Multiplier.cpp
+obj/Noise.o : Modules/Noise.cpp Modules/Noise.hpp
+	$(OBJCOMMAND) Modules/Noise.cpp
 obj/Oscillator.o : Modules/Oscillator.cpp Modules/Oscillator.hpp
 	$(OBJCOMMAND) Modules/Oscillator.cpp
 obj/Output.o : Modules/Output.cpp Modules/Output.hpp
 	$(OBJCOMMAND) Modules/Output.cpp
-obj/Multiplier.o : Modules/Multiplier.cpp Modules/Multiplier.hpp
-	$(OBJCOMMAND) Modules/Multiplier.cpp
 
 # Graphics objects classes
 obj/Graphics_Object.o : Graphics_Object.cpp Graphics_Object.hpp

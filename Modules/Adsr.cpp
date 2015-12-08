@@ -98,7 +98,7 @@ void Adsr::process()
                 }
                 else if(phase_num == ADSR_D_PHASE)
                 {
-                    double decrement = 1 / ((input_floats[ADSR_D] / 1000) * SAMPLE_RATE);
+                    double decrement = (1 - input_floats[ADSR_S]) / ((input_floats[ADSR_D] / 1000) * SAMPLE_RATE);
                     current_amplitude -= decrement;
                     if(current_amplitude <= input_floats[ADSR_S])
                     {
@@ -163,6 +163,8 @@ void Adsr::calculate_unique_graphics_object_locations()
     w_signals = (MODULE_WIDTH / 2) - 11;
     x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
+                                         upper_left.y, 9, 15});
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
@@ -196,6 +198,12 @@ void Adsr::initialize_unique_graphics_objects()
     std::vector<bool> bs;
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
+
+    Button *button;
+    button = new Button(name + " reset current amplitude (button)",
+                    graphics_object_locations[ADSR_RESET_CURRENT_AMPLITUDE_BUTTON],
+                    &text_color, &color, "0", this);
+    graphics_objects.push_back(button);
 
     names = {name + " attack and decay (text)", name + " sustain and release (text)",
              name + " note on/off (text)"};
@@ -269,4 +277,14 @@ std::string Adsr::get_unique_text_representation()
 {
     return std::to_string(current_amplitude) + "\n"
            + std::to_string(phase_num) + "\n";
+}
+
+/*
+ * Reset this ADSR's amplitude
+ */
+void Adsr::reset_current_amplitude()
+{
+    current_amplitude = 0;
+
+    std::cout << name << " current amplitude reset" << std::endl;
 }

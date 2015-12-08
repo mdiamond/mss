@@ -40,6 +40,7 @@
 #include "Modules/Adsr.hpp"
 #include "Modules/Mixer.hpp"
 #include "Modules/Multiplier.hpp"
+#include "Modules/Noise.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
 
@@ -201,6 +202,7 @@ void create_module(int type)
         case ADSR: module = new Adsr(); break;
         case MIXER: module = new Mixer(); break;
         case MULTIPLIER: module = new Multiplier(); break;
+        case NOISE: module = new Noise(); break;
         case OSCILLATOR: module = new Oscillator(); break;
     }
 

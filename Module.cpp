@@ -57,6 +57,10 @@ Module::Module(int _type) :
             name = "multiplier " + std::to_string(number);
             num_inputs = 3;
             break;
+        case NOISE:
+            name = "noise " + std::to_string(number);
+            num_inputs = 0;
+            break;
         case OSCILLATOR:
             name = "oscillator " + std::to_string(number);
             num_inputs = 5;

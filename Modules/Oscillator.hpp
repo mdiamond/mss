@@ -24,8 +24,8 @@
 
 enum Oscillator_Graphics_Objects
 {
-    OSCILLATOR_FREQUENCY_TEXT = 3,
-    OSCILLATOR_RESET_CURRENT_PHASE_BUTTON,
+    OSCILLATOR_RESET_CURRENT_PHASE_BUTTON = 3,
+    OSCILLATOR_FREQUENCY_TEXT,
     OSCILLATOR_PHASE_OFFSET_TEXT,
     OSCILLATOR_PULSE_WIDTH_TEXT,
     OSCILLATOR_RANGE_TEXT,
@@ -67,9 +67,9 @@ class Oscillator: public Module
 {
     public:
         // The current phase of the oscillator
-        float current_phase;
+        double current_phase;
         // A record of the previous phase offset value
-        float previous_phase_offset;
+        double previous_phase_offset;
         // Booleans to represent whether or not each of the waveforms is enabled
         int waveform_type;
         // Whether or not each waveform is in use
@@ -88,10 +88,10 @@ class Oscillator: public Module
 
         // Member functions particular to this module
         //   Produce samples for the various types of waveforms given a phase
-        float produce_sin_sample(float);
-        float produce_tri_sample(float);
-        float produce_saw_sample(float);
-        float produce_sqr_sample(float);
+        double produce_sin_sample(double);
+        double produce_tri_sample(double);
+        double produce_saw_sample(double);
+        double produce_sqr_sample(double);
         //   Switch to outputting the given waveform type
         void switch_waveform(int);
         //   Reset phase

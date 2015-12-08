@@ -23,7 +23,8 @@
 
 enum Adsr_Graphics_Objects
 {
-    ADSR_A_D_TEXT = 3,
+    ADSR_RESET_CURRENT_AMPLITUDE_BUTTON = 3,
+    ADSR_A_D_TEXT,
     ADSR_S_R_TEXT,
     ADSR_NOTE_TEXT,
     ADSR_OUTPUT_WAVEFORM,
@@ -86,6 +87,10 @@ class Adsr: public Module
         virtual void calculate_unique_graphics_object_locations();
         virtual void initialize_unique_graphics_objects();
         virtual std::string get_unique_text_representation();
+
+        // Member functions particular to this module
+        //   Reset amplitude
+        void reset_current_amplitude();
 };
 
 #endif
