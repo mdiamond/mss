@@ -55,6 +55,14 @@ void destroy_modules()
  */
 void cleanup()
 {
+    // Destroy the renderer
+    SDL_DestroyRenderer(RENDERER);
+    std::cout << "Destroyed renderer." << std::endl;
+
+    // Destroy the window
+    SDL_DestroyWindow(WINDOW);
+    std::cout << "Destroyed window." << std::endl;
+
     // Destroy the modules
     destroy_modules();
     std::cout << "Destroyed all modules." << std::endl;
@@ -62,14 +70,6 @@ void cleanup()
     // Destroy all pages
     destroy_pages();
     std::cout << "Destroyed all pages." << std::endl;
-
-    // Destroy the window
-    SDL_DestroyWindow(WINDOW);
-    std::cout << "Destroyed window." << std::endl;
-
-    // Destroy the renderer
-    SDL_DestroyRenderer(RENDERER);
-    std::cout << "Destroyed renderer." << std::endl;
 
     // Quit SDL
     SDL_Quit();

@@ -42,26 +42,17 @@
  * Constructor.
  */
 Oscillator::Oscillator() :
-    Module(OSCILLATOR)
+    Module(OSCILLATOR),
+    current_phase(0), previous_phase_offset(0),
+    waveform_type(SIN), sin_on(true), tri_on(false),
+    saw_on(false), sqr_on(false)
 {
-    current_phase = 0;
-    previous_phase_offset = 0;
-
     // Frequency starts at 0, phase offset at 0,
     // pulse width at .5, range low at -1, range high
     // at 1
     input_floats[OSCILLATOR_PULSE_WIDTH] = .5;
     input_floats[OSCILLATOR_RANGE_LOW] = -1;
     input_floats[OSCILLATOR_RANGE_HIGH] = 1;
-
-    // Start out set to output sine waves
-    waveform_type = SIN;
-
-    // Set the boolean for the sine wave on, and all others off
-    sin_on = true;
-    tri_on = false;
-    saw_on = false;
-    sqr_on = false;
 }
 
 /*

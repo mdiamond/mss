@@ -68,10 +68,10 @@ class Oscillator: public Module
     public:
         // The current phase of the oscillator
         float current_phase;
-        // Booleans to represent whether or not each of the waveforms is enabled
-        int waveform_type;
         // A record of the previous phase offset value
         float previous_phase_offset;
+        // Booleans to represent whether or not each of the waveforms is enabled
+        int waveform_type;
         // Whether or not each waveform is in use
         bool sin_on, tri_on, saw_on, sqr_on;
 

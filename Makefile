@@ -1,4 +1,4 @@
-CC = g++ -g -Wall
+CC = g++ -g -O0 -Wall
 CFLAGS = -std=c++11
 LDFLAGS = -lSDL2 -lSDL2_ttf
 OBJCOMMAND = $(CC) $(CFLAGS) -o $@ -c

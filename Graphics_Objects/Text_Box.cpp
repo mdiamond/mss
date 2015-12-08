@@ -101,10 +101,7 @@ void Text_Box::render()
     // draw the typing cursor
     if(active && CURSOR_ON)
     {
-    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
-            SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g, text_color->b, text_color->a);
-        else
-            SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g, text_color->b, text_color->a / 2);
+        SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g, text_color->b, text_color->a);
         SDL_RenderDrawLine(RENDERER, typing_text.location.x + typing_text.location.w,
                            typing_text.location.y + 2,
                            typing_text.location.x + typing_text.location.w,
