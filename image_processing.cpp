@@ -188,8 +188,8 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
     Rect *background = new Rect("background (rect)", WINDOW_RECT, &BLACK, NULL);
     sub_page_graphics_objects->push_back(background);
 
-    names = {"add adsr (button)", "add mixer (button)", "add oscillator (button)",
-             "add multiplier (button)", "previous page (button)", "next page (button)"};
+    names = {"add adsr (button)", "add mixer (button)", "add multiplier (button)",
+             "add oscillator (button)", "previous page (button)", "next page (button)"};
     locations = {{2, WINDOW_HEIGHT - MENU_HEIGHT - 15, 60, 15}, {64, WINDOW_HEIGHT - MENU_HEIGHT - 15, 66, 15},
                  {132, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15}, {235, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15},
                  {WINDOW_WIDTH - 162, WINDOW_HEIGHT - MENU_HEIGHT - 15, 93, 15},

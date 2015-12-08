@@ -72,9 +72,9 @@ class Adsr: public Module
 {
     public:
         // The current amplitudes
-        float current_amplitude;
+        double current_amplitude;
         // Which phase of the envelope this module is in
-        float phase_num;
+        int phase_num;
 
         // Constructor and destructor
         Adsr();

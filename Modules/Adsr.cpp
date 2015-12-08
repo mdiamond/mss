@@ -88,8 +88,7 @@ void Adsr::process()
             {
                 if(phase_num == ADSR_A_PHASE)
                 {
-                    std::cout << "A PHASE" << std::endl;
-                    float increment = 1 / ((input_floats[ADSR_A] / 1000) * SAMPLE_RATE);
+                    double increment = 1 / ((input_floats[ADSR_A] / 1000) * SAMPLE_RATE);
                     current_amplitude += increment;
                     if(current_amplitude >= 1)
                     {
@@ -99,7 +98,7 @@ void Adsr::process()
                 }
                 else if(phase_num == ADSR_D_PHASE)
                 {
-                    float decrement = 1 / ((input_floats[ADSR_D] / 1000) * SAMPLE_RATE);
+                    double decrement = 1 / ((input_floats[ADSR_D] / 1000) * SAMPLE_RATE);
                     current_amplitude -= decrement;
                     if(current_amplitude <= input_floats[ADSR_S])
                     {
@@ -112,7 +111,7 @@ void Adsr::process()
             }
             else
             {
-                float decrement = 1 / ((input_floats[ADSR_R] / 1000) * SAMPLE_RATE);
+                double decrement = 1 / ((input_floats[ADSR_R] / 1000) * SAMPLE_RATE);
                 current_amplitude -= decrement;
                 if(current_amplitude <= 0)
                     current_amplitude = 0;
