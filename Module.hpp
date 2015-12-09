@@ -2,10 +2,13 @@
  * Matthew Diamond 2015
  * The header for a base class to represent a generic synthesizer module.
  * Other classes will extend this class and represent different
- * types of modules. This file defines the class.
+ * types of modules.
  * The following classes are derived from the Module class:
+ *   - Delay
+ *   - Filter
  *   - Mixer
  *   - Multiplier
+ *   - Noise
  *   - Oscillator
  *   - Output
  */
@@ -42,6 +45,8 @@ enum Modules
     OSCILLATOR,
     OUTPUT,
     NOISE,
+    FILTER,
+    DELAY
 };
 
 /********************************
