@@ -101,12 +101,12 @@ void Filter::calculate_unique_graphics_object_locations()
     x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
     w_waveform = MODULE_WIDTH;
-    h_waveform = 45;
+    h_waveform = 104;
     y3 = upper_left.y + 23;
     y4 = y3 + 46;
     y5 = y4 + 15;
     y6 = y5 + 16;
-    y7 = y6 + 15;
+    y7 = y6 + 13;
     y8 = y7 + 16;
     y9 = y8 + 15;
     y10 = y9 + 16;
@@ -117,13 +117,13 @@ void Filter::calculate_unique_graphics_object_locations()
     x_range_low_input_toggle_button = x_text_box + w_range + 1;
     w_wave_selector = ((MODULE_WIDTH) / 4) - 1;
 
-    graphics_object_locations.push_back({x_text, y4, 0, 0});
-    graphics_object_locations.push_back({x_text, y6, 0, 0});
+    graphics_object_locations.push_back({x_text, y8, 0, 0});
+    graphics_object_locations.push_back({x_text, y10, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y9, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_text_box, y11, w_range, h_text_box});
     graphics_object_locations.push_back({x_range_high, y11, w_range - 1, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y11, w_input_toggle_button, h_text_box});
     // graphics_object_locations.push_back({x_text_box, y12, w_wave_selector, h_text_box});

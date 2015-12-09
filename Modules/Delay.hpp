@@ -14,9 +14,9 @@
 
 // No includes necessary
 
-/******************************
+/*******************************
  * DELAY GRAPHICS OBJECTS ENUM *
- ******************************/
+ *******************************/
 
 enum Delay_Graphics_Objects
 {
@@ -36,9 +36,9 @@ enum Delay_Graphics_Objects
     DELAY_WET_DRY_INPUT_TOGGLE_BUTTON,
 };
 
-/**************************
+/***************************
  * DELAY DEPENDENCIES ENUM *
- **************************/
+ ***************************/
 
 enum Delay_Dependencies
 {
@@ -49,9 +49,9 @@ enum Delay_Dependencies
     DELAY_WET_DRY
 };
 
-/*************************
+/**************************
  * DELAY CLASS DEFINITION *
- *************************/
+ **************************/
 
 class Delay: public Module
 {

@@ -46,7 +46,7 @@ Module::Module(int _type) :
     int num_inputs;
 
     // Set the number of inputs depending on the module type
-    switch(_type)
+    switch(type)
     {
         case ADSR:
             name = "adsr " + std::to_string(number);
@@ -109,7 +109,7 @@ Module::Module(int _type) :
     text_color.a = 255;
 
     // Set parameter names and module colors based on the module type
-    switch(_type)
+    switch(type)
     {
         case ADSR:
             parameter_names[ADSR_A] = "ATTACK";

@@ -104,7 +104,7 @@ void Noise::calculate_unique_graphics_object_locations()
     x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
     w_waveform = MODULE_WIDTH;
-    h_waveform = 200;
+    h_waveform = 167;
     y3 = upper_left.y + 23;
     y4 = y3 + 46;
     y5 = y4 + 15;   

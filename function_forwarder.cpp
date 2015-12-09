@@ -38,6 +38,8 @@
 #include "Graphics_Objects/Waveform.hpp"
 #include "Module.hpp"
 #include "Modules/Adsr.hpp"
+#include "Modules/Delay.hpp"
+#include "Modules/Filter.hpp"
 #include "Modules/Mixer.hpp"
 #include "Modules/Multiplier.hpp"
 #include "Modules/Noise.hpp"
@@ -206,6 +208,8 @@ void create_module(int type)
     switch(type)
     {
         case ADSR: module = new Adsr(); break;
+        case DELAY: module = new Delay(); break;
+        case FILTER: module = new Filter(); break;
         case MIXER: module = new Mixer(); break;
         case MULTIPLIER: module = new Multiplier(); break;
         case NOISE: module = new Noise(); break;
