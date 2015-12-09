@@ -24,8 +24,11 @@
 // Included classes
 #include "Module.hpp"
 #include "Modules/Adsr.hpp"
+#include "Modules/Delay.hpp"
+#include "Modules/Filter.hpp"
 #include "Modules/Mixer.hpp"
 #include "Modules/Multiplier.hpp"
+#include "Modules/Noise.hpp"
 #include "Modules/Output.hpp"
 #include "Modules/Oscillator.hpp"
 
@@ -48,6 +51,14 @@ Module::Module(int _type) :
         case ADSR:
             name = "adsr " + std::to_string(number);
             num_inputs = 5;
+            break;
+        case DELAY:
+            name = "delay " + std::to_string(number);
+            num_inputs = 5;
+            break;
+        case FILTER:
+            name = "filter " + std::to_string(number);
+            num_inputs = 3;
             break;
         case MIXER:
             name = "mixer " + std::to_string(number);
@@ -107,6 +118,18 @@ Module::Module(int _type) :
             parameter_names[ADSR_R] = "RELEASE";
             parameter_names[ADSR_NOTE] = "NOTE ON/OFF";
             break;
+        case DELAY:
+            parameter_names[DELAY_SIGNAL] = "SIGNAL";
+            parameter_names[DELAY_MAX_DELAY_TIME] = "MAX DELAY TIME";
+            parameter_names[DELAY_DELAY_TIME] = "DELAY TIME";
+            parameter_names[DELAY_FEEDBACK_AMOUNT] = "FEEDBACK AMOUNT";
+            parameter_names[DELAY_WET_DRY] = "WET/DRY AMOUNT";
+            break;
+        case FILTER:
+            parameter_names[FILTER_SIGNAL] = "SIGNAL";
+            parameter_names[FILTER_FREQUENCY_CUTOFF] = "FREQUENCY CUTOFF";
+            parameter_names[FILTER_Q] = "FILTER QUALITY";
+            break;
         case MIXER:
             parameter_names[MIXER_SIGNAL_1] = "SIGNAL 1";
             parameter_names[MIXER_SIGNAL_1_MULTIPLIER] = "SIGNAL 1 MULTIPLIER";
@@ -124,23 +147,11 @@ Module::Module(int _type) :
             parameter_names[MIXER_SIGNAL_7_MULTIPLIER] = "SIGNAL 7 MULTIPLIER";
             parameter_names[MIXER_SIGNAL_8] = "SIGNAL 8";
             parameter_names[MIXER_SIGNAL_8_MULTIPLIER] = "SIGNAL 8 MULTIPLIER";
-            // color.r = 219;
-            // color.g = 116;
-            // color.b = 48;
-            // text_color.r = 48;
-            // text_color.g = 151;
-            // text_color.b = 219;
             break;
         case MULTIPLIER:
             parameter_names[MULTIPLIER_SIGNAL] = "SIGNAL";
             parameter_names[MULTIPLIER_CV] = "CV";
             parameter_names[MULTIPLIER_CV_AMOUNT] = "CV AMOUNT";
-            // color.r = 48;
-            // color.g = 219;
-            // color.b = 199;
-            // text_color.r = 219;
-            // text_color.g = 48;
-            // text_color.b = 68;
             break;
         case OSCILLATOR:
             parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";
@@ -148,22 +159,10 @@ Module::Module(int _type) :
             parameter_names[OSCILLATOR_PULSE_WIDTH] = "PULSE WIDTH";
             parameter_names[OSCILLATOR_RANGE_LOW] = "RANGE LOW";
             parameter_names[OSCILLATOR_RANGE_HIGH] = "RANGE HIGH";
-            // color.r = 48;
-            // color.g = 59;
-            // color.b = 219;
-            // text_color.r = 219;
-            // text_color.g = 208;
-            // text_color.b = 48;
             break;
         case OUTPUT:
             parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
             parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
-            // color.r = 48;
-            // color.g = 219;
-            // color.b = 68;
-            // text_color.r = 219;
-            // text_color.g = 48;
-            // text_color.b = 199;
             break;
     }
 
@@ -203,11 +202,20 @@ Module::~Module()
             case ADSR:
                 MODULES[i]->name = "adsr " + std::to_string(MODULES[i]->number);
                 break;
+            case DELAY:
+                MODULES[i]->name = "delay " + std::to_string(MODULES[i]->number);
+                break;
+            case FILTER:
+                MODULES[i]->name = "filter " + std::to_string(MODULES[i]->number);
+                break;
             case MIXER:
                 MODULES[i]->name = "mixer " + std::to_string(MODULES[i]->number);
                 break;
             case MULTIPLIER:
                 MODULES[i]->name = "multiplier " + std::to_string(MODULES[i]->number);
+                break;
+            case NOISE:
+                MODULES[i]->name = "noise " + std::to_string(MODULES[i]->number);
                 break;
             case OSCILLATOR:
                 MODULES[i]->name = "oscillator " + std::to_string(MODULES[i]->number);

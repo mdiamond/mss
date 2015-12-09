@@ -4,6 +4,7 @@
  * Other classes will extend this class and represent different
  * types of modules.
  * The following classes are derived from the Module class:
+ *   - ADSR
  *   - Delay
  *   - Filter
  *   - Mixer
@@ -40,13 +41,13 @@
 enum Modules
 {
     ADSR = 0,
+    DELAY,
+    FILTER,
     MIXER,
     MULTIPLIER,
-    OSCILLATOR,
-    OUTPUT,
     NOISE,
-    FILTER,
-    DELAY
+    OSCILLATOR,
+    OUTPUT
 };
 
 /********************************

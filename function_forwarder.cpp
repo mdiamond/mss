@@ -167,26 +167,32 @@ void no_parent_function_forwarder(Graphics_Object *g)
 {
     std::vector<std::string> possible_names;
 
-    possible_names = {"add adsr (button)", "add mixer (button)",
-                      "add multiplier (button)", "add oscillator (button)",
-                      "previous page (button)", "next page (button)",
+    possible_names = {"add adsr (button)", "add delay (button)", "add filter (button)",
+                      "add mixer (button)", "add multiplier (button)", "add noise (button)",
+                      "add oscillator (button)", "previous page (button)", "next page (button)",
                       "save patch (text box)", "load patch (text box)"};
 
     if(g->name == possible_names[0])
         create_module(ADSR);
     else if(g->name == possible_names[1])
-        create_module(MIXER);
+        create_module(DELAY);
     else if(g->name == possible_names[2])
-        create_module(MULTIPLIER);
+        create_module(FILTER);
     else if(g->name == possible_names[3])
-        create_module(OSCILLATOR);
+        create_module(MIXER);
     else if(g->name == possible_names[4])
-        increment_page_number(-1);
+        create_module(MULTIPLIER);
     else if(g->name == possible_names[5])
-        increment_page_number(1);
+        create_module(NOISE);
     else if(g->name == possible_names[6])
-        save_patch(((Text_Box *) g)->text.text);
+        create_module(OSCILLATOR);
     else if(g->name == possible_names[7])
+        increment_page_number(-1);
+    else if(g->name == possible_names[8])
+        increment_page_number(1);
+    else if(g->name == possible_names[9])
+        save_patch(((Text_Box *) g)->text.text);
+    else if(g->name == possible_names[10])
         load_patch(((Text_Box *) g)->text.text);
 }
 

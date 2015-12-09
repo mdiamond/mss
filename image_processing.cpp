@@ -183,21 +183,37 @@ void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_grap
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
+    int y = 2;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 60, 15});
+    y += 62;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
+    y += 69;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 74, 15});
+    y += 76;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 66, 15});
+    y += 68;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15});
+    y += 103;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
+    y += 69;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 102, 15});
+    locations.push_back({WINDOW_WIDTH - 162, WINDOW_HEIGHT - MENU_HEIGHT - 15, 93, 15});
+    locations.push_back({WINDOW_WIDTH - 162 + 95, WINDOW_HEIGHT - MENU_HEIGHT - 15, 65, 15});
+
     // Create the background and add it to the list of graphics
     // objects
     Rect *background = new Rect("background (rect)", WINDOW_RECT, &BLACK, NULL);
     sub_page_graphics_objects->push_back(background);
 
-    names = {"add adsr (button)", "add mixer (button)", "add multiplier (button)",
+    names = {"add adsr (button)", "add delay (button)", "add filter (button)",
+             "add mixer (button)", "add multiplier (button)", "add noise (button)",
              "add oscillator (button)", "previous page (button)", "next page (button)"};
-    locations = {{2, WINDOW_HEIGHT - MENU_HEIGHT - 15, 60, 15}, {64, WINDOW_HEIGHT - MENU_HEIGHT - 15, 66, 15},
-                 {132, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15}, {235, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15},
-                 {WINDOW_WIDTH - 162, WINDOW_HEIGHT - MENU_HEIGHT - 15, 93, 15},
-                 {WINDOW_WIDTH - 162 + 95, WINDOW_HEIGHT - MENU_HEIGHT - 15, 65, 15}};
-    colors = std::vector<SDL_Color *>(6, &MODULES[0]->color);
-    text_colors = std::vector<SDL_Color *>(6, &MODULES[0]->text_color);
-    texts = {"ADD ADSR", "ADD MIXER", "ADD MULTIPLIER", "ADD OSCILLATOR", "PREVIOUS PAGE", "NEXT PAGE"};
-    parents = std::vector<Module *>(6, NULL);
+    // locations = locations;
+    colors = std::vector<SDL_Color *>(9, &MODULES[0]->color);
+    text_colors = std::vector<SDL_Color *>(9, &MODULES[0]->text_color);
+    texts = {"ADD ADSR", "ADD DELAY", "ADD FILTER", "ADD MIXER", "ADD MULTIPLIER",
+             "ADD NOISE", "ADD OSCILLATOR", "PREVIOUS PAGE", "NEXT PAGE"};
+    parents = std::vector<Module *>(9, NULL);
 
     tmp_graphics_objects = initialize_button_objects(names, locations, colors, text_colors, texts, parents);
     sub_page_graphics_objects->insert(sub_page_graphics_objects->end(), tmp_graphics_objects.begin(),

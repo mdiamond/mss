@@ -68,19 +68,29 @@ void keydown_event(SDL_Event *e)
     if(e->key.keysym.sym == SDLK_2)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(MIXER);
+            create_module(DELAY);
     }
     if(e->key.keysym.sym == SDLK_3)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(MULTIPLIER);
+            create_module(FILTER);
     }
     if(e->key.keysym.sym == SDLK_4)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(NOISE);
+            create_module(MIXER);
     }
     if(e->key.keysym.sym == SDLK_5)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            create_module(MULTIPLIER);
+    }
+    if(e->key.keysym.sym == SDLK_6)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            create_module(NOISE);
+    }
+    if(e->key.keysym.sym == SDLK_7)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(OSCILLATOR);
