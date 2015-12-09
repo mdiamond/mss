@@ -11,7 +11,8 @@ MISCFILEOBJ = obj/event_handler.o obj/function_forwarder.o \
 			  obj/tests.o
 MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
-MODULECLASSOBJ = obj/Adsr.o obj/Filter.o obj/Mixer.o obj/Multiplier.o \
+MODULECLASSOBJ = obj/Adsr.o obj/Delay.o \
+				 obj/Filter.o obj/Mixer.o obj/Multiplier.o \
 				 obj/Noise.o obj/Oscillator.o obj/Output.o
 GRAPHICCLASSOBJ = obj/Button.o obj/Input_Text_Box.o \
 				  obj/Input_Toggle_Button.o obj/Page.o \
@@ -62,6 +63,8 @@ obj/Module.o : Module.cpp Module.hpp
 	$(OBJCOMMAND) Module.cpp
 obj/Adsr.o : Modules/Adsr.cpp Modules/Adsr.hpp
 	$(OBJCOMMAND) Modules/Adsr.cpp
+obj/Delay.o : Modules/Delay.cpp Modules/Delay.hpp
+	$(OBJCOMMAND) Modules/Delay.cpp
 obj/Filter.o : Modules/Filter.cpp Modules/Filter.hpp
 	$(OBJCOMMAND) Modules/Filter.cpp
 obj/Mixer.o : Modules/Mixer.cpp Modules/Mixer.hpp

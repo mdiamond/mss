@@ -130,7 +130,7 @@ void Adsr::process()
  */
 void Adsr::update_control_values()
 {
-    
+
 }
 
 /*
