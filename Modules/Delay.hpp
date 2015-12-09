@@ -56,6 +56,10 @@ enum Delay_Dependencies
 class Delay: public Module
 {
     public:
+        // Delayed buffer
+        std::vector<float> delay_buffer;
+        // Previous max delay time
+        float previous_max_delay_time;
 
         // Constructor and destructor
         Delay();

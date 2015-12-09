@@ -42,9 +42,14 @@
  * Constructor.
  */
 Delay::Delay() :
-    Module(DELAY)
+    Module(DELAY),
+    delay_buffer(std::vector<float>(BUFFER_SIZE, 0)),
+    previous_max_delay_time(0)
 {
-
+    input_floats[DELAY_MAX_DELAY_TIME] = 5000;
+    input_floats[DELAY_DELAY_TIME] = 500;
+    input_floats[DELAY_FEEDBACK_AMOUNT] = .5;
+    input_floats[DELAY_WET_DRY] = .5;
 }
 
 /*
@@ -66,7 +71,31 @@ void Delay::process()
     // Process any dependencies
     process_dependencies();
 
+    // Per sample
+    for(int i = 0; i < BUFFER_SIZE; i ++)
+    {
+        // Update any parameters, don't bother with the signal input
+        for(unsigned int j = 1; j < dependencies.size(); j ++)
+            if(inputs_live[j])
+                input_floats[j] = inputs[j]->at(i);
 
+        // Check if the max delay time has been changed, if so
+        // re-initialize the delay buffer
+        if(input_floats[DELAY_MAX_DELAY_TIME] != previous_max_delay_time)
+        {
+            delay_buffer = std::vector<float>(input_floats[DELAY_MAX_DELAY_TIME] / 1000 * SAMPLE_RATE, 0);
+            previous_max_delay_time = input_floats[DELAY_MAX_DELAY_TIME];
+        }
+
+        output[i] = (1 - input_floats[DELAY_WET_DRY]) * inputs[DELAY_SIGNAL]->at(i);
+        float delay_buffer_sample = delay_buffer[delay_buffer.size() - (input_floats[DELAY_DELAY_TIME] / 1000 * SAMPLE_RATE)];
+        output[i] += delay_buffer_sample;
+
+        for(unsigned int j = 0; j < delay_buffer.size() - 1; j ++)
+            delay_buffer[j] = delay_buffer[j + 1];
+        delay_buffer[delay_buffer.size() - 1] = input_floats[DELAY_WET_DRY] * inputs[DELAY_SIGNAL]->at(i);
+        delay_buffer[delay_buffer.size() - 1] += delay_buffer_sample * input_floats[DELAY_FEEDBACK_AMOUNT];
+    }
 
     processed = true;
 }
