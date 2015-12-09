@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * The Noise module. This module is capable of
+ * The noise module. This module is capable of
  * generating different types of noise.
  */
 
