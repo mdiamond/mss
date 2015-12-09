@@ -24,8 +24,11 @@
 // Included classes
 #include "Module.hpp"
 #include "Modules/Adsr.hpp"
+#include "Modules/Delay.hpp"
+#include "Modules/Filter.hpp"
 #include "Modules/Mixer.hpp"
 #include "Modules/Multiplier.hpp"
+#include "Modules/Noise.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
 
@@ -75,20 +78,26 @@ void load_patch(std::string filename)
             }
             else if(!module_created)
             {
-                // std::cout << "MODULE LINE: " << line << std::endl;
-                switch(stoi(line))
-                {
-                    case ADSR: module = new Adsr(); break;
-                    case MIXER: module = new Mixer(); break;
-                    case MULTIPLIER: module = new Multiplier(); break;
-                    case OSCILLATOR: module = new Oscillator(); break;
-                }
+                if(line.substr(0, line.find(" ")) == "adsr")
+                    module = new Adsr();
+                else if(line.substr(0, line.find(" ")) == "delay")
+                    module = new Delay();
+                else if(line.substr(0, line.find(" ")) == "filter")
+                    module = new Filter();
+                else if(line.substr(0, line.find(" ")) == "mixer")
+                    module = new Mixer();
+                else if(line.substr(0, line.find(" ")) == "multiplier")
+                    module = new Multiplier();
+                else if(line.substr(0, line.find(" ")) == "noise")
+                    module = new Noise();
+                else if(line.substr(0, line.find(" ")) == "oscillator")
+                    module = new Oscillator();
+
                 MODULES.push_back(module);
                 module_created = true;
             }
             else if(!input_floats_copied)
             {
-                // std::cout << "FLOAT LINE " << dependency_num << ": " << line << std::endl;
                 module->set(stof(line), dependency_num);
                 dependency_num ++;
                 if(dependency_num == module->dependencies.size())
@@ -99,7 +108,6 @@ void load_patch(std::string filename)
             }
             else if(!dependencies_copied)
             {
-                // std::cout << "DEPENDENCY LINE: " << dependency_num << ": " << line << std::endl;
                 dependencies.push_back(line);
                 dependency_num ++;
                 if(dependency_num == module->dependencies.size())

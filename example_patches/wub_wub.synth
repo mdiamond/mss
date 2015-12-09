@@ -1,4 +1,4 @@
-3 (oscillator 1)
+oscillator 1
 499.987305
 0.000000
 0.500000
@@ -12,7 +12,7 @@ NULL
 0.422277
 0
 DONE
-3 (oscillator 2)
+oscillator 2
 1.926135
 0.000000
 0.500000
@@ -26,7 +26,7 @@ NULL
 0.247777
 0
 DONE
-3 (oscillator 3)
+oscillator 3
 1.000000
 0.000000
 0.500000

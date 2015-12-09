@@ -1,4 +1,4 @@
-1 (mixer 1)
+mixer 1
 0.000000
 1.000000
 0.000000
@@ -32,7 +32,7 @@ NULL
 NULL
 NULL
 DONE
-3 (oscillator 2)
+oscillator 2
 133.025116
 0.000000
 0.500000
@@ -46,7 +46,7 @@ NULL
 0.987646
 0
 DONE
-3 (oscillator 3)
+oscillator 3
 1.000000
 0.000000
 0.500000
@@ -60,7 +60,7 @@ NULL
 0.831565
 0
 DONE
-3 (oscillator 4)
+oscillator 4
 752.680481
 0.000000
 0.500000
@@ -74,7 +74,7 @@ NULL
 0.441575
 0
 DONE
-3 (oscillator 5)
+oscillator 5
 0.500000
 0.000000
 0.500000
@@ -88,7 +88,7 @@ NULL
 0.415782
 0
 DONE
-2 (multiplier 6)
+multiplier 6
 0.000000
 0.000000
 1.000000
@@ -96,7 +96,7 @@ oscillator 2
 oscillator 4
 NULL
 DONE
-2 (multiplier 7)
+multiplier 7
 0.000000
 0.000000
 1.000000
@@ -104,7 +104,7 @@ multiplier 6
 adsr 8
 NULL
 DONE
-0 (adsr 8)
+adsr 8
 2500.000000
 5000.000000
 0.750000
@@ -118,7 +118,7 @@ oscillator 9
 0.000000
 0
 DONE
-3 (oscillator 9)
+oscillator 9
 0.050000
 0.000000
 0.500000
