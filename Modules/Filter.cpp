@@ -152,7 +152,7 @@ void Filter::initialize_unique_graphics_objects()
 
     names = {name + " signal (text)", name + " frequency cutoff and q (text)"};
     locations = {graphics_object_locations[FILTER_SIGNAL_TEXT],
-                 graphics_object_locations[FILTER_FILTER_CUTOFF_AND_Q_TEXT]};
+                 graphics_object_locations[FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT]};
     colors = std::vector<SDL_Color *>(2, &text_color);
     texts = {"INPUT SIGNAL:", "CUTOFF & Q:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);

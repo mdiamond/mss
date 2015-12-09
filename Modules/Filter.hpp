@@ -17,7 +17,7 @@
  ********************************/
 
 enum Filter_Graphics_Objects
-{,
+{
     FILTER_SIGNAL_TEXT = 3,
     FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT,
     FILTER_OUTPUT_WAVEFORM,
