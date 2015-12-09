@@ -95,9 +95,9 @@ double Oscillator::produce_tri_sample(double phase)
 double Oscillator::produce_saw_sample(double phase)
 {
     if(phase < .5)
-        return 1 - (phase / .5);
+        return -1 * (1 - (phase / .5));
     else
-        return 0 - ((phase - .5) / .5);
+        return -1 * (0 - ((phase - .5) / .5));
 }
 
 /*

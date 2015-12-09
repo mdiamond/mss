@@ -63,9 +63,9 @@ void populate_saw()
         float half = (WAVETABLES[SAW].size() / 2);
 
         if(i < half)
-            WAVETABLES[SAW][i] = 1 - (i / half);
+            WAVETABLES[SAW][i] = -1 * (1 - (i / half));
         else
-            WAVETABLES[SAW][i] = 0 - ((i - half) / half);
+            WAVETABLES[SAW][i] = -1 * (0 - ((i - half) / half));
     }
 }
 

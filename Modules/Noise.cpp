@@ -34,9 +34,9 @@
 #include "../Graphics_Objects/Toggle_Button.hpp"
 #include "../Graphics_Objects/Waveform.hpp"
 
-/*******************************
+/**************************
  * NOISE MEMBER FUNCTIONS *
- *******************************/
+ **************************/
 
 /*
  * Constructor.

@@ -114,18 +114,14 @@ void load_patch(std::string filename)
             {
                 if(module->type == OSCILLATOR)
                 {
-                    // std::cout << "OSCILLATOR CURRENT PHASE LINE: " << line << std::endl;
                     ((Oscillator *) module)->current_phase = stof(line);
                     getline(infile, line);
-                    // std::cout << "OSCILLATOR WAVEFORM TYPE LINE: " << line << std::endl;
                     oscillator_waveform_type = stoi(line);
                 }
                 if(module->type == ADSR)
                 {
-                    // std::cout << "OSCILLATOR CURRENT PHASE LINE: " << line << std::endl;
                     ((Adsr *) module)->current_amplitude = stof(line);
                     getline(infile, line);
-                    // std::cout << "OSCILLATOR WAVEFORM TYPE LINE: " << line << std::endl;
                     ((Adsr *) module)->phase_num = stof(line);
                 }
             }
