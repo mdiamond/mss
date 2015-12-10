@@ -85,10 +85,7 @@ void Delay::process()
 
         if(input_floats[DELAY_DELAY_TIME] != previous_delay_time)
         {
-            circular_buffer_length = input_floats[DELAY_DELAY_TIME] / 1000.0 * SAMPLE_RATE;
-            circular_buffer = std::vector<float>(circular_buffer_length, 0);
-            previous_delay_time = input_floats[DELAY_DELAY_TIME];
-        }
+            reset_buffer();        }
 
         if(inputs_live[DELAY_SIGNAL])
         {
@@ -253,4 +250,16 @@ void Delay::initialize_unique_graphics_objects()
 std::string Delay::get_unique_text_representation()
 {
     return "";
+}
+
+/*
+ * Reset this delay's buffer
+ */
+void Delay::reset_buffer()
+{
+    circular_buffer_length = input_floats[DELAY_DELAY_TIME] / 1000.0 * SAMPLE_RATE;
+    circular_buffer = std::vector<float>(circular_buffer_length, 0);
+    previous_delay_time = input_floats[DELAY_DELAY_TIME];
+
+    std::cout << name << " buffer reset" << std::endl;
 }

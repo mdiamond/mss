@@ -110,14 +110,33 @@ bool can_floatify(std::string *string)
 }
 
 /*
- * Handle functions for the output module.
+ * Handle functions for the ADSR module.
  */
-void output_function_forwarder(Graphics_Object *g)
+void adsr_function_forwarder(Graphics_Object *g)
 {
-    Output *output = (Output *) g->parent;
+    Adsr *adsr = (Adsr *) g->parent;
+    std::vector<std::string> possible_names;
 
-    if(g->name == "output on/off button (toggle_button)")
-        output->toggle_audio_on();
+    possible_names = {"reset current amplitude (button)"};
+
+    if(g->name.size() > possible_names[0].size()
+       && g->name.substr(g->name.size() - possible_names[0].size()) == possible_names[0])
+        adsr->reset_current_amplitude();
+}
+
+/*
+ * Handle functions for the delay module.
+ */
+void delay_function_forwarder(Graphics_Object *g)
+{
+    Delay *delay = (Delay *) g->parent;
+    std::vector<std::string> possible_names;
+
+    possible_names = {"reset buffer (button)"};
+
+    if(g->name.size() > possible_names[0].size()
+       && g->name.substr(g->name.size() - possible_names[0].size()) == possible_names[0])
+        delay->reset_buffer();
 }
 
 /*
@@ -128,37 +147,36 @@ void oscillator_function_forwarder(Graphics_Object *g)
     Oscillator *oscillator = (Oscillator *) g->parent;
     std::vector<std::string> possible_names;
 
-    possible_names = {"sin toggle (toggle button)", "tri toggle (toggle button)",
+    possible_names = {"reset current phase (button)",
+                      "sin toggle (toggle button)", "tri toggle (toggle button)",
                       "saw toggle (toggle button)", "sqr toggle (toggle button)"};
 
     if(g->name.size() > possible_names[0].size()
-       && g->name.substr(g->name.size() - 26) == possible_names[0])
-        oscillator->switch_waveform(SIN);
+       && g->name.substr(g->name.size() - 28) == possible_names[0])
+        oscillator->reset_current_phase();
     else if(g->name.size() > possible_names[1].size()
             && g->name.substr(g->name.size() - 26) == possible_names[1])
-        oscillator->switch_waveform(TRI);
+        oscillator->switch_waveform(SIN);
     else if(g->name.size() > possible_names[2].size()
             && g->name.substr(g->name.size() - 26) == possible_names[2])
-        oscillator->switch_waveform(SAW);
+        oscillator->switch_waveform(TRI);
     else if(g->name.size() > possible_names[3].size()
             && g->name.substr(g->name.size() - 26) == possible_names[3])
+        oscillator->switch_waveform(SAW);
+    else if(g->name.size() > possible_names[4].size()
+            && g->name.substr(g->name.size() - 26) == possible_names[4])
         oscillator->switch_waveform(SQR);
 }
 
 /*
- * Handle functions for the multiplier module.
+ * Handle functions for the output module.
  */
-void multiplier_function_forwarder(Graphics_Object *g)
+void output_function_forwarder(Graphics_Object *g)
 {
+    Output *output = (Output *) g->parent;
 
-}
-
-/*
- * Handle functions for the mixer module.
- */
-void mixer_function_forwarder(Graphics_Object *g)
-{
-
+    if(g->name == "output on/off button (toggle_button)")
+        output->toggle_audio_on();
 }
 
 /*
@@ -271,29 +289,26 @@ void function_forwarder(Graphics_Object *g)
     // If the above situations were not the case, then check if we are dealing with a
     // graphics object from the utilities page (no parent), and then forward the graphics object
     // along to a particular function
-    else if(g->name.size() > 28
-            && g->name.substr(g->name.size() - 28) == "reset current phase (button)")
-        ((Oscillator *) g->parent)->reset_current_phase();
     else if(g->parent == NULL)
         no_parent_function_forwarder(g);
     // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from the output module, and then forward the graphics object
+    // graphics object from the utilities page (no parent), and then forward the graphics object
     // along to a particular function
-    else if(g->parent->type == OUTPUT)
-        output_function_forwarder(g);
+    else if(g->parent->type == ADSR)
+        adsr_function_forwarder(g);
+    // If the above situations were not the case, then check if we are dealing with a
+    // graphics object from the utilities page (no parent), and then forward the graphics object
+    // along to a particular function
+    else if(g->parent->type == DELAY)
+        delay_function_forwarder(g);
     // If the above situations were not the case, then check if we are dealing with a
     // graphics object from an oscillator module, and then forward the graphics object
     // along to a particular function
     else if(g->parent->type == OSCILLATOR)
         oscillator_function_forwarder(g);
     // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from a multiplier module, and then forward the graphics object
+    // graphics object from the output module, and then forward the graphics object
     // along to a particular function
-    else if(g->parent->type == MULTIPLIER)
-        multiplier_function_forwarder(g);
-    // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from a mixer module, and then forward the graphics object
-    // along to a particular function
-    else if(g->parent->type == MIXER)
-        mixer_function_forwarder(g);
+    else if(g->parent->type == OUTPUT)
+        output_function_forwarder(g);
 }

@@ -98,6 +98,9 @@ void Adsr::process()
                 }
                 else if(phase_num == ADSR_D_PHASE)
                 {
+                    if(input_floats[ADSR_D] == 0)
+                        phase_num ++;
+
                     double decrement = (1 - input_floats[ADSR_S]) / ((input_floats[ADSR_D] / 1000) * SAMPLE_RATE);
                     current_amplitude -= decrement;
                     if(current_amplitude <= input_floats[ADSR_S])
@@ -285,6 +288,7 @@ std::string Adsr::get_unique_text_representation()
 void Adsr::reset_current_amplitude()
 {
     current_amplitude = 0;
+    phase_num = ADSR_A_PHASE;
 
     std::cout << name << " current amplitude reset" << std::endl;
 }
