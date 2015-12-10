@@ -24,20 +24,20 @@
 enum Adsr_Graphics_Objects
 {
     ADSR_RESET_CURRENT_AMPLITUDE_BUTTON = 3,
+    ADSR_NOTE_TEXT,
     ADSR_A_D_TEXT,
     ADSR_S_R_TEXT,
-    ADSR_NOTE_TEXT,
     ADSR_OUTPUT_WAVEFORM,
+    ADSR_NOTE_INPUT_TEXT_BOX,
     ADSR_A_INPUT_TEXT_BOX,
     ADSR_D_INPUT_TEXT_BOX,
     ADSR_S_INPUT_TEXT_BOX,
     ADSR_R_INPUT_TEXT_BOX,
-    ADSR_NOTE_INPUT_TEXT_BOX,
+    ADSR_NOTE_INPUT_TOGGLE_BUTTON,
     ADSR_A_INPUT_TOGGLE_BUTTON,
     ADSR_D_INPUT_TOGGLE_BUTTON,
     ADSR_S_INPUT_TOGGLE_BUTTON,
-    ADSR_R_INPUT_TOGGLE_BUTTON,
-    ADSR_NOTE_INPUT_TOGGLE_BUTTON,
+    ADSR_R_INPUT_TOGGLE_BUTTON
 };
 
 /**************************
@@ -46,11 +46,11 @@ enum Adsr_Graphics_Objects
 
 enum Adsr_Dependencies
 {
-    ADSR_A = 0,
+    ADSR_NOTE = 0,
+    ADSR_A,
     ADSR_D,
     ADSR_S,
-    ADSR_R,
-    ADSR_NOTE
+    ADSR_R
 };
 
 /********************

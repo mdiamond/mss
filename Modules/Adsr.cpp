@@ -114,7 +114,7 @@ void Adsr::process()
             }
             else
             {
-                double decrement = 1 / ((input_floats[ADSR_R] / 1000) * SAMPLE_RATE);
+                double decrement = input_floats[ADSR_S] / ((input_floats[ADSR_R] / 1000) * SAMPLE_RATE);
                 current_amplitude -= decrement;
                 if(current_amplitude <= 0)
                     current_amplitude = 0;
@@ -172,15 +172,15 @@ void Adsr::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_cv, y5, w_signals - 1, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_text_box, y7, w_signals, h_text_box});
     graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y9, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y9, w_signals, h_text_box});
+    graphics_object_locations.push_back({x_signal_cv, y9, w_signals - 1, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_signal_input_toggle_button, y7, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_signal_input_toggle_button, y9, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});
 }
 
@@ -208,13 +208,12 @@ void Adsr::initialize_unique_graphics_objects()
                     &text_color, &color, "0", this);
     graphics_objects.push_back(button);
 
-    names = {name + " attack and decay (text)", name + " sustain and release (text)",
-             name + " note on/off (text)"};
-    locations = {graphics_object_locations[ADSR_A_D_TEXT],
-                 graphics_object_locations[ADSR_S_R_TEXT],
-                 graphics_object_locations[ADSR_NOTE_TEXT]};
+    names = {name + " note on/off (text)", name + " attack and decay (text)", name + " sustain and release (text)"};
+    locations = {graphics_object_locations[ADSR_NOTE_TEXT],
+                 graphics_object_locations[ADSR_A_D_TEXT],
+                 graphics_object_locations[ADSR_S_R_TEXT]};
     colors = std::vector<SDL_Color *>(3, &text_color);
-    texts = {"ATTACK & DECAY:", "SUSTAIN & RELEASE:", "NOTE ON/OFF:"};
+    texts = {"NOTE ON/OFF:", "ATTACK & DECAY:", "SUSTAIN & RELEASE:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
@@ -231,35 +230,33 @@ void Adsr::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {name + " attack (input text box)", name + " decay (input text box)",
-             name + " sustain (input text box)", name + " release (input text box)",
-             name + " note on/off (input text box)"};
-    locations = {graphics_object_locations[ADSR_A_INPUT_TEXT_BOX],
+    names = {name + " note on/off (input text box)", name + " attack (input text box)", name + " decay (input text box)",
+             name + " sustain (input text box)", name + " release (input text box)"};
+    locations = {graphics_object_locations[ADSR_NOTE_INPUT_TEXT_BOX],
+                 graphics_object_locations[ADSR_A_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_D_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_S_INPUT_TEXT_BOX],
-                 graphics_object_locations[ADSR_R_INPUT_TEXT_BOX],
-                 graphics_object_locations[ADSR_NOTE_INPUT_TEXT_BOX]};
+                 graphics_object_locations[ADSR_R_INPUT_TEXT_BOX]};
     colors = std::vector<SDL_Color *>(5, &text_color);
     text_colors = std::vector<SDL_Color *>(5, &color);
     prompt_texts = std::vector<std::string>(5, "# or input");
-    prompt_texts[4] = "input";
     fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
     parents = std::vector<Module *>(5, this);
-    input_nums = {ADSR_A, ADSR_D,
-                  ADSR_S, ADSR_R, ADSR_NOTE};
+    input_nums = {ADSR_NOTE, ADSR_A, ADSR_D,
+                  ADSR_S, ADSR_R};
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {name + " attack (input toggle button)",
+    names = {name + " note on/off (input toggle button)",
+             name + " attack (input toggle button)",
              name + " decay (input toggle button)",
              name + " sustain (input toggle button)",
-             name + " release (input toggle button)",
-             name + " note on/off (input toggle button)"};
-    locations = {graphics_object_locations[ADSR_A_INPUT_TOGGLE_BUTTON],
+             name + " release (input toggle button)"};
+    locations = {graphics_object_locations[ADSR_NOTE_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[ADSR_A_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[ADSR_D_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[ADSR_S_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[ADSR_R_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[ADSR_NOTE_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[ADSR_R_INPUT_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(5, &RED);
     color_offs = std::vector<SDL_Color *>(5, &text_color);
     text_color_ons = std::vector<SDL_Color *>(5, &WHITE);
@@ -269,8 +266,8 @@ void Adsr::initialize_unique_graphics_objects()
     text_offs = texts;
     bs = std::vector<bool>(5, false);
     parents = std::vector<Module *>(5, this);
-    input_nums = {ADSR_A, ADSR_D,
-                  ADSR_S, ADSR_R, ADSR_NOTE};
+    input_nums = {ADSR_NOTE, ADSR_A, ADSR_D,
+                  ADSR_S, ADSR_R};
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);

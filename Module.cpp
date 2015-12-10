@@ -112,11 +112,11 @@ Module::Module(int _type) :
     switch(type)
     {
         case ADSR:
+            parameter_names[ADSR_NOTE] = "NOTE ON/OFF";
             parameter_names[ADSR_A] = "ATTACK";
             parameter_names[ADSR_D] = "DECAY";
             parameter_names[ADSR_S] = "SUSTAIN";
             parameter_names[ADSR_R] = "RELEASE";
-            parameter_names[ADSR_NOTE] = "NOTE ON/OFF";
             break;
         case DELAY:
             parameter_names[DELAY_SIGNAL] = "SIGNAL";
