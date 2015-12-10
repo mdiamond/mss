@@ -58,6 +58,8 @@ class Text_Box: public Graphics_Object
         void update_current_text(std::string);
         //   Cancel text input
         void cancel_input();
+        //   Set the colors of the text box
+        void set_colors(SDL_Color *, SDL_Color *);
 };
 
 #endif

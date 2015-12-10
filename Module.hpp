@@ -146,6 +146,8 @@ class Module
         std::string get_short_name();
         //   Output the module as text
         std::string get_text_representation();
+        //   Make this module's input stuff adopt the colors of whatever is outputting to it
+        void adopt_input_colors();
 };
 
 #endif

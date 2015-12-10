@@ -52,6 +52,8 @@ class Toggle_Button: public Graphics_Object
         void toggle();
         //   Override the default graphics object update_location() function
         void update_location(SDL_Rect);
+        //   Set this toggle button's colors
+        void set_colors(SDL_Color *, SDL_Color *, SDL_Color *, SDL_Color *);
 };
 
 #endif

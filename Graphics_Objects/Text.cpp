@@ -89,10 +89,19 @@ void Text::clicked()
 }
 
 /*
- * A function for updating the text in this object.
+ * Update this text object's stored text.
  */
 void Text::update_text(std::string s)
 {
     text = s;
+    updated = true;
+}
+
+/*
+ * Set this text object's color.
+ */
+void Text::set_color(SDL_Color *_color)
+{
+    color = _color;
     updated = true;
 }

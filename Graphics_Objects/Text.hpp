@@ -39,6 +39,8 @@ class Text: public Graphics_Object
         // Member functions
         //   Update the text displayed
         void update_text(std::string);
+        //   Set the text color
+        void set_color(SDL_Color *);
 };
 
 #endif

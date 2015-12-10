@@ -214,3 +214,16 @@ void Text_Box::cancel_input()
     ACTIVE_TEXT_BOX = NULL;
     active = false;
 }
+
+/*
+ * Set the colors of this text box.
+ */
+void Text_Box::set_colors(SDL_Color *_color, SDL_Color *_text_color)
+{
+    color = _color;
+    background.set_color(_color);
+    text.set_color(_text_color);
+    prompt_text.set_color(_text_color);
+    typing_text.set_color(_text_color);
+    updated = true;
+}

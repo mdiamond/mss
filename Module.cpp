@@ -432,6 +432,8 @@ void Module::set(float val, int input_num)
     input_floats[input_num] = val;
     inputs_live[input_num] = false;
 
+    adopt_input_colors();
+
     std::cout << name << " " << parameter_names[input_num]
          << " changed to " << val << std::endl;
 }
@@ -462,6 +464,8 @@ void Module::set(Module *src, int input_num)
         waveform->buffer = &src->output;
     }
 
+    adopt_input_colors();
+
     std::cout << name << " " << parameter_names[input_num]
          << " is now coming from " << src->name << std::endl;
 }
@@ -490,6 +494,8 @@ void Module::cancel_input(int input_num)
             waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_R_WAVEFORM];
         waveform->buffer = NULL;
     }
+
+    adopt_input_colors();
 
     std::cout << name << " " << parameter_names[input_num]
          << " input cancelled" << std::endl;
@@ -535,4 +541,28 @@ std::string Module::get_text_representation()
     result += "DONE\n";
 
     return result;
+}
+
+/*
+ * Set the colors of all input text boxes and input
+ * toggle buttons to match their input modules' colors
+ * if applicable. If not, set them to this module's colors.
+ */
+void Module::adopt_input_colors()
+{
+    unsigned int dependency_num = 0;
+
+    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+    {
+        if(graphics_objects[i]->type == INPUT_TEXT_BOX)
+        {
+            if(inputs_live[dependency_num])
+                ((Input_Text_Box *) graphics_objects[i])->set_colors(&dependencies[dependency_num]->color,
+                                                                     &dependencies[dependency_num]->text_color);
+            else
+                ((Input_Text_Box *) graphics_objects[i])->set_colors(&text_color, &color);
+
+            dependency_num ++;
+        }
+    }
 }

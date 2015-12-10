@@ -111,3 +111,16 @@ void Toggle_Button::update_location(SDL_Rect _location)
     text_on.updated = true;
     text_off.updated = true;
 }
+
+/*
+ * Updated this toggle button's colors.
+ */
+void Toggle_Button::set_colors(SDL_Color *_color, SDL_Color *_color_off,
+                               SDL_Color *_text_color_on, SDL_Color *_text_color_off)
+{
+    background.set_color(_color);
+    background_off.set_color(_color_off);
+    text_on.set_color(_text_color_on);
+    text_off.set_color(_text_color_off);
+    updated = true;
+}

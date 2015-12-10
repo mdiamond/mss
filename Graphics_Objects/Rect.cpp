@@ -77,3 +77,12 @@ void Rect::clicked()
         OBJECT_CLICKED = true;
     }
 }
+
+/*
+ * Set this text object's color.
+ */
+void Rect::set_color(SDL_Color *_color)
+{
+    color = _color;
+    updated = true;
+}

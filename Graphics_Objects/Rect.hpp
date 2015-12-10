@@ -31,6 +31,10 @@ class Rect: public Graphics_Object
         // Virtual member functions
         virtual void render();
         virtual void clicked();
+
+        // Member functions
+        //   Set the text color
+        void set_color(SDL_Color *);
 };
 
 #endif
