@@ -209,7 +209,6 @@ void Text_Box::cancel_input()
 {
     std::cout << PINK_STDOUT << name << " text input cancelled" << DEFAULT_STDOUT << std::endl;
 
-    text.text = typing_text.text;
     SDL_StopTextInput();
     text.updated = true;
     ACTIVE_TEXT_BOX = NULL;
