@@ -57,7 +57,10 @@ class Delay: public Module
 {
     public:
         // Delayed buffer
-        std::vector<float> delay_buffer;
+        std::vector<float> circular_buffer;
+        int circular_buffer_length;
+        int current_sample;
+        int delay_samples;
         // Previous max delay time
         float previous_max_delay_time;
 

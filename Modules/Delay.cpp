@@ -43,13 +43,19 @@
  */
 Delay::Delay() :
     Module(DELAY),
-    delay_buffer(std::vector<float>(BUFFER_SIZE, 0)),
+    circular_buffer(std::vector<float>(BUFFER_SIZE, 0)),
+    current_sample(0),
     previous_max_delay_time(0)
 {
-    input_floats[DELAY_MAX_DELAY_TIME] = 5000;
+    input_floats[DELAY_MAX_DELAY_TIME] = 2000;
     input_floats[DELAY_DELAY_TIME] = 500;
-    input_floats[DELAY_FEEDBACK_AMOUNT] = .5;
-    input_floats[DELAY_WET_DRY] = .5;
+    input_floats[DELAY_FEEDBACK_AMOUNT] = 0;
+    input_floats[DELAY_WET_DRY] = 1;
+
+    circular_buffer_length = input_floats[DELAY_MAX_DELAY_TIME] / 1000.0 * SAMPLE_RATE;
+    circular_buffer = std::vector<float>(circular_buffer_length, 0);
+    delay_samples = input_floats[DELAY_MAX_DELAY_TIME] / 1000.0 * SAMPLE_RATE;
+    std::cout << circular_buffer_length << ", " << delay_samples << std::endl;
 }
 
 /*
@@ -74,27 +80,21 @@ void Delay::process()
     // Per sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        // Update any parameters, don't bother with the signal input
-        for(unsigned int j = 1; j < dependencies.size(); j ++)
-            if(inputs_live[j])
-                input_floats[j] = inputs[j]->at(i);
-
-        // Check if the max delay time has been changed, if so
-        // re-initialize the delay buffer
-        if(input_floats[DELAY_MAX_DELAY_TIME] != previous_max_delay_time)
+        if(inputs_live[DELAY_SIGNAL])
         {
-            delay_buffer = std::vector<float>(input_floats[DELAY_MAX_DELAY_TIME] / 1000 * SAMPLE_RATE, 0);
-            previous_max_delay_time = input_floats[DELAY_MAX_DELAY_TIME];
+            // Apply the dry signal
+            output[i] = (1 - input_floats[DELAY_WET_DRY]) * inputs[DELAY_SIGNAL]->at(i);
+
+            // Apply the wet signal
+            output[i] = input_floats[DELAY_WET_DRY] * circular_buffer[current_sample];
+
+            // Update the sample in the circular buffer
+            circular_buffer[current_sample] = inputs[DELAY_SIGNAL]->at(i);
+
+            // Move on to the next sample
+            current_sample ++;
+            current_sample = current_sample % circular_buffer_length;
         }
-
-        output[i] = (1 - input_floats[DELAY_WET_DRY]) * inputs[DELAY_SIGNAL]->at(i);
-        float delay_buffer_sample = delay_buffer[delay_buffer.size() - (input_floats[DELAY_DELAY_TIME] / 1000 * SAMPLE_RATE)];
-        output[i] += delay_buffer_sample;
-
-        for(unsigned int j = 0; j < delay_buffer.size() - 1; j ++)
-            delay_buffer[j] = delay_buffer[j + 1];
-        delay_buffer[delay_buffer.size() - 1] = input_floats[DELAY_WET_DRY] * inputs[DELAY_SIGNAL]->at(i);
-        delay_buffer[delay_buffer.size() - 1] += delay_buffer_sample * input_floats[DELAY_FEEDBACK_AMOUNT];
     }
 
     processed = true;
@@ -142,15 +142,15 @@ void Delay::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_cv, y5, w_signals - 1, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_text_box, y7, w_signals, h_text_box});
     graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y9, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y9, w_signals, h_text_box});
+    graphics_object_locations.push_back({x_signal_cv, y9, w_signals - 1, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_signal_input_toggle_button, y7, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_signal_input_toggle_button, y9, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});
 }
 
