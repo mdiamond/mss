@@ -132,11 +132,10 @@ void Oscillator::process()
                 input_floats[j] = inputs[j]->at(i);
 
         if(inputs_live[OSCILLATOR_PHASE_OFFSET])
-        {
             input_floats[OSCILLATOR_PHASE_OFFSET] = inputs[OSCILLATOR_PHASE_OFFSET]->at(i);
-            phase_offset_diff = input_floats[OSCILLATOR_PHASE_OFFSET] - previous_phase_offset;
-            previous_phase_offset = input_floats[OSCILLATOR_PHASE_OFFSET];
-        }
+
+        phase_offset_diff = input_floats[OSCILLATOR_PHASE_OFFSET] - previous_phase_offset;
+        previous_phase_offset = input_floats[OSCILLATOR_PHASE_OFFSET];
 
         // Calculate and store the current samples amplitude
         // based on phase
