@@ -77,16 +77,24 @@ void Adsr::process()
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < output.size(); i ++)
     {
+        // If note input is live
         if(inputs_live[ADSR_NOTE])
         {
+            // Update parameters
             for(unsigned int j = 0; j < dependencies.size(); j ++)
                 if(inputs_live[j])
                     input_floats[j] = inputs[j]->at(i);
 
+            // Set the current output sample to the current amplitude
             output[i] = current_amplitude;
 
+            // If note on
             if(input_floats[ADSR_NOTE] == 1)
             {
+                // If coming from the release or idle phase, move on the the attack phase
+                if(phase_num >= ADSR_R_PHASE)
+                    phase_num = ADSR_A_PHASE;
+                // Attack phase
                 if(phase_num == ADSR_A_PHASE)
                 {
                     double increment = 1 / ((input_floats[ADSR_A] / 1000) * SAMPLE_RATE);
@@ -97,6 +105,7 @@ void Adsr::process()
                         phase_num ++;
                     }
                 }
+                // Decay phase
                 else if(phase_num == ADSR_D_PHASE)
                 {
                     if(input_floats[ADSR_D] == 0)
@@ -110,16 +119,31 @@ void Adsr::process()
                         phase_num ++;
                     }
                 }
+                // Sustain phase
                 else if(phase_num == ADSR_S_PHASE)
                     current_amplitude = input_floats[ADSR_S];
             }
             else
             {
-                double decrement = input_floats[ADSR_S] / ((input_floats[ADSR_R] / 1000) * SAMPLE_RATE);
-                current_amplitude -= decrement;
-                if(current_amplitude <= 0)
-                    current_amplitude = 0;
-                phase_num = ADSR_A_PHASE;
+                // If coming from any earlier phase, move on the the release phase
+                if(phase_num < ADSR_R_PHASE)
+                    phase_num = ADSR_R_PHASE;
+                // Release phase
+                if(phase_num == ADSR_R_PHASE)
+                {
+                    double decrement = input_floats[ADSR_S] / ((input_floats[ADSR_R] / 1000) * SAMPLE_RATE);
+                    current_amplitude -= decrement;
+                    if(current_amplitude <= 0)
+                    {
+                        phase_num = ADSR_IDLE_PHASE;
+                        current_amplitude = 0;
+                    }
+                }
+                // Idle phase
+                else if(phase_num == ADSR_IDLE_PHASE)
+                {
+                    // Idle
+                }
             }
         }
     }

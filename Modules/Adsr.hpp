@@ -62,7 +62,8 @@ enum Adsr_Phases
     ADSR_A_PHASE = 0,
     ADSR_D_PHASE,
     ADSR_S_PHASE,
-    ADSR_R_PHASE
+    ADSR_R_PHASE,
+    ADSR_IDLE_PHASE
 };
 
 /*************************
