@@ -46,7 +46,7 @@ Multiplier::Multiplier() :
     // The signal input needs to be 0, while the others
     // need to be 1 to start out
     input_floats[0] = 0;
-    input_floats[1] = 0;
+    input_floats[1] = 1;
     input_floats[2] = 1;
 }
 
@@ -69,15 +69,17 @@ void Multiplier::process()
     // Process any dependencies
     process_dependencies();
 
-    if(inputs_live[MULTIPLIER_SIGNAL] && inputs_live[MULTIPLIER_CV])
+    if(inputs_live[MULTIPLIER_SIGNAL])
     {
         for(unsigned short i = 0; i < output.size(); i ++)
         {
-            if(inputs_live[MULTIPLIER_CV_AMOUNT])
-                input_floats[MULTIPLIER_CV_AMOUNT] = inputs[MULTIPLIER_CV_AMOUNT]->at(i);
+            if(inputs_live[MULTIPLIER_MULTIPLIER_AMOUNT])
+                input_floats[MULTIPLIER_MULTIPLIER_AMOUNT] = inputs[MULTIPLIER_MULTIPLIER_AMOUNT]->at(i);
+            if(inputs_live[MULTIPLIER_MULTIPLIER])
+                input_floats[MULTIPLIER_MULTIPLIER] = inputs[MULTIPLIER_MULTIPLIER]->at(i);
 
-            output[i] = (inputs[MULTIPLIER_SIGNAL]->at(i) * (1 - input_floats[MULTIPLIER_CV_AMOUNT])) +
-                           (inputs[MULTIPLIER_SIGNAL]->at(i) * inputs[MULTIPLIER_CV]->at(i) * input_floats[MULTIPLIER_CV_AMOUNT]);
+            output[i] = (inputs[MULTIPLIER_SIGNAL]->at(i) * (1 - input_floats[MULTIPLIER_MULTIPLIER_AMOUNT])) +
+                           (inputs[MULTIPLIER_SIGNAL]->at(i) * input_floats[MULTIPLIER_MULTIPLIER] * input_floats[MULTIPLIER_MULTIPLIER_AMOUNT]);
         }
     }
 
@@ -100,7 +102,7 @@ void Multiplier::calculate_unique_graphics_object_locations()
     int x_text, x_text_box, w_text_box, h_text_box,
         x_input_toggle_button, w_input_toggle_button,
         w_waveform, h_waveform,
-        x_signal_cv, x_signal_input_toggle_button, w_signals,
+        x_signal_multiplier, x_signal_input_toggle_button, w_signals,
         y3, y4, y5, y6, y7;
 
     x_text = upper_left.x + 2;
@@ -116,7 +118,7 @@ void Multiplier::calculate_unique_graphics_object_locations()
     y5 = y4 + 15;
     y6 = y5 + 15;
     y7 = y6 + 15;
-    x_signal_cv = upper_left.x + (MODULE_WIDTH / 2) + 1;
+    x_signal_multiplier = upper_left.x + (MODULE_WIDTH / 2) + 1;
     w_signals = (MODULE_WIDTH / 2) - 11;
     x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
@@ -124,7 +126,7 @@ void Multiplier::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
     graphics_object_locations.push_back({x_text_box, y5, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_cv, y5, w_signals - 1, h_text_box});
+    graphics_object_locations.push_back({x_signal_multiplier, y5, w_signals - 1, h_text_box});
     graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
@@ -149,11 +151,11 @@ void Multiplier::initialize_unique_graphics_objects()
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
-    names = {name + " signal & cv input (text)", name + " cv amount (text)"};
+    names = {name + " signal & multiplier input (text)", name + " multiplier amount (text)"};
     locations = {graphics_object_locations[MULTIPLIER_INPUT_TEXT],
-                 graphics_object_locations[MULTIPLIER_CV_AMOUNT_TEXT]};
+                 graphics_object_locations[MULTIPLIER_MULTIPLIER_AMOUNT_TEXT]};
     colors = std::vector<SDL_Color *>(2, &text_color);
-    texts = {"SIGNAL & CV INPUT:", "CV AMOUNT:"};
+    texts = {"SIGNAL & MULTIPLIER:", "MULTIPLIER AMOUNT:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
@@ -170,25 +172,25 @@ void Multiplier::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {name + " signal (input text box)", name + " cv (input text box)",
-             name + " cv amount (input text box)"};
+    names = {name + " signal (input text box)", name + " multiplier (input text box)",
+             name + " multiplier amount (input text box)"};
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX],
-                 graphics_object_locations[MULTIPLIER_CV_INPUT_TEXT_BOX],
-                 graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TEXT_BOX]};
+                 graphics_object_locations[MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX],
+                 graphics_object_locations[MULTIPLIER_MULTIPLIER_AMOUNT_INPUT_TEXT_BOX]};
     colors = std::vector<SDL_Color *>(3, &text_color);
     text_colors = std::vector<SDL_Color *>(3, &color);
-    prompt_texts = {"input", "input", "# or input"};
+    prompt_texts = {"input", "# or input", "# or input"};
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     parents = std::vector<Module *>(3, this);
-    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_CV, MULTIPLIER_CV_AMOUNT};
+    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER, MULTIPLIER_MULTIPLIER_AMOUNT};
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {name + " signal input (input toggle button)", name + " cv input (input toggle button)",
-             name + " cv amount input (input toggle button)"};
+    names = {name + " signal input (input toggle button)", name + " multiplier input (input toggle button)",
+             name + " multiplier amount input (input toggle button)"};
     locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[MULTIPLIER_CV_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[MULTIPLIER_CV_AMOUNT_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[MULTIPLIER_MULTIPLIER_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[MULTIPLIER_MULTIPLIER_AMOUNT_INPUT_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(3, &RED);
     color_offs = std::vector<SDL_Color *>(3, &text_color);
     text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
@@ -196,11 +198,11 @@ void Multiplier::initialize_unique_graphics_objects()
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     texts = std::vector<std::string>(3, "I");
     text_offs = texts;
-    bs = {inputs_live[MULTIPLIER_SIGNAL], inputs_live[MULTIPLIER_CV],
-          inputs_live[MULTIPLIER_CV_AMOUNT]};
+    bs = {inputs_live[MULTIPLIER_SIGNAL], inputs_live[MULTIPLIER_MULTIPLIER],
+          inputs_live[MULTIPLIER_MULTIPLIER_AMOUNT]};
     parents = std::vector<Module *>(3, this);
-    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_CV,
-                  MULTIPLIER_CV_AMOUNT};
+    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER,
+                  MULTIPLIER_MULTIPLIER_AMOUNT};
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
