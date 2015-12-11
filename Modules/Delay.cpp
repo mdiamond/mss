@@ -254,6 +254,8 @@ void Delay::initialize_unique_graphics_objects()
     colors = std::vector<SDL_Color *>(5, &text_color);
     text_colors = std::vector<SDL_Color *>(5, &color);
     prompt_texts = std::vector<std::string>(5, "# or input");
+    prompt_texts[0] = "input";
+    prompt_texts[1] = "#";
     fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
     parents = std::vector<Module *>(5, this);
     input_nums = {DELAY_SIGNAL, DELAY_MAX_DELAY_TIME,

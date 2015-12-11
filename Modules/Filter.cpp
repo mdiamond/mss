@@ -208,6 +208,7 @@ void Filter::initialize_unique_graphics_objects()
     colors = std::vector<SDL_Color *>(3, &text_color);
     text_colors = std::vector<SDL_Color *>(3, &color);
     prompt_texts = std::vector<std::string>(3, "# or input");
+    prompt_texts[0] = "input";
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     parents = std::vector<Module *>(3, this);
     input_nums = {FILTER_SIGNAL, FILTER_FREQUENCY_CUTOFF, FILTER_Q};
