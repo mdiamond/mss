@@ -42,12 +42,23 @@
  * Constructor.
  */
 Filter::Filter() :
-    Module(FILTER)
+    Module(FILTER),
+    fir_samples(std::vector<float>(16, 0)),
+    fir_impulse_response(std::vector<float>(16, 1 / 16.0)),
+    current_sample(0)
     // waveform_type(1), sin_on(true), tri_on(false),
     // saw_on(false), sqr_on(false)
 {
     input_floats[FILTER_FREQUENCY_CUTOFF] = 12500;
     input_floats[FILTER_Q] = 1;
+
+    // for(float i = 0; i < 16; i ++)
+    // {
+    //     fir_impulse_response[i] = scale_sample((float) i / 16.0, 0, 1, 0, 1 / 16.0);
+    // }
+
+    // fir_impulse_response = {.000625, .00125, .0025, .005, .01, .02, .04, .0625, .0625, .04, .02, .01, .005, .0025, .00125, .000625};
+    // fir_impulse_response = {.0625, .04, .02, .01, .005, .0025, .00125, .000625, .000625, .00125, .0025, .005, .01, .02, .04, .0625};
 }
 
 /*
@@ -69,7 +80,25 @@ void Filter::process()
     // Process any dependencies
     process_dependencies();
 
+    for(int i = 0; i < BUFFER_SIZE; i ++)
+    {
+        fir_samples[current_sample] = inputs[FILTER_SIGNAL]->at(i);
 
+        float weighted_avg = 0;
+        int k = current_sample - 1;
+        for(unsigned int j = 0; j < fir_samples.size(); j ++)
+        {
+            if(k < 0)
+                k += fir_samples.size();
+            weighted_avg += fir_samples[k] * fir_impulse_response[j];
+            k --;
+        }
+
+        output[i] = weighted_avg;
+
+        current_sample ++;
+        current_sample = current_sample % fir_samples.size();
+    }
 
     processed = true;
 }

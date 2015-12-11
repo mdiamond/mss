@@ -42,11 +42,10 @@
  * Constructor.
  */
 Adsr::Adsr() :
-    Module(ADSR)
+    Module(ADSR),
+    current_amplitude(0),
+    phase_num(ADSR_A_PHASE)
 {
-    current_amplitude = 0;
-    phase_num = ADSR_A_PHASE;
-
     // Frequency starts at 0, phase offset at 0,
     // pulse width at .5, range low at -1, range high
     // at 1
@@ -83,6 +82,8 @@ void Adsr::process()
             for(unsigned int j = 0; j < dependencies.size(); j ++)
                 if(inputs_live[j])
                     input_floats[j] = inputs[j]->at(i);
+
+            output[i] = current_amplitude;
 
             if(input_floats[ADSR_NOTE] == 1)
             {
@@ -121,8 +122,6 @@ void Adsr::process()
                 phase_num = ADSR_A_PHASE;
             }
         }
-
-        output[i] = current_amplitude;
     }
 
     processed = true;

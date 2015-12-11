@@ -49,7 +49,7 @@ Delay::Delay() :
     previous_delay_time(0)
 {
     input_floats[DELAY_MAX_DELAY_TIME] = 5000;
-    input_floats[DELAY_DELAY_TIME] = 1000;
+    input_floats[DELAY_DELAY_TIME] = 2000;
     input_floats[DELAY_FEEDBACK_AMOUNT] = 0;
     input_floats[DELAY_WET_DRY] = 1;
 

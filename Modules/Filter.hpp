@@ -50,6 +50,10 @@ enum Filter_Dependencies
 
 class Filter: public Module
 {
+    // Vectors to track samples passing through and the impulse response
+    std::vector<float> fir_samples, fir_impulse_response;
+    int current_sample;
+
     public:
         // Booleans to represent whether or not each of the waveforms is enabled
         // int waveform_type;
