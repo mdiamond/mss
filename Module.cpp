@@ -54,7 +54,7 @@ Module::Module(int _type) :
             break;
         case DELAY:
             name = "delay " + std::to_string(number);
-            num_inputs = 4;
+            num_inputs = 5;
             break;
         case FILTER:
             name = "filter " + std::to_string(number);
@@ -120,6 +120,7 @@ Module::Module(int _type) :
             break;
         case DELAY:
             parameter_names[DELAY_SIGNAL] = "SIGNAL";
+            parameter_names[DELAY_MAX_DELAY_TIME] = "MAX DELAY TIME";
             parameter_names[DELAY_DELAY_TIME] = "DELAY TIME";
             parameter_names[DELAY_FEEDBACK_AMOUNT] = "FEEDBACK AMOUNT";
             parameter_names[DELAY_WET_DRY] = "WET/DRY AMOUNT";
@@ -149,8 +150,8 @@ Module::Module(int _type) :
             break;
         case MULTIPLIER:
             parameter_names[MULTIPLIER_SIGNAL] = "SIGNAL";
-            parameter_names[MULTIPLIER_CV] = "CV";
-            parameter_names[MULTIPLIER_CV_AMOUNT] = "CV AMOUNT";
+            parameter_names[MULTIPLIER_MULTIPLIER] = "CV";
+            parameter_names[MULTIPLIER_MULTIPLIER_AMOUNT] = "CV AMOUNT";
             break;
         case OSCILLATOR:
             parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";
