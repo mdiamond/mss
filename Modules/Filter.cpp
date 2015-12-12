@@ -138,7 +138,7 @@ void Filter::calculate_unique_graphics_object_locations()
     y7 = y6 + 13;
     y8 = y7 + 16;
     y9 = y8 + 15;
-    y10 = y9 + 16;
+    y10 = y9 + 15;
     y11 = y10 + 15;
     y12 = y11 + 27;
     x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;

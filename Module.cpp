@@ -150,8 +150,8 @@ Module::Module(int _type) :
             break;
         case MULTIPLIER:
             parameter_names[MULTIPLIER_SIGNAL] = "SIGNAL";
-            parameter_names[MULTIPLIER_MULTIPLIER] = "CV";
-            parameter_names[MULTIPLIER_MULTIPLIER_AMOUNT] = "CV AMOUNT";
+            parameter_names[MULTIPLIER_MULTIPLIER] = "MULTIPLIER";
+            parameter_names[MULTIPLIER_DRY_WET] = "DRY/WET";
             break;
         case NOISE:
             parameter_names[NOISE_RANGE_LOW] = "RANGE LOW";
