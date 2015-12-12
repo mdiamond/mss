@@ -109,7 +109,7 @@ void Noise::calculate_unique_graphics_object_locations()
     x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
     w_waveform = MODULE_WIDTH;
-    h_waveform = 153;
+    h_waveform = 138;
     y3 = upper_left.y + 23;
     y4 = y3 + 46;
     y5 = y4 + 15;   
@@ -126,6 +126,7 @@ void Noise::calculate_unique_graphics_object_locations()
     w_wave_selector = ((MODULE_WIDTH) / 4) - 1;
 
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
+    graphics_object_locations.push_back({x_text, y10, 0, 0});
     graphics_object_locations.push_back({x_text_box, y11, w_range, h_text_box});
     graphics_object_locations.push_back({x_range_high, y11, w_range - 1, h_text_box});
     graphics_object_locations.push_back({x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box});
@@ -163,6 +164,15 @@ void Noise::initialize_unique_graphics_objects()
     buffers = {&output};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+
+    names = {name + " range (text)"};
+    locations = {graphics_object_locations[NOISE_RANGE_TEXT]};
+    colors = std::vector<SDL_Color *>(1, &text_color);
+    texts = {"RANGE LOW & HIGH:"};
+    fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
+
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {name + " range low (input text box)", name + " range high (input text box)"};
