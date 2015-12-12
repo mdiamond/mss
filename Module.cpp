@@ -70,7 +70,7 @@ Module::Module(int _type) :
             break;
         case NOISE:
             name = "noise " + std::to_string(number);
-            num_inputs = 0;
+            num_inputs = 2;
             break;
         case OSCILLATOR:
             name = "oscillator " + std::to_string(number);
@@ -152,6 +152,10 @@ Module::Module(int _type) :
             parameter_names[MULTIPLIER_SIGNAL] = "SIGNAL";
             parameter_names[MULTIPLIER_MULTIPLIER] = "CV";
             parameter_names[MULTIPLIER_MULTIPLIER_AMOUNT] = "CV AMOUNT";
+            break;
+        case NOISE:
+            parameter_names[NOISE_RANGE_LOW] = "RANGE LOW";
+            parameter_names[NOISE_RANGE_HIGH] = "RANGE HIGH";
             break;
         case OSCILLATOR:
             parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";

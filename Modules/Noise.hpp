@@ -20,10 +20,24 @@
 enum Noise_Graphics_Objects
 {
     NOISE_OUTPUT_WAVEFORM = 3,
+    NOISE_RANGE_LOW_INPUT_TEXT_BOX,
+    NOISE_RANGE_HIGH_INPUT_TEXT_BOX,
+    NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON,
+    NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON,
     // NOISE_SIN_WAVE_TOGGLE_BUTTON,
     // NOISE_TRI_WAVE_TOGGLE_BUTTON,
     // NOISE_SAW_WAVE_TOGGLE_BUTTON,
     // NOISE_SQR_WAVE_TOGGLE_BUTTON
+};
+
+/***************************
+ * NOISE DEPENDENCIES ENUM *
+ ***************************/
+
+enum Noise_Dependencies
+{
+    NOISE_RANGE_LOW = 0,
+    NOISE_RANGE_HIGH
 };
 
 /**************************

@@ -71,7 +71,12 @@ void Noise::process()
 {
     for(unsigned short i = 0; i < output.size(); i ++)
     {
+        for(unsigned int j = 0; j < dependencies.size(); j ++)
+            if(inputs_live[j])
+                input_floats[j] = inputs[j]->at(i);
+
         output[i] = produce_white_noise_sample();
+        output[i] = scale_sample(output[i], -1, 1, input_floats[NOISE_RANGE_LOW], input_floats[NOISE_RANGE_HIGH]);
     }
 
     processed = true;
@@ -104,7 +109,7 @@ void Noise::calculate_unique_graphics_object_locations()
     x_input_toggle_button = x_text_box + w_text_box + 1;
     w_input_toggle_button = 10;
     w_waveform = MODULE_WIDTH;
-    h_waveform = 167;
+    h_waveform = 153;
     y3 = upper_left.y + 23;
     y4 = y3 + 46;
     y5 = y4 + 15;   
@@ -121,6 +126,10 @@ void Noise::calculate_unique_graphics_object_locations()
     w_wave_selector = ((MODULE_WIDTH) / 4) - 1;
 
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
+    graphics_object_locations.push_back({x_text_box, y11, w_range, h_text_box});
+    graphics_object_locations.push_back({x_range_high, y11, w_range - 1, h_text_box});
+    graphics_object_locations.push_back({x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button, y11, w_input_toggle_button, h_text_box});
     // graphics_object_locations.push_back({x_text_box, y12, w_wave_selector, h_text_box});
     // graphics_object_locations.push_back({x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box});
     // graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box});
@@ -155,6 +164,35 @@ void Noise::initialize_unique_graphics_objects()
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+
+    names = {name + " range low (input text box)", name + " range high (input text box)"};
+    locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TEXT_BOX],
+                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]};
+    colors = std::vector<SDL_Color *>(2, &text_color);
+    text_colors = std::vector<SDL_Color *>(2, &color);
+    prompt_texts = std::vector<std::string>(2, "# or input");
+    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    parents = std::vector<Module *>(2, this);
+    input_nums = {NOISE_RANGE_LOW, NOISE_RANGE_HIGH};
+
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+
+    names = {name + " range low (input toggle button)", name + " range high (input toggle button)"};
+    locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON]};
+    colors = std::vector<SDL_Color *>(2, &RED);
+    color_offs = std::vector<SDL_Color *>(2, &text_color);
+    text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
+    text_color_offs = std::vector<SDL_Color *>(2, &color);
+    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    texts = std::vector<std::string>(2, "I");
+    text_offs = texts;
+    bs = std::vector<bool>(2, false);
+    parents = std::vector<Module *>(2, this);
+    input_nums = {NOISE_RANGE_LOW, NOISE_RANGE_HIGH};
+
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+                                       text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 
     // names = {name + " sin toggle (toggle button)", name + " tri toggle (toggle button)",
     //          name + " saw toggle (toggle button)", name + " sqr toggle (toggle button)"};
