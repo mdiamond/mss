@@ -103,7 +103,7 @@ bool can_floatify(std::string *string)
        (*string)[0] == '.'))
         return false;
     if(string->size() > 1)
-        if(!(isdigit((*string)[1]) || 
+        if(!(isdigit((*string)[1]) ||
            (*string)[1] == '.'))
             return false;
     return true;
@@ -137,6 +137,28 @@ void delay_function_forwarder(Graphics_Object *g)
     if(g->name.size() > possible_names[0].size()
        && g->name.substr(g->name.size() - possible_names[0].size()) == possible_names[0])
         delay->reset_buffer();
+}
+
+/*
+ * Handle functions for the filter module.
+ */
+void filter_function_forwarder(Graphics_Object *g)
+{
+    Filter *filter = (Filter *) g->parent;
+    std::vector<std::string> possible_names;
+
+    possible_names = {"lowpass toggle (toggle button)", "bandpass toggle (toggle button)",
+                      "highpass toggle (toggle button)"};
+
+    if(g->name.size() > possible_names[0].size()
+            && g->name.substr(g->name.size() - 30) == possible_names[0])
+        filter->switch_filter(LOWPASS);
+    else if(g->name.size() > possible_names[1].size()
+            && g->name.substr(g->name.size() - 31) == possible_names[1])
+        filter->switch_filter(BANDPASS);
+    else if(g->name.size() > possible_names[2].size()
+            && g->name.substr(g->name.size() - 31) == possible_names[2])
+        filter->switch_filter(HIGHPASS);
 }
 
 /*
@@ -301,6 +323,11 @@ void function_forwarder(Graphics_Object *g)
     // along to a particular function
     else if(g->parent->type == DELAY)
         delay_function_forwarder(g);
+    // If the above situations were not the case, then check if we are dealing with a
+    // graphics object from the utilities page (no parent), and then forward the graphics object
+    // along to a particular function
+    else if(g->parent->type == FILTER)
+        filter_function_forwarder(g);
     // If the above situations were not the case, then check if we are dealing with a
     // graphics object from an oscillator module, and then forward the graphics object
     // along to a particular function

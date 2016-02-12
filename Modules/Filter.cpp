@@ -1,6 +1,9 @@
 /*
  * Matthew Diamond 2015
  * Member functions for the Filter class.
+ * Filtering functionality adapted from the math on
+ * the following webpage:
+ * http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
  */
 
 /************
@@ -43,11 +46,11 @@
  */
 Filter::Filter() :
     Module(FILTER),
-    fir_samples(std::vector<float>(16, 0)),
-    fir_impulse_response(std::vector<float>(16, 1 / 16.0)),
-    current_sample(0)
-    // waveform_type(1), sin_on(true), tri_on(false),
-    // saw_on(false), sqr_on(false)
+    fir_samples(std::vector<float>(6, 0)),
+    fir_coefficients(std::vector<float>(6, 1 / 16.0)),
+    y1(0), y2(0), x1(0), x2(0),
+    filter_type(LOWPASS), lowpass_on(true), bandpass_on(false),
+    highpass_on(false)
 {
     input_floats[FILTER_FREQUENCY_CUTOFF] = 12500;
     input_floats[FILTER_Q] = 1;
@@ -80,24 +83,53 @@ void Filter::process()
     // Process any dependencies
     process_dependencies();
 
+    for(unsigned int j = 0; j < dependencies.size(); j ++)
+        if(inputs_live[j])
+            input_floats[j] = inputs[j]->at(0);
+
+    double w0 = (input_floats[FILTER_FREQUENCY_CUTOFF] / SAMPLE_RATE) * 2 * M_PI;
+    double alpha = sin(w0) / (2 * input_floats[FILTER_Q]);
+
+    switch(filter_type)
+    {
+        case LOWPASS:
+            fir_coefficients[0] = (1 - cos(w0)) / 2;
+            fir_coefficients[1] = 1 - cos(w0);
+            fir_coefficients[2] = (1 - cos(w0)) / 2;
+            fir_coefficients[3] = 1 + alpha;
+            fir_coefficients[4] = -2 * cos(w0);
+            fir_coefficients[5] = 1 - alpha;
+            break;
+        case BANDPASS:
+            fir_coefficients[0] = input_floats[FILTER_Q] * alpha;
+            fir_coefficients[1] = 0;
+            fir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
+            fir_coefficients[3] = 1 + alpha;
+            fir_coefficients[4] = -2 * cos(w0);
+            fir_coefficients[5] = 1 - alpha;
+            break;
+        case HIGHPASS:
+            fir_coefficients[0] = (1 + cos(w0)) / 2;
+            fir_coefficients[1] = (1 + cos(w0)) * -1;
+            fir_coefficients[2] = (1 + cos(w0)) / 2;
+            fir_coefficients[3] = 1 + alpha;
+            fir_coefficients[4] = -2 * cos(w0);
+            fir_coefficients[5] = 1 - alpha;
+            break;
+    }
+
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        fir_samples[current_sample] = inputs[FILTER_SIGNAL]->at(i);
+        output[i] = (fir_coefficients[0] / fir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i);
+        output[i] += (fir_coefficients[1] / fir_coefficients[3] * x1);
+        output[i] += (fir_coefficients[2] / fir_coefficients[3] * x2);
+        output[i] -= (fir_coefficients[4] / fir_coefficients[3] * y1);
+        output[i] -= (fir_coefficients[5] / fir_coefficients[3] * y2);
 
-        float weighted_avg = 0;
-        int k = current_sample - 1;
-        for(unsigned int j = 0; j < fir_samples.size(); j ++)
-        {
-            if(k < 0)
-                k += fir_samples.size();
-            weighted_avg += fir_samples[k] * fir_impulse_response[j];
-            k --;
-        }
-
-        output[i] = weighted_avg;
-
-        current_sample ++;
-        current_sample = current_sample % fir_samples.size();
+        x2 = x1;
+        x1 = inputs[FILTER_SIGNAL]->at(i);
+        y2 = y1;
+        y1 = output[i];
     }
 
     processed = true;
@@ -155,10 +187,9 @@ void Filter::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y11, w_input_toggle_button, h_text_box});
-    // graphics_object_locations.push_back({x_text_box, y12, w_wave_selector, h_text_box});
-    // graphics_object_locations.push_back({x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box});
-    // graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box});
-    // graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y12, w_wave_selector, h_text_box});
+    graphics_object_locations.push_back({x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box});
+    graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box});
 }
 
 /*
@@ -235,72 +266,59 @@ void Filter::initialize_unique_graphics_objects()
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 
-    // names = {name + " sin toggle (toggle button)", name + " tri toggle (toggle button)",
-    //          name + " saw toggle (toggle button)", name + " sqr toggle (toggle button)"};
-    // locations = {graphics_object_locations[FILTER_SIN_WAVE_TOGGLE_BUTTON],
-    //              graphics_object_locations[FILTER_TRI_WAVE_TOGGLE_BUTTON],
-    //              graphics_object_locations[FILTER_SAW_WAVE_TOGGLE_BUTTON],
-    //              graphics_object_locations[FILTER_SQR_WAVE_TOGGLE_BUTTON]};
-    // colors = std::vector<SDL_Color *>(4, &text_color);
-    // color_offs = std::vector<SDL_Color *>(4, &color);
-    // text_color_ons = std::vector<SDL_Color *>(4, &color);
-    // text_color_offs = std::vector<SDL_Color *>(4, &text_color);
-    // fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
-    // texts = {"SIN", "TRI", "SAW", "SQR"};
-    // text_offs = {"SIN", "TRI", "SAW", "SQR"};
-    // bs = {sin_on, tri_on, saw_on, sqr_on};
-    // parents = std::vector<Module *>(4, this);
+    names = {name + " lowpass toggle (toggle button)", name + " bandpass toggle (toggle button)",
+             name + " highpass toggle (toggle button)"};
+    locations = {graphics_object_locations[FILTER_LP_TOGGLE_BUTTON],
+                 graphics_object_locations[FILTER_BP_TOGGLE_BUTTON],
+                 graphics_object_locations[FILTER_HP_TOGGLE_BUTTON]};
+    colors = std::vector<SDL_Color *>(3, &text_color);
+    color_offs = std::vector<SDL_Color *>(3, &color);
+    text_color_ons = std::vector<SDL_Color *>(3, &color);
+    text_color_offs = std::vector<SDL_Color *>(3, &text_color);
+    fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
+    texts = {"LP", "BP", "HP"};
+    text_offs = {"LP", "BP", "HP"};
+    bs = {lowpass_on, bandpass_on, highpass_on};
+    parents = std::vector<Module *>(3, this);
 
-    // tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-    //                                                     text_color_offs, fonts, texts, text_offs, bs, parents);
-    // graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
+                                                        text_color_offs, fonts, texts, text_offs, bs, parents);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 }
 
-// /*
-//  * Switch to outputting the given waveform type.
-//  */
-// void Filter::switch_waveform(int _waveform_type)
-// {
-//     sin_on = false;
-//     tri_on = false;
-//     saw_on = false;
-//     sqr_on = false;
-//     ((Toggle_Button *) graphics_objects[FILTER_SIN_WAVE_TOGGLE_BUTTON])->b = false;
-//     ((Toggle_Button *) graphics_objects[FILTER_TRI_WAVE_TOGGLE_BUTTON])->b = false;
-//     ((Toggle_Button *) graphics_objects[FILTER_SAW_WAVE_TOGGLE_BUTTON])->b = false;
-//     ((Toggle_Button *) graphics_objects[FILTER_SQR_WAVE_TOGGLE_BUTTON])->b = false;
+/*
+ * Switch to outputting the given waveform type.
+ */
+void Filter::switch_filter(int _filter_type)
+{
+    lowpass_on = false;
+    bandpass_on = false;
+    highpass_on = false;
+    ((Toggle_Button *) graphics_objects[FILTER_LP_TOGGLE_BUTTON])->b = false;
+    ((Toggle_Button *) graphics_objects[FILTER_BP_TOGGLE_BUTTON])->b = false;
+    ((Toggle_Button *) graphics_objects[FILTER_HP_TOGGLE_BUTTON])->b = false;
 
-//     if(_waveform_type == SIN)
-//     {
-//         waveform_type = SIN;
-//         sin_on = true;
-//         ((Toggle_Button *) graphics_objects[FILTER_SIN_WAVE_TOGGLE_BUTTON])->b = true;
-//         std::cout << name << " is now outputting a sine wave" << std::endl;
-//     }
-//     else if(_waveform_type == TRI)
-//     {
-//         waveform_type = TRI;
-//         tri_on = true;
-//         ((Toggle_Button *) graphics_objects[FILTER_TRI_WAVE_TOGGLE_BUTTON])->b = true;
-//         std::cout << name << " is now outputting a triangle wave" << std::endl;
-//     }
-//     else if(_waveform_type == SAW)
-//     {
-//         waveform_type = SAW;
-//         saw_on = true;
-//         ((Toggle_Button *) graphics_objects[FILTER_SAW_WAVE_TOGGLE_BUTTON])->b = true;
-//         std::cout << name << " is now outputting a sawtooth wave" << std::endl;
-//     }
-//     else
-//     {
-//         waveform_type = SQR;
-//         sqr_on = true;
-//         ((Toggle_Button *) graphics_objects[FILTER_SQR_WAVE_TOGGLE_BUTTON])->b = true;
-//         std::cout << name << " is now outputting a square wave" << std::endl;
-//     }
+    if(_filter_type == LOWPASS)
+    {
+        lowpass_on = true;
+        ((Toggle_Button *) graphics_objects[FILTER_LP_TOGGLE_BUTTON])->b = true;
+        std::cout << name << " is now a low pass filter" << std::endl;
+    }
+    else if(_filter_type == BANDPASS)
+    {
+        bandpass_on = true;
+        ((Toggle_Button *) graphics_objects[FILTER_BP_TOGGLE_BUTTON])->b = true;
+        std::cout << name << " is now a bandpass filter" << std::endl;
+    }
+    else
+    {
+        highpass_on = true;
+        ((Toggle_Button *) graphics_objects[FILTER_HP_TOGGLE_BUTTON])->b = true;
+        std::cout << name << " is now a highpass filter" << std::endl;
+    }
 
-//     waveform_type = _waveform_type;
-// }
+    filter_type = _filter_type;
+}
 
 std::string Filter::get_unique_text_representation()
 {

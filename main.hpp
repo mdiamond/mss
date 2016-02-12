@@ -45,8 +45,17 @@ enum Waveforms
     SAW,
     SQR
 };
+
+// Types of filters enum
+enum Filters
+{
+    LOWPASS = 0,
+    BANDPASS,
+    HIGHPASS
+};
+
 // Wavetables
-extern std::vector<std::vector<float> > WAVETABLES; 
+extern std::vector<std::vector<float> > WAVETABLES;
 // Graphics objects and variables
 //   SDL Window and Renderer
 extern SDL_Window *WINDOW;

@@ -27,10 +27,9 @@ enum Filter_Graphics_Objects
     FILTER_SIGNAL_INPUT_TOGGLE_BUTTON,
     FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON,
     FILTER_Q_INPUT_TOGGLE_BUTTON,
-    // FILTER_SIN_WAVE_TOGGLE_BUTTON,
-    // FILTER_TRI_WAVE_TOGGLE_BUTTON,
-    // FILTER_SAW_WAVE_TOGGLE_BUTTON,
-    // FILTER_SQR_WAVE_TOGGLE_BUTTON
+    FILTER_LP_TOGGLE_BUTTON,
+    FILTER_BP_TOGGLE_BUTTON,
+    FILTER_HP_TOGGLE_BUTTON,
 };
 
 /****************************
@@ -51,8 +50,10 @@ enum Filter_Dependencies
 class Filter: public Module
 {
     // Vectors to track samples passing through and the impulse response
-    std::vector<float> fir_samples, fir_impulse_response;
-    int current_sample;
+    std::vector<float> fir_samples, fir_coefficients;
+    double y1, y2, x1, x2;
+    int filter_type;
+    bool lowpass_on, bandpass_on, highpass_on;
 
     public:
         // Booleans to represent whether or not each of the waveforms is enabled
@@ -73,7 +74,7 @@ class Filter: public Module
 
         // Member functions particular to this module
         //   Switch to the given waveform type
-        // void switch_waveform(int);
+        void switch_filter(int);
 };
 
 #endif
