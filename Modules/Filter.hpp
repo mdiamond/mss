@@ -50,7 +50,7 @@ enum Filter_Dependencies
 class Filter: public Module
 {
     // Vectors to track samples passing through and the impulse response
-    std::vector<float> fir_samples, fir_coefficients;
+    std::vector<float> iir_samples, iir_coefficients;
     double y1, y2, x1, x2;
     int filter_type;
     bool lowpass_on, bandpass_on, highpass_on;

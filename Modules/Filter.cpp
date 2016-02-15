@@ -46,22 +46,14 @@
  */
 Filter::Filter() :
     Module(FILTER),
-    fir_samples(std::vector<float>(6, 0)),
-    fir_coefficients(std::vector<float>(6, 1 / 16.0)),
+    iir_samples(std::vector<float>(6, 0)),
+    iir_coefficients(std::vector<float>(6, 1 / 16.0)),
     y1(0), y2(0), x1(0), x2(0),
     filter_type(LOWPASS), lowpass_on(true), bandpass_on(false),
     highpass_on(false)
 {
     input_floats[FILTER_FREQUENCY_CUTOFF] = 12500;
     input_floats[FILTER_Q] = 1;
-
-    // for(float i = 0; i < 16; i ++)
-    // {
-    //     fir_impulse_response[i] = scale_sample((float) i / 16.0, 0, 1, 0, 1 / 16.0);
-    // }
-
-    // fir_impulse_response = {.000625, .00125, .0025, .005, .01, .02, .04, .0625, .0625, .04, .02, .01, .005, .0025, .00125, .000625};
-    // fir_impulse_response = {.0625, .04, .02, .01, .005, .0025, .00125, .000625, .000625, .00125, .0025, .005, .01, .02, .04, .0625};
 }
 
 /*
@@ -93,38 +85,38 @@ void Filter::process()
     switch(filter_type)
     {
         case LOWPASS:
-            fir_coefficients[0] = (1 - cos(w0)) / 2;
-            fir_coefficients[1] = 1 - cos(w0);
-            fir_coefficients[2] = (1 - cos(w0)) / 2;
-            fir_coefficients[3] = 1 + alpha;
-            fir_coefficients[4] = -2 * cos(w0);
-            fir_coefficients[5] = 1 - alpha;
+            iir_coefficients[0] = (1 - cos(w0)) / 2;
+            iir_coefficients[1] = 1 - cos(w0);
+            iir_coefficients[2] = (1 - cos(w0)) / 2;
+            iir_coefficients[3] = 1 + alpha;
+            iir_coefficients[4] = -2 * cos(w0);
+            iir_coefficients[5] = 1 - alpha;
             break;
         case BANDPASS:
-            fir_coefficients[0] = input_floats[FILTER_Q] * alpha;
-            fir_coefficients[1] = 0;
-            fir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
-            fir_coefficients[3] = 1 + alpha;
-            fir_coefficients[4] = -2 * cos(w0);
-            fir_coefficients[5] = 1 - alpha;
+            iir_coefficients[0] = input_floats[FILTER_Q] * alpha;
+            iir_coefficients[1] = 0;
+            iir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
+            iir_coefficients[3] = 1 + alpha;
+            iir_coefficients[4] = -2 * cos(w0);
+            iir_coefficients[5] = 1 - alpha;
             break;
         case HIGHPASS:
-            fir_coefficients[0] = (1 + cos(w0)) / 2;
-            fir_coefficients[1] = (1 + cos(w0)) * -1;
-            fir_coefficients[2] = (1 + cos(w0)) / 2;
-            fir_coefficients[3] = 1 + alpha;
-            fir_coefficients[4] = -2 * cos(w0);
-            fir_coefficients[5] = 1 - alpha;
+            iir_coefficients[0] = (1 + cos(w0)) / 2;
+            iir_coefficients[1] = (1 + cos(w0)) * -1;
+            iir_coefficients[2] = (1 + cos(w0)) / 2;
+            iir_coefficients[3] = 1 + alpha;
+            iir_coefficients[4] = -2 * cos(w0);
+            iir_coefficients[5] = 1 - alpha;
             break;
     }
 
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        output[i] = (fir_coefficients[0] / fir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i);
-        output[i] += (fir_coefficients[1] / fir_coefficients[3] * x1);
-        output[i] += (fir_coefficients[2] / fir_coefficients[3] * x2);
-        output[i] -= (fir_coefficients[4] / fir_coefficients[3] * y1);
-        output[i] -= (fir_coefficients[5] / fir_coefficients[3] * y2);
+        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i);
+                    + (iir_coefficients[1] / iir_coefficients[3] * x1);
+                    + (iir_coefficients[2] / iir_coefficients[3] * x2);
+                    - (iir_coefficients[4] / iir_coefficients[3] * y1);
+                    - (iir_coefficients[5] / iir_coefficients[3] * y2);
 
         x2 = x1;
         x1 = inputs[FILTER_SIGNAL]->at(i);
@@ -176,7 +168,7 @@ void Filter::calculate_unique_graphics_object_locations()
     x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
     w_range = (MODULE_WIDTH / 2) - 11;
     x_range_low_input_toggle_button = x_text_box + w_range + 1;
-    w_wave_selector = ((MODULE_WIDTH) / 4) - 1;
+    w_wave_selector = ((MODULE_WIDTH) / 3) - 1;
 
     graphics_object_locations.push_back({x_text, y8, 0, 0});
     graphics_object_locations.push_back({x_text, y10, 0, 0});
@@ -189,7 +181,7 @@ void Filter::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_input_toggle_button, y11, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_text_box, y12, w_wave_selector, h_text_box});
     graphics_object_locations.push_back({x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box});
-    graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box});
+    graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector - 1, h_text_box});
 }
 
 /*
