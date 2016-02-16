@@ -112,10 +112,10 @@ void Filter::process()
 
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i);
-                    + (iir_coefficients[1] / iir_coefficients[3] * x1);
-                    + (iir_coefficients[2] / iir_coefficients[3] * x2);
-                    - (iir_coefficients[4] / iir_coefficients[3] * y1);
+        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i)
+                    + (iir_coefficients[1] / iir_coefficients[3] * x1)
+                    + (iir_coefficients[2] / iir_coefficients[3] * x2)
+                    - (iir_coefficients[4] / iir_coefficients[3] * y1)
                     - (iir_coefficients[5] / iir_coefficients[3] * y2);
 
         x2 = x1;
