@@ -47,7 +47,8 @@ enum Modules
     MULTIPLIER,
     NOISE,
     OSCILLATOR,
-    OUTPUT
+    OUTPUT,
+    SAH
 };
 
 /********************************

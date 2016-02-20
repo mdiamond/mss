@@ -29,8 +29,9 @@
 #include "Modules/Mixer.hpp"
 #include "Modules/Multiplier.hpp"
 #include "Modules/Noise.hpp"
-#include "Modules/Output.hpp"
 #include "Modules/Oscillator.hpp"
+#include "Modules/Output.hpp"
+#include "Modules/Sah.hpp"
 
 /***************************
  * MODULE MEMBER FUNCTIONS *
@@ -78,6 +79,10 @@ Module::Module(int _type) :
             break;
         case OUTPUT:
             name = "output";
+            num_inputs = 2;
+            break;
+        case SAH:
+            name = "sah " + std::to_string(number);
             num_inputs = 2;
             break;
     }
@@ -168,6 +173,10 @@ Module::Module(int _type) :
             parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
             parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
             break;
+        case SAH:
+            parameter_names[SAH_SIGNAL] = "SIGNAL";
+            parameter_names[SAH_HOLD_TIME] = "HOLD TIME";
+            break;
     }
 
     std::cout << "Module \"" << name << "\" created" << std::endl;
@@ -226,6 +235,9 @@ Module::~Module()
                 break;
             case OUTPUT:
                 MODULES[i]->name = "output";
+                break;
+            case SAH:
+                MODULES[i]->name = "sah " + std::to_string(MODULES[i]->number);
                 break;
         }
     }

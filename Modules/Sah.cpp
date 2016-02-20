@@ -1,6 +1,6 @@
 /*
  * Matthew Diamond 2015
- * Member functions for the Multiplier class.
+ * Member functions for the Sample and hold class.
  */
 
 /************
@@ -26,7 +26,7 @@
 
 // Included classes
 #include "../Module.hpp"
-#include "Multiplier.hpp"
+#include "Sah.hpp"
 #include "../Graphics_Objects/Input_Text_Box.hpp"
 #include "../Graphics_Objects/Input_Toggle_Button.hpp"
 #include "../Graphics_Objects/Text.hpp"
@@ -34,53 +34,54 @@
 #include "../Graphics_Objects/Waveform.hpp"
 
 /*******************************
- * MULTIPLIER MEMBER FUNCTIONS *
+ * SAH MEMBER FUNCTIONS *
  *******************************/
 
 /*
  * Constructor.
  */
-Multiplier::Multiplier() :
-    Module(MULTIPLIER)
+Sah::Sah() :
+    Module(SAH)
 {
-    // The signal input needs to be 0, while the others
-    // need to be 1 to start out
+    // The signal input needs to be 0, start the hold time at 500 ms
     input_floats[0] = 0;
-    input_floats[1] = 1;
-    input_floats[2] = 1;
+    input_floats[1] = 500;
 }
 
 /*
  * Destructor.
  */
-Multiplier::~Multiplier()
+Sah::~Sah()
 {
 
 }
 
 /*
- * Process all dependencies, then multiply the original signal by
- * 1 - the control values, and multiply the original signal by
- * the control values scaled. One done, sum the two to get the
- * final output signal for the multiplier module.
+ * Process all dependencies, then start sampling and holding.
  */
-void Multiplier::process()
+void Sah::process()
 {
     // Process any dependencies
     process_dependencies();
 
-    if(inputs_live[MULTIPLIER_SIGNAL])
+    for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        for(unsigned short i = 0; i < output.size(); i ++)
+        // If the amount of time until the next sample has passed,
+        // update the sample to hold, update the hold time,
+        // then update the time to next sample
+        if(time_to_next_sample <= 0)
         {
-            if(inputs_live[MULTIPLIER_DRY_WET])
-                input_floats[MULTIPLIER_DRY_WET] = inputs[MULTIPLIER_DRY_WET]->at(i);
-            if(inputs_live[MULTIPLIER_MULTIPLIER])
-                input_floats[MULTIPLIER_MULTIPLIER] = inputs[MULTIPLIER_MULTIPLIER]->at(i);
-
-            output[i] = (inputs[MULTIPLIER_SIGNAL]->at(i) * (1 - input_floats[MULTIPLIER_DRY_WET])) +
-                           (inputs[MULTIPLIER_SIGNAL]->at(i) * input_floats[MULTIPLIER_MULTIPLIER] * input_floats[MULTIPLIER_DRY_WET]);
+            sample = inputs[SAH_SIGNAL]->at(i);
+            if(inputs_live[SAH_HOLD_TIME])
+                input_floats[SAH_HOLD_TIME] = inputs[SAH_HOLD_TIME]->at(i);
+            time_to_next_sample = input_floats[SAH_HOLD_TIME];
         }
+
+        // Set the output samples to the currently held sample,
+        // then decrement the time to next sample by a single sample
+        // in ms
+        output[i] = sample;
+        time_to_next_sample -= (1000.0 / SAMPLE_RATE);
     }
 
     processed = true;
@@ -89,7 +90,7 @@ void Multiplier::process()
 /*
  * Update parameters at the k rate.
  */
-void Multiplier::update_control_values()
+void Sah::update_control_values()
 {
 
 }
@@ -97,7 +98,7 @@ void Multiplier::update_control_values()
 /*
  * Calculate the locations of graphics objects unique to this module type.
  */
-void Multiplier::calculate_unique_graphics_object_locations()
+void Sah::calculate_unique_graphics_object_locations()
 {
     int x_text, x_text_box, w_text_box, h_text_box,
         x_input_toggle_button, w_input_toggle_button,
@@ -122,13 +123,13 @@ void Multiplier::calculate_unique_graphics_object_locations()
     w_signals = (MODULE_WIDTH / 2) - 11;
     x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
+    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
+                                         upper_left.y, 9, 15});
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_multiplier, y5, w_signals - 1, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
     graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_signal_input_toggle_button, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
     graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
 }
@@ -137,7 +138,7 @@ void Multiplier::calculate_unique_graphics_object_locations()
  * Initialize all graphics objects unique to this module type, and add them to the array
  * of graphics objects.
  */
-void Multiplier::initialize_unique_graphics_objects()
+void Sah::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
@@ -151,18 +152,24 @@ void Multiplier::initialize_unique_graphics_objects()
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
-    names = {name + " signal & multiplier input (text)", name + " dry/wet (text)"};
-    locations = {graphics_object_locations[MULTIPLIER_INPUT_TEXT],
-                 graphics_object_locations[MULTIPLIER_DRY_WET_TEXT]};
+    Button *button;
+    button = new Button(name + " reset sampler (button)",
+                    graphics_object_locations[SAH_RESET_SAMPLER_BUTTON],
+                    &text_color, &color, "0", this);
+    graphics_objects.push_back(button);
+
+    names = {name + " signal input (text)", name + " hold time (text)"};
+    locations = {graphics_object_locations[SAH_INPUT_TEXT],
+                 graphics_object_locations[SAH_HOLD_TIME_TEXT]};
     colors = std::vector<SDL_Color *>(2, &text_color);
-    texts = {"SIGNAL & MULTIPLIER:", "DRY/WET:"};
+    texts = {"SIGNAL:", "HOLD TIME:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
     tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     names = {name + " waveform visualizer (waveform)"};
-    locations = {graphics_object_locations[MULTIPLIER_OUTPUT_WAVEFORM]};
+    locations = {graphics_object_locations[SAH_OUTPUT_WAVEFORM]};
     colors = {&color};
     background_colors = {&text_color};
     range_lows = {-1};
@@ -172,43 +179,46 @@ void Multiplier::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    names = {name + " signal (input text box)", name + " multiplier (input text box)",
-             name + " dry/wet (input text box)"};
-    locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX],
-                 graphics_object_locations[MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX],
-                 graphics_object_locations[MULTIPLIER_DRY_WET_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color *>(3, &text_color);
-    text_colors = std::vector<SDL_Color *>(3, &color);
-    prompt_texts = {"input", "# or input", "# or input"};
-    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
-    parents = std::vector<Module *>(3, this);
-    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER, MULTIPLIER_DRY_WET};
+    names = {name + " signal (input text box)",
+             name + " hold time (input text box)"};
+    locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TEXT_BOX],
+                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TEXT_BOX]};
+    colors = std::vector<SDL_Color *>(2, &text_color);
+    text_colors = std::vector<SDL_Color *>(2, &color);
+    prompt_texts = {"input", "# or input"};
+    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    parents = std::vector<Module *>(2, this);
+    input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
 
     initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
 
-    names = {name + " signal input (input toggle button)", name + " input (input toggle button)",
-             name + " dry/wet input (input toggle button)"};
-    locations = {graphics_object_locations[MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[MULTIPLIER_MULTIPLIER_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[MULTIPLIER_DRY_WET_INPUT_TOGGLE_BUTTON]};
-    colors = std::vector<SDL_Color *>(3, &RED);
-    color_offs = std::vector<SDL_Color *>(3, &text_color);
-    text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(3, &color);
-    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
-    texts = std::vector<std::string>(3, "I");
+    names = {name + " signal input (input toggle button)", name + " hold time input (input toggle button)"};
+    locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TOGGLE_BUTTON],
+                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON]};
+    colors = std::vector<SDL_Color *>(2, &RED);
+    color_offs = std::vector<SDL_Color *>(2, &text_color);
+    text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
+    text_color_offs = std::vector<SDL_Color *>(2, &color);
+    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    texts = std::vector<std::string>(2, "I");
     text_offs = texts;
-    bs = {inputs_live[MULTIPLIER_SIGNAL], inputs_live[MULTIPLIER_MULTIPLIER],
-          inputs_live[MULTIPLIER_DRY_WET]};
-    parents = std::vector<Module *>(3, this);
-    input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER,
-                  MULTIPLIER_DRY_WET};
+    bs = {inputs_live[SAH_SIGNAL], inputs_live[SAH_HOLD_TIME]};
+    parents = std::vector<Module *>(2, this);
+    input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                        text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
 }
 
-std::string Multiplier::get_unique_text_representation()
+/*
+ * Reset the time to next sample.
+ */
+void Sah::reset_sampler()
+{
+    time_to_next_sample = 0;
+}
+
+std::string Sah::get_unique_text_representation()
 {
     return "";
 }

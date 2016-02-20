@@ -13,7 +13,8 @@ MISCCLASSOBJ = obj/Timer.o
 BASECLASSOBJ = obj/Graphics_Object.o obj/Module.o
 MODULECLASSOBJ = obj/Adsr.o obj/Delay.o \
 				 obj/Filter.o obj/Mixer.o obj/Multiplier.o \
-				 obj/Noise.o obj/Oscillator.o obj/Output.o
+				 obj/Noise.o obj/Oscillator.o obj/Output.o \
+				 obj/Sah.o
 GRAPHICCLASSOBJ = obj/Button.o obj/Input_Text_Box.o \
 				  obj/Input_Toggle_Button.o obj/Page.o \
 				  obj/Rect.o obj/Text.o \
@@ -79,6 +80,8 @@ obj/Oscillator.o : Modules/Oscillator.cpp Modules/Oscillator.hpp
 	$(OBJCOMMAND) Modules/Oscillator.cpp
 obj/Output.o : Modules/Output.cpp Modules/Output.hpp
 	$(OBJCOMMAND) Modules/Output.cpp
+obj/Sah.o : Modules/Sah.cpp Modules/Sah.hpp
+	$(OBJCOMMAND) Modules/Sah.cpp
 
 # Graphics objects classes
 obj/Graphics_Object.o : Graphics_Object.cpp Graphics_Object.hpp

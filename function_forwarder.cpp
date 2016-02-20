@@ -45,6 +45,7 @@
 #include "Modules/Noise.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
+#include "Modules/Sah.hpp"
 
 /********************
  * HELPER FUNCTIONS *
@@ -202,6 +203,17 @@ void output_function_forwarder(Graphics_Object *g)
 }
 
 /*
+ * Handle functions for the sample and hold module.
+ */
+void sah_function_forwarder(Graphics_Object *g)
+{
+    Sah *sah = (Sah *) g->parent;
+
+    if(g->name.substr(g->name.size() - 23) == " reset sampler (button)")
+        sah->reset_sampler();
+}
+
+/*
  * Handle functions for the graphics objects with
  * no parent module.
  */
@@ -211,8 +223,8 @@ void no_parent_function_forwarder(Graphics_Object *g)
 
     possible_names = {"add adsr (button)", "add delay (button)", "add filter (button)",
                       "add mixer (button)", "add multiplier (button)", "add noise (button)",
-                      "add oscillator (button)", "previous page (button)", "next page (button)",
-                      "save patch (text box)", "load patch (text box)"};
+                      "add oscillator (button)", "add sah (button)", "previous page (button)",
+                      "next page (button)", "save patch (text box)", "load patch (text box)"};
 
     if(g->name == possible_names[0])
         create_module(ADSR);
@@ -229,12 +241,14 @@ void no_parent_function_forwarder(Graphics_Object *g)
     else if(g->name == possible_names[6])
         create_module(OSCILLATOR);
     else if(g->name == possible_names[7])
-        increment_page_number(-1);
+        create_module(SAH);
     else if(g->name == possible_names[8])
-        increment_page_number(1);
+        increment_page_number(-1);
     else if(g->name == possible_names[9])
-        save_patch(((Text_Box *) g)->text.text);
+        increment_page_number(1);
     else if(g->name == possible_names[10])
+        save_patch(((Text_Box *) g)->text.text);
+    else if(g->name == possible_names[11])
         load_patch(((Text_Box *) g)->text.text);
 }
 
@@ -254,6 +268,7 @@ void create_module(int type)
         case MULTIPLIER: module = new Multiplier(); break;
         case NOISE: module = new Noise(); break;
         case OSCILLATOR: module = new Oscillator(); break;
+        case SAH: module = new Sah(); break;
     }
 
     module->initialize_graphics_objects();
@@ -308,34 +323,20 @@ void function_forwarder(Graphics_Object *g)
             && g->name.substr(g->name.size() - 22) == "remove module (button)"
             && g->parent->get_name() != "output")
         delete g->parent;
-    // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from the utilities page (no parent), and then forward the graphics object
-    // along to a particular function
+    // Next check for all possible graphics object parents, and do something depending
+    // on the module type of the parent
     else if(g->parent == NULL)
         no_parent_function_forwarder(g);
-    // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from the utilities page (no parent), and then forward the graphics object
-    // along to a particular function
     else if(g->parent->type == ADSR)
         adsr_function_forwarder(g);
-    // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from the utilities page (no parent), and then forward the graphics object
-    // along to a particular function
     else if(g->parent->type == DELAY)
         delay_function_forwarder(g);
-    // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from the utilities page (no parent), and then forward the graphics object
-    // along to a particular function
     else if(g->parent->type == FILTER)
         filter_function_forwarder(g);
-    // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from an oscillator module, and then forward the graphics object
-    // along to a particular function
     else if(g->parent->type == OSCILLATOR)
         oscillator_function_forwarder(g);
-    // If the above situations were not the case, then check if we are dealing with a
-    // graphics object from the output module, and then forward the graphics object
-    // along to a particular function
     else if(g->parent->type == OUTPUT)
         output_function_forwarder(g);
+    else if(g->parent->type == SAH)
+        sah_function_forwarder(g);
 }
