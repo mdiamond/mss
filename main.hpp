@@ -92,7 +92,4 @@ extern Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON;
 extern std::vector<Module *> MODULES;
 extern bool MODULES_CHANGED;
 
-// Number of inputs per module type
-extern std::map<int, int> nums_inputs;
-
 #endif

@@ -21,6 +21,9 @@
  * INCLUDES *
  ************/
 
+// Included libraries
+#include <map>
+
 // Included SDL components
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_ttf.h"
