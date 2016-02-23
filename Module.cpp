@@ -38,7 +38,7 @@
  * NUM INPUTS PER MODULE TYPE *
  ******************************/
 
-std::map<int, int> nums_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
+std::map<int, int> num_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
                                   {MIXER, 16}, {MULTIPLIER, 3}, {NOISE, 2},
                                   {OSCILLATOR, 5}, {OUTPUT, 2}, {SAH, 2}};
 
@@ -76,11 +76,11 @@ std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF
 Module::Module(int _type) :
     name(names.at(_type) + " " + std::to_string(MODULES.size())),
     type(_type), number(MODULES.size()), processed(false),
-    dependencies(std::vector<Module *>(nums_inputs.at(_type), NULL)),
-    input_floats(std::vector<float>(nums_inputs.at(_type), 0)),
-    input_strs(std::vector<std::string>(nums_inputs.at(_type), "")),
-    inputs(std::vector<std::vector<float> *>(nums_inputs.at(_type), NULL)),
-    inputs_live(std::vector<bool>(nums_inputs.at(_type), false)),
+    dependencies(std::vector<Module *>(num_inputs.at(_type), NULL)),
+    input_floats(std::vector<float>(num_inputs.at(_type), 0)),
+    input_strs(std::vector<std::string>(num_inputs.at(_type), "")),
+    inputs(std::vector<std::vector<float> *>(num_inputs.at(_type), NULL)),
+    inputs_live(std::vector<bool>(num_inputs.at(_type), false)),
     output(std::vector<float>(BUFFER_SIZE, 0))
 {
     if(type == OUTPUT)
