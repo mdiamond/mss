@@ -42,6 +42,30 @@ std::map<int, int> nums_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
                                   {MIXER, 16}, {MULTIPLIER, 3}, {NOISE, 2},
                                   {OSCILLATOR, 5}, {OUTPUT, 2}, {SAH, 2}};
 
+/*******************************
+ * MODULE NAME PER MODULE TYPE *
+ *******************************/
+
+std::map<int, std::string> names = {{ADSR, "adsr"}, {DELAY, "delay"},
+                                    {FILTER, "filter"}, {MIXER, "mixer"},
+                                    {MULTIPLIER, "multiplier"}, {NOISE, "noise"},
+                                    {OSCILLATOR, "oscillator"}, {OUTPUT, "output"},
+                                    {SAH, "sah"}};
+
+/******************************************
+ * MODULE PARAMETER NAMES PER MODULE TYPE *
+ ******************************************/
+
+std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF", "ATTACK", "DECAY", "SUSTAIN", "RELEASE"}},
+                                                          {DELAY, {"SIGNAL", "MAX DELAY TIME", "DELAY TIME", "FEEDBACK AMOUNT", "WET/DRY AMOUNT"}},
+                                                          {FILTER, {"SIGNAL", "FREQUENCY CUTOFF", "FILTER QUALITY"}},
+                                                          {MIXER, {"SIGNAL 1", "SIGNAL 1 MULTIPLIER", "SIGNAL 2", "SIGNAL 2 MULTIPLIER", "SIGNAL 3", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER"}},
+                                                          {MULTIPLIER, {"SIGNAL", "MULTIPLIER", "DRY/WET"}},
+                                                          {NOISE, {"RANGE LOW", "RANGE HIGH"}},
+                                                          {OSCILLATOR, {"FREQUENCY", "PHASE OFFSET", "PULSE WIDTH", "RANGE LOW", "RANGE HIGH"}},
+                                                          {OUTPUT, {"LEFT SIGNAL", "RIGHT SIGNAL"}},
+                                                          {SAH, {"SIGNAL", "HOLD TIME"}}};
+
 /***************************
  * MODULE MEMBER FUNCTIONS *
  ***************************/
@@ -52,40 +76,11 @@ std::map<int, int> nums_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
 Module::Module(int _type) :
     type(_type), number(MODULES.size()), processed(false)
 {
-    // The number of inputs this module has
+    // Set the number of inputs and the name for this module
     int num_inputs = nums_inputs.at(type);
-
-    // Set the number of inputs depending on the module type
-    switch(type)
-    {
-        case ADSR:
-            name = "adsr " + std::to_string(number);
-            break;
-        case DELAY:
-            name = "delay " + std::to_string(number);
-            break;
-        case FILTER:
-            name = "filter " + std::to_string(number);
-            break;
-        case MIXER:
-            name = "mixer " + std::to_string(number);
-            break;
-        case MULTIPLIER:
-            name = "multiplier " + std::to_string(number);
-            break;
-        case NOISE:
-            name = "noise " + std::to_string(number);
-            break;
-        case OSCILLATOR:
-            name = "oscillator " + std::to_string(number);
-            break;
-        case OUTPUT:
-            name = "output";
-            break;
-        case SAH:
-            name = "sah " + std::to_string(number);
-            break;
-    }
+    name = names.at(type) + " " + std::to_string(number);
+    if(type == OUTPUT)
+        name = "output";
 
     // Initialize the dependencies vector
     dependencies = std::vector<Module *>(num_inputs, NULL);
@@ -93,7 +88,6 @@ Module::Module(int _type) :
     // Initialize the module parameters as floats, strings, and
     // input buffers, and booleans to represent whether or not
     // the input for a certain parameter is live
-    parameter_names = std::vector<std::string>(num_inputs, "");
     input_floats = std::vector<float>(num_inputs, 0);
     input_strs = std::vector<std::string>(num_inputs, "");
     inputs = std::vector<std::vector<float> *>(num_inputs, NULL);
@@ -112,72 +106,6 @@ Module::Module(int _type) :
 
     color.a = 255;
     text_color.a = 255;
-
-    // Set parameter names and module colors based on the module type
-    switch(type)
-    {
-        case ADSR:
-            parameter_names[ADSR_NOTE] = "NOTE ON/OFF";
-            parameter_names[ADSR_A] = "ATTACK";
-            parameter_names[ADSR_D] = "DECAY";
-            parameter_names[ADSR_S] = "SUSTAIN";
-            parameter_names[ADSR_R] = "RELEASE";
-            break;
-        case DELAY:
-            parameter_names[DELAY_SIGNAL] = "SIGNAL";
-            parameter_names[DELAY_MAX_DELAY_TIME] = "MAX DELAY TIME";
-            parameter_names[DELAY_DELAY_TIME] = "DELAY TIME";
-            parameter_names[DELAY_FEEDBACK_AMOUNT] = "FEEDBACK AMOUNT";
-            parameter_names[DELAY_WET_DRY] = "WET/DRY AMOUNT";
-            break;
-        case FILTER:
-            parameter_names[FILTER_SIGNAL] = "SIGNAL";
-            parameter_names[FILTER_FREQUENCY_CUTOFF] = "FREQUENCY CUTOFF";
-            parameter_names[FILTER_Q] = "FILTER QUALITY";
-            break;
-        case MIXER:
-            parameter_names[MIXER_SIGNAL_1] = "SIGNAL 1";
-            parameter_names[MIXER_SIGNAL_1_MULTIPLIER] = "SIGNAL 1 MULTIPLIER";
-            parameter_names[MIXER_SIGNAL_2] = "SIGNAL 2";
-            parameter_names[MIXER_SIGNAL_2_MULTIPLIER] = "SIGNAL 2 MULTIPLIER";
-            parameter_names[MIXER_SIGNAL_3] = "SIGNAL 3";
-            parameter_names[MIXER_SIGNAL_3_MULTIPLIER] = "SIGNAL 3 MULTIPLIER";
-            parameter_names[MIXER_SIGNAL_4] = "SIGNAL 4";
-            parameter_names[MIXER_SIGNAL_4_MULTIPLIER] = "SIGNAL 4 MULTIPLIER";
-            parameter_names[MIXER_SIGNAL_5] = "SIGNAL 5";
-            parameter_names[MIXER_SIGNAL_5_MULTIPLIER] = "SIGNAL 5 MULTIPLIER";
-            parameter_names[MIXER_SIGNAL_6] = "SIGNAL 6";
-            parameter_names[MIXER_SIGNAL_6_MULTIPLIER] = "SIGNAL 6 MULTIPLIER";
-            parameter_names[MIXER_SIGNAL_7] = "SIGNAL 7";
-            parameter_names[MIXER_SIGNAL_7_MULTIPLIER] = "SIGNAL 7 MULTIPLIER";
-            parameter_names[MIXER_SIGNAL_8] = "SIGNAL 8";
-            parameter_names[MIXER_SIGNAL_8_MULTIPLIER] = "SIGNAL 8 MULTIPLIER";
-            break;
-        case MULTIPLIER:
-            parameter_names[MULTIPLIER_SIGNAL] = "SIGNAL";
-            parameter_names[MULTIPLIER_MULTIPLIER] = "MULTIPLIER";
-            parameter_names[MULTIPLIER_DRY_WET] = "DRY/WET";
-            break;
-        case NOISE:
-            parameter_names[NOISE_RANGE_LOW] = "RANGE LOW";
-            parameter_names[NOISE_RANGE_HIGH] = "RANGE HIGH";
-            break;
-        case OSCILLATOR:
-            parameter_names[OSCILLATOR_FREQUENCY] = "FREQUENCY";
-            parameter_names[OSCILLATOR_PHASE_OFFSET] = "PHASE OFFSET";
-            parameter_names[OSCILLATOR_PULSE_WIDTH] = "PULSE WIDTH";
-            parameter_names[OSCILLATOR_RANGE_LOW] = "RANGE LOW";
-            parameter_names[OSCILLATOR_RANGE_HIGH] = "RANGE HIGH";
-            break;
-        case OUTPUT:
-            parameter_names[OUTPUT_INPUT_L] = "LEFT SIGNAL";
-            parameter_names[OUTPUT_INPUT_R] = "RIGHT SIGNAL";
-            break;
-        case SAH:
-            parameter_names[SAH_SIGNAL] = "SIGNAL";
-            parameter_names[SAH_HOLD_TIME] = "HOLD TIME";
-            break;
-    }
 
     std::cout << "Module \"" << name << "\" created" << std::endl;
 }
@@ -209,37 +137,7 @@ Module::~Module()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         MODULES[i]->number = i;
-
-        switch(MODULES[i]->type)
-        {
-            case ADSR:
-                MODULES[i]->name = "adsr " + std::to_string(MODULES[i]->number);
-                break;
-            case DELAY:
-                MODULES[i]->name = "delay " + std::to_string(MODULES[i]->number);
-                break;
-            case FILTER:
-                MODULES[i]->name = "filter " + std::to_string(MODULES[i]->number);
-                break;
-            case MIXER:
-                MODULES[i]->name = "mixer " + std::to_string(MODULES[i]->number);
-                break;
-            case MULTIPLIER:
-                MODULES[i]->name = "multiplier " + std::to_string(MODULES[i]->number);
-                break;
-            case NOISE:
-                MODULES[i]->name = "noise " + std::to_string(MODULES[i]->number);
-                break;
-            case OSCILLATOR:
-                MODULES[i]->name = "oscillator " + std::to_string(MODULES[i]->number);
-                break;
-            case OUTPUT:
-                MODULES[i]->name = "output";
-                break;
-            case SAH:
-                MODULES[i]->name = "sah " + std::to_string(MODULES[i]->number);
-                break;
-        }
+        MODULES[i]->name = names.at(MODULES[i]->type) + " " + std::to_string(MODULES[i]->number);
     }
 
     // Make sure that all inputs that were using this module as a source have
@@ -380,7 +278,7 @@ void Module::initialize_input_toggle_button_objects(std::vector<std::string> nam
         input_toggle_button = new Input_Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
                                             text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i],
                                             input_nums[i],
-                                            (Input_Text_Box *) graphics_objects[graphics_objects.size() - parameter_names.size()]);
+                                            (Input_Text_Box *) graphics_objects[graphics_objects.size() - parameter_names[type].size()]);
         graphics_objects.push_back(input_toggle_button);
     }
 }
@@ -451,7 +349,7 @@ void Module::set(float val, int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names[input_num]
+    std::cout << name << " " << parameter_names[type][input_num]
          << " changed to " << val << std::endl;
 }
 
@@ -483,7 +381,7 @@ void Module::set(Module *src, int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names[input_num]
+    std::cout << name << " " << parameter_names[type][input_num]
          << " is now coming from " << src->name << std::endl;
 }
 
@@ -514,7 +412,7 @@ void Module::cancel_input(int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names[input_num]
+    std::cout << name << " " << parameter_names[type][input_num]
          << " input cancelled" << std::endl;
 }
 

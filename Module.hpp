@@ -92,7 +92,6 @@ class Module
         // Vectors containing representations of the inputs as
         // floats, strings and input buffers, as well as booleans
         // representing whether or not that input is a live signal
-        std::vector<std::string> parameter_names;
         std::vector<float> input_floats;
         std::vector<std::string> input_strs;
         std::vector<std::vector<float> *> inputs;
