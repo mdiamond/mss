@@ -57,14 +57,14 @@ std::map<int, std::string> names = {{ADSR, "adsr"}, {DELAY, "delay"},
  ******************************************/
 
 std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF", "ATTACK", "DECAY", "SUSTAIN", "RELEASE"}},
-                                                          {DELAY, {"SIGNAL", "MAX DELAY TIME", "DELAY TIME", "FEEDBACK AMOUNT", "WET/DRY AMOUNT"}},
-                                                          {FILTER, {"SIGNAL", "FREQUENCY CUTOFF", "FILTER QUALITY"}},
-                                                          {MIXER, {"SIGNAL 1", "SIGNAL 1 MULTIPLIER", "SIGNAL 2", "SIGNAL 2 MULTIPLIER", "SIGNAL 3", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER"}},
-                                                          {MULTIPLIER, {"SIGNAL", "MULTIPLIER", "DRY/WET"}},
-                                                          {NOISE, {"RANGE LOW", "RANGE HIGH"}},
-                                                          {OSCILLATOR, {"FREQUENCY", "PHASE OFFSET", "PULSE WIDTH", "RANGE LOW", "RANGE HIGH"}},
-                                                          {OUTPUT, {"LEFT SIGNAL", "RIGHT SIGNAL"}},
-                                                          {SAH, {"SIGNAL", "HOLD TIME"}}};
+                                                            {DELAY, {"SIGNAL", "MAX DELAY TIME", "DELAY TIME", "FEEDBACK AMOUNT", "WET/DRY AMOUNT"}},
+                                                            {FILTER, {"SIGNAL", "FREQUENCY CUTOFF", "FILTER QUALITY"}},
+                                                            {MIXER, {"SIGNAL 1", "SIGNAL 1 MULTIPLIER", "SIGNAL 2", "SIGNAL 2 MULTIPLIER", "SIGNAL 3", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER"}},
+                                                            {MULTIPLIER, {"SIGNAL", "MULTIPLIER", "DRY/WET"}},
+                                                            {NOISE, {"RANGE LOW", "RANGE HIGH"}},
+                                                            {OSCILLATOR, {"FREQUENCY", "PHASE OFFSET", "PULSE WIDTH", "RANGE LOW", "RANGE HIGH"}},
+                                                            {OUTPUT, {"LEFT SIGNAL", "RIGHT SIGNAL"}},
+                                                            {SAH, {"SIGNAL", "HOLD TIME"}}};
 
 /***************************
  * MODULE MEMBER FUNCTIONS *
@@ -74,27 +74,17 @@ std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF
  * Constructor.
  */
 Module::Module(int _type) :
-    type(_type), number(MODULES.size()), processed(false)
+    name(names.at(_type) + " " + std::to_string(MODULES.size())),
+    type(_type), number(MODULES.size()), processed(false),
+    dependencies(std::vector<Module *>(nums_inputs.at(_type), NULL)),
+    input_floats(std::vector<float>(nums_inputs.at(_type), 0)),
+    input_strs(std::vector<std::string>(nums_inputs.at(_type), "")),
+    inputs(std::vector<std::vector<float> *>(nums_inputs.at(_type), NULL)),
+    inputs_live(std::vector<bool>(nums_inputs.at(_type), false)),
+    output(std::vector<float>(BUFFER_SIZE, 0))
 {
-    // Set the number of inputs and the name for this module
-    int num_inputs = nums_inputs.at(type);
-    name = names.at(type) + " " + std::to_string(number);
     if(type == OUTPUT)
         name = "output";
-
-    // Initialize the dependencies vector
-    dependencies = std::vector<Module *>(num_inputs, NULL);
-
-    // Initialize the module parameters as floats, strings, and
-    // input buffers, and booleans to represent whether or not
-    // the input for a certain parameter is live
-    input_floats = std::vector<float>(num_inputs, 0);
-    input_strs = std::vector<std::string>(num_inputs, "");
-    inputs = std::vector<std::vector<float> *>(num_inputs, NULL);
-    inputs_live = std::vector<bool>(num_inputs, false);
-
-    // Initialize the output buffer
-    output = std::vector<float>(BUFFER_SIZE, 0);
 
     // Set this module's color randomly, but with enough contrast
     color.r = rand() % 128;
@@ -138,6 +128,8 @@ Module::~Module()
     {
         MODULES[i]->number = i;
         MODULES[i]->name = names.at(MODULES[i]->type) + " " + std::to_string(MODULES[i]->number);
+        if(MODULES[i]->type == OUTPUT)
+            MODULES[i]->name = "output";
     }
 
     // Make sure that all inputs that were using this module as a source have

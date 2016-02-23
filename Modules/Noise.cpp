@@ -45,6 +45,9 @@ Noise::Noise() :
     Module(NOISE)
 {
     noise_type = 1;
+
+    input_floats[0] = -1;
+    input_floats[1] = 1;
 }
 
 /*
@@ -87,7 +90,7 @@ void Noise::process()
  */
 void Noise::update_control_values()
 {
-    
+
 }
 
 /*
@@ -112,7 +115,7 @@ void Noise::calculate_unique_graphics_object_locations()
     h_waveform = 138;
     y3 = upper_left.y + 23;
     y4 = y3 + 46;
-    y5 = y4 + 15;   
+    y5 = y4 + 15;
     y6 = y5 + 16;
     y7 = y6 + 15;
     y8 = y7 + 16;
