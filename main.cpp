@@ -124,7 +124,7 @@ bool testing = false;
  *****************/
 
 /*
- * Driver function for the whole program. This program 
+ * Driver function for the whole program. This program
  * will either run in test mode or normally. If run in test
  * mode this function will run a series of tests and then exit.
  * If run normally, this function will open the audio device,

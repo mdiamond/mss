@@ -11,6 +11,9 @@
  * INCLUDES *
  ************/
 
+// Included libraries
+#include <map>
+
 // Included SDL components
 #include "SDL2/SDL_ttf.h"
 
@@ -36,23 +39,6 @@ extern Color_Modifier PINK_STDOUT;
 extern int SAMPLE_RATE;
 extern int BUFFER_SIZE;
 extern bool AUDIO_ON;
-
-// Types of waveforms enum
-enum Waveforms
-{
-    SIN = 0,
-    TRI,
-    SAW,
-    SQR
-};
-
-// Types of filters enum
-enum Filters
-{
-    LOWPASS = 0,
-    BANDPASS,
-    HIGHPASS
-};
 
 // Wavetables
 extern std::vector<std::vector<float> > WAVETABLES;
@@ -105,5 +91,8 @@ extern Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON;
 // The set of modules has been changed recently
 extern std::vector<Module *> MODULES;
 extern bool MODULES_CHANGED;
+
+// Number of inputs per module type
+extern std::map<int, int> nums_inputs;
 
 #endif

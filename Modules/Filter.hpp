@@ -43,6 +43,17 @@ enum Filter_Dependencies
     FILTER_Q,
 };
 
+/*********************
+ * FILTER TYPES ENUM *
+ *********************/
+
+enum Filters
+{
+    LOWPASS = 0,
+    BANDPASS,
+    HIGHPASS
+};
+
 /***************************
  * FILTER CLASS DEFINITION *
  ***************************/

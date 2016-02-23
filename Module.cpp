@@ -9,6 +9,7 @@
 
 // Included libraries
 #include <iostream>
+#include <map>
 #include <string>
 #include <vector>
 
@@ -33,6 +34,14 @@
 #include "Modules/Output.hpp"
 #include "Modules/Sah.hpp"
 
+/******************************
+ * NUM INPUTS PER MODULE TYPE *
+ ******************************/
+
+std::map<int, int> nums_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
+                                  {MIXER, 16}, {MULTIPLIER, 3}, {NOISE, 2},
+                                  {OSCILLATOR, 5}, {OUTPUT, 2}, {SAH, 2}};
+
 /***************************
  * MODULE MEMBER FUNCTIONS *
  ***************************/
@@ -44,46 +53,37 @@ Module::Module(int _type) :
     type(_type), number(MODULES.size()), processed(false)
 {
     // The number of inputs this module has
-    int num_inputs;
+    int num_inputs = nums_inputs.at(type);
 
     // Set the number of inputs depending on the module type
     switch(type)
     {
         case ADSR:
             name = "adsr " + std::to_string(number);
-            num_inputs = 5;
             break;
         case DELAY:
             name = "delay " + std::to_string(number);
-            num_inputs = 5;
             break;
         case FILTER:
             name = "filter " + std::to_string(number);
-            num_inputs = 3;
             break;
         case MIXER:
             name = "mixer " + std::to_string(number);
-            num_inputs = 16;
             break;
         case MULTIPLIER:
             name = "multiplier " + std::to_string(number);
-            num_inputs = 3;
             break;
         case NOISE:
             name = "noise " + std::to_string(number);
-            num_inputs = 2;
             break;
         case OSCILLATOR:
             name = "oscillator " + std::to_string(number);
-            num_inputs = 5;
             break;
         case OUTPUT:
             name = "output";
-            num_inputs = 2;
             break;
         case SAH:
             name = "sah " + std::to_string(number);
-            num_inputs = 2;
             break;
     }
 

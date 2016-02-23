@@ -59,6 +59,18 @@ enum Oscillator_Dependencies
     OSCILLATOR_RANGE_HIGH
 };
 
+/*****************************
+ * OSCILLATOR WAVEFORMS ENUM *
+ *****************************/
+
+enum Waveforms
+{
+    SIN = 0,
+    TRI,
+    SAW,
+    SQR
+};
+
 /*******************************
  * OSCILLATOR CLASS DEFINITION *
  *******************************/

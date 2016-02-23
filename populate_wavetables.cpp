@@ -18,6 +18,9 @@
 // Included files
 #include "main.hpp"
 
+// Included classes
+#include "Modules/Oscillator.hpp"
+
 /********************
  * HELPER FUNCTIONS *
  ********************/
