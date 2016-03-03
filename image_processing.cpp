@@ -92,7 +92,8 @@ int create_texture()
     TEXTURE = SDL_CreateTexture(RENDERER, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
                                 WINDOW_WIDTH, WINDOW_HEIGHT);
 
-    if(TEXTURE == NULL) {
+    if(TEXTURE == NULL)
+    {
         std::cout << RED_STDOUT << "Could not create texture: "
              << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
@@ -138,9 +139,8 @@ int load_fonts()
 void update_graphics_objects()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-    {
-        MODULES[i]->update_graphics_object_locations();
-    }
+        if(MODULES[i] != NULL)
+            MODULES[i]->update_graphics_object_locations();
 
     MODULES_CHANGED = false;
 }
@@ -152,8 +152,9 @@ void update_graphics_objects()
 Module *hovering_over()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-        if(!MODULES[i]->graphics_objects[0]->was_clicked())
-            return MODULES[i];
+        if(MODULES[i] != NULL)
+            if(!MODULES[i]->graphics_objects[0]->was_clicked())
+                return MODULES[i];
 
     return NULL;
 }
@@ -251,7 +252,7 @@ void calculate_pages()
 
     // Variables for the current sub page, its sub pages,
     // its sub pages graphics objects, and the current page
-    // (no page has any graphics objects, only sub pages
+    // (no top-level page has any graphics objects, only their sub pages
     // contain graphics objects)
     std::string current_sub_page_name;
     Page *current_sub_page = NULL;
@@ -271,23 +272,26 @@ void calculate_pages()
     // For each module
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        // Add each of its graphics objects to the current sub page
-        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+        if(MODULES[i] != NULL)
         {
-            sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
-            MODULES[i]->graphics_objects[j]->updated = true;
+            // Add each of its graphics objects to the current sub page
+            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+            {
+                sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
+                MODULES[i]->graphics_objects[j]->updated = true;
+            }
+
+            // Create the sub page using the created vector of graphics objects,
+            // add it to the list of sub pages
+            current_sub_page = new Page(MODULES[i]->name + " (page)",
+                                        MODULES[i]->graphics_objects[0]->location, &BLACK,
+                                        sub_page_graphics_objects, NULL);
+            sub_pages->push_back(current_sub_page);
+
+            // Reset the sub page graphics objects
+            delete sub_page_graphics_objects;
+            sub_page_graphics_objects = new std::vector<Graphics_Object *>();
         }
-
-        // Create the sub page using the created vector of graphics objects,
-        // add it to the list of sub pages
-        current_sub_page = new Page(MODULES[i]->name + " (page)",
-                                    MODULES[i]->graphics_objects[0]->location, &BLACK,
-                                    sub_page_graphics_objects, NULL);
-        sub_pages->push_back(current_sub_page);
-
-        // Reset the sub page graphics objects
-        delete sub_page_graphics_objects;
-        sub_page_graphics_objects = new std::vector<Graphics_Object *>();
 
         // If this is the last sub page in the current page, or
         // if there are no more modules to take into consideration
@@ -303,18 +307,15 @@ void calculate_pages()
             PAGES.push_back(current_page);
 
             // Delete the vector of sub pages and sub page graphics objects,
-            // only re-initialize them and restart the process of calculating a new page
-            // if there are still modules left to take into consideration
+            // re-initialize them and restart the process of calculating a new page
             delete sub_pages;
             delete sub_page_graphics_objects;
-            if(i != MODULES.size() - 1)
-            {
-                sub_pages = new std::vector<Page *>();
-                sub_page_graphics_objects = new std::vector<Graphics_Object *>();
-                initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
-                delete sub_page_graphics_objects;
-                sub_page_graphics_objects = new std::vector<Graphics_Object *>();
-            }
+
+            sub_pages = new std::vector<Page *>();
+            sub_page_graphics_objects = new std::vector<Graphics_Object *>();
+            initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
+            delete sub_page_graphics_objects;
+            sub_page_graphics_objects = new std::vector<Graphics_Object *>();
         }
     }
 }
@@ -340,9 +341,10 @@ void draw_surface()
     // Copy audio data into waveform objects so that they will render without hiccups
     SDL_LockAudio();
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-            if(MODULES[i]->graphics_objects[j]->type == WAVEFORM)
-                ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
+        if(MODULES[i] != NULL)
+            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+                if(MODULES[i]->graphics_objects[j]->type == WAVEFORM)
+                    ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
     SDL_UnlockAudio();
 
     // Render graphics objects for the current page

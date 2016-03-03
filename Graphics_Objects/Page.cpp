@@ -61,8 +61,10 @@ void Page::render()
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
         if(graphics_objects[i] != NULL)
             graphics_objects[i]->render();
+
     for(unsigned int i = 0; i < sub_pages.size(); i ++)
-        sub_pages[i]->render();
+        if(sub_pages[i] != NULL)
+            sub_pages[i]->render();
 }
 
 /*
@@ -71,12 +73,11 @@ void Page::render()
 void Page::clicked()
 {
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
-    {
         if(graphics_objects[i]->was_clicked())
             if((SELECTING_SRC && graphics_objects[i]->type == RECT) ||
                !(SELECTING_SRC || graphics_objects[i]->type == RECT))
                 graphics_objects[i]->clicked();
-    }
+
     for(unsigned int i = 0; i < sub_pages.size(); i ++)
         if(sub_pages[i]->was_clicked())
             sub_pages[i]->clicked();

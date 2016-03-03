@@ -21,6 +21,7 @@
 #include "function_forwarder.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
+#include "module_utils.hpp"
 
 // Included classes
 #include "Module.hpp"
@@ -74,8 +75,8 @@ std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF
  * Constructor.
  */
 Module::Module(int _type) :
-    name(names.at(_type) + " " + std::to_string(MODULES.size())),
-    type(_type), number(MODULES.size()), processed(false),
+    name(names.at(_type) + " " + std::to_string(find_available_module_number(_type))),
+    type(_type), number(find_available_module_slot()), processed(false),
     dependencies(std::vector<Module *>(num_inputs.at(_type), NULL)),
     input_floats(std::vector<float>(num_inputs.at(_type), 0)),
     input_strs(std::vector<std::string>(num_inputs.at(_type), "")),
@@ -110,55 +111,50 @@ Module::~Module()
 
     // Cancel any inputs that this module is outputting to
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-        for(unsigned int j = 0; j < MODULES[i]->dependencies.size(); j ++)
-            if(MODULES[i]->dependencies[j] == this)
-                MODULES[i]->cancel_input(j);
+        if(MODULES[i] != NULL)
+            for(unsigned int j = 0; j < MODULES[i]->dependencies.size(); j ++)
+                if(MODULES[i]->dependencies[j] == this)
+                    MODULES[i]->cancel_input(j);
 
     // Erase this module from the list of modules
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-        if(MODULES[i] == this)
+        if(MODULES[i] != NULL && MODULES[i] == this)
             MODULES.erase(MODULES.begin() + i);
 
     // Delete all graphics objects
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
         delete graphics_objects[i];
 
-    // Recalculate module numbers and names, update the name texts
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-    {
-        MODULES[i]->number = i;
-        MODULES[i]->name = names.at(MODULES[i]->type) + " " + std::to_string(MODULES[i]->number);
-        if(MODULES[i]->type == OUTPUT)
-            MODULES[i]->name = "output";
-    }
-
     // Make sure that all inputs that were using this module as a source have
     // their associated input text boxes reset, and their input toggle buttons
     // turned off
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        int dependency_num = 0;
-        Input_Text_Box *input_text_box;
-        Input_Toggle_Button *input_toggle_button;
-
-        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+        if(MODULES[i] != NULL)
         {
-            if(MODULES[i]->graphics_objects[j]->type == INPUT_TOGGLE_BUTTON)
+            int dependency_num = 0;
+            Input_Text_Box *input_text_box;
+            Input_Toggle_Button *input_toggle_button;
+
+            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
             {
-                input_toggle_button = ((Input_Toggle_Button *) MODULES[i]->graphics_objects[j]);
-                if(input_toggle_button->b)
+                if(MODULES[i]->graphics_objects[j]->type == INPUT_TOGGLE_BUTTON)
                 {
-                    input_text_box = input_toggle_button->input_text_box;
-                    if(input_text_box->text.text == get_short_name())
+                    input_toggle_button = ((Input_Toggle_Button *) MODULES[i]->graphics_objects[j]);
+                    if(input_toggle_button->b)
                     {
-                        if(input_text_box->prompt_text.text == "input")
-                            input_text_box->update_current_text("");
-                        else
-                            input_text_box->update_current_text(std::to_string(MODULES[i]->input_floats[dependency_num]));
-                        input_toggle_button->b = false;
+                        input_text_box = input_toggle_button->input_text_box;
+                        if(input_text_box->text.text == get_short_name())
+                        {
+                            if(input_text_box->prompt_text.text == "input")
+                                input_text_box->update_current_text("");
+                            else
+                                input_text_box->update_current_text(std::to_string(MODULES[i]->input_floats[dependency_num]));
+                            input_toggle_button->b = false;
+                        }
                     }
+                    dependency_num ++;
                 }
-                dependency_num ++;
             }
         }
     }
@@ -167,28 +163,31 @@ Module::~Module()
     // then update the module name text object
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        int dependency_num = 0;
-        std::string dependency_short_name;
-        Input_Text_Box *input_text_box;
-        Text *text;
-
-        for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+        if(MODULES[i] != NULL)
         {
-            if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
-               && MODULES[i]->inputs_live[dependency_num])
-            {
-                input_text_box = (Input_Text_Box *) MODULES[i]->graphics_objects[j];
-                dependency_short_name = MODULES[i]->dependencies[dependency_num]->get_short_name();
-                input_text_box->update_current_text(dependency_short_name);
-                dependency_num ++;
-            }
-            else if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
-                    && !MODULES[i]->inputs_live[dependency_num])
-                dependency_num ++;
-        }
+            int dependency_num = 0;
+            std::string dependency_short_name;
+            Input_Text_Box *input_text_box;
+            Text *text;
 
-        text = (Text *) MODULES[i]->graphics_objects[MODULE_NAME_TEXT];
-        text->update_text(MODULES[i]->name);
+            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+            {
+                if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
+                   && MODULES[i]->inputs_live[dependency_num])
+                {
+                    input_text_box = (Input_Text_Box *) MODULES[i]->graphics_objects[j];
+                    dependency_short_name = MODULES[i]->dependencies[dependency_num]->get_short_name();
+                    input_text_box->update_current_text(dependency_short_name);
+                    dependency_num ++;
+                }
+                else if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
+                        && !MODULES[i]->inputs_live[dependency_num])
+                    dependency_num ++;
+            }
+
+            text = (Text *) MODULES[i]->graphics_objects[MODULE_NAME_TEXT];
+            text->update_text(MODULES[i]->name);
+        }
     }
 
     // Mark modules changed so that they will be re-rendered

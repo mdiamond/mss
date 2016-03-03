@@ -59,9 +59,10 @@ Module *find_module(std::string *name, std::vector<Module *> *modules)
 {
     for(unsigned int i = 0; i < modules->size(); i ++)
     {
-        if(modules->at(i)->get_name() == *name
-           || modules->at(i)->get_short_name() == *name)
-            return modules->at(i);
+        if(MODULES[i] != NULL)
+            if(modules->at(i)->get_name() == *name
+               || modules->at(i)->get_short_name() == *name)
+                return modules->at(i);
     }
 
     return NULL;
@@ -272,7 +273,24 @@ void create_module(int type)
     }
 
     module->initialize_graphics_objects();
-    MODULES.push_back(module);
+
+    bool push_on_back = false;
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        if(MODULES[i] == NULL)
+        {
+            MODULES[i] = module;
+            push_on_back = false;
+            break;
+        }
+
+        if(i == MODULES.size() - 1)
+            push_on_back = true;
+    }
+
+    if(push_on_back)
+        MODULES.push_back(module);
+
     MODULES_CHANGED = true;
 }
 
@@ -322,7 +340,13 @@ void function_forwarder(Graphics_Object *g)
     else if(g->name.size() > 22
             && g->name.substr(g->name.size() - 22) == "remove module (button)"
             && g->parent->get_name() != "output")
+    {
+        for(unsigned int i = 0; i < MODULES.size(); i ++)
+            if(MODULES[i] != NULL && MODULES[i] == g->parent)
+                MODULES[i] = NULL;
+
         delete g->parent;
+    }
     // Next check for all possible graphics object parents, and do something depending
     // on the module type of the parent
     else if(g->parent == NULL)

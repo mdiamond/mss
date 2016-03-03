@@ -47,7 +47,8 @@ void destroy_pages()
 void destroy_modules()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-        delete MODULES[i];
+        if(MODULES[i] != NULL)
+            delete MODULES[i];
 }
 
 /*
@@ -96,7 +97,7 @@ bool initialize()
     system("clear");
 
     // Initialize SDL with the video and audio subsystems
-    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) { 
+    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) {
         std::cout << "Could not initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }

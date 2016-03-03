@@ -23,4 +23,8 @@
 // A function for determining what number should be in a new module's name
 int find_available_module_number(int);
 
+// A function for determining where in the MODULES vector to place
+// a new module
+int find_available_module_slot();
+
 #endif

@@ -120,7 +120,8 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     }
 
     for(unsigned int i = 1; i < MODULES.size(); i ++)
-        MODULES[i]->processed = false;
+        if(MODULES[i] != NULL)
+            MODULES[i]->processed = false;
 }
 
 /*
@@ -133,7 +134,8 @@ Uint32 k_rate_callback_function(Uint32 interval, void *param)
         return 0;
 
     for(unsigned int i = 0; i < MODULES.size(); i ++)
-        MODULES[i]->update_control_values();
+        if(MODULES[i] != NULL)
+            MODULES[i]->update_control_values();
 
     return interval;
 }

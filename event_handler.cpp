@@ -29,7 +29,7 @@
  ********************/
 
 /*
- * For each graphics object on the current page, 
+ * For each graphics object on the current page,
  * check if it has been clicked. If so, call its
  * clicked() function. Return true if something
  * was clicked, false if nothing was clicked.
@@ -118,7 +118,8 @@ void keydown_event(SDL_Event *e)
     // If that key is the return key, and there is an active
     // text box, call its entered() function and pass it the
     // text that's been recorded from the keyboard previously
-    else if(ACTIVE_TEXT_BOX != NULL && e->key.keysym.sym == SDLK_RETURN)
+    else if(ACTIVE_TEXT_BOX != NULL && (e->key.keysym.sym == SDLK_RETURN ||
+            e->key.keysym.sym == SDLK_KP_ENTER))
     {
         ACTIVE_TEXT_BOX->entered();
     }
@@ -172,7 +173,7 @@ bool event_handler(SDL_Event *e)
         // but a SDL_TEXTINPUT event has been received, add the typed text
         // to the typing buffer and pass it to the active text box (it is
         // impossible to receive an event of this type if no text box is
-        // current active)
+        // currently active)
         else if(e->type == SDL_TEXTINPUT && ACTIVE_TEXT_BOX != NULL)
             ACTIVE_TEXT_BOX->add_characters(e->text.text);
 
