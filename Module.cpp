@@ -88,15 +88,9 @@ Module::Module(int _type) :
         name = "output";
 
     // Set this module's color randomly, but with enough contrast
-    color.r = rand() % 128;
-    color.g = rand() % 128;
-    color.b = rand() % 128;
-    text_color.r = 255 - color.g;
-    text_color.g = 255 - color.b;
-    text_color.b = 255 - color.r;
-
-    color.a = 255;
-    text_color.a = 255;
+    std::vector<SDL_Color> colors = generate_module_colors();
+    color = colors[0];
+    text_color = colors[1];
 
     std::cout << "Module \"" << name << "\" created" << std::endl;
 }

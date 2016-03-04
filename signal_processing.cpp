@@ -105,6 +105,7 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 
     // Fetch the output module's latest processed audio
     // and insert it into the buffer
+    bool clipping = false;
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         if((output->inputs)[OUTPUT_INPUT_L] != NULL)
@@ -116,12 +117,33 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
         else
             buffer[1] = 0;
 
+        if(buffer[0] > 1 || buffer[0] < -1 || buffer[1] > 1 || buffer[1] < -1)
+            clipping = true;
+
         buffer += 2;
     }
+
+    // if(clipping)
+    //     std::cout << RED_STDOUT << "OUTPUT CLIPPING" << DEFAULT_STDOUT << std::endl;
 
     for(unsigned int i = 1; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
             MODULES[i]->processed = false;
+
+    // for(unsigned int i = 1; i < MODULES.size(); i ++)
+    // {
+    //     if(MODULES[i] != NULL)
+    //     {
+    //         for(int j = 0; j < BUFFER_SIZE; j ++)
+    //         {
+    //             if(MODULES[i]->output[j] > 1 || MODULES[i]->output[j] < -1)
+    //             {
+    //                 std::cout << RED_STDOUT << MODULES[i]->name << " is clipping" << DEFAULT_STDOUT << std::endl;
+    //                 break;
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 /*

@@ -70,3 +70,30 @@ int find_available_module_slot()
 
     return MODULES.size();
 }
+
+std::vector<SDL_Color> generate_module_colors()
+{
+    SDL_Color color;
+    SDL_Color text_color;
+    float euclidian_distance;
+
+    do
+    {
+        color.r = rand() % 256;
+        color.g = rand() % 256;
+        color.b = rand() % 256;
+        text_color.r = rand() % 256;
+        text_color.g = rand() % 256;
+        text_color.b = rand() % 256;
+
+        euclidian_distance = sqrt(pow(color.r - text_color.r, 2) +
+                                  pow(color.g - text_color.g, 2) +
+                                  pow(color.b - text_color.b, 2));
+    } while(euclidian_distance < 250);
+
+    color.a = 255;
+    text_color.a = 255;
+
+    std::vector<SDL_Color> colors = {color, text_color};
+    return colors;
+}

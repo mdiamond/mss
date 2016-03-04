@@ -27,4 +27,7 @@ int find_available_module_number(int);
 // a new module
 int find_available_module_slot();
 
+// A function for generating colors for a module
+std::vector<SDL_Color> generate_module_colors();
+
 #endif

@@ -75,54 +75,61 @@ void Filter::process()
     // Process any dependencies
     process_dependencies();
 
-    for(unsigned int j = 0; j < dependencies.size(); j ++)
-        if(inputs_live[j])
-            input_floats[j] = inputs[j]->at(0);
-
-    double w0 = (input_floats[FILTER_FREQUENCY_CUTOFF] / SAMPLE_RATE) * 2 * M_PI;
-    double alpha = sin(w0) / (2 * input_floats[FILTER_Q]);
-
-    switch(filter_type)
+    if(inputs_live[FILTER_SIGNAL])
     {
-        case LOWPASS:
-            iir_coefficients[0] = (1 - cos(w0)) / 2;
-            iir_coefficients[1] = 1 - cos(w0);
-            iir_coefficients[2] = (1 - cos(w0)) / 2;
-            iir_coefficients[3] = 1 + alpha;
-            iir_coefficients[4] = -2 * cos(w0);
-            iir_coefficients[5] = 1 - alpha;
-            break;
-        case BANDPASS:
-            iir_coefficients[0] = input_floats[FILTER_Q] * alpha;
-            iir_coefficients[1] = 0;
-            iir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
-            iir_coefficients[3] = 1 + alpha;
-            iir_coefficients[4] = -2 * cos(w0);
-            iir_coefficients[5] = 1 - alpha;
-            break;
-        case HIGHPASS:
-            iir_coefficients[0] = (1 + cos(w0)) / 2;
-            iir_coefficients[1] = (1 + cos(w0)) * -1;
-            iir_coefficients[2] = (1 + cos(w0)) / 2;
-            iir_coefficients[3] = 1 + alpha;
-            iir_coefficients[4] = -2 * cos(w0);
-            iir_coefficients[5] = 1 - alpha;
-            break;
+        for(unsigned int j = 0; j < dependencies.size(); j ++)
+            if(inputs_live[j])
+                input_floats[j] = inputs[j]->at(0);
+
+        double w0 = (input_floats[FILTER_FREQUENCY_CUTOFF] / SAMPLE_RATE) * 2 * M_PI;
+        double alpha = sin(w0) / (2 * input_floats[FILTER_Q]);
+
+        switch(filter_type)
+        {
+            case LOWPASS:
+                iir_coefficients[0] = (1 - cos(w0)) / 2;
+                iir_coefficients[1] = 1 - cos(w0);
+                iir_coefficients[2] = (1 - cos(w0)) / 2;
+                iir_coefficients[3] = 1 + alpha;
+                iir_coefficients[4] = -2 * cos(w0);
+                iir_coefficients[5] = 1 - alpha;
+                break;
+            case BANDPASS:
+                iir_coefficients[0] = input_floats[FILTER_Q] * alpha;
+                iir_coefficients[1] = 0;
+                iir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
+                iir_coefficients[3] = 1 + alpha;
+                iir_coefficients[4] = -2 * cos(w0);
+                iir_coefficients[5] = 1 - alpha;
+                break;
+            case HIGHPASS:
+                iir_coefficients[0] = (1 + cos(w0)) / 2;
+                iir_coefficients[1] = (1 + cos(w0)) * -1;
+                iir_coefficients[2] = (1 + cos(w0)) / 2;
+                iir_coefficients[3] = 1 + alpha;
+                iir_coefficients[4] = -2 * cos(w0);
+                iir_coefficients[5] = 1 - alpha;
+                break;
+        }
+
+        for(int i = 0; i < BUFFER_SIZE; i ++)
+        {
+            output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i)
+                        + (iir_coefficients[1] / iir_coefficients[3] * x1)
+                        + (iir_coefficients[2] / iir_coefficients[3] * x2)
+                        - (iir_coefficients[4] / iir_coefficients[3] * y1)
+                        - (iir_coefficients[5] / iir_coefficients[3] * y2);
+
+            x2 = x1;
+            x1 = inputs[FILTER_SIGNAL]->at(i);
+            y2 = y1;
+            y1 = output[i];
+        }
     }
 
+    else
     for(int i = 0; i < BUFFER_SIZE; i ++)
-    {
-        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i)
-                    + (iir_coefficients[1] / iir_coefficients[3] * x1)
-                    + (iir_coefficients[2] / iir_coefficients[3] * x2)
-                    - (iir_coefficients[4] / iir_coefficients[3] * y1)
-                    - (iir_coefficients[5] / iir_coefficients[3] * y2);
-
-        x2 = x1;
-        x1 = inputs[FILTER_SIGNAL]->at(i);
-        y2 = y1;
-        y1 = output[i];
-    }
+        output[i] = 0;
 
     processed = true;
 }
