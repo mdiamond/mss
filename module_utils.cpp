@@ -71,27 +71,47 @@ int find_available_module_slot()
     return MODULES.size();
 }
 
+std::vector<float> yuv_to_rgb(std::vector<float> yuv)
+{
+    float r, g, b;
+
+    r = yuv[0] + (1.14 * yuv[2]);
+    g = yuv[0] - (.395 * yuv[1]) - (.581 * yuv[2]);
+    b = yuv[0] + (2.032 * yuv[1]);
+
+    std::vector<float> rgb = {r, g, b};
+
+    return rgb;
+}
+
 std::vector<SDL_Color> generate_module_colors()
 {
     SDL_Color color;
     SDL_Color text_color;
     float euclidian_distance;
+    std::vector<float> yuv, text_yuv, rgb, text_rgb;
 
     do
     {
-        color.r = rand() % 256;
-        color.g = rand() % 256;
-        color.b = rand() % 256;
-        text_color.r = rand() % 256;
-        text_color.g = rand() % 256;
-        text_color.b = rand() % 256;
+        yuv = std::vector<float>(3, rand() % 256);
+        yuv[0] = 0;
+        text_yuv = std::vector<float>(3, rand() % 256);
+        text_yuv[0] = 255;
 
-        euclidian_distance = sqrt(pow(color.r - text_color.r, 2) +
-                                  pow(color.g - text_color.g, 2) +
-                                  pow(color.b - text_color.b, 2));
+        euclidian_distance = sqrt(pow(yuv[1] - text_yuv[1], 2) +
+                                  pow(yuv[2] - text_yuv[2], 2));
     } while(euclidian_distance < 250);
 
+    rgb = yuv_to_rgb(yuv);
+    text_rgb = yuv_to_rgb(text_yuv);
+
+    color.r = rgb[0];
+    color.g = rgb[1];
+    color.b = rgb[2];
     color.a = 255;
+    text_color.r = text_rgb[0];
+    text_color.g = text_rgb[1];
+    text_color.b = text_rgb[2];
     text_color.a = 255;
 
     std::vector<SDL_Color> colors = {color, text_color};
