@@ -64,7 +64,7 @@ Oscillator::~Oscillator()
 }
 
 /*
- * Given a phase from 0 to 1, calculate 
+ * Given a phase from 0 to 1, calculate
  * and return a sine wave sample.
  */
 double Oscillator::produce_sin_sample(double phase)
@@ -73,7 +73,7 @@ double Oscillator::produce_sin_sample(double phase)
 }
 
 /*
- * Given a phase from 0 to 1, calculate 
+ * Given a phase from 0 to 1, calculate
  * and return a triangle wave sample.
  */
 double Oscillator::produce_tri_sample(double phase)
@@ -101,7 +101,7 @@ double Oscillator::produce_saw_sample(double phase)
 }
 
 /*
- * Given a phase from 0 to 1, calculate 
+ * Given a phase from 0 to 1, calculate
  * and return a square wave sample.
  */
 double Oscillator::produce_sqr_sample(double phase)
@@ -182,7 +182,7 @@ void Oscillator::process()
  */
 void Oscillator::update_control_values()
 {
-    
+
 }
 
 /*
@@ -207,7 +207,7 @@ void Oscillator::calculate_unique_graphics_object_locations()
     h_waveform = 45;
     y3 = upper_left.y + 23;
     y4 = y3 + 46;
-    y5 = y4 + 15;   
+    y5 = y4 + 15;
     y6 = y5 + 16;
     y7 = y6 + 15;
     y8 = y7 + 16;
