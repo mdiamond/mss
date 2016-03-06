@@ -84,6 +84,19 @@ std::vector<float> yuv_to_rgb(std::vector<float> yuv)
     return rgb;
 }
 
+std::vector<float> rgb_to_yuv(std::vector<float> rgb)
+{
+    float y, u, v;
+
+    y = (.299 * rgb[0]) + (.587 * rgb[1]) + (.114 * rgb[2]);
+    u = .492 * (rgb[2] - y);
+    v = .877 * (rgb[0] - y);
+
+    std::vector<float> yuv = {y, u, v};
+
+    return yuv;
+}
+
 std::vector<SDL_Color> generate_module_colors()
 {
     SDL_Color color;
@@ -91,27 +104,36 @@ std::vector<SDL_Color> generate_module_colors()
     float euclidian_distance;
     std::vector<float> yuv, text_yuv, rgb, text_rgb;
 
+    rgb = std::vector<float>(3, 0);
+    text_rgb = std::vector<float>(3, 0);
+
     do
     {
-        yuv = std::vector<float>(3, rand() % 256);
-        yuv[0] = 0;
-        text_yuv = std::vector<float>(3, rand() % 256);
-        text_yuv[0] = 255;
+        rgb[0] = (rand() % 256) / 255.0;
+        rgb[1] = (rand() % 256) / 255.0;
+        rgb[2] = (rand() % 256) / 255.0;
+        text_rgb[0] = (rand() % 256) / 255.0;
+        text_rgb[1] = (rand() % 256) / 255.0;
+        text_rgb[2] = (rand() % 256) / 255.0;
 
-        euclidian_distance = sqrt(pow(yuv[1] - text_yuv[1], 2) +
+        yuv = rgb_to_yuv(rgb);
+        text_yuv = rgb_to_yuv(text_rgb);
+
+        euclidian_distance = sqrt(pow(yuv[0] - text_yuv[0], 2) +
+                                  pow(yuv[1] - text_yuv[1], 2) +
                                   pow(yuv[2] - text_yuv[2], 2));
-    } while(euclidian_distance < 250);
+    } while(euclidian_distance < .7 || euclidian_distance > .9);
 
     rgb = yuv_to_rgb(yuv);
     text_rgb = yuv_to_rgb(text_yuv);
 
-    color.r = rgb[0];
-    color.g = rgb[1];
-    color.b = rgb[2];
+    color.r = rgb[0] * 255.0;
+    color.g = rgb[1] * 255.0;
+    color.b = rgb[2] * 255.0;
     color.a = 255;
-    text_color.r = text_rgb[0];
-    text_color.g = text_rgb[1];
-    text_color.b = text_rgb[2];
+    text_color.r = text_rgb[0] * 255.0;
+    text_color.g = text_rgb[1] * 255.0;
+    text_color.b = text_rgb[2] * 255.0;
     text_color.a = 255;
 
     std::vector<SDL_Color> colors = {color, text_color};
