@@ -71,19 +71,6 @@ int find_available_module_slot()
     return MODULES.size();
 }
 
-std::vector<float> yuv_to_rgb(std::vector<float> yuv)
-{
-    float r, g, b;
-
-    r = yuv[0] + (1.14 * yuv[2]);
-    g = yuv[0] - (.395 * yuv[1]) - (.581 * yuv[2]);
-    b = yuv[0] + (2.032 * yuv[1]);
-
-    std::vector<float> rgb = {r, g, b};
-
-    return rgb;
-}
-
 std::vector<float> rgb_to_yuv(std::vector<float> rgb)
 {
     float y, u, v;
@@ -123,9 +110,6 @@ std::vector<SDL_Color> generate_module_colors()
                                   pow(yuv[1] - text_yuv[1], 2) +
                                   pow(yuv[2] - text_yuv[2], 2));
     } while(euclidian_distance < .7 || euclidian_distance > .9);
-
-    rgb = yuv_to_rgb(yuv);
-    text_rgb = yuv_to_rgb(text_yuv);
 
     color.r = rgb[0] * 255.0;
     color.g = rgb[1] * 255.0;
