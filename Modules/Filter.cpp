@@ -127,10 +127,6 @@ void Filter::process()
         }
     }
 
-    else
-    for(int i = 0; i < BUFFER_SIZE; i ++)
-        output[i] = 0;
-
     processed = true;
 }
 

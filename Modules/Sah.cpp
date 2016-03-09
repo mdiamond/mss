@@ -64,24 +64,27 @@ void Sah::process()
     // Process any dependencies
     process_dependencies();
 
-    for(int i = 0; i < BUFFER_SIZE; i ++)
+    if(inputs_live[SAH_SIGNAL])
     {
-        // If the amount of time until the next sample has passed,
-        // update the sample to hold, update the hold time,
-        // then update the time to next sample
-        if(time_to_next_sample <= 0)
+        for(int i = 0; i < BUFFER_SIZE; i ++)
         {
-            sample = inputs[SAH_SIGNAL]->at(i);
-            if(inputs_live[SAH_HOLD_TIME])
-                input_floats[SAH_HOLD_TIME] = inputs[SAH_HOLD_TIME]->at(i);
-            time_to_next_sample = input_floats[SAH_HOLD_TIME];
-        }
+            // If the amount of time until the next sample has passed,
+            // update the sample to hold, update the hold time,
+            // then update the time to next sample
+            if(time_to_next_sample <= 0)
+            {
+                sample = inputs[SAH_SIGNAL]->at(i);
+                if(inputs_live[SAH_HOLD_TIME])
+                    input_floats[SAH_HOLD_TIME] = inputs[SAH_HOLD_TIME]->at(i);
+                time_to_next_sample = input_floats[SAH_HOLD_TIME];
+            }
 
-        // Set the output samples to the currently held sample,
-        // then decrement the time to next sample by a single sample
-        // in ms
-        output[i] = sample;
-        time_to_next_sample -= (1000.0 / SAMPLE_RATE);
+            // Set the output samples to the currently held sample,
+            // then decrement the time to next sample by a single sample
+            // in ms
+            output[i] = sample;
+            time_to_next_sample -= (1000.0 / SAMPLE_RATE);
+        }
     }
 
     processed = true;
