@@ -126,6 +126,9 @@ void Filter::process()
             y1 = output[i];
         }
     }
+    else
+        for(int i = 0; i < BUFFER_SIZE; i ++)
+            output[i] = 0;
 
     processed = true;
 }
