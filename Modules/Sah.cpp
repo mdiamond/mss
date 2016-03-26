@@ -225,3 +225,22 @@ std::string Sah::get_unique_text_representation()
 {
     return "";
 }
+
+/*
+ * Handle button presses. Sah button presses are used to reset the sampler.
+ */
+void Sah::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+        delete this;
+    else if(button == graphics_objects[SAH_RESET_SAMPLER_BUTTON])
+        reset_sampler();
+}
+
+/*
+ * Sah has no toggle buttons. This is a dummy function.
+ */
+void Sah::toggle_button_function(Toggle_Button *toggle_button)
+{
+
+}

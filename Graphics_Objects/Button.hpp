@@ -29,7 +29,7 @@ class Button: public Graphics_Object
         std::string text_str;
         Rect background;
         Text text;
-        void (Module::*button_function) (Button *);
+        // void (Module::*button_function) (Button *);
 
         // Constructor and destructor
         Button(std::string, SDL_Rect, SDL_Color *,

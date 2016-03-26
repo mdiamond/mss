@@ -114,7 +114,7 @@ void Mixer::process()
  */
 void Mixer::update_control_values()
 {
-    
+
 }
 
 /*
@@ -334,4 +334,21 @@ void Mixer::initialize_unique_graphics_objects()
 std::string Mixer::get_unique_text_representation()
 {
     return "";
+}
+
+/*
+ * Handle button presses. Mixer button presses are used to remove the module.
+ */
+void Mixer::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+        delete this;
+}
+
+/*
+ * Mixer has no toggle buttons. This is a dummy function.
+ */
+void Mixer::toggle_button_function(Toggle_Button *toggle_button)
+{
+
 }

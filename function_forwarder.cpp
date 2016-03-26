@@ -112,109 +112,6 @@ bool can_floatify(std::string *string)
 }
 
 /*
- * Handle functions for the ADSR module.
- */
-void adsr_function_forwarder(Graphics_Object *g)
-{
-    Adsr *adsr = (Adsr *) g->parent;
-    std::vector<std::string> possible_names;
-
-    possible_names = {"reset current amplitude (button)"};
-
-    if(g->name.size() > possible_names[0].size()
-       && g->name.substr(g->name.size() - possible_names[0].size()) == possible_names[0])
-        adsr->reset_current_amplitude();
-}
-
-/*
- * Handle functions for the delay module.
- */
-void delay_function_forwarder(Graphics_Object *g)
-{
-    Delay *delay = (Delay *) g->parent;
-    std::vector<std::string> possible_names;
-
-    possible_names = {"reset buffer (button)"};
-
-    if(g->name.size() > possible_names[0].size()
-       && g->name.substr(g->name.size() - possible_names[0].size()) == possible_names[0])
-        delay->reset_buffer();
-}
-
-/*
- * Handle functions for the filter module.
- */
-void filter_function_forwarder(Graphics_Object *g)
-{
-    Filter *filter = (Filter *) g->parent;
-    std::vector<std::string> possible_names;
-
-    possible_names = {"lowpass toggle (toggle button)", "bandpass toggle (toggle button)",
-                      "highpass toggle (toggle button)"};
-
-    if(g->name.size() > possible_names[0].size()
-            && g->name.substr(g->name.size() - 30) == possible_names[0])
-        filter->switch_filter(LOWPASS);
-    else if(g->name.size() > possible_names[1].size()
-            && g->name.substr(g->name.size() - 31) == possible_names[1])
-        filter->switch_filter(BANDPASS);
-    else if(g->name.size() > possible_names[2].size()
-            && g->name.substr(g->name.size() - 31) == possible_names[2])
-        filter->switch_filter(HIGHPASS);
-}
-
-/*
- * Handle functions for the oscillator module.
- */
-void oscillator_function_forwarder(Graphics_Object *g)
-{
-    Oscillator *oscillator = (Oscillator *) g->parent;
-    std::vector<std::string> possible_names;
-
-    possible_names = {"reset current phase (button)",
-                      "sin toggle (toggle button)", "tri toggle (toggle button)",
-                      "saw toggle (toggle button)", "sqr toggle (toggle button)"};
-
-    if(g->name.size() > possible_names[0].size()
-       && g->name.substr(g->name.size() - 28) == possible_names[0])
-        oscillator->reset_current_phase();
-    else if(g->name.size() > possible_names[1].size()
-            && g->name.substr(g->name.size() - 26) == possible_names[1])
-        oscillator->switch_waveform(SIN);
-    else if(g->name.size() > possible_names[2].size()
-            && g->name.substr(g->name.size() - 26) == possible_names[2])
-        oscillator->switch_waveform(TRI);
-    else if(g->name.size() > possible_names[3].size()
-            && g->name.substr(g->name.size() - 26) == possible_names[3])
-        oscillator->switch_waveform(SAW);
-    else if(g->name.size() > possible_names[4].size()
-            && g->name.substr(g->name.size() - 26) == possible_names[4])
-        oscillator->switch_waveform(SQR);
-}
-
-/*
- * Handle functions for the output module.
- */
-void output_function_forwarder(Graphics_Object *g)
-{
-    Output *output = (Output *) g->parent;
-
-    if(g->name == "output on/off button (toggle_button)")
-        output->toggle_audio_on();
-}
-
-/*
- * Handle functions for the sample and hold module.
- */
-void sah_function_forwarder(Graphics_Object *g)
-{
-    Sah *sah = (Sah *) g->parent;
-
-    if(g->name.substr(g->name.size() - 23) == " reset sampler (button)")
-        sah->reset_sampler();
-}
-
-/*
  * Handle functions for the graphics objects with
  * no parent module.
  */
@@ -335,32 +232,8 @@ void function_forwarder(Graphics_Object *g)
                                                                          + " " + g->parent->name.substr(g->parent->name.find(" ") + 1));
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }
-    // If the input toggle button hack does not kick in, first check to see
-    // the graphics object is a remove module button, and if so, remove that module
-    else if(g->name.size() > 22
-            && g->name.substr(g->name.size() - 22) == "remove module (button)"
-            && g->parent->get_name() != "output")
-    {
-        for(unsigned int i = 0; i < MODULES.size(); i ++)
-            if(MODULES[i] != NULL && MODULES[i] == g->parent)
-                MODULES[i] = NULL;
-
-        delete g->parent;
-    }
     // Next check for all possible graphics object parents, and do something depending
     // on the module type of the parent
     else if(g->parent == NULL)
         no_parent_function_forwarder(g);
-    else if(g->parent->type == ADSR)
-        adsr_function_forwarder(g);
-    else if(g->parent->type == DELAY)
-        delay_function_forwarder(g);
-    else if(g->parent->type == FILTER)
-        filter_function_forwarder(g);
-    else if(g->parent->type == OSCILLATOR)
-        oscillator_function_forwarder(g);
-    else if(g->parent->type == OUTPUT)
-        output_function_forwarder(g);
-    else if(g->parent->type == SAH)
-        sah_function_forwarder(g);
 }

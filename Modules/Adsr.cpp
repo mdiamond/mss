@@ -312,3 +312,23 @@ void Adsr::reset_current_amplitude()
 
     std::cout << name << " current amplitude reset" << std::endl;
 }
+
+/*
+ * Handle button presses. Adsr button presses are used to remove the module and
+ * reset envelope amplitude.
+ */
+void Adsr::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+        delete this;
+    else if(button == graphics_objects[ADSR_RESET_CURRENT_AMPLITUDE_BUTTON])
+        reset_current_amplitude();
+}
+
+/*
+ * Adsr has no toggle buttons. This is a dummy function.
+ */
+void Adsr::toggle_button_function(Toggle_Button *toggle_button)
+{
+
+}

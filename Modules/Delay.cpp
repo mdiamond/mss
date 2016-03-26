@@ -303,3 +303,23 @@ void Delay::reset_buffer()
 
     std::cout << name << " buffer reset" << std::endl;
 }
+
+/*
+ * Handle button presses. Delay button presses are used to remove the module and
+ * to reset the delay line to an empty state.
+ */
+void Delay::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+        delete this;
+    else if(button == graphics_objects[DELAY_RESET_BUFFER_BUTTON])
+        reset_buffer();
+}
+
+/*
+ * Delay has no toggle buttons. This is a dummy function.
+ */
+void Delay::toggle_button_function(Toggle_Button *toggle_button)
+{
+
+}

@@ -417,3 +417,31 @@ std::string Oscillator::get_unique_text_representation()
     return std::to_string(current_phase) + "\n"
            + std::to_string(waveform_type) + "\n";
 }
+
+/*
+ * Handle button presses. Oscillator button presses are used to remove the
+ * module or to reset the current phase.
+ */
+void Oscillator::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+        delete this;
+    else if(button == graphics_objects[OSCILLATOR_RESET_CURRENT_PHASE_BUTTON])
+        reset_current_phase();
+}
+
+/*
+ * Handle toggle button presses. Oscillator toggle button presses are used to
+ * switch waveform type.
+ */
+void Oscillator::toggle_button_function(Toggle_Button *toggle_button)
+{
+    if(toggle_button == graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])
+        switch_waveform(SIN);
+    else if(toggle_button == graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])
+        switch_waveform(TRI);
+    else if(toggle_button == graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])
+        switch_waveform(SAW);
+    else if(toggle_button == graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])
+        switch_waveform(SQR);
+}

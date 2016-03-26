@@ -278,3 +278,20 @@ std::string Noise::get_unique_text_representation()
 {
     return "";
 }
+
+/*
+ * Handle button presses. Noise button presses are used to remove the module.
+ */
+void Noise::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+        delete this;
+}
+
+/*
+ * Noise has no toggle buttons. This is a dummy function.
+ */
+void Noise::toggle_button_function(Toggle_Button *toggle_button)
+{
+
+}

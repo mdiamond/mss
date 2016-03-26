@@ -114,6 +114,10 @@ class Module
         virtual void initialize_unique_graphics_objects() = 0;
         //   Output the module's unique information as text
         virtual std::string get_unique_text_representation() = 0;
+        //   Handle a button press
+        virtual void button_function(Button *) = 0;
+        //   Handle a toggle button press
+        virtual void toggle_button_function(Toggle_Button *) = 0;
 
         // Member functions
         //   Process all modules that this module depends upon
@@ -151,8 +155,8 @@ class Module
         std::string get_text_representation();
         //   Make this module's input stuff adopt the colors of whatever is outputting to it
         void adopt_input_colors();
-        //   Handle a button press
-        void button_function(Button *);
+        // //   Handle a button press
+        // void button_function(Button *);
 };
 
 #endif

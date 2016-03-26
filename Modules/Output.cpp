@@ -92,7 +92,7 @@ void Output::calculate_unique_graphics_object_locations()
     h_waveform = 57;
     y3 = upper_left.y + 20;
     y4 = upper_left.y + 20;
-    y5 = upper_left.y + 40;   
+    y5 = upper_left.y + 40;
     y6 = upper_left.y + 97;
     y7 = upper_left.y + 112;
     y8 = upper_left.y + 133;
@@ -217,4 +217,26 @@ void Output::toggle_audio_on()
 std::string Output::get_unique_text_representation()
 {
     return "";
+}
+
+/*
+ * Handle button presses. Output button presses are not used.
+ */
+void Output::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    {
+        std::cout << RED_STDOUT << "The output module cannot be deleted!"
+                  << DEFAULT_STDOUT << std::endl;
+    }
+}
+
+/*
+ * Handle toggle button presses. Output toggle button presses are used to toggle
+ * audio processing on or off.
+ */
+void Output::toggle_button_function(Toggle_Button *toggle_button)
+{
+    if(toggle_button == graphics_objects[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON])
+        toggle_audio_on();
 }

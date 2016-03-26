@@ -322,3 +322,26 @@ std::string Filter::get_unique_text_representation()
 {
     return "";
 }
+
+/*
+ * Handle button presses. Filter button presses are used to remove the module.
+ */
+void Filter::button_function(Button *button)
+{
+    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+        delete this;
+}
+
+/*
+ * Handle toggle button presses. Filter toggle button presses are used to switch
+ * filter type.
+ */
+void Filter::toggle_button_function(Toggle_Button *toggle_button)
+{
+    if(toggle_button == graphics_objects[FILTER_LP_TOGGLE_BUTTON])
+        switch_filter(LOWPASS);
+    else if(toggle_button == graphics_objects[FILTER_BP_TOGGLE_BUTTON])
+        switch_filter(BANDPASS);
+    else if(toggle_button == graphics_objects[FILTER_HP_TOGGLE_BUTTON])
+        switch_filter(HIGHPASS);
+}

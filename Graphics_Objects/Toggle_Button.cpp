@@ -88,7 +88,7 @@ void Toggle_Button::clicked()
             ((Input_Toggle_Button *) this)->toggle();
         else
             toggle();
-        function_forwarder(this);
+        parent->toggle_button_function(this);
         OBJECT_CLICKED = true;
     }
 }

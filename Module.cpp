@@ -103,6 +103,11 @@ Module::~Module()
     // Lock audio to avoid interfering with processing
     SDL_LockAudio();
 
+    // Remove this module from the list of modules
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+        if(MODULES[i] != NULL && MODULES[i] == this)
+            MODULES[i] = NULL;
+
     // Cancel any inputs that this module is outputting to
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
@@ -465,13 +470,4 @@ void Module::adopt_input_colors()
             dependency_num ++;
         }
     }
-}
-
-/*
- * Handle a button press. Determine which type of module, and then
- * which type of button. Handle the press accordingly.
- */
-void Module::button_function(Button *)
-{
-
 }

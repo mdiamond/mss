@@ -36,8 +36,8 @@ Button::Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
     Graphics_Object(_name, BUTTON, _parent, _location, _color),
     text_str(_text),
     background(Rect(name + " background rect (rect)", location, color, NULL)),
-    text(Text("button text (text)", _location, _text_color, text_str, FONT_REGULAR)),
-    button_function(&Module::button_function)
+    text(Text("button text (text)", _location, _text_color, text_str, FONT_REGULAR))
+    // button_function(&Module::button_function)
 {
     // Make the text start 1 pixel away from the edge of the containing box
     text.location.x += 1;
@@ -71,8 +71,11 @@ void Button::clicked()
 
     if(!OBJECT_CLICKED)
     {
-        function_forwarder(this);
-        (parent->*button_function)(this);
+        if(parent == NULL)
+            function_forwarder(this);
+        else
+            parent->button_function(this);
+        // (parent->*button_function)(this);
         OBJECT_CLICKED = true;
     }
 }
