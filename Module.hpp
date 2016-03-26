@@ -151,6 +151,8 @@ class Module
         std::string get_text_representation();
         //   Make this module's input stuff adopt the colors of whatever is outputting to it
         void adopt_input_colors();
+        //   Handle a button press
+        void button_function(Button *);
 };
 
 #endif

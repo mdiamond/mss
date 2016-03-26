@@ -466,3 +466,12 @@ void Module::adopt_input_colors()
         }
     }
 }
+
+/*
+ * Handle a button press. Determine which type of module, and then
+ * which type of button. Handle the press accordingly.
+ */
+void Module::button_function(Button *)
+{
+
+}
