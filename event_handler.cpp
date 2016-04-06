@@ -14,11 +14,13 @@
 
 // Included SDL components
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 // Included files
-#include "function_forwarder.hpp"
+#include "graphics_object_utils.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
+#include "module_utils.hpp"
 
 // Included classes
 #include "Graphics_Object.hpp"
@@ -65,35 +67,40 @@ void keydown_event(SDL_Event *e)
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(ADSR);
     }
-    if(e->key.keysym.sym == SDLK_2)
+    else if(e->key.keysym.sym == SDLK_2)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(DELAY);
     }
-    if(e->key.keysym.sym == SDLK_3)
+    else if(e->key.keysym.sym == SDLK_3)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(FILTER);
     }
-    if(e->key.keysym.sym == SDLK_4)
+    else if(e->key.keysym.sym == SDLK_4)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(MIXER);
     }
-    if(e->key.keysym.sym == SDLK_5)
+    else if(e->key.keysym.sym == SDLK_5)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(MULTIPLIER);
     }
-    if(e->key.keysym.sym == SDLK_6)
+    else if(e->key.keysym.sym == SDLK_6)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(NOISE);
     }
-    if(e->key.keysym.sym == SDLK_7)
+    else if(e->key.keysym.sym == SDLK_7)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
             create_module(OSCILLATOR);
+    }
+    else if(e->key.keysym.sym == SDLK_8)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+            create_module(SAH);
     }
     else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
     {

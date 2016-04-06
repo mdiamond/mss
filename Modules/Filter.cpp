@@ -75,60 +75,62 @@ void Filter::process()
     // Process any dependencies
     process_dependencies();
 
-    if(inputs_live[FILTER_SIGNAL])
+    // Update parameters
+    update_input_floats(0);
+
+    // Once per buffer, update the coefficients
+    double w0 = (input_floats[FILTER_FREQUENCY_CUTOFF] / SAMPLE_RATE) * 2 * M_PI;
+    double alpha = sin(w0) / (2 * input_floats[FILTER_Q]);
+
+    // Use different calculations for the coefficients of each filter type
+    switch(filter_type)
     {
-        for(unsigned int j = 0; j < dependencies.size(); j ++)
-            if(inputs_live[j])
-                input_floats[j] = inputs[j]->at(0);
-
-        double w0 = (input_floats[FILTER_FREQUENCY_CUTOFF] / SAMPLE_RATE) * 2 * M_PI;
-        double alpha = sin(w0) / (2 * input_floats[FILTER_Q]);
-
-        switch(filter_type)
-        {
-            case LOWPASS:
-                iir_coefficients[0] = (1 - cos(w0)) / 2;
-                iir_coefficients[1] = 1 - cos(w0);
-                iir_coefficients[2] = (1 - cos(w0)) / 2;
-                iir_coefficients[3] = 1 + alpha;
-                iir_coefficients[4] = -2 * cos(w0);
-                iir_coefficients[5] = 1 - alpha;
-                break;
-            case BANDPASS:
-                iir_coefficients[0] = input_floats[FILTER_Q] * alpha;
-                iir_coefficients[1] = 0;
-                iir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
-                iir_coefficients[3] = 1 + alpha;
-                iir_coefficients[4] = -2 * cos(w0);
-                iir_coefficients[5] = 1 - alpha;
-                break;
-            case HIGHPASS:
-                iir_coefficients[0] = (1 + cos(w0)) / 2;
-                iir_coefficients[1] = (1 + cos(w0)) * -1;
-                iir_coefficients[2] = (1 + cos(w0)) / 2;
-                iir_coefficients[3] = 1 + alpha;
-                iir_coefficients[4] = -2 * cos(w0);
-                iir_coefficients[5] = 1 - alpha;
-                break;
-        }
-
-        for(int i = 0; i < BUFFER_SIZE; i ++)
-        {
-            output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL]->at(i)
-                        + (iir_coefficients[1] / iir_coefficients[3] * x1)
-                        + (iir_coefficients[2] / iir_coefficients[3] * x2)
-                        - (iir_coefficients[4] / iir_coefficients[3] * y1)
-                        - (iir_coefficients[5] / iir_coefficients[3] * y2);
-
-            x2 = x1;
-            x1 = inputs[FILTER_SIGNAL]->at(i);
-            y2 = y1;
-            y1 = output[i];
-        }
+        case LOWPASS:
+            iir_coefficients[0] = (1 - cos(w0)) / 2;
+            iir_coefficients[1] = 1 - cos(w0);
+            iir_coefficients[2] = (1 - cos(w0)) / 2;
+            iir_coefficients[3] = 1 + alpha;
+            iir_coefficients[4] = -2 * cos(w0);
+            iir_coefficients[5] = 1 - alpha;
+            break;
+        case BANDPASS:
+            iir_coefficients[0] = input_floats[FILTER_Q] * alpha;
+            iir_coefficients[1] = 0;
+            iir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
+            iir_coefficients[3] = 1 + alpha;
+            iir_coefficients[4] = -2 * cos(w0);
+            iir_coefficients[5] = 1 - alpha;
+            break;
+        case HIGHPASS:
+            iir_coefficients[0] = (1 + cos(w0)) / 2;
+            iir_coefficients[1] = (1 + cos(w0)) * -1;
+            iir_coefficients[2] = (1 + cos(w0)) / 2;
+            iir_coefficients[3] = 1 + alpha;
+            iir_coefficients[4] = -2 * cos(w0);
+            iir_coefficients[5] = 1 - alpha;
+            break;
     }
-    else
-        for(int i = 0; i < BUFFER_SIZE; i ++)
-            output[i] = 0;
+
+    // Filter the buffer with the determined coefficients
+    for(int i = 0; i < BUFFER_SIZE; i ++)
+    {
+        // Update parameters
+        update_input_floats(i);
+
+        if(!inputs_live[FILTER_SIGNAL])
+            input_floats[FILTER_SIGNAL] = 0;
+
+        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * input_floats[FILTER_SIGNAL]
+                    + (iir_coefficients[1] / iir_coefficients[3] * x1)
+                    + (iir_coefficients[2] / iir_coefficients[3] * x2)
+                    - (iir_coefficients[4] / iir_coefficients[3] * y1)
+                    - (iir_coefficients[5] / iir_coefficients[3] * y2);
+
+        x2 = x1;
+        x1 = input_floats[FILTER_SIGNAL];
+        y2 = y1;
+        y1 = output[i];
+    }
 
     processed = true;
 }
@@ -205,6 +207,8 @@ void Filter::initialize_unique_graphics_objects()
     std::vector<std::vector<float> *> buffers;
     std::vector<Module *> parents;
     std::vector<bool> bs;
+    std::vector<Input_Text_Box *> input_text_boxes;
+    std::vector<Input_Toggle_Button *> input_toggle_buttons;
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
@@ -241,8 +245,9 @@ void Filter::initialize_unique_graphics_objects()
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     parents = std::vector<Module *>(3, this);
     input_nums = {FILTER_SIGNAL, FILTER_FREQUENCY_CUTOFF, FILTER_Q};
+    input_toggle_buttons = std::vector<Input_Toggle_Button *>(3, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " signal (input toggle button)",
              name + " frequency cutoff (input toggle button)",
@@ -261,8 +266,14 @@ void Filter::initialize_unique_graphics_objects()
     parents = std::vector<Module *>(3, this);
     input_nums = {FILTER_SIGNAL, FILTER_FREQUENCY_CUTOFF, FILTER_Q};
 
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                       text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
+    input_text_boxes = {(Input_Text_Box *) graphics_objects[FILTER_SIGNAL_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[FILTER_Q_INPUT_TEXT_BOX]};
+
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
+                                           text_color_ons, text_color_offs,
+                                           fonts, texts, text_offs, bs, parents,
+                                           input_nums, input_text_boxes);
 
     names = {name + " lowpass toggle (toggle button)", name + " bandpass toggle (toggle button)",
              name + " highpass toggle (toggle button)"};
@@ -282,6 +293,10 @@ void Filter::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                                         text_color_offs, fonts, texts, text_offs, bs, parents);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+
+    ((Input_Text_Box *) graphics_objects[FILTER_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[FILTER_SIGNAL_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[FILTER_Q_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[FILTER_Q_INPUT_TOGGLE_BUTTON];
 }
 
 /*

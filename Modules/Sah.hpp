@@ -47,7 +47,7 @@ enum Sah_Dependencies
 
 class Sah: public Module
 {
-    float sample;
+    double sample;
     double time_to_next_sample;
 
     public:

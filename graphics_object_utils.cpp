@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -25,6 +26,26 @@
 #include "Graphics_Objects/Text_Box.hpp"
 #include "Graphics_Objects/Toggle_Button.hpp"
 #include "Graphics_Objects/Waveform.hpp"
+
+/********************
+ * HELPER FUNCTIONS *
+ ********************/
+
+/*
+ * Increment the current page by the amount specified.
+ */
+void increment_page_number(int num)
+{
+    unsigned int tmp = CURRENT_PAGE;
+
+    tmp += num;
+
+    if(tmp >= 0 && tmp < PAGES.size())
+    {
+        CURRENT_PAGE = tmp;
+        std::cout << "Switched to page " << CURRENT_PAGE << std::endl;
+    }
+}
 
 /**********************************
  * BATCH GRAPHICS OBJECT CREATORS *

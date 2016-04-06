@@ -205,8 +205,20 @@ Module::~Module()
 void Module::process_dependencies()
 {
     for(unsigned int i = 0; i < dependencies.size(); i ++)
-        if(dependencies[i] != NULL && !dependencies[i]->processed)
+        if(inputs_live[i] && !dependencies[i]->processed)
             dependencies[i]->process();
+}
+
+/*
+ * This function stores the sample at index i from each of the input buffers as
+ * floats in this module. This is essentially just updating the locally stored
+ * values for each parameter.
+ */
+void Module::update_input_floats(int i)
+{
+    for(unsigned int j = 0; j < dependencies.size(); j ++)
+        if(inputs_live[j])
+            input_floats[j] = inputs[j]->at(i);
 }
 
 /*
@@ -237,16 +249,23 @@ void Module::calculate_graphics_object_locations()
  * Initialize a batch of input text box objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_text_box_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color *> colors,
-                                               std::vector<SDL_Color *> text_colors, std::vector<std::string> prompt_texts, std::vector<TTF_Font *> fonts,
-                                               std::vector<Module *> parents, std::vector<int> input_nums)
+void Module::initialize_input_text_box_objects(std::vector<std::string> names,
+                                               std::vector<SDL_Rect> locations,
+                                               std::vector<SDL_Color *> colors,
+                                               std::vector<SDL_Color *> text_colors,
+                                               std::vector<std::string> prompt_texts,
+                                               std::vector<TTF_Font *> fonts,
+                                               std::vector<Module *> parents,
+                                               std::vector<int> input_nums,
+                                               std::vector<Input_Toggle_Button *> input_toggle_buttons)
 {
     Input_Text_Box *input_text_box = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)
     {
         input_text_box = new Input_Text_Box(names[i], locations[i], colors[i], text_colors[i],
-                                            prompt_texts[i], fonts[i], parents[i], input_nums[i]);
+                                            prompt_texts[i], fonts[i], parents[i], input_nums[i],
+                                            input_toggle_buttons[i]);
         graphics_objects.push_back(input_text_box);
     }
 }
@@ -255,11 +274,19 @@ void Module::initialize_input_text_box_objects(std::vector<std::string> names, s
  * Initialize a batch of input toggle button objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_toggle_button_objects(std::vector<std::string> names, std::vector<SDL_Rect> locations, std::vector<SDL_Color *> colors,
-                                                    std::vector<SDL_Color *> color_offs, std::vector<SDL_Color *> text_color_ons,
-                                                    std::vector<SDL_Color *> text_color_offs, std::vector<TTF_Font *> fonts,
-                                                    std::vector<std::string> text_ons, std::vector<std::string> text_offs,
-                                                    std::vector<bool> bs, std::vector<Module *> parents, std::vector<int> input_nums)
+void Module::initialize_input_toggle_button_objects(std::vector<std::string> names,
+                                                    std::vector<SDL_Rect> locations,
+                                                    std::vector<SDL_Color *> colors,
+                                                    std::vector<SDL_Color *> color_offs,
+                                                    std::vector<SDL_Color *> text_color_ons,
+                                                    std::vector<SDL_Color *> text_color_offs,
+                                                    std::vector<TTF_Font *> fonts,
+                                                    std::vector<std::string> text_ons,
+                                                    std::vector<std::string> text_offs,
+                                                    std::vector<bool> bs,
+                                                    std::vector<Module *> parents,
+                                                    std::vector<int> input_nums,
+                                                    std::vector<Input_Text_Box *> input_text_boxes)
 {
     Input_Toggle_Button *input_toggle_button = NULL;
 
@@ -267,8 +294,7 @@ void Module::initialize_input_toggle_button_objects(std::vector<std::string> nam
     {
         input_toggle_button = new Input_Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
                                             text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i],
-                                            input_nums[i],
-                                            (Input_Text_Box *) graphics_objects[graphics_objects.size() - parameter_names[type].size()]);
+                                            input_nums[i], input_text_boxes[i]);
         graphics_objects.push_back(input_toggle_button);
     }
 }
@@ -369,7 +395,11 @@ void Module::set(Module *src, int input_num)
         waveform->buffer = &src->output;
     }
 
+    // Set the colors of the text box to be the colors of the source module
     adopt_input_colors();
+
+    // Ensure that the input toggle button associated with this input is turned
+    // on
 
     std::cout << name << " " << parameter_names[type][input_num]
          << " is now coming from " << src->name << std::endl;
@@ -469,5 +499,37 @@ void Module::adopt_input_colors()
 
             dependency_num ++;
         }
+    }
+}
+
+/*
+ * If this module's background rectangle receives a click, it means it has been
+ * selected as a source for some input on some other module. This means that
+ * the following things need to happen:
+ *  - set the the input on the other module to take the output from this module
+ *  - turn on the input toggle button associated with the input on the other
+ *    module
+ *  - exit module selection mode
+ *  - set the name of this module as the text in the input text box associated
+ *    with the input it is now the source for
+ *  - set the current input toggle button back to none
+ * However, if the type of this module is the output module, don't do anything!
+ * The output module cannot be the source for any inputs.
+ */
+void Module::module_selected()
+{
+    if(type == OUTPUT)
+    {
+        std::cout << RED_STDOUT
+        << "The output module cannot be the source for any inputs"
+        << DEFAULT_STDOUT << std::endl;
+    }
+    else
+    {
+        CURRENT_INPUT_TOGGLE_BUTTON->parent->set(this, CURRENT_INPUT_TOGGLE_BUTTON->input_num);
+        CURRENT_INPUT_TOGGLE_BUTTON->b = true;
+        SELECTING_SRC = false;
+        CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->update_current_text(get_short_name());
+        CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }
 }

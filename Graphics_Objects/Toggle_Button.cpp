@@ -74,9 +74,10 @@ void Toggle_Button::render()
 }
 
 /*
- * Send this graphics object to the function forwarder,
- * which will determine what its intended functionality is
- * and call the appropriate functions
+ * If this toggle button is an input toggle button, cast it and call its toggle
+ * function. Otherwise, call the normal toggle button toggle function, then send
+ * this toggle button to its parent module's toggle button handling function.
+ * All toggle buttons are associated with a parent module.
  */
 void Toggle_Button::clicked()
 {
@@ -87,8 +88,10 @@ void Toggle_Button::clicked()
         if(type == INPUT_TOGGLE_BUTTON)
             ((Input_Toggle_Button *) this)->toggle();
         else
+        {
             toggle();
-        parent->toggle_button_function(this);
+            parent->toggle_button_function(this);
+        }
         OBJECT_CLICKED = true;
     }
 }

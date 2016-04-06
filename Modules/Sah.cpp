@@ -64,27 +64,27 @@ void Sah::process()
     // Process any dependencies
     process_dependencies();
 
-    if(inputs_live[SAH_SIGNAL])
+    for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        for(int i = 0; i < BUFFER_SIZE; i ++)
-        {
-            // If the amount of time until the next sample has passed,
-            // update the sample to hold, update the hold time,
-            // then update the time to next sample
-            if(time_to_next_sample <= 0)
-            {
-                sample = inputs[SAH_SIGNAL]->at(i);
-                if(inputs_live[SAH_HOLD_TIME])
-                    input_floats[SAH_HOLD_TIME] = inputs[SAH_HOLD_TIME]->at(i);
-                time_to_next_sample = input_floats[SAH_HOLD_TIME];
-            }
+        update_input_floats(i);
 
-            // Set the output samples to the currently held sample,
-            // then decrement the time to next sample by a single sample
-            // in ms
-            output[i] = sample;
-            time_to_next_sample -= (1000.0 / SAMPLE_RATE);
+        if(!inputs_live[SAH_SIGNAL])
+            input_floats[SAH_SIGNAL] = 0;
+
+        // If the amount of time until the next sample has passed,
+        // update the sample to hold, update the hold time,
+        // then update the time to next sample
+        if(time_to_next_sample <= 0)
+        {
+            sample = input_floats[SAH_SIGNAL];
+            time_to_next_sample = input_floats[SAH_HOLD_TIME];
         }
+
+        // Set the output samples to the currently held sample,
+        // then decrement the time to next sample by a single sample
+        // in ms
+        output[i] = sample;
+        time_to_next_sample -= ((double) 1000.0 / (double) SAMPLE_RATE);
     }
 
     processed = true;
@@ -152,6 +152,8 @@ void Sah::initialize_unique_graphics_objects()
     std::vector<std::vector<float> *> buffers;
     std::vector<Module *> parents;
     std::vector<bool> bs;
+    std::vector<Input_Text_Box *> input_text_boxes;
+    std::vector<Input_Toggle_Button *> input_toggle_buttons;
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
@@ -192,8 +194,9 @@ void Sah::initialize_unique_graphics_objects()
     fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
     parents = std::vector<Module *>(2, this);
     input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
+    input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " signal input (input toggle button)", name + " hold time input (input toggle button)"};
     locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TOGGLE_BUTTON],
@@ -209,8 +212,16 @@ void Sah::initialize_unique_graphics_objects()
     parents = std::vector<Module *>(2, this);
     input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
 
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                       text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
+    input_text_boxes = {(Input_Text_Box *) graphics_objects[SAH_SIGNAL_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX]};
+
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
+                                           text_color_ons, text_color_offs,
+                                           fonts, texts, text_offs, bs, parents,
+                                           input_nums, input_text_boxes);
+
+    ((Input_Text_Box *) graphics_objects[SAH_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[SAH_SIGNAL_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON];
 }
 
 /*

@@ -122,21 +122,38 @@ class Module
         // Member functions
         //   Process all modules that this module depends upon
         void process_dependencies();
+        //   Grab samples from index i in all input buffers, store them as
+        //   individual floats
+        void update_input_floats(int);
         //   Calculate the locations of all graphics objects in this module
         void calculate_graphics_object_locations();
         //   Initialize input text box graphics objects
-        void initialize_input_text_box_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color *>,
-                                               std::vector<SDL_Color *>,std::vector<std::string>, std::vector<TTF_Font *>,
-                                               std::vector<Module *>, std::vector<int>);
+        void initialize_input_text_box_objects(std::vector<std::string>,
+                                               std::vector<SDL_Rect>,
+                                               std::vector<SDL_Color *>,
+                                               std::vector<SDL_Color *>,
+                                               std::vector<std::string>,
+                                               std::vector<TTF_Font *>,
+                                               std::vector<Module *>,
+                                               std::vector<int>,
+                                               std::vector<Input_Toggle_Button *>);
         //   Initialize input toggle button graphics objects
         //   (must always be used immediately after, and with the same size arrays for input
         //    as initialize_input_text_box_objects() because each input toggle button depends
         //    on and must be able to reference a particular input text object)
-        void initialize_input_toggle_button_objects(std::vector<std::string>, std::vector<SDL_Rect>, std::vector<SDL_Color *>,
-                                                    std::vector<SDL_Color *>, std::vector<SDL_Color *>, std::vector<SDL_Color *>,
+        void initialize_input_toggle_button_objects(std::vector<std::string>,
+                                                    std::vector<SDL_Rect>,
+                                                    std::vector<SDL_Color *>,
+                                                    std::vector<SDL_Color *>,
+                                                    std::vector<SDL_Color *>,
+                                                    std::vector<SDL_Color *>,
                                                     std::vector<TTF_Font *>,
-                                                    std::vector<std::string>, std::vector<std::string>,
-                                                    std::vector<bool>, std::vector<Module *>, std::vector<int>);
+                                                    std::vector<std::string>,
+                                                    std::vector<std::string>,
+                                                    std::vector<bool>,
+                                                    std::vector<Module *>,
+                                                    std::vector<int>,
+                                                    std::vector<Input_Text_Box *>);
         //   Initialize all graphics objects in this module
         void initialize_graphics_objects();
         //   Update the locations of all graphics objects in this module
@@ -153,10 +170,12 @@ class Module
         std::string get_short_name();
         //   Output the module as text
         std::string get_text_representation();
-        //   Make this module's input stuff adopt the colors of whatever is outputting to it
+        //   Make this module's input stuff adopt the colors of whatever is
+        //   outputting to it
         void adopt_input_colors();
-        // //   Handle a button press
-        // void button_function(Button *);
+        //   Handle a background rectangle click (this module has been selected
+        //   as a source for some other module's input)
+        void module_selected();
 };
 
 #endif

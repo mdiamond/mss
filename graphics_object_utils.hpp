@@ -21,6 +21,9 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
+// A function to increment or decrement the current page number
+void increment_page_number(int);
+
 // Batch graphics object constructors
 std::vector<Graphics_Object *> initialize_button_objects(std::vector<std::string>, std::vector<SDL_Rect>,
                                                          std::vector<SDL_Color *>, std::vector<SDL_Color *>,

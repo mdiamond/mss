@@ -18,13 +18,97 @@
 
 // Included files
 #include "main.hpp"
+#include "module_utils.hpp"
 
 // Included classes
 #include "Module.hpp"
 
-/********************************
- * FIND AVAILABLE MODULE NUMBER *
- ********************************/
+/********************
+ * HELPER FUNCTIONS *
+ ********************/
+
+ /*
+  * Create a module of the type specified.
+  */
+ void create_module(int type)
+ {
+     Module *module;
+
+     switch(type)
+     {
+         case ADSR: module = new Adsr(); break;
+         case DELAY: module = new Delay(); break;
+         case FILTER: module = new Filter(); break;
+         case MIXER: module = new Mixer(); break;
+         case MULTIPLIER: module = new Multiplier(); break;
+         case NOISE: module = new Noise(); break;
+         case OSCILLATOR: module = new Oscillator(); break;
+         case SAH: module = new Sah(); break;
+     }
+
+     module->initialize_graphics_objects();
+
+     bool push_on_back = false;
+     for(unsigned int i = 0; i < MODULES.size(); i ++)
+     {
+         if(MODULES[i] == NULL)
+         {
+             MODULES[i] = module;
+             push_on_back = false;
+             break;
+         }
+
+         if(i == MODULES.size() - 1)
+             push_on_back = true;
+     }
+
+     if(push_on_back)
+         MODULES.push_back(module);
+
+     MODULES_CHANGED = true;
+ }
+
+/*
+ * Given the name of a module, return a pointer to it if
+ * it exists, or NULL if it doesn't.
+ */
+Module *find_module(std::string *name, std::vector<Module *> *modules)
+{
+    for(unsigned int i = 0; i < modules->size(); i ++)
+    {
+        if(MODULES[i] != NULL)
+            if(modules->at(i)->get_name() == *name
+               || modules->at(i)->get_short_name() == *name)
+                return modules->at(i);
+    }
+
+    return NULL;
+}
+
+/*
+ * Given the name of a module, return a pointer to it if it exists,
+ * is not the same module as the destination module, and is not the
+ * output module. Otherwise, return NULL and print an error message.
+ */
+Module *find_module_as_source(std::string *name, std::vector<Module *> *modules, Module *dst)
+{
+        Module *src = find_module(name, &MODULES);
+        if(src == NULL)
+            std::cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << std::endl;
+        else if(src == MODULES[0])
+        {
+            std::cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
+                               << DEFAULT_STDOUT << std::endl;
+            return NULL;
+        }
+        else if(src == dst)
+        {
+            std::cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << std::endl;
+            return NULL;
+        }
+
+        return src;
+}
 
 /*
  * This function takes a module type as input and returns

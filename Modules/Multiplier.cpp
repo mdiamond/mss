@@ -69,18 +69,15 @@ void Multiplier::process()
     // Process any dependencies
     process_dependencies();
 
-    if(inputs_live[MULTIPLIER_SIGNAL])
-    {
-        for(unsigned short i = 0; i < output.size(); i ++)
-        {
-            if(inputs_live[MULTIPLIER_DRY_WET])
-                input_floats[MULTIPLIER_DRY_WET] = inputs[MULTIPLIER_DRY_WET]->at(i);
-            if(inputs_live[MULTIPLIER_MULTIPLIER])
-                input_floats[MULTIPLIER_MULTIPLIER] = inputs[MULTIPLIER_MULTIPLIER]->at(i);
+    if(!inputs_live[MULTIPLIER_SIGNAL])
+        input_floats[MULTIPLIER_SIGNAL] = 0;
 
-            output[i] = (inputs[MULTIPLIER_SIGNAL]->at(i) * (1 - input_floats[MULTIPLIER_DRY_WET])) +
-                           (inputs[MULTIPLIER_SIGNAL]->at(i) * input_floats[MULTIPLIER_MULTIPLIER] * input_floats[MULTIPLIER_DRY_WET]);
-        }
+    for(unsigned short i = 0; i < output.size(); i ++)
+    {
+        update_input_floats(i);
+
+        output[i] = (input_floats[MULTIPLIER_SIGNAL] * (1 - input_floats[MULTIPLIER_DRY_WET])) +
+                       (input_floats[MULTIPLIER_SIGNAL] * input_floats[MULTIPLIER_MULTIPLIER] * input_floats[MULTIPLIER_DRY_WET]);
     }
 
     processed = true;
@@ -148,6 +145,8 @@ void Multiplier::initialize_unique_graphics_objects()
     std::vector<std::vector<float> *> buffers;
     std::vector<Module *> parents;
     std::vector<bool> bs;
+    std::vector<Input_Text_Box *> input_text_boxes;
+    std::vector<Input_Toggle_Button *> input_toggle_buttons;
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
@@ -183,8 +182,9 @@ void Multiplier::initialize_unique_graphics_objects()
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     parents = std::vector<Module *>(3, this);
     input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER, MULTIPLIER_DRY_WET};
+    input_toggle_buttons = std::vector<Input_Toggle_Button *>(3, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " signal input (input toggle button)", name + " input (input toggle button)",
              name + " dry/wet input (input toggle button)"};
@@ -204,8 +204,18 @@ void Multiplier::initialize_unique_graphics_objects()
     input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER,
                   MULTIPLIER_DRY_WET};
 
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                       text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
+    input_text_boxes = {(Input_Text_Box *) graphics_objects[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[MULTIPLIER_DRY_WET_INPUT_TEXT_BOX]};
+
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
+                                           text_color_ons, text_color_offs,
+                                           fonts, texts, text_offs, bs, parents,
+                                           input_nums, input_text_boxes);
+
+    ((Input_Text_Box *) graphics_objects[MULTIPLIER_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MULTIPLIER_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[MULTIPLIER_DRY_WET_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MULTIPLIER_DRY_WET_INPUT_TOGGLE_BUTTON];
 }
 
 std::string Multiplier::get_unique_text_representation()

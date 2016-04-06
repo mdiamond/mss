@@ -127,12 +127,7 @@ void Oscillator::process()
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < output.size(); i ++)
     {
-        for(unsigned int j = 0; j < dependencies.size(); j ++)
-            if(inputs_live[j] && j != OSCILLATOR_PHASE_OFFSET)
-                input_floats[j] = inputs[j]->at(i);
-
-        if(inputs_live[OSCILLATOR_PHASE_OFFSET])
-            input_floats[OSCILLATOR_PHASE_OFFSET] = inputs[OSCILLATOR_PHASE_OFFSET]->at(i);
+        update_input_floats(i);
 
         phase_offset_diff = input_floats[OSCILLATOR_PHASE_OFFSET] - previous_phase_offset;
         previous_phase_offset = input_floats[OSCILLATOR_PHASE_OFFSET];
@@ -258,6 +253,8 @@ void Oscillator::initialize_unique_graphics_objects()
     std::vector<std::vector<float> *> buffers;
     std::vector<Module *> parents;
     std::vector<bool> bs;
+    std::vector<Input_Text_Box *> input_text_boxes;
+    std::vector<Input_Toggle_Button *> input_toggle_buttons;
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
@@ -306,8 +303,9 @@ void Oscillator::initialize_unique_graphics_objects()
     parents = std::vector<Module *>(5, this);
     input_nums = {OSCILLATOR_FREQUENCY, OSCILLATOR_PHASE_OFFSET, OSCILLATOR_PULSE_WIDTH,
                   OSCILLATOR_RANGE_LOW, OSCILLATOR_RANGE_HIGH};
+    input_toggle_buttons = std::vector<Input_Toggle_Button *>(5, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " frequency input (input toggle button)",
              name + " phase offset input (input toggle button)",
@@ -332,8 +330,16 @@ void Oscillator::initialize_unique_graphics_objects()
                   OSCILLATOR_PULSE_WIDTH, OSCILLATOR_RANGE_LOW,
                   OSCILLATOR_RANGE_HIGH};
 
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                       text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
+    input_text_boxes = {(Input_Text_Box *) graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX]};
+
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
+                                           text_color_ons, text_color_offs,
+                                           fonts, texts, text_offs, bs, parents,
+                                           input_nums, input_text_boxes);
 
     names = {name + " sin toggle (toggle button)", name + " tri toggle (toggle button)",
              name + " saw toggle (toggle button)", name + " sqr toggle (toggle button)"};
@@ -354,6 +360,12 @@ void Oscillator::initialize_unique_graphics_objects()
     tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
                                                         text_color_offs, fonts, texts, text_offs, bs, parents);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+
+    ((Input_Text_Box *) graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON];
 }
 
 /*

@@ -60,9 +60,8 @@ void Button::render()
 }
 
 /*
- * Send this graphics object to the function forwarder,
- * which will determine what its intended functionality is
- * and call the appropriate functions.
+ * If this button has no parent module, send it to the function forwarder.
+ * Otherwise, send it to it's parent module's button handling function.
  */
 void Button::clicked()
 {

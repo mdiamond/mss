@@ -17,7 +17,7 @@
 
 // Included files
 #include "../main.hpp"
-#include "../function_forwarder.hpp"
+#include "../module_utils.hpp"
 
 // Included classes
 #include "../Graphics_Object.hpp"
@@ -33,9 +33,10 @@
  */
 Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color *_color,
                                SDL_Color *_text_color, std::string _prompt_text, TTF_Font *_font,
-                               Module *_parent, int _input_num) :
+                               Module *_parent, int _input_num,
+                               Input_Toggle_Button *_input_toggle_button) :
     Text_Box(_name, _location, _color, _text_color, _prompt_text, _font, _parent),
-    input_num(_input_num)
+    input_num(_input_num), input_toggle_button(_input_toggle_button)
 {
     // Override the default type of a text box
     type = INPUT_TEXT_BOX;
@@ -47,6 +48,24 @@ Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color 
 Input_Text_Box::~Input_Text_Box()
 {
 
+}
+
+/*
+ * Return true if it is possible to turn this string into
+ * a float. Return false otherwise.
+ */
+bool can_floatify(std::string *string)
+{
+    if(string->empty())
+        return false;
+    if(!(isdigit((*string)[0]) || (*string)[0] == '-' ||
+       (*string)[0] == '.'))
+        return false;
+    if(string->size() > 1)
+        if(!(isdigit((*string)[1]) ||
+           (*string)[1] == '.'))
+            return false;
+    return true;
 }
 
 /*
@@ -76,9 +95,9 @@ void Input_Text_Box::entered()
         else
         {
             src = find_module_as_source(&text.text, &MODULES, parent);
-            if(src != NULL)
-                text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
+            text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
             parent->set(src, input_num);
+            input_toggle_button->b = true;
         }
     }
     else

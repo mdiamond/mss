@@ -78,15 +78,18 @@ void Adsr::process()
     for(unsigned short i = 0; i < output.size(); i ++)
     {
         // Update parameters
-        for(unsigned int j = 0; j < dependencies.size(); j ++)
-            if(inputs_live[j])
-                input_floats[j] = inputs[j]->at(i);
+        update_input_floats(i);
 
-        bool note_on = input_floats[ADSR_NOTE] == 1;
+        if(!inputs_live[ADSR_NOTE])
+            input_floats[ADSR_NOTE] = 0;
 
         // Set the current output sample to the current amplitude
         output[i] = current_amplitude;
 
+        // Determine whether or not a note on value is detected
+        bool note_on = input_floats[ADSR_NOTE] == 1;
+
+        // Do something different based on the current envelope phase
         switch (phase_num)
         {
             // During the attack phase, note on will result in incrementing
@@ -232,6 +235,8 @@ void Adsr::initialize_unique_graphics_objects()
     std::vector<std::vector<float> *> buffers;
     std::vector<Module *> parents;
     std::vector<bool> bs;
+    std::vector<Input_Text_Box *> input_text_boxes;
+    std::vector<Input_Toggle_Button *> input_toggle_buttons;
 
     std::vector<Graphics_Object *> tmp_graphics_objects;
 
@@ -275,10 +280,10 @@ void Adsr::initialize_unique_graphics_objects()
     prompt_texts = std::vector<std::string>(5, "# or input");
     fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
     parents = std::vector<Module *>(5, this);
-    input_nums = {ADSR_NOTE, ADSR_A, ADSR_D,
-                  ADSR_S, ADSR_R};
+    input_nums = {ADSR_NOTE, ADSR_A, ADSR_D, ADSR_S, ADSR_R};
+    input_toggle_buttons = std::vector<Input_Toggle_Button *>(5, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums);
+    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " note on/off (input toggle button)",
              name + " attack (input toggle button)",
@@ -302,8 +307,22 @@ void Adsr::initialize_unique_graphics_objects()
     input_nums = {ADSR_NOTE, ADSR_A, ADSR_D,
                   ADSR_S, ADSR_R};
 
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                       text_color_offs, fonts, texts, text_offs, bs, parents, input_nums);
+    input_text_boxes = {(Input_Text_Box *) graphics_objects[ADSR_NOTE_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[ADSR_A_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[ADSR_D_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[ADSR_S_INPUT_TEXT_BOX],
+                        (Input_Text_Box *) graphics_objects[ADSR_R_INPUT_TEXT_BOX]};
+
+    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
+                                           text_color_ons, text_color_offs,
+                                           fonts, texts, text_offs, bs, parents,
+                                           input_nums, input_text_boxes);
+
+    ((Input_Text_Box *) graphics_objects[ADSR_NOTE_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_NOTE_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[ADSR_A_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_A_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[ADSR_D_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_D_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[ADSR_S_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_S_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *) graphics_objects[ADSR_R_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_R_INPUT_TOGGLE_BUTTON];
 }
 
 std::string Adsr::get_unique_text_representation()

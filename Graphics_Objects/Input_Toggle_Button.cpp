@@ -56,17 +56,15 @@ Input_Toggle_Button::~Input_Toggle_Button()
 /*
  * If the input is live, cancel input,
  * otherwise, enter input select mode and
- * set this as the current text box.
+ * set this as the current input toggle button.
  */
 void Input_Toggle_Button::toggle()
 {
     if(parent->inputs_live[input_num])
     {
         parent->cancel_input(input_num);
-        input_text_box->text.text = input_text_box->prompt_text.text;
-        if(input_text_box->prompt_text.text == "input")
-            input_text_box->update_current_text("");
-        else
+        input_text_box->update_current_text(input_text_box->prompt_text.text);
+        if(!(input_text_box->prompt_text.text == "input"))
             input_text_box->update_current_text(std::to_string(parent->input_floats[input_num]));
         b = false;
     }
