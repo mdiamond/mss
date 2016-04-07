@@ -89,7 +89,6 @@ void Input_Text_Box::entered()
         if(can_floatify(&text.text))
         {
             val = std::stof(text.text.c_str());
-            std::cout << val << std::endl;
             parent->set(val, input_num);
         }
         else
