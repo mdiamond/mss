@@ -32,11 +32,9 @@ class Text: public Graphics_Object
              std::string, TTF_Font *);
         virtual ~Text();
 
-        // Virtual member functions
-        virtual void render();
-        virtual void clicked();
-
         // Member functions
+        void render();
+        void clicked();
         //   Update the text displayed
         void update_text(std::string);
         //   Set the text color

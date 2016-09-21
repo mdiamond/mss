@@ -41,6 +41,8 @@ class Input_Text_Box: public Text_Box
         // Member functions
         //   Override the default text box entered() function
         void entered();
+        //   Check if a string can be turned into a float
+        bool can_floatify(std::string *);
 };
 
 #endif

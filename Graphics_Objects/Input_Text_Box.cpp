@@ -54,7 +54,7 @@ Input_Text_Box::~Input_Text_Box()
  * Return true if it is possible to turn this string into
  * a float. Return false otherwise.
  */
-bool can_floatify(std::string *string)
+bool Input_Text_Box::can_floatify(std::string *string)
 {
     if(string->empty())
         return false;

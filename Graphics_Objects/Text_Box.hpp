@@ -41,17 +41,15 @@ class Text_Box: public Graphics_Object
                  std::string, TTF_Font *, Module *);
         virtual ~Text_Box();
 
-        // Virtual member functions
-        virtual void render();
-        virtual void clicked();
-
         // Member functions
+        void render();
+        void clicked();
         //   Add character to the typing buffer
         void add_characters(char *);
         //   Delete the final character from the typing buffer
         void delete_character();
         //   Confirm the entry in the text box
-        void entered();
+        virtual void entered();
         //   Override the default graphics object update_location() function
         void update_location(SDL_Rect);
         //   Update the currently displayed text

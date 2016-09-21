@@ -243,14 +243,14 @@ void Adsr::initialize_unique_graphics_objects()
     Button *button;
     button = new Button(name + " reset current amplitude (button)",
                     graphics_object_locations[ADSR_RESET_CURRENT_AMPLITUDE_BUTTON],
-                    &text_color, &color, "0", this);
+                    &secondary_module_color, &primary_module_color, "0", this);
     graphics_objects.push_back(button);
 
     names = {name + " note on/off (text)", name + " attack and decay (text)", name + " sustain and release (text)"};
     locations = {graphics_object_locations[ADSR_NOTE_TEXT],
                  graphics_object_locations[ADSR_A_D_TEXT],
                  graphics_object_locations[ADSR_S_R_TEXT]};
-    colors = std::vector<SDL_Color *>(3, &text_color);
+    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     texts = {"NOTE ON/OFF:", "ATTACK & DECAY:", "SUSTAIN & RELEASE:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
@@ -259,8 +259,8 @@ void Adsr::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[ADSR_OUTPUT_WAVEFORM]};
-    colors = {&color};
-    background_colors = {&text_color};
+    colors = {&primary_module_color};
+    background_colors = {&secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
     buffers = {&output};
@@ -275,8 +275,8 @@ void Adsr::initialize_unique_graphics_objects()
                  graphics_object_locations[ADSR_D_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_S_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_R_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color *>(5, &text_color);
-    text_colors = std::vector<SDL_Color *>(5, &color);
+    colors = std::vector<SDL_Color *>(5, &secondary_module_color);
+    text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
     fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
     parents = std::vector<Module *>(5, this);
@@ -296,9 +296,9 @@ void Adsr::initialize_unique_graphics_objects()
                  graphics_object_locations[ADSR_S_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[ADSR_R_INPUT_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(5, &RED);
-    color_offs = std::vector<SDL_Color *>(5, &text_color);
+    color_offs = std::vector<SDL_Color *>(5, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(5, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(5, &color);
+    text_color_offs = std::vector<SDL_Color *>(5, &primary_module_color);
     fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
     texts = std::vector<std::string>(5, "I");
     text_offs = texts;

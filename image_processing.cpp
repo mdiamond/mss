@@ -116,7 +116,7 @@ int load_fonts()
     FONT_SMALL = TTF_OpenFont("fonts/SourceCodePro-Regular.ttf", 10);
     FONT_BOLD = TTF_OpenFont("fonts/SourceCodePro-Bold.ttf", 11);
 
-    if(!FONT_REGULAR || !FONT_BOLD)
+    if(!FONT_REGULAR || !FONT_SMALL || !FONT_BOLD)
     {
         std::cout << RED_STDOUT << "Could not open one of the TTF fonts: "
              << TTF_GetError() << DEFAULT_STDOUT << std::endl;
@@ -126,6 +126,106 @@ int load_fonts()
     std::cout << "Fonts loaded." << std::endl;
 
     return 1;
+}
+
+/*
+ * Create the very first sub page on every page, the utilities sub page.
+ * This sub page contains the buttons for adding new modules, switching
+ * pages, and saving or loading the current patch.
+ */
+void initialize_utilities_page()
+{
+
+    std::vector<std::string> names, texts;
+    std::vector<SDL_Rect> locations;
+    std::vector<SDL_Color *> colors, text_colors;
+    std::vector<Module *> parents;
+    std::vector<TTF_Font *> fonts;
+
+    names = std::vector<std::string>();
+    locations = std::vector<SDL_Rect>();
+    colors = std::vector<SDL_Color *>();
+    text_colors = std::vector<SDL_Color *>();
+    texts = std::vector<std::string>();
+    fonts = std::vector<TTF_Font *>();
+    parents = std::vector<Module *>();
+
+    std::vector<Graphics_Object *> tmp_graphics_objects;
+    std::vector<Graphics_Object *> graphics_objects;
+
+    int y = 2;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 60, 15});
+    y += 62;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
+    y += 69;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 74, 15});
+    y += 76;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 66, 15});
+    y += 68;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15});
+    y += 103;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
+    y += 69;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 102, 15});
+    y += 104;
+    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 53, 15});
+    locations.push_back({WINDOW_WIDTH - 162, WINDOW_HEIGHT - MENU_HEIGHT - 15, 93, 15});
+    locations.push_back({WINDOW_WIDTH - 162 + 95, WINDOW_HEIGHT - MENU_HEIGHT - 15, 65, 15});
+
+    // Create the background and add it to the list of graphics
+    // objects
+    Rect *background = new Rect("background (rect)", WINDOW_RECT, &BLACK, NULL);
+    graphics_objects.push_back(background);
+
+    names = {"add adsr (button)", "add delay (button)", "add filter (button)",
+             "add mixer (button)", "add multiplier (button)", "add noise (button)",
+             "add oscillator (button)", "add sah (button)", "previous page (button)",
+             "next page (button)"};
+
+    colors = std::vector<SDL_Color *>(10, &WHITE);
+    text_colors = std::vector<SDL_Color *>(10, &BLACK);
+    texts = {"ADD ADSR", "ADD DELAY", "ADD FILTER", "ADD MIXER", "ADD MULTIPLIER",
+             "ADD NOISE", "ADD OSCILLATOR", "ADD SAH", "PREVIOUS PAGE", "NEXT PAGE"};
+    parents = std::vector<Module *>(10, NULL);
+
+    tmp_graphics_objects = initialize_button_objects(names, locations, colors, text_colors, texts, parents);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                                      tmp_graphics_objects.end());
+
+    names = {"save patch (text box)", "load patch (text box)"};
+    locations = {{2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 2, 15},
+               {(WINDOW_WIDTH / 2) + 2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 3, 15}};
+    colors = std::vector<SDL_Color *>(2, &WHITE);
+    text_colors = std::vector<SDL_Color *>(2, &BLACK);
+    texts = {"enter a name here to save your patch", "enter a patch name to load here"};
+    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
+    parents = std::vector<Module *>(2, NULL);
+
+    tmp_graphics_objects = initialize_text_box_objects(names, locations, colors, text_colors, texts, fonts, parents);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
+
+    // Create the sub page and add it to the list of sub pages
+    // for the current page
+    UTILITIES_PAGE = new Page("utilities & background (page)", WINDOW_RECT, &BLACK,
+                              &graphics_objects);
+
+    std::cout << "Utilities page initialized." << std::endl;
+}
+
+/*
+ * Set the graphics objects on the utilities page to the same color as
+ * the output module.
+ */
+void prettify_utilities_page()
+{
+    for(unsigned int i = 0; i < UTILITIES_PAGE->graphics_objects.size(); i ++)
+    {
+        if(UTILITIES_PAGE->graphics_objects[i]->type == BUTTON)
+            ((Button *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
+        else if(UTILITIES_PAGE->graphics_objects[i]->type == TEXT_BOX)
+            ((Text_Box *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
+    }
 }
 
 /******************************
@@ -151,95 +251,14 @@ void update_graphics_objects()
  */
 Module *hovering_over()
 {
+    Module *module = NULL;
+
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
-            if(!MODULES[i]->graphics_objects[0]->was_clicked())
-                return MODULES[i];
+            if(MODULES[i]->was_clicked())
+                module = MODULES[i];
 
-    return NULL;
-}
-
-/*
- * Create the very first sub page on every page, the utilities sub page.
- * This sub page contains the buttons for adding new modules, switching
- * pages, and saving or loading the current patch.
- */
-void initialize_utilities_sub_page(std::vector<Graphics_Object *> *sub_page_graphics_objects,
-                                   std::vector<Page *> *sub_pages, Page *current_sub_page)
-{
-
-    std::vector<std::string> names, texts;
-    std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, text_colors;
-    std::vector<Module *> parents;
-    std::vector<TTF_Font *> fonts;
-
-    names = std::vector<std::string>();
-    locations = std::vector<SDL_Rect>();
-    colors = std::vector<SDL_Color *>();
-    text_colors = std::vector<SDL_Color *>();
-    texts = std::vector<std::string>();
-    fonts = std::vector<TTF_Font *>();
-    parents = std::vector<Module *>();
-
-    std::vector<Graphics_Object *> tmp_graphics_objects;
-
-    int y = 2;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 60, 15});
-    y += 62;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
-    y += 69;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 74, 15});
-    y += 76;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 66, 15});
-    y += 68;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15});
-    y += 103;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
-    y += 69;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 102, 15});
-    y += 104;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 53, 15});
-    locations.push_back({WINDOW_WIDTH - 162, WINDOW_HEIGHT - MENU_HEIGHT - 15, 93, 15});
-    locations.push_back({WINDOW_WIDTH - 162 + 95, WINDOW_HEIGHT - MENU_HEIGHT - 15, 65, 15});
-
-    // Create the background and add it to the list of graphics
-    // objects
-    Rect *background = new Rect("background (rect)", WINDOW_RECT, &BLACK, NULL);
-    sub_page_graphics_objects->push_back(background);
-
-    names = {"add adsr (button)", "add delay (button)", "add filter (button)",
-             "add mixer (button)", "add multiplier (button)", "add noise (button)",
-             "add oscillator (button)", "add sah (button)", "previous page (button)", "next page (button)"};
-    // locations = locations;
-    colors = std::vector<SDL_Color *>(10, &MODULES[0]->color);
-    text_colors = std::vector<SDL_Color *>(10, &MODULES[0]->text_color);
-    texts = {"ADD ADSR", "ADD DELAY", "ADD FILTER", "ADD MIXER", "ADD MULTIPLIER",
-             "ADD NOISE", "ADD OSCILLATOR", "ADD SAH", "PREVIOUS PAGE", "NEXT PAGE"};
-    parents = std::vector<Module *>(10, NULL);
-
-    tmp_graphics_objects = initialize_button_objects(names, locations, colors, text_colors, texts, parents);
-    sub_page_graphics_objects->insert(sub_page_graphics_objects->end(), tmp_graphics_objects.begin(),
-                                      tmp_graphics_objects.end());
-
-    names = {"save patch (text box)", "load patch (text box)"};
-    locations = {{2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 2, 15},
-                 {(WINDOW_WIDTH / 2) + 2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 3, 15}};
-    colors = std::vector<SDL_Color *>(2, &MODULES[0]->color);
-    text_colors = std::vector<SDL_Color *>(2, &MODULES[0]->text_color);
-    texts = {"enter a name here to save your patch", "enter a patch name to load here"};
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    parents = std::vector<Module *>(2, NULL);
-
-    tmp_graphics_objects = initialize_text_box_objects(names, locations, colors, text_colors, texts, fonts, parents);
-    sub_page_graphics_objects->insert(sub_page_graphics_objects->end(), tmp_graphics_objects.begin(),
-                                      tmp_graphics_objects.end());
-
-    // Create the sub page and add it to the list of sub pages
-    // for the current page
-    current_sub_page = new Page("utilities & background (page)", WINDOW_RECT, &BLACK,
-                                      sub_page_graphics_objects, NULL);
-    sub_pages->push_back(current_sub_page);
+    return module;
 }
 
 /*
@@ -254,43 +273,26 @@ void calculate_pages()
     // its sub pages graphics objects, and the current page
     // (no top-level page has any graphics objects, only their sub pages
     // contain graphics objects)
-    std::string current_sub_page_name;
     Page *current_sub_page = NULL;
-    std::vector<Page *> *sub_pages = new std::vector<Page *>();
-    std::vector<Graphics_Object *> *sub_page_graphics_objects = new std::vector<Graphics_Object *>();
+    std::vector<Graphics_Object *> graphics_objects;
+    std::vector<Graphics_Object *> sub_page_graphics_objects;
     std::string current_page_name;
     Page *current_page = NULL;
-
-    // Create the first sub page, which will contain important
-    // buttons for special functions
-    initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
-
-    // Reset the sub page graphics objects
-    delete sub_page_graphics_objects;
-    sub_page_graphics_objects = new std::vector<Graphics_Object *>();
 
     // For each module
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
+        if(graphics_objects.size() == 0)
+            graphics_objects.push_back((Graphics_Object *) UTILITIES_PAGE);
+
         if(MODULES[i] != NULL)
         {
-            // Add each of its graphics objects to the current sub page
+            // Mark each graphics objects in the module as updated
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-            {
-                sub_page_graphics_objects->push_back(MODULES[i]->graphics_objects[j]);
                 MODULES[i]->graphics_objects[j]->updated = true;
-            }
 
-            // Create the sub page using the created vector of graphics objects,
-            // add it to the list of sub pages
-            current_sub_page = new Page(MODULES[i]->name + " (page)",
-                                        MODULES[i]->graphics_objects[0]->location, &BLACK,
-                                        sub_page_graphics_objects, NULL);
-            sub_pages->push_back(current_sub_page);
-
-            // Reset the sub page graphics objects
-            delete sub_page_graphics_objects;
-            sub_page_graphics_objects = new std::vector<Graphics_Object *>();
+            // Add the module to the list of sub page graphics objects
+            graphics_objects.push_back((Graphics_Object *) MODULES[i]);
         }
 
         // If this is the last sub page in the current page, or
@@ -302,20 +304,11 @@ void calculate_pages()
             // Create the page using the created vector of sub pages, add it
             // to the global list of pages
             current_page = new Page(std::to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
-                                    WINDOW_RECT, &BLACK,
-                                    NULL, sub_pages);
+                                    WINDOW_RECT, &BLACK, &graphics_objects);
             PAGES.push_back(current_page);
-
-            // Delete the vector of sub pages and sub page graphics objects,
-            // re-initialize them and restart the process of calculating a new page
-            delete sub_pages;
-            delete sub_page_graphics_objects;
-
-            sub_pages = new std::vector<Page *>();
-            sub_page_graphics_objects = new std::vector<Graphics_Object *>();
-            initialize_utilities_sub_page(sub_page_graphics_objects, sub_pages, current_sub_page);
-            delete sub_page_graphics_objects;
-            sub_page_graphics_objects = new std::vector<Graphics_Object *>();
+            current_page = NULL;
+            graphics_objects.clear();
+            sub_page_graphics_objects.clear();
         }
     }
 }

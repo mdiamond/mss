@@ -33,7 +33,7 @@
 Waveform::Waveform(std::string _name, SDL_Rect _location,
                    SDL_Color *_color, SDL_Color *_background_color, float _range_low,
                    float _range_high, std::vector<float> *_buffer) :
-    Graphics_Object(_name, WAVEFORM, NULL, _location, _color), 
+    Graphics_Object(_name, WAVEFORM, NULL, _location, _color),
     background_color(_background_color), range_low(_range_low),
     range_high(_range_high), buffer(_buffer),
     background(Rect(name + " background rect (rect)", location, background_color, NULL))
@@ -120,7 +120,7 @@ void Waveform::render()
 
     background.render();
 
-    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->graphics_objects[0]->was_clicked()))
+    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
         SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
     else
         SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);

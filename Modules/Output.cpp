@@ -135,7 +135,7 @@ void Output::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TEXT],
                  graphics_object_locations[OUTPUT_INPUT_L_TEXT],
                  graphics_object_locations[OUTPUT_INPUT_R_TEXT]};
-    colors = std::vector<SDL_Color *>(3, &text_color);
+    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     texts = {"AUDIO ON:", "LEFT SIGNAL:", "RIGHT SIGNAL:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
@@ -145,8 +145,8 @@ void Output::initialize_unique_graphics_objects()
     names = {name + " waveform visualizer l (waveform)", name + " waveform visualizer r (waveform)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_WAVEFORM],
                  graphics_object_locations[OUTPUT_INPUT_R_WAVEFORM]};
-    colors = std::vector<SDL_Color *>(2, &color);
-    background_colors = std::vector<SDL_Color *>(2, &text_color);
+    colors = std::vector<SDL_Color *>(2, &primary_module_color);
+    background_colors = std::vector<SDL_Color *>(2, &secondary_module_color);
     range_lows = std::vector<float>(2, -1);
     range_highs = std::vector<float>(2, 1);
     buffers = std::vector<std::vector<float> *>(2, NULL);
@@ -157,8 +157,8 @@ void Output::initialize_unique_graphics_objects()
     names = {name + " input l (input text box)", name + " input r (input text box)"};
     locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TEXT_BOX],
                  graphics_object_locations[OUTPUT_INPUT_R_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color *>(2, &text_color);
-    text_colors = std::vector<SDL_Color *>(2, &color);
+    colors = std::vector<SDL_Color *>(2, &secondary_module_color);
+    text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
     prompt_texts = std::vector<std::string>(2, "input");
     fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
     parents = std::vector<Module *>(2, this);
@@ -171,9 +171,9 @@ void Output::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(2, &RED);
-    color_offs = std::vector<SDL_Color *>(2, &text_color);
+    color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(2, &color);
+    text_color_offs = std::vector<SDL_Color *>(2, &primary_module_color);
     fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
     texts = std::vector<std::string>(2, "I");
     text_offs = texts;
@@ -192,9 +192,9 @@ void Output::initialize_unique_graphics_objects()
     names = {name + " on/off button (toggle_button)"};
     locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(1, &RED);
-    color_offs = std::vector<SDL_Color *>(1, &text_color);
+    color_offs = std::vector<SDL_Color *>(1, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(1, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(1, &color);
+    text_color_offs = std::vector<SDL_Color *>(1, &primary_module_color);
     fonts = std::vector<TTF_Font *>(1, FONT_BOLD);
     texts = std::vector<std::string>(1, "ON");
     text_offs = std::vector<std::string>(1, "OFF");

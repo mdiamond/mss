@@ -45,6 +45,9 @@ int find_available_module_number(int);
 // a new module
 int find_available_module_slot();
 
+// A function for determining the location of a module based on its number
+SDL_Rect find_module_location(int);
+
 // A function for generating colors for a module
 std::vector<SDL_Color> generate_module_colors();
 

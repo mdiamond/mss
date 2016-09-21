@@ -43,13 +43,11 @@ class Toggle_Button: public Graphics_Object
                       bool, Module *);
         virtual ~Toggle_Button();
 
-        // Virtual member functions
-        virtual void render();
-        virtual void clicked();
-
         // Member functions
-        //   Override the default toggle buttons toggle() function
-        void toggle();
+        void render();
+        void clicked();
+        //   Toggle this button
+        virtual void toggle();
         //   Override the default graphics object update_location() function
         void update_location(SDL_Rect);
         //   Set this toggle button's colors

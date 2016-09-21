@@ -83,6 +83,7 @@ void cleanup()
  * before audio can be processed:
  *   - initialize SDL
  *   - open the audio device
+ *   - initialize the utilities sub page
  *   - open a window
  *   - create a renderer
  *   - initialize SDL_ttf
@@ -94,7 +95,7 @@ void cleanup()
  */
 bool initialize()
 {
-    system("clear");
+    // system("clear");
 
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) {
@@ -107,6 +108,17 @@ bool initialize()
     if(!open_audio_device())
         return false;
 
+    // Initialize truetype
+    if(TTF_Init() == -1)
+    {
+        std::cout << "Could not initialize TTF: " << TTF_GetError() << std::endl;
+        return false;
+    }
+
+    // Open ttf fonts
+    if(!load_fonts())
+        return false;
+
     // Open a window
     if(!open_window())
         return false;
@@ -115,19 +127,11 @@ bool initialize()
     if(!create_renderer())
         return false;
 
+    // Initialize utilities sub page
+    initialize_utilities_page();
+
     // Create a texture to render to
     if(!create_texture())
-        return false;
-
-    // Initialize truetype
-    if(TTF_Init() == -1)
-    {
-        std::cout << "Coult not initialize TTF: " << TTF_GetError() << std::endl;
-        return false;
-    }
-
-    // Open ttf fonts
-    if(!load_fonts())
         return false;
 
     // Populate wavetables
@@ -136,8 +140,10 @@ bool initialize()
     // Initialize the output module
     initialize_output();
 
+    // Set colors on the utilities page graphics objects
+    prettify_utilities_page();
+
     // Unpause the audio
-    std::cout << "Unpausing audio." << std::endl;
     SDL_PauseAudio(0);
     std::cout << "Audio unpaused." << std::endl;
 

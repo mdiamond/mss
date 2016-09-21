@@ -24,6 +24,7 @@
 #include "module_utils.hpp"
 
 // Included classes
+#include "Graphics_Object.hpp"
 #include "Module.hpp"
 #include "Modules/Adsr.hpp"
 #include "Modules/Delay.hpp"
@@ -75,8 +76,9 @@ std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF
  * Constructor.
  */
 Module::Module(int _type) :
-    name(names.at(_type) + " " + std::to_string(find_available_module_number(_type))),
-    type(_type), number(find_available_module_slot()), processed(false),
+    Graphics_Object(names.at(_type) + " " + std::to_string(find_available_module_number(_type)),
+    MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
+    module_type(_type), number(find_available_module_slot()), processed(false),
     dependencies(std::vector<Module *>(num_inputs.at(_type), NULL)),
     input_floats(std::vector<float>(num_inputs.at(_type), 0)),
     input_strs(std::vector<std::string>(num_inputs.at(_type), "")),
@@ -89,8 +91,8 @@ Module::Module(int _type) :
 
     // Set this module's color randomly, but with enough contrast
     std::vector<SDL_Color> colors = generate_module_colors();
-    color = colors[0];
-    text_color = colors[1];
+    primary_module_color = colors[0];
+    secondary_module_color = colors[1];
 
     std::cout << "Module \"" << name << "\" created" << std::endl;
 }
@@ -318,16 +320,16 @@ void Module::initialize_graphics_objects()
 
     // graphics_objects[0] is the slightly smaller rectangle within the outermost
     // rectangle
-    rect = new Rect(name + " background (rect)", graphics_object_locations[MODULE_BACKGROUND_RECT], &color, this);
+    rect = new Rect(name + " background (rect)", graphics_object_locations[MODULE_BACKGROUND_RECT], &primary_module_color, this);
     graphics_objects.push_back(rect);
 
     // graphics_objects[1] is the objects name
-    text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], &text_color, name, FONT_BOLD);
+    text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], &secondary_module_color, name, FONT_BOLD);
     graphics_objects.push_back(text);
 
     // graphics_objects[2] is the remove module button
     button = new Button(name + " remove module (button)", graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
-                        &text_color, &color, "X", this);
+                        &secondary_module_color, &primary_module_color, "X", this);
     graphics_objects.push_back(button);
 
     // Initialize all graphics objects specific to this module type
@@ -420,7 +422,7 @@ void Module::cancel_input(int input_num)
 
     // If this is the output module, update the waveforms to display
     // an empty audio buffer
-    if(type == OUTPUT)
+    if(module_type == OUTPUT)
     {
         Waveform *waveform;
         if(input_num == OUTPUT_INPUT_L)
@@ -492,10 +494,10 @@ void Module::adopt_input_colors()
         if(graphics_objects[i]->type == INPUT_TEXT_BOX)
         {
             if(inputs_live[dependency_num])
-                ((Input_Text_Box *) graphics_objects[i])->set_colors(&dependencies[dependency_num]->color,
-                                                                     &dependencies[dependency_num]->text_color);
+                ((Input_Text_Box *) graphics_objects[i])->set_colors(&dependencies[dependency_num]->primary_module_color,
+                                                                     &dependencies[dependency_num]->secondary_module_color);
             else
-                ((Input_Text_Box *) graphics_objects[i])->set_colors(&text_color, &color);
+                ((Input_Text_Box *) graphics_objects[i])->set_colors(&secondary_module_color, &primary_module_color);
 
             dependency_num ++;
         }
@@ -518,7 +520,7 @@ void Module::adopt_input_colors()
  */
 void Module::module_selected()
 {
-    if(type == OUTPUT)
+    if(module_type == OUTPUT)
     {
         std::cout << RED_STDOUT
         << "The output module cannot be the source for any inputs"
@@ -530,6 +532,33 @@ void Module::module_selected()
         CURRENT_INPUT_TOGGLE_BUTTON->b = true;
         SELECTING_SRC = false;
         CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->update_current_text(get_short_name());
+        // If it's the output module, set the waveform's buffer
+        if(CURRENT_INPUT_TOGGLE_BUTTON->parent->module_type == OUTPUT)
+        {
+            // If it's the left input, update the left waveform
+            if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON])
+                ((Waveform *) MODULES[0]->graphics_objects[OUTPUT_INPUT_L_WAVEFORM])->buffer = &this->output;
+            // Else, update the right waveform
+            else if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON])
+                ((Waveform *) MODULES[0]->graphics_objects[OUTPUT_INPUT_R_WAVEFORM])->buffer = &this->output;
+        }
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
+    }
+}
+
+void Module::render()
+{
+    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+        graphics_objects[i]->render();
+}
+
+void Module::clicked()
+{
+    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+    {
+        if(graphics_objects[i]->was_clicked())
+        {
+            graphics_objects[i]->clicked();
+        }
     }
 }

@@ -72,17 +72,13 @@ int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MENU_HEIGHT * 2) - 3;
 SDL_Rect WINDOW_RECT = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
-// Frames per second and ms per frame
-Uint32 FPS = 30;
-Uint32 MSPF = 1000 / FPS;
-
 // Fonts
 TTF_Font *FONT_REGULAR;
 TTF_Font *FONT_SMALL;
 TTF_Font *FONT_BOLD;
 
 // Colors
-SDL_Color BLACK = {0, 0, 0 , 255};
+SDL_Color BLACK = {0, 0, 0, 255};
 SDL_Color WHITE = {255, 255, 255, 255};
 SDL_Color RED = {255, 0, 0, 255};
 SDL_Color GREEN = {0, 255, 0, 255};
@@ -90,6 +86,7 @@ SDL_Color BLUE = {0, 0, 255, 255};
 
 // Pages of graphics objects
 std::vector<Page *> PAGES = std::vector<Page *>();
+Page *UTILITIES_PAGE;
 unsigned int CURRENT_PAGE = 0;
 
 // Mouse information

@@ -105,7 +105,6 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 
     // Fetch the output module's latest processed audio
     // and insert it into the buffer
-    bool clipping = false;
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         if((output->inputs)[OUTPUT_INPUT_L] != NULL)
@@ -116,9 +115,6 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
             buffer[1] = (output->inputs)[OUTPUT_INPUT_R]->at(i);
         else
             buffer[1] = 0;
-
-        if(buffer[0] > 1 || buffer[0] < -1 || buffer[1] > 1 || buffer[1] < -1)
-            clipping = true;
 
         buffer += 2;
     }

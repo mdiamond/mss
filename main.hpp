@@ -59,9 +59,6 @@ extern int MENU_HEIGHT;
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 extern SDL_Rect WINDOW_RECT;
-//   Frames per second and ms per frame
-extern Uint32 FPS;
-extern Uint32 MSPF;
 //   Fonts
 extern TTF_Font *FONT_REGULAR;
 extern TTF_Font *FONT_SMALL;
@@ -74,6 +71,7 @@ extern SDL_Color GREEN;
 extern SDL_Color BLUE;
 //   Pages of graphics objects
 extern std::vector<Page *> PAGES;
+extern Page *UTILITIES_PAGE;
 extern unsigned int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;

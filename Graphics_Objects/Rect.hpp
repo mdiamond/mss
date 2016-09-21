@@ -28,11 +28,9 @@ class Rect: public Graphics_Object
         Rect(std::string, SDL_Rect, SDL_Color *, Module *);
         virtual ~Rect();
 
-        // Virtual member functions
-        virtual void render();
-        virtual void clicked();
-
         // Member functions
+        void render();
+        void clicked();
         //   Set the text color
         void set_color(SDL_Color *);
 };

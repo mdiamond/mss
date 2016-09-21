@@ -35,11 +35,9 @@ class Waveform: public Graphics_Object
                  float, float, std::vector<float> *);
         virtual ~Waveform();
 
-        // Virtual member functions
-        virtual void render();
-        virtual void clicked();
-
         // Member functions
+        void render();
+        void clicked();
         //   Calculate the y pixel location for a given sample
         float calculate_y(int);
         //   Copy the buffer to be rendered into internal memory

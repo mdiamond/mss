@@ -34,9 +34,8 @@
 Button::Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
                SDL_Color *_text_color, std::string _text, Module *_parent) :
     Graphics_Object(_name, BUTTON, _parent, _location, _color),
-    text_str(_text),
-    background(Rect(name + " background rect (rect)", location, color, NULL)),
-    text(Text("button text (text)", _location, _text_color, text_str, FONT_REGULAR))
+    background(Rect(name + " background rect (rect)", _location, _color, NULL)),
+    text(Text("button text (text)", _location, _text_color, _text, FONT_REGULAR))
 {
     // Make the text start 1 pixel away from the edge of the containing box
     text.location.x += 1;
@@ -82,5 +81,13 @@ void Button::update_location(SDL_Rect _location)
     location = _location;
     background.update_location(_location);
     text.update_location(_location);
+    text.updated = true;
+}
+
+void Button::set_colors(SDL_Color *_color, SDL_Color *_text_color)
+{
+    background.color = _color;
+    text.color = _text_color;
+    background.updated = true;
     text.updated = true;
 }

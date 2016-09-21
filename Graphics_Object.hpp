@@ -31,6 +31,7 @@ enum Graphics_Objects
     BUTTON = 0,
     INPUT_TEXT_BOX,
     INPUT_TOGGLE_BUTTON,
+    MODULE,
     PAGE,
     RECT,
     TEXT,
@@ -68,11 +69,10 @@ class Graphics_Object
         virtual void clicked() = 0;
 
         // Member functions
-        //   Return true if clicked, 0 otherwise
+        //   Return true if clicked, false otherwise
         bool was_clicked();
-        //   Update this module's location
+        //   Update this graphics object's location
         void update_location(SDL_Rect);
-        //   Update this module's alpha value
 };
 
 #endif

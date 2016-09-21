@@ -227,7 +227,7 @@ void Delay::initialize_unique_graphics_objects()
     Button *button;
     button = new Button(name + " reset buffer (button)",
                     graphics_object_locations[DELAY_RESET_BUFFER_BUTTON],
-                    &text_color, &color, "0", this);
+                    &secondary_module_color, &primary_module_color, "0", this);
     graphics_objects.push_back(button);
 
     names = {name + " signal (text)", name + " max delay time and delay time (text)",
@@ -235,7 +235,7 @@ void Delay::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[DELAY_SIGNAL_TEXT],
                  graphics_object_locations[DELAY_MAX_DELAY_TIME_AND_DELAY_TIME_TEXT],
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_AND_WET_DRY_TEXT]};
-    colors = std::vector<SDL_Color *>(3, &text_color);
+    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     texts = {"SIGNAL INPUT:", "MAX DELAY & DELAY:", "FEEDBACK & WET/DRY:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
@@ -244,8 +244,8 @@ void Delay::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[DELAY_OUTPUT_WAVEFORM]};
-    colors = {&color};
-    background_colors = {&text_color};
+    colors = {&primary_module_color};
+    background_colors = {&secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
     buffers = {&output};
@@ -261,8 +261,8 @@ void Delay::initialize_unique_graphics_objects()
                  graphics_object_locations[DELAY_DELAY_TIME_INPUT_TEXT_BOX],
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX],
                  graphics_object_locations[DELAY_WET_DRY_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color *>(5, &text_color);
-    text_colors = std::vector<SDL_Color *>(5, &color);
+    colors = std::vector<SDL_Color *>(5, &secondary_module_color);
+    text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
     prompt_texts[0] = "input";
     prompt_texts[1] = "#";
@@ -283,9 +283,9 @@ void Delay::initialize_unique_graphics_objects()
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(4, &RED);
-    color_offs = std::vector<SDL_Color *>(4, &text_color);
+    color_offs = std::vector<SDL_Color *>(4, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(4, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(4, &color);
+    text_color_offs = std::vector<SDL_Color *>(4, &primary_module_color);
     fonts = std::vector<TTF_Font *>(4, FONT_SMALL);
     texts = std::vector<std::string>(4, "I");
     text_offs = texts;

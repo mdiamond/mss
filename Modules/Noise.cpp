@@ -162,8 +162,8 @@ void Noise::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[NOISE_OUTPUT_WAVEFORM]};
-    colors = {&color};
-    background_colors = {&text_color};
+    colors = {&primary_module_color};
+    background_colors = {&secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
     buffers = {&output};
@@ -173,7 +173,7 @@ void Noise::initialize_unique_graphics_objects()
 
     names = {name + " range (text)"};
     locations = {graphics_object_locations[NOISE_RANGE_TEXT]};
-    colors = std::vector<SDL_Color *>(1, &text_color);
+    colors = std::vector<SDL_Color *>(1, &secondary_module_color);
     texts = {"RANGE LOW & HIGH:"};
     fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
 
@@ -183,8 +183,8 @@ void Noise::initialize_unique_graphics_objects()
     names = {name + " range low (input text box)", name + " range high (input text box)"};
     locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TEXT_BOX],
                  graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color *>(2, &text_color);
-    text_colors = std::vector<SDL_Color *>(2, &color);
+    colors = std::vector<SDL_Color *>(2, &secondary_module_color);
+    text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
     prompt_texts = std::vector<std::string>(2, "# or input");
     fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
     parents = std::vector<Module *>(2, this);
@@ -197,9 +197,9 @@ void Noise::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(2, &RED);
-    color_offs = std::vector<SDL_Color *>(2, &text_color);
+    color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(2, &color);
+    text_color_offs = std::vector<SDL_Color *>(2, &primary_module_color);
     fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
     texts = std::vector<std::string>(2, "I");
     text_offs = texts;

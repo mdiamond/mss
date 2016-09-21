@@ -27,46 +27,46 @@
  * HELPER FUNCTIONS *
  ********************/
 
- /*
-  * Create a module of the type specified.
-  */
- void create_module(int type)
- {
-     Module *module;
+/*
+ * Create a module of the type specified.
+ */
+void create_module(int type)
+{
+    Module *module;
 
-     switch(type)
-     {
-         case ADSR: module = new Adsr(); break;
-         case DELAY: module = new Delay(); break;
-         case FILTER: module = new Filter(); break;
-         case MIXER: module = new Mixer(); break;
-         case MULTIPLIER: module = new Multiplier(); break;
-         case NOISE: module = new Noise(); break;
-         case OSCILLATOR: module = new Oscillator(); break;
-         case SAH: module = new Sah(); break;
-     }
+    switch(type)
+    {
+        case ADSR: module = new Adsr(); break;
+        case DELAY: module = new Delay(); break;
+        case FILTER: module = new Filter(); break;
+        case MIXER: module = new Mixer(); break;
+        case MULTIPLIER: module = new Multiplier(); break;
+        case NOISE: module = new Noise(); break;
+        case OSCILLATOR: module = new Oscillator(); break;
+        case SAH: module = new Sah(); break;
+    }
 
-     module->initialize_graphics_objects();
+    module->initialize_graphics_objects();
 
-     bool push_on_back = false;
-     for(unsigned int i = 0; i < MODULES.size(); i ++)
-     {
-         if(MODULES[i] == NULL)
-         {
-             MODULES[i] = module;
-             push_on_back = false;
-             break;
-         }
+    bool push_on_back = false;
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
+        if(MODULES[i] == NULL)
+        {
+            MODULES[i] = module;
+            push_on_back = false;
+            break;
+        }
 
-         if(i == MODULES.size() - 1)
-             push_on_back = true;
-     }
+        if(i == MODULES.size() - 1)
+            push_on_back = true;
+    }
 
-     if(push_on_back)
-         MODULES.push_back(module);
+    if(push_on_back)
+        MODULES.push_back(module);
 
-     MODULES_CHANGED = true;
- }
+    MODULES_CHANGED = true;
+}
 
 /*
  * Given the name of a module, return a pointer to it if
@@ -92,22 +92,22 @@ Module *find_module(std::string *name, std::vector<Module *> *modules)
  */
 Module *find_module_as_source(std::string *name, std::vector<Module *> *modules, Module *dst)
 {
-        Module *src = find_module(name, &MODULES);
-        if(src == NULL)
-            std::cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << std::endl;
-        else if(src == MODULES[0])
-        {
-            std::cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
-                               << DEFAULT_STDOUT << std::endl;
-            return NULL;
-        }
-        else if(src == dst)
-        {
-            std::cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << std::endl;
-            return NULL;
-        }
+    Module *src = find_module(name, &MODULES);
+    if(src == NULL)
+        std::cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << std::endl;
+    else if(src == MODULES[0])
+    {
+        std::cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
+                           << DEFAULT_STDOUT << std::endl;
+        return NULL;
+    }
+    else if(src == dst)
+    {
+        std::cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << std::endl;
+        return NULL;
+    }
 
-        return src;
+    return src;
 }
 
 /*
@@ -119,21 +119,19 @@ Module *find_module_as_source(std::string *name, std::vector<Module *> *modules,
  */
 int find_available_module_number(int module_type)
 {
+    unsigned int current_num;
     std::vector<bool> nums;
 
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
+    for(unsigned int i = 1; i < MODULES.size(); i ++)
     {
-        if(MODULES[i] != NULL)
+        if(MODULES[i] != NULL && MODULES[i]->module_type == module_type)
         {
-            if(MODULES[i]->type == module_type)
-            {
-                unsigned int current_num = stoi(MODULES[i]->name.substr(MODULES[i]->name.find(" ")).substr(1));
+            current_num = stoi(MODULES[i]->name.substr(MODULES[i]->name.find(" ")).substr(1));
 
-                while(nums.size() < current_num)
-                    nums.push_back(false);
+            while(nums.size() < current_num)
+                nums.push_back(false);
 
-                nums[current_num - 1] = true;
-            }
+            nums[current_num - 1] = true;
         }
     }
 
@@ -153,6 +151,22 @@ int find_available_module_slot()
             return i;
 
     return MODULES.size();
+}
+
+SDL_Rect find_module_location(int number)
+{
+    int x_num, y_num, x, y;
+    SDL_Rect location;
+
+    x_num = ((number % MODULES_PER_PAGE) % MODULES_PER_ROW);
+    y_num = ((number % MODULES_PER_PAGE) / MODULES_PER_ROW);
+
+    x = ((x_num * MODULE_WIDTH) + (x_num * MODULE_SPACING));
+    y = ((y_num * MODULE_HEIGHT) + (y_num * MODULE_SPACING));
+
+    location = {x, y, MODULE_WIDTH, MODULE_HEIGHT};
+
+    return location;
 }
 
 std::vector<float> rgb_to_yuv(std::vector<float> rgb)

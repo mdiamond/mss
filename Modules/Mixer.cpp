@@ -199,7 +199,7 @@ void Mixer::initialize_unique_graphics_objects()
 
     names = {name + " mixer signal and multiplier (text)"};
     locations = {graphics_object_locations[MIXER_SIGNALS_TEXT]};
-    colors = std::vector<SDL_Color *>(1, &text_color);
+    colors = std::vector<SDL_Color *>(1, &secondary_module_color);
     texts = {"SIGNAL & MULTIPLIER:"};
     fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
 
@@ -208,8 +208,8 @@ void Mixer::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MIXER_OUTPUT_WAVEFORM]};
-    colors = {&color};
-    background_colors = {&text_color};
+    colors = {&primary_module_color};
+    background_colors = {&secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
     buffers = {&output};
@@ -249,8 +249,8 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]};
-    colors = std::vector<SDL_Color *>(16, &text_color);
-    text_colors = std::vector<SDL_Color *>(16, &color);
+    colors = std::vector<SDL_Color *>(16, &secondary_module_color);
+    text_colors = std::vector<SDL_Color *>(16, &primary_module_color);
     prompt_texts = {"input", "# or input",
                     "input", "# or input",
                     "input", "# or input",
@@ -306,9 +306,9 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON]};
     colors = std::vector<SDL_Color *>(16, &RED);
-    color_offs = std::vector<SDL_Color *>(16, &text_color);
+    color_offs = std::vector<SDL_Color *>(16, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(16, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(16, &color);
+    text_color_offs = std::vector<SDL_Color *>(16, &primary_module_color);
     fonts = std::vector<TTF_Font *>(16, FONT_SMALL);
     texts = std::vector<std::string>(16, "I");
     text_offs = texts;

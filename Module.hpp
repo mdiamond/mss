@@ -69,17 +69,16 @@ enum Module_Graphics_Objects
  * MODULE CLASS DEFINITION *
  ***************************/
 
-class Module
+class Module: public Graphics_Object
 {
     public:
         // Module information
-        std::string name;
-        int type;
+        int module_type;
+        SDL_Color primary_module_color;
+        SDL_Color secondary_module_color;
         int number;
         bool processed;
         SDL_Point upper_left;
-        SDL_Color color;
-        SDL_Color text_color;
         bool graphics_objects_initialized;
         // A vector containing pointers to any module that must
         // be processed before this module
@@ -176,6 +175,10 @@ class Module
         //   Handle a background rectangle click (this module has been selected
         //   as a source for some other module's input)
         void module_selected();
+        //   Render this module to the window
+        void render();
+        //   Handle a click
+        void clicked();
 };
 
 #endif

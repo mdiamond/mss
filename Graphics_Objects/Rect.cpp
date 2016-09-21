@@ -50,9 +50,8 @@ Rect::~Rect()
  */
 void Rect::render()
 {
-    if(!SELECTING_SRC || name == "background (rect)"
-       || (SELECTING_SRC && parent != NULL
-       && parent->graphics_objects[0]->was_clicked()))
+    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->was_clicked()) ||
+       name == "background (rect)")
         SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
     else
         SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);

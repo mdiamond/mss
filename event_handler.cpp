@@ -31,31 +31,6 @@
  ********************/
 
 /*
- * For each graphics object on the current page,
- * check if it has been clicked. If so, call its
- * clicked() function. Return true if something
- * was clicked, false if nothing was clicked.
- */
-bool check_click()
-{
-    bool clicked = false;
-    Page *p = PAGES[CURRENT_PAGE];
-
-    // If there is an active text box, and it is not what was clicked,
-    // make the text box inactive
-    if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->was_clicked())
-        ACTIVE_TEXT_BOX->cancel_input();
-
-    OBJECT_CLICKED = false;
-
-    // If the current page was clicked, call its clicked() function
-    if(p->was_clicked())
-        p->clicked();
-
-    return clicked;
-}
-
-/*
  * Handle SDL_KEYDOWN events.
  */
 void keydown_event(SDL_Event *e)
@@ -137,6 +112,27 @@ void keydown_event(SDL_Event *e)
     {
         ACTIVE_TEXT_BOX->delete_character();
     }
+}
+
+/*
+ * For each graphics object on the current page,
+ * check if it has been clicked. If so, call its
+ * clicked() function. Return true if something
+ * was clicked, false if nothing was clicked.
+ */
+void check_click()
+{
+    Page *p = PAGES[CURRENT_PAGE];
+
+    // If there is an active text box, and it is not what was clicked,
+    // make the text box inactive
+    if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->was_clicked())
+        ACTIVE_TEXT_BOX->cancel_input();
+
+    OBJECT_CLICKED = false;
+
+    // Call the clicked function for the current page
+    p->clicked();
 }
 
 /*

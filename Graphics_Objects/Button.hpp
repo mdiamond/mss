@@ -26,7 +26,6 @@
 class Button: public Graphics_Object
 {
     public:
-        std::string text_str;
         Rect background;
         Text text;
 
@@ -35,13 +34,13 @@ class Button: public Graphics_Object
                SDL_Color *, std::string, Module *);
         virtual ~Button();
 
-        // Virtual member functions
+        // Member functions
         virtual void render();
         virtual void clicked();
-
-        // Member functions
         //   Override the default graphics object update_location() function
         void update_location(SDL_Rect);
+        //   Set the colors of this button
+        void set_colors(SDL_Color *, SDL_Color *);
 };
 
 #endif
