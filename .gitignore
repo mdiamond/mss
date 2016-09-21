@@ -33,6 +33,7 @@ synth
 *.vim
 .color_coded
 .ycm_extra_conf.py
+.ycm_extra_conf.pyc
 
 # OS data
 *.DS_Store
