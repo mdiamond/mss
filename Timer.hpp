@@ -5,8 +5,8 @@
  * defines the class.
  */
 
-#ifndef synth_timer_h
-#define synth_timer_h
+#ifndef SYNTH_TIMER_HPP
+#define SYNTH_TIMER_HPP
 
 /************
  * INCLUDES *
@@ -20,17 +20,17 @@
 
 class Timer
 {
-    public:
-		// Members
-		Uint32 last_checked_ms;
+public:
+    // Members
+    Uint32 last_checked_ms;
 
-		// Constructor and desctructor
-		Timer();
-		~Timer();
+    // Constructor and destructor
+    Timer();
+    ~Timer();
 
-		// Member functions
-		void start();
-		Uint32 check_time_elapsed();
+    // Member functions
+    void start();
+    Uint32 check_time_elapsed();
 };
 
 #endif

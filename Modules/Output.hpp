@@ -7,8 +7,8 @@
  * defines the class.
  */
 
-#ifndef synth_output_h
-#define synth_output_h
+#ifndef SYNTH_OUTPUT_HPP
+#define SYNTH_OUTPUT_HPP
 
 /************
  * INCLUDES *
@@ -50,23 +50,23 @@ enum Ouput_Dependencies
 
 class Output: public Module
 {
-    public:
-        // Constructor and destructor
-        Output();
-        virtual ~Output();
+public:
+    // Constructor and destructor
+    Output();
+    virtual ~Output();
 
-        // Member functions, explained in Module.hpp
-        virtual void process();
-        virtual void update_control_values();
-        virtual void calculate_unique_graphics_object_locations();
-        virtual void initialize_unique_graphics_objects();
-        virtual std::string get_unique_text_representation();
-        virtual void button_function(Button *);
-        virtual void toggle_button_function(Toggle_Button *);
+    // Member functions, explained in Module.hpp
+    virtual void process();
+    virtual void update_control_values();
+    virtual void calculate_unique_graphics_object_locations();
+    virtual void initialize_unique_graphics_objects();
+    virtual std::string get_unique_text_representation();
+    virtual void button_function(Button *);
+    virtual void toggle_button_function(Toggle_Button *);
 
-        // Member functions particular to this module
-        //   Toggle audio processing
-        void toggle_audio_on();
+    // Member functions particular to this module
+    //   Toggle audio processing
+    void toggle_audio_on();
 };
 
 #endif

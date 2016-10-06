@@ -3,8 +3,8 @@
  * Header file for the patch saving functions.
  */
 
-#ifndef synth_save_patch_h
-#define synth_save_patch_h
+#ifndef SYNTH_SAVE_PATCH_HPP
+#define SYNTH_SAVE_PATCH_HPP
 
 /************
  * INCLUDES *

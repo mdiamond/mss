@@ -6,8 +6,8 @@
  * stdout text to change its color.
  */
 
-#ifndef synth_color_modifier_h
-#define synth_color_modifier_h
+#ifndef SYNTH_COLOR_MODIFIER_HPP
+#define SYNTH_COLOR_MODIFIER_HPP
 
 /************
  * INCLUDES *
@@ -36,15 +36,15 @@ enum Code {
  * COLOR MODIFIER CLASS DEFINITION *
  ***********************************/
 
-class Color_Modifier {
+class Color_Modifier
+{
 public:
     Code code;
-    Color_Modifier(Code pCode) : code(pCode)
-    {
 
-    }
-    friend std::ostream&
-    operator<<(std::ostream& os, const Color_Modifier& mod)
+    Color_Modifier(Code pCode) : code(pCode)
+    {}
+
+    friend std::ostream& operator<<(std::ostream& os, const Color_Modifier& mod)
     {
         return os << "\033[" << mod.code << "m";
     }

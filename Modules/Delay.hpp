@@ -5,8 +5,8 @@
  * controls.
  */
 
-#ifndef synth_delay_h
-#define synth_delay_h
+#ifndef SYNTH_DELAY_HPP
+#define SYNTH_DELAY_HPP
 
 /************
  * INCLUDES *
@@ -55,34 +55,34 @@ enum Delay_Dependencies
 
 class Delay: public Module
 {
-    public:
-        // Delayed buffer
-        std::vector<float> circular_buffer;
-        double current_sample;
-        double delay_samples;
-        // Previous max delay time
-        float previous_max_delay_time;
-        float previous_delay_time;
+public:
+    // Delayed buffer
+    std::vector<float> circular_buffer;
+    double current_sample;
+    double delay_samples;
+    // Previous max delay time
+    float previous_max_delay_time;
+    float previous_delay_time;
 
-        // Constructor and destructor
-        Delay();
-        virtual ~Delay();
+    // Constructor and destructor
+    Delay();
+    virtual ~Delay();
 
-        // Member functions, explained in Module.hpp
-        virtual void process();
-        virtual void update_control_values();
-        virtual void calculate_unique_graphics_object_locations();
-        virtual void initialize_unique_graphics_objects();
-        virtual std::string get_unique_text_representation();
-        virtual void button_function(Button *);
-        virtual void toggle_button_function(Toggle_Button *);
+    // Member functions, explained in Module.hpp
+    virtual void process();
+    virtual void update_control_values();
+    virtual void calculate_unique_graphics_object_locations();
+    virtual void initialize_unique_graphics_objects();
+    virtual std::string get_unique_text_representation();
+    virtual void button_function(Button *);
+    virtual void toggle_button_function(Toggle_Button *);
 
-        // Member functions particular to this module
-        //   Calculate a linearly interpolated wet sample from
-        //   the cirular buffer
-        float calculate_wet_sample();
-        //   Reset buffer
-        void reset_buffer();
+    // Member functions particular to this module
+    //   Calculate a linearly interpolated wet sample from
+    //   the cirular buffer
+    float calculate_wet_sample();
+    //   Reset buffer
+    void reset_buffer();
 };
 
 #endif

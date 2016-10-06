@@ -6,8 +6,8 @@
  * control values signal.
  */
 
-#ifndef synth_sah_h
-#define synth_sah_h
+#ifndef SYNTH_SAH_HPP
+#define SYNTH_SAH_HPP
 
 /************
  * INCLUDES *
@@ -47,26 +47,26 @@ enum Sah_Dependencies
 
 class Sah: public Module
 {
+public:
     double sample;
     double time_to_next_sample;
 
-    public:
-        // Constructor and destructor
-        Sah();
-        virtual ~Sah();
+    // Constructor and destructor
+    Sah();
+    virtual ~Sah();
 
-        // Member functions, explained in Module.hpp
-        virtual void process();
-        virtual void update_control_values();
-        virtual void calculate_unique_graphics_object_locations();
-        virtual void initialize_unique_graphics_objects();
-        virtual std::string get_unique_text_representation();
-        virtual void button_function(Button *);
-        virtual void toggle_button_function(Toggle_Button *);
+    // Member functions, explained in Module.hpp
+    virtual void process();
+    virtual void update_control_values();
+    virtual void calculate_unique_graphics_object_locations();
+    virtual void initialize_unique_graphics_objects();
+    virtual std::string get_unique_text_representation();
+    virtual void button_function(Button *);
+    virtual void toggle_button_function(Toggle_Button *);
 
-        // Member functions particular to this module
-        //   Reset phase
-        void reset_sampler();
+    // Member functions particular to this module
+    //   Reset phase
+    void reset_sampler();
 };
 
 #endif

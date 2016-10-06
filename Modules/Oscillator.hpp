@@ -9,8 +9,8 @@
  * This file defines the class.
  */
 
-#ifndef synth_oscillator_h
-#define synth_oscillator_h
+#ifndef SYNTH_OSCILLATOR_HPP
+#define SYNTH_OSCILLATOR_HPP
 
 /************
  * INCLUDES *
@@ -77,39 +77,39 @@ enum Waveforms
 
 class Oscillator: public Module
 {
-    public:
-        // The current phase of the oscillator
-        double current_phase;
-        // A record of the previous phase offset value
-        double previous_phase_offset;
-        // Booleans to represent whether or not each of the waveforms is enabled
-        int waveform_type;
-        // Whether or not each waveform is in use
-        bool sin_on, tri_on, saw_on, sqr_on;
+public:
+    // The current phase of the oscillator
+    double current_phase;
+    // A record of the previous phase offset value
+    double previous_phase_offset;
+    // Booleans to represent whether or not each of the waveforms is enabled
+    int waveform_type;
+    // Whether or not each waveform is in use
+    bool sin_on, tri_on, saw_on, sqr_on;
 
-        // Constructor and destructor
-        Oscillator();
-        virtual ~Oscillator();
+    // Constructor and destructor
+    Oscillator();
+    virtual ~Oscillator();
 
-        // Member functions, explained in Module.hpp
-        virtual void process();
-        virtual void update_control_values();
-        virtual void calculate_unique_graphics_object_locations();
-        virtual void initialize_unique_graphics_objects();
-        virtual std::string get_unique_text_representation();
-        virtual void button_function(Button *);
-        virtual void toggle_button_function(Toggle_Button *);
+    // Member functions, explained in Module.hpp
+    virtual void process();
+    virtual void update_control_values();
+    virtual void calculate_unique_graphics_object_locations();
+    virtual void initialize_unique_graphics_objects();
+    virtual std::string get_unique_text_representation();
+    virtual void button_function(Button *);
+    virtual void toggle_button_function(Toggle_Button *);
 
-        // Member functions particular to this module
-        //   Produce samples for the various types of waveforms given a phase
-        double produce_sin_sample(double);
-        double produce_tri_sample(double);
-        double produce_saw_sample(double);
-        double produce_sqr_sample(double);
-        //   Switch to outputting the given waveform type
-        void switch_waveform(int);
-        //   Reset phase
-        void reset_current_phase();
+    // Member functions particular to this module
+    //   Produce samples for the various types of waveforms given a phase
+    double produce_sin_sample(double);
+    double produce_tri_sample(double);
+    double produce_saw_sample(double);
+    double produce_sqr_sample(double);
+    //   Switch to outputting the given waveform type
+    void switch_waveform(int);
+    //   Reset phase
+    void reset_current_phase();
 };
 
 #endif

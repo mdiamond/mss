@@ -8,15 +8,15 @@
  * when a module is selected using this type of toggle button.
  */
 
-#ifndef synth_input_toggle_button_h
-#define synth_input_toggle_button_h
+#ifndef SYNTH_INPUT_TOGGLE_BUTTON_HPP
+#define SYNTH_INPUT_TOGGLE_BUTTON_HPP
 
 /************
  * INCLUDES *
  ************/
 
 // Included SDL componenets
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 // Included classes
 #include "Input_Text_Box.hpp"
@@ -29,21 +29,21 @@
 
 class Input_Toggle_Button: public Toggle_Button
 {
-    public:
-        int input_num;
-        Input_Text_Box *input_text_box;
+public:
+    int input_num;
+    Input_Text_Box *input_text_box;
 
-        // Constructor and destructor
-        Input_Toggle_Button(std::string, SDL_Rect, SDL_Color *,
-                            SDL_Color *, SDL_Color *, SDL_Color *,
-                            TTF_Font *,
-                            std::string, std::string,
-                            bool, Module *, int, Input_Text_Box *);
-        virtual ~Input_Toggle_Button();
+    // Constructor and destructor
+    Input_Toggle_Button(std::string, SDL_Rect, SDL_Color *,
+                        SDL_Color *, SDL_Color *, SDL_Color *,
+                        TTF_Font *,
+                        std::string, std::string,
+                        bool, Module *, int, Input_Text_Box *);
+    virtual ~Input_Toggle_Button();
 
-        // Member functions
-        //   Override the default toggle button toggle() function
-        void toggle();
+    // Member functions
+    //   Override the default toggle button toggle() function
+    void toggle();
 };
 
 #endif

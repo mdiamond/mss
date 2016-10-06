@@ -4,8 +4,8 @@
  * audio related initialization functions.
  */
 
-#ifndef synth_signal_processing_h
-#define synth_signal_processing_h
+#ifndef SYNTH_SIGNAL_PROCESSING_HPP
+#define SYNTH_SIGNAL_PROCESSING_HPP
 
 /************
  * INCLUDES *

@@ -3,8 +3,8 @@
  * Header file for the function forwarder.
  */
 
-#ifndef synth_function_forwarder_h
-#define synth_function_forwarder_h
+#ifndef SYNTH_FUNCTION_FORWARDER_HPP
+#define SYNTH_FUNCTION_FORWARDER_HPP
 
 /************
  * INCLUDES *

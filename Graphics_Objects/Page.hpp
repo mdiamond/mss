@@ -5,15 +5,15 @@
  * saving, adding a module, etc.
  */
 
-#ifndef synth_page_h
-#define synth_page_h
+#ifndef SYNTH_PAGE_HPP
+#define SYNTH_PAGE_HPP
 
 /************
  * INCLUDES *
  ************/
 
 // Included SDL componenets
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 /*************************
  * PAGE CLASS DEFINITION *
@@ -21,17 +21,17 @@
 
 class Page: public Graphics_Object
 {
-    public:
-        std::vector<Graphics_Object *> graphics_objects;
+public:
+    std::vector<Graphics_Object *> graphics_objects;
 
-        // Constructor and destructor
-        Page(std::string, SDL_Rect, SDL_Color *,
-             std::vector<Graphics_Object *> *);
-        virtual ~Page();
+    // Constructor and destructor
+    Page(std::string, SDL_Rect, SDL_Color *,
+         std::vector<Graphics_Object *> *);
+    virtual ~Page();
 
-        // Member functions
-        void render();
-        void clicked();
+    // Member functions
+    void render();
+    void clicked();
 };
 
 #endif

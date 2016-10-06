@@ -13,7 +13,7 @@
 #include <vector>
 
 // Included SDL components
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 // Included files
 #include "main.hpp"

@@ -26,7 +26,6 @@
 *.exe
 *.out
 *.app
-synth
 
 # Vim files
 *.swp
@@ -37,3 +36,6 @@ synth
 
 # OS data
 *.DS_Store
+
+# Build files
+build

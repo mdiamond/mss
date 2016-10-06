@@ -3,8 +3,8 @@
  * Header file for the helper functions for the driver function.
  */
 
-#ifndef synth_main_helpers_h
-#define synth_main_helpers_h
+#ifndef SYNTH_MAIN_HELPERS_HPP
+#define SYNTH_MAIN_HELPERS_HPP
 
 /************
  * INCLUDES *

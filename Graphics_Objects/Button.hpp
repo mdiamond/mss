@@ -5,15 +5,15 @@
  * to call some function.
  */
 
-#ifndef synth_button_h
-#define synth_button_h
+#ifndef SYNTH_BUTTON_HPP
+#define SYNTH_BUTTON_HPP
 
 /************
  * INCLUDES *
  ************/
 
 // Included SDL componenets
-#include "SDL2/SDL.h"
+#include "SDL.h"
 
 // Included classes
 #include "Rect.hpp"
@@ -25,22 +25,21 @@
 
 class Button: public Graphics_Object
 {
-    public:
-        Rect background;
-        Text text;
+public:
+    Rect background;
+    Text text;
 
-        // Constructor and destructor
-        Button(std::string, SDL_Rect, SDL_Color *,
-               SDL_Color *, std::string, Module *);
-        virtual ~Button();
+    // Constructor and destructor
+    Button(std::string, SDL_Rect, SDL_Color *, SDL_Color *, std::string, Module *);
+    virtual ~Button();
 
-        // Member functions
-        virtual void render();
-        virtual void clicked();
-        //   Override the default graphics object update_location() function
-        void update_location(SDL_Rect);
-        //   Set the colors of this button
-        void set_colors(SDL_Color *, SDL_Color *);
+    // Member functions
+    virtual void render();
+    virtual void clicked();
+    //   Override the default graphics object update_location() function
+    void update_location(SDL_Rect);
+    //   Set the colors of this button
+    void set_colors(SDL_Color *, SDL_Color *);
 };
 
 #endif

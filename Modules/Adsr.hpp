@@ -8,8 +8,8 @@
  * in a release to no volume over the release time.
  */
 
-#ifndef synth_adsr_h
-#define synth_adsr_h
+#ifndef SYNTH_ADSR_HPP
+#define SYNTH_ADSR_HPP
 
 /************
  * INCLUDES *
@@ -72,28 +72,28 @@ enum Adsr_Phases
 
 class Adsr: public Module
 {
-    public:
-        // The current amplitudes
-        double current_amplitude;
-        // Which phase of the envelope this module is in
-        int phase_num;
+public:
+    // The current amplitudes
+    double current_amplitude;
+    // Which phase of the envelope this module is in
+    int phase_num;
 
-        // Constructor and destructor
-        Adsr();
-        virtual ~Adsr();
+    // Constructor and destructor
+    Adsr();
+    virtual ~Adsr();
 
-        // Member functions, explained in Module.hpp
-        virtual void process();
-        virtual void update_control_values();
-        virtual void calculate_unique_graphics_object_locations();
-        virtual void initialize_unique_graphics_objects();
-        virtual std::string get_unique_text_representation();
-        virtual void button_function(Button *);
-        virtual void toggle_button_function(Toggle_Button *);
+    // Member functions, explained in Module.hpp
+    virtual void process();
+    virtual void update_control_values();
+    virtual void calculate_unique_graphics_object_locations();
+    virtual void initialize_unique_graphics_objects();
+    virtual std::string get_unique_text_representation();
+    virtual void button_function(Button *);
+    virtual void toggle_button_function(Toggle_Button *);
 
-        // Member functions particular to this module
-        //   Reset amplitude
-        void reset_current_amplitude();
+    // Member functions particular to this module
+    //   Reset amplitude
+    void reset_current_amplitude();
 };
 
 #endif

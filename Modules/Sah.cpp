@@ -14,8 +14,8 @@
 #include <vector>
 
 // Included SDL components
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
+#include "SDL.h"
+#include "SDL_ttf.h"
 
 // Included files
 #include "../function_forwarder.hpp"

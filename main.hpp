@@ -4,8 +4,8 @@
  * all external variables.
  */
 
-#ifndef synth_main_h
-#define synth_main_h
+#ifndef SYNTH_MAIN_HPP
+#define SYNTH_MAIN_HPP
 
 /************
  * INCLUDES *
@@ -15,7 +15,7 @@
 #include <map>
 
 // Included SDL components
-#include "SDL2/SDL_ttf.h"
+#include "SDL_ttf.h"
 
 // Included classes
 #include "Color_Modifier.hpp"

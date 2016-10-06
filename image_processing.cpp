@@ -14,8 +14,8 @@
 #include <vector>
 
 // Included SDL components
-#include "SDL2/SDL.h"
-#include "SDL2/SDL_ttf.h"
+#include "SDL.h"
+#include "SDL_ttf.h"
 
 // Included files
 #include "graphics_object_utils.hpp"
@@ -112,9 +112,9 @@ int create_texture()
  */
 int load_fonts()
 {
-    FONT_REGULAR = TTF_OpenFont("fonts/SourceCodePro-Regular.ttf", 11);
-    FONT_SMALL = TTF_OpenFont("fonts/SourceCodePro-Regular.ttf", 10);
-    FONT_BOLD = TTF_OpenFont("fonts/SourceCodePro-Bold.ttf", 11);
+    FONT_REGULAR = TTF_OpenFont("../fonts/SourceCodePro-Regular.ttf", 11);
+    FONT_SMALL = TTF_OpenFont("../fonts/SourceCodePro-Regular.ttf", 10);
+    FONT_BOLD = TTF_OpenFont("../fonts/SourceCodePro-Bold.ttf", 11);
 
     if(!FONT_REGULAR || !FONT_SMALL || !FONT_BOLD)
     {

@@ -3,8 +3,8 @@
  * Header file for the patch loading functions.
  */
 
-#ifndef synth_load_patch_h
-#define synth_load_patch_h
+#ifndef SYNTH_LOAD_PATCH_HPP
+#define SYNTH_LOAD_PATCH_HPP
 
 /************
  * INCLUDES *

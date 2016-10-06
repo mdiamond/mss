@@ -6,8 +6,8 @@
  * control values signal.
  */
 
-#ifndef synth_multiplier_h
-#define synth_multiplier_h
+#ifndef SYNTH_MULTIPLIER_HPP
+#define SYNTH_MULTIPLIER_HPP
 
 /************
  * INCLUDES *
@@ -49,19 +49,19 @@ enum Multiplier_Dependencies
 
 class Multiplier: public Module
 {
-    public:
-        // Constructor and destructor
-        Multiplier();
-        virtual ~Multiplier();
+public:
+    // Constructor and destructor
+    Multiplier();
+    virtual ~Multiplier();
 
-        // Member functions, explained in Module.hpp
-        virtual void process();
-        virtual void update_control_values();
-        virtual void calculate_unique_graphics_object_locations();
-        virtual void initialize_unique_graphics_objects();
-        virtual std::string get_unique_text_representation();
-        virtual void button_function(Button *);
-        virtual void toggle_button_function(Toggle_Button *);
+    // Member functions, explained in Module.hpp
+    virtual void process();
+    virtual void update_control_values();
+    virtual void calculate_unique_graphics_object_locations();
+    virtual void initialize_unique_graphics_objects();
+    virtual std::string get_unique_text_representation();
+    virtual void button_function(Button *);
+    virtual void toggle_button_function(Toggle_Button *);
 };
 
 #endif

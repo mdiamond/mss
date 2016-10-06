@@ -3,8 +3,8 @@
  * Header file for the functions for constructing batches of graphics objects.
  */
 
-#ifndef synth_graphics_object_utils_h
-#define synth_graphics_object_utils_h
+#ifndef SYNTH_GRAPHICS_OBJECT_UTILS_HPP
+#define SYNTH_GRAPHICS_OBJECT_UTILS_HPP
 
 /************
  * INCLUDES *

@@ -13,14 +13,15 @@
  *   - Waveform
  */
 
-#ifndef synth_graphics_object_h
-#define synth_graphics_object_h
+#ifndef SYNTH_GRAPHICS_OBJECT_HPP
+#define SYNTH_GRAPHICS_OBJECT_HPP
 
 /************
  * INCLUDES *
  ************/
 
-// No includes necessary
+// Included SDL components
+#include "SDL.h"
 
 /**********************************
  * TYPES OF GRAPHICS_OBJECTS ENUM *
@@ -49,30 +50,30 @@ class Module;
 
 class Graphics_Object
 {
-    public:
-        // Module information
-        std::string name;
-        int type;
-        Module *parent;
-        SDL_Rect location;
-        SDL_Color *color;
-        bool updated;
-        // Constructor and destructor
-        Graphics_Object(std::string, int type, Module *,
-                        SDL_Rect, SDL_Color *);
-        virtual ~Graphics_Object();
+public:
+    // Module information
+    std::string name;
+    int type;
+    Module *parent;
+    SDL_Rect location;
+    SDL_Color *color;
+    bool updated;
+    // Constructor and destructor
+    Graphics_Object(std::string, int type, Module *,
+                    SDL_Rect, SDL_Color *);
+    virtual ~Graphics_Object();
 
-        // Virtual member functions
-        //   Render the module
-        virtual void render() = 0;
-        //   Execute on click
-        virtual void clicked() = 0;
+    // Virtual member functions
+    //   Render the module
+    virtual void render() = 0;
+    //   Execute on click
+    virtual void clicked() = 0;
 
-        // Member functions
-        //   Return true if clicked, false otherwise
-        bool was_clicked();
-        //   Update this graphics object's location
-        void update_location(SDL_Rect);
+    // Member functions
+    //   Return true if clicked, false otherwise
+    bool was_clicked();
+    //   Update this graphics object's location
+    void update_location(SDL_Rect);
 };
 
 #endif
