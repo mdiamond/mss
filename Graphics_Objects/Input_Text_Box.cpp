@@ -39,7 +39,7 @@ Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color 
     input_num(_input_num), input_toggle_button(_input_toggle_button)
 {
     // Override the default type of a text box
-    type = INPUT_TEXT_BOX;
+    graphics_object_type = INPUT_TEXT_BOX;
 }
 
 /*

@@ -42,7 +42,7 @@ Input_Toggle_Button::Input_Toggle_Button(std::string _name, SDL_Rect _location, 
     input_text_box(_input_text_box)
 {
     // Overwrite the default type of a toggle button
-    type = INPUT_TOGGLE_BUTTON;
+    graphics_object_type = INPUT_TOGGLE_BUTTON;
 }
 
 /*

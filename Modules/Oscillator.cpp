@@ -371,7 +371,7 @@ void Oscillator::initialize_unique_graphics_objects()
 /*
  * Switch to outputting the given waveform type.
  */
-void Oscillator::switch_waveform(int _waveform_type)
+void Oscillator::switch_waveform(WaveformType _waveform_type)
 {
     sin_on = false;
     tri_on = false;

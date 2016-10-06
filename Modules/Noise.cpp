@@ -44,8 +44,6 @@
 Noise::Noise() :
     Module(NOISE)
 {
-    noise_type = 1;
-
     input_floats[0] = -1;
     input_floats[1] = 1;
 }
@@ -237,52 +235,6 @@ void Noise::initialize_unique_graphics_objects()
 
     ((Input_Text_Box *) graphics_objects[NOISE_RANGE_LOW_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON];
     ((Input_Text_Box *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON];
-}
-
-/*
- * Switch to outputting the given noise type.
- */
-void Noise::switch_noise_type(int _noise_type)
-{
-    // sin_on = false;
-    // tri_on = false;
-    // saw_on = false;
-    // sqr_on = false;
-    // ((Toggle_Button *) graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])->b = false;
-    // ((Toggle_Button *) graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])->b = false;
-    // ((Toggle_Button *) graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])->b = false;
-    // ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b = false;
-
-    // if(_waveform_type == SIN)
-    // {
-    //     waveform_type = SIN;
-    //     sin_on = true;
-    //     ((Toggle_Button *) graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])->b = true;
-    //     std::cout << name << " is now outputting a sine wave" << std::endl;
-    // }
-    // else if(_waveform_type == TRI)
-    // {
-    //     waveform_type = TRI;
-    //     tri_on = true;
-    //     ((Toggle_Button *) graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])->b = true;
-    //     std::cout << name << " is now outputting a triangle wave" << std::endl;
-    // }
-    // else if(_waveform_type == SAW)
-    // {
-    //     waveform_type = SAW;
-    //     saw_on = true;
-    //     ((Toggle_Button *) graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])->b = true;
-    //     std::cout << name << " is now outputting a sawtooth wave" << std::endl;
-    // }
-    // else
-    // {
-    //     waveform_type = SQR;
-    //     sqr_on = true;
-    //     ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b = true;
-    //     std::cout << name << " is now outputting a square wave" << std::endl;
-    // }
-
-    // waveform_type = _waveform_type;
 }
 
 std::string Noise::get_unique_text_representation()

@@ -39,12 +39,10 @@ void save_patch(std::string filename)
 
     if(outfile.is_open())
     {
-        for(unsigned int i = 1; i < MODULES.size(); i ++)
-            outfile << MODULES[i]->get_text_representation();
-
         outfile.close();
 
-        std::cout << "Patch " << filename << " saved" << std::endl;
+        /* std::cout << "Patch " << filename << " saved" << std::endl; */
+        std::cout << "Patch saving not implemented" << std::endl;
     }
     else
         std::cout << RED_STDOUT << "Patch could not be saved!" << DEFAULT_STDOUT << std::endl;

@@ -221,9 +221,9 @@ void prettify_utilities_page()
 {
     for(unsigned int i = 0; i < UTILITIES_PAGE->graphics_objects.size(); i ++)
     {
-        if(UTILITIES_PAGE->graphics_objects[i]->type == BUTTON)
+        if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == BUTTON)
             ((Button *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
-        else if(UTILITIES_PAGE->graphics_objects[i]->type == TEXT_BOX)
+        else if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == TEXT_BOX)
             ((Text_Box *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
     }
 }
@@ -336,7 +336,7 @@ void draw_surface()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-                if(MODULES[i]->graphics_objects[j]->type == WAVEFORM)
+                if(MODULES[i]->graphics_objects[j]->graphics_object_type == WAVEFORM)
                     ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
     SDL_UnlockAudio();
 

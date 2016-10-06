@@ -19,7 +19,7 @@
  * MULTIPLIER GRAPHICS OBJECTS ENUM *
  ************************************/
 
-enum Multiplier_Graphics_Objects
+enum MultiplierGraphicsObjects
 {
     MULTIPLIER_INPUT_TEXT = 3,
     MULTIPLIER_DRY_WET_TEXT,
@@ -36,7 +36,7 @@ enum Multiplier_Graphics_Objects
  * MULTIPLIER DEPENDENCIES ENUM *
  ********************************/
 
-enum Multiplier_Dependencies
+enum MultiplierDependencies
 {
     MULTIPLIER_SIGNAL = 0,
     MULTIPLIER_MULTIPLIER,

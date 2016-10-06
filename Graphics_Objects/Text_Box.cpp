@@ -185,7 +185,7 @@ void Text_Box::clicked()
  */
 void Text_Box::entered()
 {
-    if(type == TEXT_BOX)
+    if(graphics_object_type == TEXT_BOX)
     {
         std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << std::endl;
 

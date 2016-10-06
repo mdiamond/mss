@@ -21,7 +21,7 @@
  * ADSR GRAPHICS OBJECTS ENUM *
  ******************************/
 
-enum Adsr_Graphics_Objects
+enum AdsrGraphicsObjects
 {
     ADSR_RESET_CURRENT_AMPLITUDE_BUTTON = 3,
     ADSR_NOTE_TEXT,
@@ -44,7 +44,7 @@ enum Adsr_Graphics_Objects
  * ADSR DEPENDENCIES ENUM *
  **************************/
 
-enum Adsr_Dependencies
+enum AdsrDependencies
 {
     ADSR_NOTE = 0,
     ADSR_A,
@@ -57,7 +57,7 @@ enum Adsr_Dependencies
  * ADSR PHASES ENUM *
  ********************/
 
-enum Adsr_Phases
+enum AdsrPhase
 {
     ADSR_A_PHASE = 0,
     ADSR_D_PHASE,
@@ -76,7 +76,7 @@ public:
     // The current amplitudes
     double current_amplitude;
     // Which phase of the envelope this module is in
-    int phase_num;
+    AdsrPhase adsr_phase;
 
     // Constructor and destructor
     Adsr();

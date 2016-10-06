@@ -85,7 +85,7 @@ void Toggle_Button::clicked()
     {
         std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << std::endl;
 
-        if(type == INPUT_TOGGLE_BUTTON)
+        if(graphics_object_type == INPUT_TOGGLE_BUTTON)
             ((Input_Toggle_Button *) this)->toggle();
         else
         {

@@ -16,7 +16,7 @@
  * FILTER GRAPHICS OBJECTS ENUM *
  ********************************/
 
-enum Filter_Graphics_Objects
+enum FilterGraphicsObjects
 {
     FILTER_SIGNAL_TEXT = 3,
     FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT,
@@ -36,7 +36,7 @@ enum Filter_Graphics_Objects
  * FILTER DEPENDENCIES ENUM *
  ****************************/
 
-enum Filter_Dependencies
+enum FilterDependencies
 {
     FILTER_SIGNAL = 0,
     FILTER_FREQUENCY_CUTOFF,
@@ -47,7 +47,7 @@ enum Filter_Dependencies
  * FILTER TYPES ENUM *
  *********************/
 
-enum Filters
+enum FilterType
 {
     LOWPASS = 0,
     BANDPASS,
@@ -64,7 +64,7 @@ public:
     // Vectors to track samples passing through and the impulse response
     std::vector<float> iir_samples, iir_coefficients;
     double y1, y2, x1, x2;
-    int filter_type;
+    FilterType filter_type;
     bool lowpass_on, bandpass_on, highpass_on;
 
     // Constructor and destructor
@@ -82,7 +82,7 @@ public:
 
     // Member functions particular to this module
     //   Switch to the given waveform type
-    void switch_filter(int);
+    void switch_filter(FilterType);
 };
 
 #endif

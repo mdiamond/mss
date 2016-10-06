@@ -36,25 +36,25 @@
  * NUM INPUTS PER MODULE TYPE *
  ******************************/
 
-std::map<int, int> num_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
-                                  {MIXER, 16}, {MULTIPLIER, 3}, {NOISE, 2},
-                                  {OSCILLATOR, 5}, {OUTPUT, 2}, {SAH, 2}};
+std::map<ModuleType, int> num_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
+                                        {MIXER, 16}, {MULTIPLIER, 3}, {NOISE, 2},
+                                        {OSCILLATOR, 5}, {OUTPUT, 2}, {SAH, 2}};
 
 /*******************************
  * MODULE NAME PER MODULE TYPE *
  *******************************/
 
-std::map<int, std::string> names = {{ADSR, "adsr"}, {DELAY, "delay"},
-                                    {FILTER, "filter"}, {MIXER, "mixer"},
-                                    {MULTIPLIER, "multiplier"}, {NOISE, "noise"},
-                                    {OSCILLATOR, "oscillator"}, {OUTPUT, "output"},
-                                    {SAH, "sah"}};
+std::map<ModuleType, std::string> names = {{ADSR, "adsr"}, {DELAY, "delay"},
+                                           {FILTER, "filter"}, {MIXER, "mixer"},
+                                           {MULTIPLIER, "multiplier"}, {NOISE, "noise"},
+                                           {OSCILLATOR, "oscillator"}, {OUTPUT, "output"},
+                                           {SAH, "sah"}};
 
 /******************************************
  * MODULE PARAMETER NAMES PER MODULE TYPE *
  ******************************************/
 
-std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF", "ATTACK", "DECAY", "SUSTAIN", "RELEASE"}},
+std::map<ModuleType, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF", "ATTACK", "DECAY", "SUSTAIN", "RELEASE"}},
                                                             {DELAY, {"SIGNAL", "MAX DELAY TIME", "DELAY TIME", "FEEDBACK AMOUNT", "WET/DRY AMOUNT"}},
                                                             {FILTER, {"SIGNAL", "FREQUENCY CUTOFF", "FILTER QUALITY"}},
                                                             {MIXER, {"SIGNAL 1", "SIGNAL 1 MULTIPLIER", "SIGNAL 2", "SIGNAL 2 MULTIPLIER", "SIGNAL 3", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER"}},
@@ -71,18 +71,18 @@ std::map<int, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF
 /*
  * Constructor.
  */
-Module::Module(int _type) :
-    Graphics_Object(names.at(_type) + " " + std::to_string(find_available_module_number(_type)),
+Module::Module(ModuleType _module_type) :
+    Graphics_Object(names.at(_module_type) + " " + std::to_string(find_available_module_number(_module_type)),
     MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
-    module_type(_type), number(find_available_module_slot()), processed(false),
-    dependencies(std::vector<Module *>(num_inputs.at(_type), NULL)),
-    input_floats(std::vector<float>(num_inputs.at(_type), 0)),
-    input_strs(std::vector<std::string>(num_inputs.at(_type), "")),
-    inputs(std::vector<std::vector<float> *>(num_inputs.at(_type), NULL)),
-    inputs_live(std::vector<bool>(num_inputs.at(_type), false)),
+    module_type(_module_type), number(find_available_module_slot()), processed(false),
+    dependencies(std::vector<Module *>(num_inputs.at(_module_type), NULL)),
+    input_floats(std::vector<float>(num_inputs.at(_module_type), 0)),
+    input_strs(std::vector<std::string>(num_inputs.at(_module_type), "")),
+    inputs(std::vector<std::vector<float> *>(num_inputs.at(_module_type), NULL)),
+    inputs_live(std::vector<bool>(num_inputs.at(_module_type), false)),
     output(std::vector<float>(BUFFER_SIZE, 0))
 {
-    if(type == OUTPUT)
+    if(module_type == OUTPUT)
         name = "output";
 
     // Set this module's color randomly, but with enough contrast
@@ -135,7 +135,7 @@ Module::~Module()
 
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
             {
-                if(MODULES[i]->graphics_objects[j]->type == INPUT_TOGGLE_BUTTON)
+                if(MODULES[i]->graphics_objects[j]->graphics_object_type == INPUT_TOGGLE_BUTTON)
                 {
                     input_toggle_button = ((Input_Toggle_Button *) MODULES[i]->graphics_objects[j]);
                     if(input_toggle_button->b)
@@ -169,7 +169,7 @@ Module::~Module()
 
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
             {
-                if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
+                if(MODULES[i]->graphics_objects[j]->graphics_object_type == INPUT_TEXT_BOX
                    && MODULES[i]->inputs_live[dependency_num])
                 {
                     input_text_box = (Input_Text_Box *) MODULES[i]->graphics_objects[j];
@@ -177,7 +177,7 @@ Module::~Module()
                     input_text_box->update_current_text(dependency_short_name);
                     dependency_num ++;
                 }
-                else if(MODULES[i]->graphics_objects[j]->type == INPUT_TEXT_BOX
+                else if(MODULES[i]->graphics_objects[j]->graphics_object_type == INPUT_TEXT_BOX
                         && !MODULES[i]->inputs_live[dependency_num])
                     dependency_num ++;
             }
@@ -363,7 +363,7 @@ void Module::set(float val, int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names[type][input_num]
+    std::cout << name << " " << parameter_names[module_type][input_num]
          << " changed to " << val << std::endl;
 }
 
@@ -383,7 +383,7 @@ void Module::set(Module *src, int input_num)
 
     // If this is the output module, update the waveforms to display
     // the proper audio buffers
-    if(type == OUTPUT)
+    if(module_type == OUTPUT)
     {
         Waveform *waveform;
         if(input_num == OUTPUT_INPUT_L)
@@ -399,7 +399,7 @@ void Module::set(Module *src, int input_num)
     // Ensure that the input toggle button associated with this input is turned
     // on
 
-    std::cout << name << " " << parameter_names[type][input_num]
+    std::cout << name << " " << parameter_names[module_type][input_num]
          << " is now coming from " << src->name << std::endl;
 }
 
@@ -430,7 +430,7 @@ void Module::cancel_input(int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names[type][input_num]
+    std::cout << name << " " << parameter_names[module_type][input_num]
          << " input cancelled" << std::endl;
 }
 
@@ -460,7 +460,7 @@ std::string Module::get_text_representation()
 {
     std::string result;
 
-    result += std::to_string(type) + " (" + name + ")" + "\n";
+    result += std::to_string(module_type) + " (" + name + ")" + "\n";
     for(unsigned int i = 0; i < input_floats.size(); i ++)
         result += std::to_string(input_floats[i]) + "\n";
     for(unsigned int i = 0; i < dependencies.size(); i ++)
@@ -487,7 +487,7 @@ void Module::adopt_input_colors()
 
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
     {
-        if(graphics_objects[i]->type == INPUT_TEXT_BOX)
+        if(graphics_objects[i]->graphics_object_type == INPUT_TEXT_BOX)
         {
             if(inputs_live[dependency_num])
                 ((Input_Text_Box *) graphics_objects[i])->set_colors(&dependencies[dependency_num]->primary_module_color,

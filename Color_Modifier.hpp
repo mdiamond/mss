@@ -20,7 +20,8 @@
  * COLOR CODES ENUM *
  ********************/
 
-enum Code {
+enum ColorCode
+{
     FG_RED      = 31,
     FG_GREEN    = 32,
     FG_BLUE     = 34,
@@ -39,9 +40,9 @@ enum Code {
 class Color_Modifier
 {
 public:
-    Code code;
+    ColorCode code;
 
-    Color_Modifier(Code pCode) : code(pCode)
+    Color_Modifier(ColorCode pCode) : code(pCode)
     {}
 
     friend std::ostream& operator<<(std::ostream& os, const Color_Modifier& mod)

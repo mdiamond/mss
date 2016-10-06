@@ -19,7 +19,7 @@
  * SAH GRAPHICS OBJECTS ENUM *
  *****************************/
 
-enum Sah_Graphics_Objects
+enum SahGraphicsObjects
 {
     SAH_RESET_SAMPLER_BUTTON = 3,
     SAH_INPUT_TEXT,
@@ -35,7 +35,7 @@ enum Sah_Graphics_Objects
  * SAH DEPENDENCIES ENUM *
  *************************/
 
-enum Sah_Dependencies
+enum SahDependencies
 {
     SAH_SIGNAL = 0,
     SAH_HOLD_TIME

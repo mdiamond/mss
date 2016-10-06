@@ -28,9 +28,11 @@
 /*
  * Constructor.
  */
-Graphics_Object::Graphics_Object(std::string _name, int _type, Module *_parent,
-								 SDL_Rect _location, SDL_Color *_color) :
-	name(_name), type(_type), parent(_parent),
+Graphics_Object::Graphics_Object(std::string _name,
+                                 GraphicsObjectType _graphics_object_type,
+                                 Module *_parent, SDL_Rect _location,
+                                 SDL_Color *_color) :
+    name(_name), graphics_object_type(_graphics_object_type), parent(_parent),
     location(_location), color(_color), updated(true)
 {
 
@@ -62,13 +64,13 @@ bool Graphics_Object::was_clicked()
  */
 void Graphics_Object::update_location(SDL_Rect _location)
 {
-    if(type == BUTTON)
+    if(graphics_object_type == BUTTON)
         ((Button *) this)->update_location(_location);
-    else if(type == TEXT_BOX || type == INPUT_TEXT_BOX)
+    else if(graphics_object_type == TEXT_BOX || graphics_object_type == INPUT_TEXT_BOX)
         ((Text_Box *) this)->update_location(_location);
-    else if(type == TOGGLE_BUTTON || type == INPUT_TOGGLE_BUTTON)
+    else if(graphics_object_type == TOGGLE_BUTTON || graphics_object_type == INPUT_TOGGLE_BUTTON)
         ((Toggle_Button *) this)->update_location(_location);
-    else if(type == WAVEFORM)
+    else if(graphics_object_type == WAVEFORM)
         ((Waveform *) this)->update_location(_location);
     else
         location = _location;

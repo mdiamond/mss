@@ -18,7 +18,7 @@
  * DELAY GRAPHICS OBJECTS ENUM *
  *******************************/
 
-enum Delay_Graphics_Objects
+enum DelayGraphicsObjects
 {
     DELAY_RESET_BUFFER_BUTTON = 3,
     DELAY_SIGNAL_TEXT,
@@ -40,7 +40,7 @@ enum Delay_Graphics_Objects
  * DELAY DEPENDENCIES ENUM *
  ***************************/
 
-enum Delay_Dependencies
+enum DelayDependencies
 {
     DELAY_SIGNAL = 0,
     DELAY_MAX_DELAY_TIME,

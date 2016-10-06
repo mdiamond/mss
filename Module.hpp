@@ -41,7 +41,7 @@
  * TYPES OF MODULES ENUM *
  *************************/
 
-enum Modules
+enum ModuleType
 {
     ADSR = 0,
     DELAY,
@@ -58,7 +58,7 @@ enum Modules
  * MODULE GRAPHICS OBJECTS ENUM *
  ********************************/
 
-enum Module_Graphics_Objects
+enum ModuleGraphicsObjects
 {
     MODULE_BACKGROUND_RECT = 0,
     MODULE_NAME_TEXT,
@@ -73,7 +73,7 @@ class Module: public Graphics_Object
 {
 public:
     // Module information
-    int module_type;
+    ModuleType module_type;
     SDL_Color primary_module_color;
     SDL_Color secondary_module_color;
     int number;
@@ -99,7 +99,7 @@ public:
     std::vector<float> output;
 
     // Constructor and destructor
-    Module(int);
+    Module(ModuleType);
     virtual ~Module();
 
     // Virtual member functions

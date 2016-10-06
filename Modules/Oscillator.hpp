@@ -22,7 +22,7 @@
  * OSCILLATOR GRAPHICS OBJECTS ENUM *
  ************************************/
 
-enum Oscillator_Graphics_Objects
+enum OscillatorGraphicsObjects
 {
     OSCILLATOR_RESET_CURRENT_PHASE_BUTTON = 3,
     OSCILLATOR_FREQUENCY_TEXT,
@@ -50,7 +50,7 @@ enum Oscillator_Graphics_Objects
  * OSCILLATOR DEPENDENCIES ENUM *
  ********************************/
 
-enum Oscillator_Dependencies
+enum OscillatorDependencies
 {
     OSCILLATOR_FREQUENCY = 0,
     OSCILLATOR_PHASE_OFFSET,
@@ -63,7 +63,7 @@ enum Oscillator_Dependencies
  * OSCILLATOR WAVEFORMS ENUM *
  *****************************/
 
-enum Waveforms
+enum WaveformType
 {
     SIN = 0,
     TRI,
@@ -83,7 +83,7 @@ public:
     // A record of the previous phase offset value
     double previous_phase_offset;
     // Booleans to represent whether or not each of the waveforms is enabled
-    int waveform_type;
+    WaveformType waveform_type;
     // Whether or not each waveform is in use
     bool sin_on, tri_on, saw_on, sqr_on;
 
@@ -107,7 +107,7 @@ public:
     double produce_saw_sample(double);
     double produce_sqr_sample(double);
     //   Switch to outputting the given waveform type
-    void switch_waveform(int);
+    void switch_waveform(WaveformType);
     //   Reset phase
     void reset_current_phase();
 };

@@ -17,7 +17,7 @@
  * NOISE GRAPHICS OBJECTS ENUM *
  *******************************/
 
-enum Noise_Graphics_Objects
+enum NoiseGraphicsObjects
 {
     NOISE_OUTPUT_WAVEFORM = 3,
     NOISE_RANGE_TEXT,
@@ -31,7 +31,7 @@ enum Noise_Graphics_Objects
  * NOISE DEPENDENCIES ENUM *
  ***************************/
 
-enum Noise_Dependencies
+enum NoiseDependencies
 {
     NOISE_RANGE_LOW = 0,
     NOISE_RANGE_HIGH
@@ -44,9 +44,6 @@ enum Noise_Dependencies
 class Noise: public Module
 {
 public:
-    // Noise type
-    int noise_type;
-
     // Constructor and destructor
     Noise();
     virtual ~Noise();

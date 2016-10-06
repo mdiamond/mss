@@ -20,7 +20,7 @@
  * OUTPUT GRAPHICS OBJECTS ENUM *
  ********************************/
 
-enum Ouput_Graphics_Objects
+enum OuputGraphicsObjects
 {
     OUTPUT_AUDIO_TOGGLE_TEXT = 3,
     OUTPUT_INPUT_L_TEXT,
@@ -38,7 +38,7 @@ enum Ouput_Graphics_Objects
  * OUTPUT DEPENDENCIES ENUM *
  ****************************/
 
-enum Ouput_Dependencies
+enum OuputDependencies
 {
     OUTPUT_INPUT_L = 0,
     OUTPUT_INPUT_R

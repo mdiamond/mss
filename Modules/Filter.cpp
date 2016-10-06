@@ -302,7 +302,7 @@ void Filter::initialize_unique_graphics_objects()
 /*
  * Switch to outputting the given waveform type.
  */
-void Filter::switch_filter(int _filter_type)
+void Filter::switch_filter(FilterType _filter_type)
 {
     lowpass_on = false;
     bandpass_on = false;

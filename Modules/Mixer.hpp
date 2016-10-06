@@ -18,7 +18,7 @@
  * MIXER GRAPHICS OBJECTS ENUM *
  *******************************/
 
-enum Mixer_Graphics_Objects
+enum MixerGraphicsObjects
 {
     MIXER_SIGNALS_TEXT = 3,
     MIXER_OUTPUT_WAVEFORM,
@@ -60,7 +60,7 @@ enum Mixer_Graphics_Objects
  * MIXER DEPENDENCIES ENUM *
  ***************************/
 
-enum Mixer_Dependencies
+enum MixerDependencies
 {
     MIXER_SIGNAL_1 = 0,
     MIXER_SIGNAL_1_MULTIPLIER,

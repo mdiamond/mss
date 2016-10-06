@@ -27,7 +27,7 @@
  * TYPES OF GRAPHICS_OBJECTS ENUM *
  **********************************/
 
-enum Graphics_Objects
+enum GraphicsObjectType
 {
     BUTTON = 0,
     INPUT_TEXT_BOX,
@@ -53,13 +53,13 @@ class Graphics_Object
 public:
     // Module information
     std::string name;
-    int type;
+    GraphicsObjectType graphics_object_type;
     Module *parent;
     SDL_Rect location;
     SDL_Color *color;
     bool updated;
     // Constructor and destructor
-    Graphics_Object(std::string, int type, Module *,
+    Graphics_Object(std::string, GraphicsObjectType graphics_object_type, Module *,
                     SDL_Rect, SDL_Color *);
     virtual ~Graphics_Object();
 
