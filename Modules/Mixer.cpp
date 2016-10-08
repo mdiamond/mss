@@ -45,9 +45,9 @@ Mixer::Mixer() :
     auto_attenuate(true)
 {
     // All multiplier floats should start at 1
-    for(unsigned int i = 0; i < input_floats.size(); i ++)
+    for(unsigned int i = 0; i < inputs.size(); i ++)
         if(i % 2 == 1)
-            input_floats[i] = 1;
+            inputs[i].val = 1;
 }
 
 /*
@@ -76,21 +76,21 @@ void Mixer::process()
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Update parameters
-        update_input_floats(i);
+        update_input_vals(i);
 
         num_channels = 0;
 
         // Determine how many channels are active
-        for(unsigned int j = 0; j < dependencies.size(); j += 2)
-            if(inputs_live[j])
+        for(unsigned int j = 0; j < inputs.size(); j += 2)
+            if(inputs[j].live)
                 num_channels ++;
 
         // For each live signal, fetch the relevant sample, multiply by the
         // associated input multiplier, then add it to the associated sample
         // in the output buffer
-        for(unsigned int j = 0; j < dependencies.size(); j += 2)
-            if(inputs_live[j])
-                output[i] += input_floats[j] * input_floats[j + 1];
+        for(unsigned int j = 0; j < inputs.size(); j += 2)
+            if(inputs[j].live)
+                output[i] += inputs[j].val * inputs[j + 1].val;
 
         // If auto attenuation is enabled, divide the signal by the number
         // of signals active

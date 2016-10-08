@@ -75,11 +75,7 @@ Module::Module(ModuleType _module_type) :
     Graphics_Object(names.at(_module_type) + " " + std::to_string(find_available_module_number(_module_type)),
     MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
     module_type(_module_type), number(find_available_module_slot()), processed(false),
-    dependencies(std::vector<Module *>(num_inputs.at(_module_type), NULL)),
-    input_floats(std::vector<float>(num_inputs.at(_module_type), 0)),
-    input_strs(std::vector<std::string>(num_inputs.at(_module_type), "")),
-    inputs(std::vector<std::vector<float> *>(num_inputs.at(_module_type), NULL)),
-    inputs_live(std::vector<bool>(num_inputs.at(_module_type), false)),
+    inputs(std::vector<Input>(num_inputs.at(_module_type))),
     output(std::vector<float>(BUFFER_SIZE, 0))
 {
     if(module_type == OUTPUT)
@@ -109,8 +105,8 @@ Module::~Module()
     // Cancel any inputs that this module is outputting to
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
-            for(unsigned int j = 0; j < MODULES[i]->dependencies.size(); j ++)
-                if(MODULES[i]->dependencies[j] == this)
+            for(unsigned int j = 0; j < MODULES[i]->inputs.size(); j ++)
+                if(MODULES[i]->inputs[j].from == this)
                     MODULES[i]->cancel_input(j);
 
     // Erase this module from the list of modules
@@ -146,7 +142,7 @@ Module::~Module()
                             if(input_text_box->prompt_text.text == "input")
                                 input_text_box->update_current_text("");
                             else
-                                input_text_box->update_current_text(std::to_string(MODULES[i]->input_floats[dependency_num]));
+                                input_text_box->update_current_text(std::to_string(MODULES[i]->inputs[dependency_num].val));
                             input_toggle_button->b = false;
                         }
                     }
@@ -170,15 +166,15 @@ Module::~Module()
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
             {
                 if(MODULES[i]->graphics_objects[j]->graphics_object_type == INPUT_TEXT_BOX
-                   && MODULES[i]->inputs_live[dependency_num])
+                   && MODULES[i]->inputs[dependency_num].live)
                 {
                     input_text_box = (Input_Text_Box *) MODULES[i]->graphics_objects[j];
-                    dependency_short_name = MODULES[i]->dependencies[dependency_num]->get_short_name();
+                    dependency_short_name = MODULES[i]->inputs[dependency_num].from->get_short_name();
                     input_text_box->update_current_text(dependency_short_name);
                     dependency_num ++;
                 }
                 else if(MODULES[i]->graphics_objects[j]->graphics_object_type == INPUT_TEXT_BOX
-                        && !MODULES[i]->inputs_live[dependency_num])
+                        && !MODULES[i]->inputs[dependency_num].live)
                     dependency_num ++;
             }
 
@@ -202,21 +198,21 @@ Module::~Module()
  */
 void Module::process_dependencies()
 {
-    for(unsigned int i = 0; i < dependencies.size(); i ++)
-        if(inputs_live[i] && !dependencies[i]->processed)
-            dependencies[i]->process();
+    for(unsigned int i = 0; i < inputs.size(); i ++)
+        if(inputs[i].live && !inputs[i].from->processed)
+            inputs[i].from->process();
 }
 
 /*
  * This function stores the sample at index i from each of the input buffers as
- * floats in this module. This is essentially just updating the locally stored
- * values for each parameter.
+ * floats in their input struct's respective value variable.
+ * This is essentially just updating the locally stored values for each parameter.
  */
-void Module::update_input_floats(int i)
+void Module::update_input_vals(int i)
 {
-    for(unsigned int j = 0; j < dependencies.size(); j ++)
-        if(inputs_live[j])
-            input_floats[j] = inputs[j]->at(i);
+    for(unsigned int j = 0; j < inputs.size(); j ++)
+        if(inputs[j].live)
+            inputs[j].val = inputs[j].input->at(i);
 }
 
 /*
@@ -356,10 +352,10 @@ void Module::set(float val, int input_num)
 {
     // Set the input and dependency to NULL,
     // the float to val, and the live boolean to false
-    inputs[input_num] = NULL;
-    dependencies[input_num] = NULL;
-    input_floats[input_num] = val;
-    inputs_live[input_num] = false;
+    inputs[input_num].input = NULL;
+    inputs[input_num].val = val;
+    inputs[input_num].live = false;
+    inputs[input_num].from = NULL;
 
     adopt_input_colors();
 
@@ -376,9 +372,9 @@ void Module::set(Module *src, int input_num)
     // Set the input to the output of src, the dependency to src,
     // the live boolean to true, and the SELECTING_SRC program state variable
     // to false
-    inputs[input_num] = &src->output;
-    dependencies[input_num] = src;
-    inputs_live[input_num] = true;
+    inputs[input_num].input = &src->output;
+    inputs[input_num].live = true;
+    inputs[input_num].from = src;
     SELECTING_SRC = false;
 
     // If this is the output module, update the waveforms to display
@@ -412,9 +408,9 @@ void Module::cancel_input(int input_num)
 {
     // Set the input and dependency to NULL,
     // and the live boolean to false
-    inputs[input_num] = NULL;
-    dependencies[input_num] = NULL;
-    inputs_live[input_num] = false;
+    inputs[input_num].input = NULL;
+    inputs[input_num].live = false;
+    inputs[input_num].from = NULL;
 
     // If this is the output module, update the waveforms to display
     // an empty audio buffer
@@ -461,13 +457,13 @@ std::string Module::get_text_representation()
     std::string result;
 
     result += std::to_string(module_type) + " (" + name + ")" + "\n";
-    for(unsigned int i = 0; i < input_floats.size(); i ++)
-        result += std::to_string(input_floats[i]) + "\n";
-    for(unsigned int i = 0; i < dependencies.size(); i ++)
-        if(dependencies[i] == NULL)
+    for(unsigned int i = 0; i < inputs.size(); i ++)
+        result += std::to_string(inputs[i].val) + "\n";
+    for(unsigned int i = 0; i < inputs.size(); i ++)
+        if(inputs[i].from == NULL)
             result += "NULL\n";
         else
-            result += dependencies[i]->name + "\n";
+            result += inputs[i].from->name + "\n";
 
     result += this->get_unique_text_representation();
 
@@ -489,9 +485,9 @@ void Module::adopt_input_colors()
     {
         if(graphics_objects[i]->graphics_object_type == INPUT_TEXT_BOX)
         {
-            if(inputs_live[dependency_num])
-                ((Input_Text_Box *) graphics_objects[i])->set_colors(&dependencies[dependency_num]->primary_module_color,
-                                                                     &dependencies[dependency_num]->secondary_module_color);
+            if(inputs[dependency_num].live)
+                ((Input_Text_Box *) graphics_objects[i])->set_colors(&inputs[dependency_num].from->primary_module_color,
+                                                                     &inputs[dependency_num].from->secondary_module_color);
             else
                 ((Input_Text_Box *) graphics_objects[i])->set_colors(&secondary_module_color, &primary_module_color);
 

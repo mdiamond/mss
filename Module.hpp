@@ -72,6 +72,23 @@ enum ModuleGraphicsObjects
 class Module: public Graphics_Object
 {
 public:
+    // A struct to represent an input to this module
+    struct Input
+    {
+        // Name of the input parameter
+        std::string name;
+        // Module that is producing the data to be received
+        Module *from;
+        // Output buffer of the above module
+        std::vector<float> *input;
+        // Instantaneous value of the input
+        float val;
+        // Instantaneous value of the input as a string
+        std::string val_str;
+        // Whether or not this input is currently live
+        bool live;
+    };
+
     // Module information
     ModuleType module_type;
     SDL_Color primary_module_color;
@@ -80,21 +97,14 @@ public:
     bool processed;
     SDL_Point upper_left;
     bool graphics_objects_initialized;
-    // A vector containing pointers to any module that must
-    // be processed before this module
-    std::vector<Module *> dependencies;
     // A vector containing any graphics objects
     // necessary for rendering this module, and
     // their current locations
     std::vector<SDL_Rect> graphics_object_locations;
     std::vector<Graphics_Object *> graphics_objects;
-    // Vectors containing representations of the inputs as
-    // floats, strings and input buffers, as well as booleans
-    // representing whether or not that input is a live signal
-    std::vector<float> input_floats;
-    std::vector<std::string> input_strs;
-    std::vector<std::vector<float> *> inputs;
-    std::vector<bool> inputs_live;
+    // A vector of inputs, accessed for any processing operations
+    // that depend on the output of other modules
+    std::vector<Input> inputs;
     // Output buffer
     std::vector<float> output;
 
@@ -123,7 +133,7 @@ public:
     void process_dependencies();
     //   Grab samples from index i in all input buffers, store them as
     //   individual floats
-    void update_input_floats(int);
+    void update_input_vals(int);
     //   Calculate the locations of all graphics objects in this module
     void calculate_graphics_object_locations();
     //   Initialize input text box graphics objects

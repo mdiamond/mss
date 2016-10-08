@@ -52,8 +52,8 @@ Filter::Filter() :
     filter_type(LOWPASS), lowpass_on(true), bandpass_on(false),
     highpass_on(false)
 {
-    input_floats[FILTER_FREQUENCY_CUTOFF] = 12500;
-    input_floats[FILTER_Q] = 1;
+    inputs[FILTER_FREQUENCY_CUTOFF].val = 12500;
+    inputs[FILTER_Q].val = 1;
 }
 
 /*
@@ -76,11 +76,11 @@ void Filter::process()
     process_dependencies();
 
     // Update parameters
-    update_input_floats(0);
+    update_input_vals(0);
 
     // Once per buffer, update the coefficients
-    double w0 = (input_floats[FILTER_FREQUENCY_CUTOFF] / SAMPLE_RATE) * 2 * M_PI;
-    double alpha = sin(w0) / (2 * input_floats[FILTER_Q]);
+    double w0 = (inputs[FILTER_FREQUENCY_CUTOFF].val / SAMPLE_RATE) * 2 * M_PI;
+    double alpha = sin(w0) / (2 * inputs[FILTER_Q].val);
 
     // Use different calculations for the coefficients of each filter type
     switch(filter_type)
@@ -94,9 +94,9 @@ void Filter::process()
             iir_coefficients[5] = 1 - alpha;
             break;
         case BANDPASS:
-            iir_coefficients[0] = input_floats[FILTER_Q] * alpha;
+            iir_coefficients[0] = inputs[FILTER_Q].val * alpha;
             iir_coefficients[1] = 0;
-            iir_coefficients[2] = (input_floats[FILTER_Q] * -1) * alpha;
+            iir_coefficients[2] = (inputs[FILTER_Q].val * -1) * alpha;
             iir_coefficients[3] = 1 + alpha;
             iir_coefficients[4] = -2 * cos(w0);
             iir_coefficients[5] = 1 - alpha;
@@ -115,19 +115,19 @@ void Filter::process()
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Update parameters
-        update_input_floats(i);
+        update_input_vals(i);
 
-        if(!inputs_live[FILTER_SIGNAL])
-            input_floats[FILTER_SIGNAL] = 0;
+        if(!inputs[FILTER_SIGNAL].live)
+            inputs[FILTER_SIGNAL].val = 0;
 
-        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * input_floats[FILTER_SIGNAL]
+        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL].val
                     + (iir_coefficients[1] / iir_coefficients[3] * x1)
                     + (iir_coefficients[2] / iir_coefficients[3] * x2)
                     - (iir_coefficients[4] / iir_coefficients[3] * y1)
                     - (iir_coefficients[5] / iir_coefficients[3] * y2);
 
         x2 = x1;
-        x1 = input_floats[FILTER_SIGNAL];
+        x1 = inputs[FILTER_SIGNAL].val;
         y2 = y1;
         y1 = output[i];
     }

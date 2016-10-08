@@ -48,13 +48,13 @@ Delay::Delay() :
     previous_max_delay_time(0),
     previous_delay_time(0)
 {
-    input_floats[DELAY_MAX_DELAY_TIME] = 5000;
-    input_floats[DELAY_DELAY_TIME] = 2000;
-    input_floats[DELAY_FEEDBACK_AMOUNT] = 0;
-    input_floats[DELAY_WET_DRY] = 1;
+    inputs[DELAY_MAX_DELAY_TIME].val = 5000;
+    inputs[DELAY_DELAY_TIME].val = 2000;
+    inputs[DELAY_FEEDBACK_AMOUNT].val = 0;
+    inputs[DELAY_WET_DRY].val = 1;
 
-    circular_buffer = std::vector<float>(input_floats[DELAY_MAX_DELAY_TIME] / 1000.0 * SAMPLE_RATE, 0);
-    delay_samples = input_floats[DELAY_DELAY_TIME] / 1000.0 * SAMPLE_RATE;
+    circular_buffer = std::vector<float>(inputs[DELAY_MAX_DELAY_TIME].val / 1000.0 * SAMPLE_RATE, 0);
+    delay_samples = inputs[DELAY_DELAY_TIME].val / 1000.0 * SAMPLE_RATE;
 }
 
 /*
@@ -98,51 +98,51 @@ void Delay::process()
     process_dependencies();
 
     // Update parameters
-    update_input_floats(0);
+    update_input_vals(0);
 
     // If the max delay time has changed, reset the delay buffer
-    if(input_floats[DELAY_MAX_DELAY_TIME] != previous_max_delay_time)
+    if(inputs[DELAY_MAX_DELAY_TIME].val != previous_max_delay_time)
     {
         reset_buffer();
-        previous_max_delay_time = input_floats[DELAY_MAX_DELAY_TIME];
+        previous_max_delay_time = inputs[DELAY_MAX_DELAY_TIME].val;
     }
 
     // Per sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Update parameters
-        update_input_floats(i);
+        update_input_vals(i);
 
-        if(!inputs_live[DELAY_SIGNAL])
-            input_floats[DELAY_SIGNAL] = 0;
+        if(!inputs[DELAY_SIGNAL].live)
+            inputs[DELAY_SIGNAL].val = 0;
 
         // If the delay time has changed, update the number of samples for which
         // to delay, then store the new delay time as the new previous delay
         // time
-        if(input_floats[DELAY_DELAY_TIME] != previous_delay_time)
+        if(inputs[DELAY_DELAY_TIME].val != previous_delay_time)
         {
-            delay_samples = input_floats[DELAY_DELAY_TIME] / 1000.0 * SAMPLE_RATE;
-            previous_delay_time = input_floats[DELAY_DELAY_TIME];
+            delay_samples = inputs[DELAY_DELAY_TIME].val / 1000.0 * SAMPLE_RATE;
+            previous_delay_time = inputs[DELAY_DELAY_TIME].val;
         }
 
-        if(input_floats[DELAY_MAX_DELAY_TIME] >= input_floats[DELAY_DELAY_TIME])
+        if(inputs[DELAY_MAX_DELAY_TIME].val >= inputs[DELAY_DELAY_TIME].val)
         {
             // Apply the dry signal
-            output[i] = (1 - input_floats[DELAY_WET_DRY]) * input_floats[DELAY_SIGNAL];
+            output[i] = (1 - inputs[DELAY_WET_DRY].val) * inputs[DELAY_SIGNAL].val;
 
             // Apply the linearly interpolated wet signal
             float wet_sample = calculate_wet_sample();
-            output[i] += input_floats[DELAY_WET_DRY] * wet_sample;
+            output[i] += inputs[DELAY_WET_DRY].val * wet_sample;
 
             // Update the sample in the circular buffer
-            circular_buffer[current_sample] = input_floats[DELAY_FEEDBACK_AMOUNT] * wet_sample;
-            circular_buffer[current_sample] += input_floats[DELAY_SIGNAL];
+            circular_buffer[current_sample] = inputs[DELAY_FEEDBACK_AMOUNT].val * wet_sample;
+            circular_buffer[current_sample] += inputs[DELAY_SIGNAL].val;
 
             // Move on to the next sample
             current_sample ++;
             current_sample = fmod(current_sample, ((double) circular_buffer.size()));
         }
-        else if(input_floats[DELAY_MAX_DELAY_TIME] < input_floats[DELAY_DELAY_TIME])
+        else if(inputs[DELAY_MAX_DELAY_TIME].val < inputs[DELAY_DELAY_TIME].val)
             std::cout << RED_STDOUT << name << " delay time is greater than max delay time!" << DEFAULT_STDOUT << std::endl;
     }
 
@@ -319,7 +319,7 @@ std::string Delay::get_unique_text_representation()
  */
 void Delay::reset_buffer()
 {
-    circular_buffer = std::vector<float>(input_floats[DELAY_MAX_DELAY_TIME] / 1000.0 * SAMPLE_RATE, 0);
+    circular_buffer = std::vector<float>(inputs[DELAY_MAX_DELAY_TIME].val / 1000.0 * SAMPLE_RATE, 0);
 
     std::cout << name << " buffer reset" << std::endl;
 }

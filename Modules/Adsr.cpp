@@ -49,10 +49,10 @@ Adsr::Adsr() :
     // Frequency starts at 0, phase offset at 0,
     // pulse width at .5, range low at -1, range high
     // at 1
-    input_floats[ADSR_A] = 500;
-    input_floats[ADSR_D] = 500;
-    input_floats[ADSR_S] = 1;
-    input_floats[ADSR_R] = 500;
+    inputs[ADSR_A].val = 500;
+    inputs[ADSR_D].val = 500;
+    inputs[ADSR_S].val = 1;
+    inputs[ADSR_R].val = 500;
 }
 
 /*
@@ -78,16 +78,16 @@ void Adsr::process()
     for(unsigned short i = 0; i < output.size(); i ++)
     {
         // Update parameters
-        update_input_floats(i);
+        update_input_vals(i);
 
-        if(!inputs_live[ADSR_NOTE])
-            input_floats[ADSR_NOTE] = 0;
+        if(!inputs[ADSR_NOTE].live)
+            inputs[ADSR_NOTE].val = 0;
 
         // Set the current output sample to the current amplitude
         output[i] = current_amplitude;
 
         // Determine whether or not a note on value is detected
-        bool note_on = input_floats[ADSR_NOTE] == 1;
+        bool note_on = inputs[ADSR_NOTE].val == 1;
 
         // Do something different based on the current envelope phase
         switch (adsr_phase)
@@ -99,7 +99,7 @@ void Adsr::process()
             case ADSR_A_PHASE:
                 if(note_on)
                 {
-                    double increment = 1 / ((input_floats[ADSR_A] / 1000) * SAMPLE_RATE);
+                    double increment = 1 / ((inputs[ADSR_A].val / 1000) * SAMPLE_RATE);
                     current_amplitude += increment;
                     if(current_amplitude >= 1)
                     {
@@ -117,11 +117,11 @@ void Adsr::process()
             case ADSR_D_PHASE:
                 if(note_on)
                 {
-                    double decrement = (1 - input_floats[ADSR_S]) / ((input_floats[ADSR_D] / 1000) * SAMPLE_RATE);
+                    double decrement = (1 - inputs[ADSR_S].val) / ((inputs[ADSR_D].val / 1000) * SAMPLE_RATE);
                     current_amplitude -= decrement;
-                    if(current_amplitude <= input_floats[ADSR_S])
+                    if(current_amplitude <= inputs[ADSR_S].val)
                     {
-                        current_amplitude = input_floats[ADSR_S];
+                        current_amplitude = inputs[ADSR_S].val;
                         adsr_phase = ADSR_S_PHASE;
                     }
                 }
@@ -143,7 +143,7 @@ void Adsr::process()
                     adsr_phase = ADSR_A_PHASE;
                 else
                 {
-                    double decrement = input_floats[ADSR_S] / ((input_floats[ADSR_R] / 1000) * SAMPLE_RATE);
+                    double decrement = inputs[ADSR_S].val / ((inputs[ADSR_R].val / 1000) * SAMPLE_RATE);
                     current_amplitude -= decrement;
                     if(current_amplitude <= 0)
                     {

@@ -60,12 +60,12 @@ Input_Toggle_Button::~Input_Toggle_Button()
  */
 void Input_Toggle_Button::toggle()
 {
-    if(parent->inputs_live[input_num])
+    if(parent->inputs[input_num].live)
     {
         parent->cancel_input(input_num);
         input_text_box->update_current_text(input_text_box->prompt_text.text);
         if(!(input_text_box->prompt_text.text == "input"))
-            input_text_box->update_current_text(std::to_string(parent->input_floats[input_num]));
+            input_text_box->update_current_text(std::to_string(parent->inputs[input_num].val));
         b = false;
     }
 

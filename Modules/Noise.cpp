@@ -44,8 +44,8 @@
 Noise::Noise() :
     Module(NOISE)
 {
-    input_floats[0] = -1;
-    input_floats[1] = 1;
+    inputs[0].val = -1;
+    inputs[1].val = 1;
 }
 
 /*
@@ -74,10 +74,10 @@ void Noise::process()
 
     for(unsigned short i = 0; i < output.size(); i ++)
     {
-        update_input_floats(i);
+        update_input_vals(i);
 
         output[i] = produce_white_noise_sample();
-        output[i] = scale_sample(output[i], -1, 1, input_floats[NOISE_RANGE_LOW], input_floats[NOISE_RANGE_HIGH]);
+        output[i] = scale_sample(output[i], -1, 1, inputs[NOISE_RANGE_LOW].val, inputs[NOISE_RANGE_HIGH].val);
     }
 
     processed = true;

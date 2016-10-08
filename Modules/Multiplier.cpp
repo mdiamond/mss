@@ -45,9 +45,9 @@ Multiplier::Multiplier() :
 {
     // The signal input needs to be 0, while the others
     // need to be 1 to start out
-    input_floats[0] = 0;
-    input_floats[1] = 1;
-    input_floats[2] = 1;
+    inputs[0].val = 0;
+    inputs[1].val = 1;
+    inputs[2].val = 1;
 }
 
 /*
@@ -69,15 +69,15 @@ void Multiplier::process()
     // Process any dependencies
     process_dependencies();
 
-    if(!inputs_live[MULTIPLIER_SIGNAL])
-        input_floats[MULTIPLIER_SIGNAL] = 0;
+    if(!inputs[MULTIPLIER_SIGNAL].live)
+        inputs[MULTIPLIER_SIGNAL].val = 0;
 
     for(unsigned short i = 0; i < output.size(); i ++)
     {
-        update_input_floats(i);
+        update_input_vals(i);
 
-        output[i] = (input_floats[MULTIPLIER_SIGNAL] * (1 - input_floats[MULTIPLIER_DRY_WET])) +
-                       (input_floats[MULTIPLIER_SIGNAL] * input_floats[MULTIPLIER_MULTIPLIER] * input_floats[MULTIPLIER_DRY_WET]);
+        output[i] = (inputs[MULTIPLIER_SIGNAL].val * (1 - inputs[MULTIPLIER_DRY_WET].val)) +
+                       (inputs[MULTIPLIER_SIGNAL].val * inputs[MULTIPLIER_MULTIPLIER].val * inputs[MULTIPLIER_DRY_WET].val);
     }
 
     processed = true;
@@ -198,8 +198,7 @@ void Multiplier::initialize_unique_graphics_objects()
     fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
     texts = std::vector<std::string>(3, "I");
     text_offs = texts;
-    bs = {inputs_live[MULTIPLIER_SIGNAL], inputs_live[MULTIPLIER_MULTIPLIER],
-          inputs_live[MULTIPLIER_DRY_WET]};
+    bs = std::vector<bool>(3, false);
     parents = std::vector<Module *>(3, this);
     input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER,
                   MULTIPLIER_DRY_WET};

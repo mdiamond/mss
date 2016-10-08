@@ -44,8 +44,8 @@ Sah::Sah() :
     Module(SAH)
 {
     // The signal input needs to be 0, start the hold time at 500 ms
-    input_floats[0] = 0;
-    input_floats[1] = 500;
+    inputs[0].val = 0;
+    inputs[1].val = 500;
 }
 
 /*
@@ -66,18 +66,18 @@ void Sah::process()
 
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
-        update_input_floats(i);
+        update_input_vals(i);
 
-        if(!inputs_live[SAH_SIGNAL])
-            input_floats[SAH_SIGNAL] = 0;
+        if(!inputs[SAH_SIGNAL].live)
+            inputs[SAH_SIGNAL].val = 0;
 
         // If the amount of time until the next sample has passed,
         // update the sample to hold, update the hold time,
         // then update the time to next sample
         if(time_to_next_sample <= 0)
         {
-            sample = input_floats[SAH_SIGNAL];
-            time_to_next_sample = input_floats[SAH_HOLD_TIME];
+            sample = inputs[SAH_SIGNAL].val;
+            time_to_next_sample = inputs[SAH_HOLD_TIME].val;
         }
 
         // Set the output samples to the currently held sample,
@@ -208,7 +208,7 @@ void Sah::initialize_unique_graphics_objects()
     fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
     texts = std::vector<std::string>(2, "I");
     text_offs = texts;
-    bs = {inputs_live[SAH_SIGNAL], inputs_live[SAH_HOLD_TIME]};
+    bs = std::vector<bool>(2, false);
     parents = std::vector<Module *>(2, this);
     input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
 

@@ -50,9 +50,9 @@ Oscillator::Oscillator() :
     // Frequency starts at 0, phase offset at 0,
     // pulse width at .5, range low at -1, range high
     // at 1
-    input_floats[OSCILLATOR_PULSE_WIDTH] = .5;
-    input_floats[OSCILLATOR_RANGE_LOW] = -1;
-    input_floats[OSCILLATOR_RANGE_HIGH] = 1;
+    inputs[OSCILLATOR_PULSE_WIDTH].val = .5;
+    inputs[OSCILLATOR_RANGE_LOW].val = -1;
+    inputs[OSCILLATOR_RANGE_HIGH].val = 1;
 }
 
 /*
@@ -106,7 +106,7 @@ double Oscillator::produce_saw_sample(double phase)
  */
 double Oscillator::produce_sqr_sample(double phase)
 {
-    if(phase < input_floats[OSCILLATOR_PULSE_WIDTH])
+    if(phase < inputs[OSCILLATOR_PULSE_WIDTH].val)
         return 1;
     else
         return -1;
@@ -127,14 +127,14 @@ void Oscillator::process()
     // Calculate an amplitude for each sample
     for(unsigned short i = 0; i < output.size(); i ++)
     {
-        update_input_floats(i);
+        update_input_vals(i);
 
-        phase_offset_diff = input_floats[OSCILLATOR_PHASE_OFFSET] - previous_phase_offset;
-        previous_phase_offset = input_floats[OSCILLATOR_PHASE_OFFSET];
+        phase_offset_diff = inputs[OSCILLATOR_PHASE_OFFSET].val - previous_phase_offset;
+        previous_phase_offset = inputs[OSCILLATOR_PHASE_OFFSET].val;
 
         // Calculate and store the current samples amplitude
         // based on phase
-        if(input_floats[OSCILLATOR_FREQUENCY] < 1 && input_floats[OSCILLATOR_FREQUENCY] > -1)
+        if(inputs[OSCILLATOR_FREQUENCY].val < 1 && inputs[OSCILLATOR_FREQUENCY].val > -1)
         {
             if(waveform_type == SIN)
                 output[i] = produce_sin_sample(current_phase);
@@ -146,22 +146,22 @@ void Oscillator::process()
                 output[i] = produce_sqr_sample(current_phase);
         }
         else
-            if(waveform_type != SQR || input_floats[OSCILLATOR_PULSE_WIDTH] == .5)
+            if(waveform_type != SQR || inputs[OSCILLATOR_PULSE_WIDTH].val == .5)
                 output[i] = WAVETABLES[waveform_type][(int) (current_phase * SAMPLE_RATE)];
             else
                 output[i] = produce_sqr_sample(current_phase);
 
         // If the oscillator has an abnormal range, scale the sample to
         // that range
-        if(input_floats[OSCILLATOR_RANGE_LOW] != -1
-           || input_floats[OSCILLATOR_RANGE_HIGH] != 1)
+        if(inputs[OSCILLATOR_RANGE_LOW].val != -1
+           || inputs[OSCILLATOR_RANGE_HIGH].val != 1)
             output[i] = scale_sample(output[i], -1, 1,
-                                     input_floats[OSCILLATOR_RANGE_LOW],
-                                     input_floats[OSCILLATOR_RANGE_HIGH]);
+                                     inputs[OSCILLATOR_RANGE_LOW].val,
+                                     inputs[OSCILLATOR_RANGE_HIGH].val);
 
         // Increment the current phase according to the frequency, sample rate, and difference in phase offset
         // since the last sample was calculated
-        current_phase += ((double) input_floats[OSCILLATOR_FREQUENCY] / SAMPLE_RATE) + phase_offset_diff;
+        current_phase += ((double) inputs[OSCILLATOR_FREQUENCY].val / SAMPLE_RATE) + phase_offset_diff;
         // Wrap around if the phase goes above 1 or below 0
         while(current_phase > 1)
             current_phase -= 1;

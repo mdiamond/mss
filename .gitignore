@@ -39,3 +39,6 @@
 
 # Build files
 build
+
+# Ctags files
+tags
