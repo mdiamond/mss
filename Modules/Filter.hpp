@@ -12,48 +12,6 @@
 
 // No includes necessary
 
-/********************************
- * FILTER GRAPHICS OBJECTS ENUM *
- ********************************/
-
-enum FilterGraphicsObjects
-{
-    FILTER_SIGNAL_TEXT = 3,
-    FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT,
-    FILTER_OUTPUT_WAVEFORM,
-    FILTER_SIGNAL_INPUT_TEXT_BOX,
-    FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX,
-    FILTER_Q_INPUT_TEXT_BOX,
-    FILTER_SIGNAL_INPUT_TOGGLE_BUTTON,
-    FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON,
-    FILTER_Q_INPUT_TOGGLE_BUTTON,
-    FILTER_LP_TOGGLE_BUTTON,
-    FILTER_BP_TOGGLE_BUTTON,
-    FILTER_HP_TOGGLE_BUTTON,
-};
-
-/****************************
- * FILTER DEPENDENCIES ENUM *
- ****************************/
-
-enum FilterDependencies
-{
-    FILTER_SIGNAL = 0,
-    FILTER_FREQUENCY_CUTOFF,
-    FILTER_Q,
-};
-
-/*********************
- * FILTER TYPES ENUM *
- *********************/
-
-enum FilterType
-{
-    LOWPASS = 0,
-    BANDPASS,
-    HIGHPASS
-};
-
 /***************************
  * FILTER CLASS DEFINITION *
  ***************************/
@@ -61,6 +19,39 @@ enum FilterType
 class Filter: public Module
 {
 public:
+    // Filter type enum
+    enum FilterType
+    {
+        LOWPASS = 0,
+        BANDPASS,
+        HIGHPASS
+    };
+
+    // Filter graphics objects enum
+    enum FilterGraphicsObjects
+    {
+        FILTER_SIGNAL_TEXT = 3,
+        FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT,
+        FILTER_OUTPUT_WAVEFORM,
+        FILTER_SIGNAL_INPUT_TEXT_BOX,
+        FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX,
+        FILTER_Q_INPUT_TEXT_BOX,
+        FILTER_SIGNAL_INPUT_TOGGLE_BUTTON,
+        FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON,
+        FILTER_Q_INPUT_TOGGLE_BUTTON,
+        FILTER_LP_TOGGLE_BUTTON,
+        FILTER_BP_TOGGLE_BUTTON,
+        FILTER_HP_TOGGLE_BUTTON,
+    };
+
+    // Filter dependencies enum
+    enum FilterDependencies
+    {
+        FILTER_SIGNAL = 0,
+        FILTER_FREQUENCY_CUTOFF,
+        FILTER_Q,
+    };
+
     // Vectors to track samples passing through and the impulse response
     std::vector<float> iir_samples, iir_coefficients;
     double y1, y2, x1, x2;

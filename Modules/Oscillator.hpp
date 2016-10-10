@@ -18,59 +18,6 @@
 
 // No includes necessary
 
-/************************************
- * OSCILLATOR GRAPHICS OBJECTS ENUM *
- ************************************/
-
-enum OscillatorGraphicsObjects
-{
-    OSCILLATOR_RESET_CURRENT_PHASE_BUTTON = 3,
-    OSCILLATOR_FREQUENCY_TEXT,
-    OSCILLATOR_PHASE_OFFSET_TEXT,
-    OSCILLATOR_PULSE_WIDTH_TEXT,
-    OSCILLATOR_RANGE_TEXT,
-    OSCILLATOR_OUTPUT_WAVEFORM,
-    OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX,
-    OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX,
-    OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX,
-    OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX,
-    OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX,
-    OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON,
-    OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON,
-    OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON,
-    OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON,
-    OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON,
-    OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON,
-    OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON,
-    OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON,
-    OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON
-};
-
-/********************************
- * OSCILLATOR DEPENDENCIES ENUM *
- ********************************/
-
-enum OscillatorDependencies
-{
-    OSCILLATOR_FREQUENCY = 0,
-    OSCILLATOR_PHASE_OFFSET,
-    OSCILLATOR_PULSE_WIDTH,
-    OSCILLATOR_RANGE_LOW,
-    OSCILLATOR_RANGE_HIGH
-};
-
-/*****************************
- * OSCILLATOR WAVEFORMS ENUM *
- *****************************/
-
-enum WaveformType
-{
-    SIN = 0,
-    TRI,
-    SAW,
-    SQR
-};
-
 /*******************************
  * OSCILLATOR CLASS DEFINITION *
  *******************************/
@@ -78,6 +25,50 @@ enum WaveformType
 class Oscillator: public Module
 {
 public:
+    // Oscillator waveform type enum
+    enum WaveformType
+    {
+        SIN = 0,
+        TRI,
+        SAW,
+        SQR
+    };
+
+    // Oscillator graphics objects enum
+    enum OscillatorGraphicsObjects
+    {
+        OSCILLATOR_RESET_CURRENT_PHASE_BUTTON = 3,
+        OSCILLATOR_FREQUENCY_TEXT,
+        OSCILLATOR_PHASE_OFFSET_TEXT,
+        OSCILLATOR_PULSE_WIDTH_TEXT,
+        OSCILLATOR_RANGE_TEXT,
+        OSCILLATOR_OUTPUT_WAVEFORM,
+        OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX,
+        OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX,
+        OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX,
+        OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX,
+        OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX,
+        OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON,
+        OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON,
+        OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON,
+        OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON,
+        OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON,
+        OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON,
+        OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON,
+        OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON,
+        OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON
+    };
+
+    // Oscillator dependencies enum
+    enum OscillatorDependencies
+    {
+        OSCILLATOR_FREQUENCY = 0,
+        OSCILLATOR_PHASE_OFFSET,
+        OSCILLATOR_PULSE_WIDTH,
+        OSCILLATOR_RANGE_LOW,
+        OSCILLATOR_RANGE_HIGH
+    };
+
     // The current phase of the oscillator
     double current_phase;
     // A record of the previous phase offset value

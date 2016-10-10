@@ -36,33 +36,54 @@
  * NUM INPUTS PER MODULE TYPE *
  ******************************/
 
-std::map<ModuleType, int> num_inputs = {{ADSR, 5}, {DELAY, 5}, {FILTER, 3},
-                                        {MIXER, 16}, {MULTIPLIER, 3}, {NOISE, 2},
-                                        {OSCILLATOR, 5}, {OUTPUT, 2}, {SAH, 2}};
+const std::map<Module::ModuleType, int> Module::num_inputs = {
+    {ADSR, 5},
+    {DELAY, 5},
+    {FILTER, 3},
+    {MIXER, 16},
+    {MULTIPLIER, 3},
+    {NOISE, 2},
+    {OSCILLATOR, 5},
+    {OUTPUT, 2},
+    {SAH, 2}
+};
 
 /*******************************
  * MODULE NAME PER MODULE TYPE *
  *******************************/
 
-std::map<ModuleType, std::string> names = {{ADSR, "adsr"}, {DELAY, "delay"},
-                                           {FILTER, "filter"}, {MIXER, "mixer"},
-                                           {MULTIPLIER, "multiplier"}, {NOISE, "noise"},
-                                           {OSCILLATOR, "oscillator"}, {OUTPUT, "output"},
-                                           {SAH, "sah"}};
+const std::map<Module::ModuleType, std::string> Module::names = {
+    {ADSR, "adsr"},
+    {DELAY, "delay"},
+    {FILTER, "filter"},
+    {MIXER, "mixer"},
+    {MULTIPLIER, "multiplier"},
+    {NOISE, "noise"},
+    {OSCILLATOR, "oscillator"},
+    {OUTPUT, "output"},
+    {SAH, "sah"}
+};
 
 /******************************************
  * MODULE PARAMETER NAMES PER MODULE TYPE *
  ******************************************/
 
-std::map<ModuleType, std::vector<std::string> > parameter_names = {{ADSR, {"NOTE ON/OFF", "ATTACK", "DECAY", "SUSTAIN", "RELEASE"}},
-                                                            {DELAY, {"SIGNAL", "MAX DELAY TIME", "DELAY TIME", "FEEDBACK AMOUNT", "WET/DRY AMOUNT"}},
-                                                            {FILTER, {"SIGNAL", "FREQUENCY CUTOFF", "FILTER QUALITY"}},
-                                                            {MIXER, {"SIGNAL 1", "SIGNAL 1 MULTIPLIER", "SIGNAL 2", "SIGNAL 2 MULTIPLIER", "SIGNAL 3", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER", "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER"}},
-                                                            {MULTIPLIER, {"SIGNAL", "MULTIPLIER", "DRY/WET"}},
-                                                            {NOISE, {"RANGE LOW", "RANGE HIGH"}},
-                                                            {OSCILLATOR, {"FREQUENCY", "PHASE OFFSET", "PULSE WIDTH", "RANGE LOW", "RANGE HIGH"}},
-                                                            {OUTPUT, {"LEFT SIGNAL", "RIGHT SIGNAL"}},
-                                                            {SAH, {"SIGNAL", "HOLD TIME"}}};
+const std::map<Module::ModuleType, std::vector<std::string> > Module::parameter_names = {
+    {ADSR, {"NOTE ON/OFF", "ATTACK", "DECAY", "SUSTAIN", "RELEASE"}},
+    {DELAY, {"SIGNAL", "MAX DELAY TIME", "DELAY TIME", "FEEDBACK AMOUNT", "WET/DRY AMOUNT"}},
+    {FILTER, {"SIGNAL", "FREQUENCY CUTOFF", "FILTER QUALITY"}},
+    {MIXER, {"SIGNAL 1", "SIGNAL 1 MULTIPLIER", "SIGNAL 2", "SIGNAL 2 MULTIPLIER", "SIGNAL 3",
+             "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5",
+             "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER",
+             "SIGNAL 8", "SIGNAL 8 MULTIPLIER", "SIGNAL 3 MULTIPLIER", "SIGNAL 4",
+             "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6",
+             "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER"}},
+    {MULTIPLIER, {"SIGNAL", "MULTIPLIER", "DRY/WET"}},
+    {NOISE, {"RANGE LOW", "RANGE HIGH"}},
+    {OSCILLATOR, {"FREQUENCY", "PHASE OFFSET", "PULSE WIDTH", "RANGE LOW", "RANGE HIGH"}},
+    {OUTPUT, {"LEFT SIGNAL", "RIGHT SIGNAL"}},
+    {SAH, {"SIGNAL", "HOLD TIME"}}
+};
 
 /***************************
  * MODULE MEMBER FUNCTIONS *
@@ -359,7 +380,7 @@ void Module::set(float val, int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names[module_type][input_num]
+    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
          << " changed to " << val << std::endl;
 }
 
@@ -382,10 +403,10 @@ void Module::set(Module *src, int input_num)
     if(module_type == OUTPUT)
     {
         Waveform *waveform;
-        if(input_num == OUTPUT_INPUT_L)
-            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_L_WAVEFORM];
+        if(input_num == Output::OUTPUT_INPUT_L)
+            waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM];
         else
-            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_R_WAVEFORM];
+            waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM];
         waveform->buffer = &src->output;
     }
 
@@ -395,7 +416,7 @@ void Module::set(Module *src, int input_num)
     // Ensure that the input toggle button associated with this input is turned
     // on
 
-    std::cout << name << " " << parameter_names[module_type][input_num]
+    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
          << " is now coming from " << src->name << std::endl;
 }
 
@@ -417,16 +438,16 @@ void Module::cancel_input(int input_num)
     if(module_type == OUTPUT)
     {
         Waveform *waveform;
-        if(input_num == OUTPUT_INPUT_L)
-            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_L_WAVEFORM];
+        if(input_num == Output::OUTPUT_INPUT_L)
+            waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM];
         else
-            waveform = (Waveform *) graphics_objects[OUTPUT_INPUT_R_WAVEFORM];
+            waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM];
         waveform->buffer = NULL;
     }
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names[module_type][input_num]
+    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
          << " input cancelled" << std::endl;
 }
 
@@ -528,11 +549,11 @@ void Module::module_selected()
         if(CURRENT_INPUT_TOGGLE_BUTTON->parent->module_type == OUTPUT)
         {
             // If it's the left input, update the left waveform
-            if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON])
-                ((Waveform *) MODULES[0]->graphics_objects[OUTPUT_INPUT_L_WAVEFORM])->buffer = &this->output;
+            if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON])
+                ((Waveform *) MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM])->buffer = &this->output;
             // Else, update the right waveform
-            else if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON])
-                ((Waveform *) MODULES[0]->graphics_objects[OUTPUT_INPUT_R_WAVEFORM])->buffer = &this->output;
+            else if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON])
+                ((Waveform *) MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM])->buffer = &this->output;
         }
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }

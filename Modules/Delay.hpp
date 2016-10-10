@@ -14,41 +14,6 @@
 
 // No includes necessary
 
-/*******************************
- * DELAY GRAPHICS OBJECTS ENUM *
- *******************************/
-
-enum DelayGraphicsObjects
-{
-    DELAY_RESET_BUFFER_BUTTON = 3,
-    DELAY_SIGNAL_TEXT,
-    DELAY_MAX_DELAY_TIME_AND_DELAY_TIME_TEXT,
-    DELAY_FEEDBACK_AMOUNT_AND_WET_DRY_TEXT,
-    DELAY_OUTPUT_WAVEFORM,
-    DELAY_SIGNAL_INPUT_TEXT_BOX,
-    DELAY_MAX_DELAY_TIME_INPUT_TEXT_BOX,
-    DELAY_DELAY_TIME_INPUT_TEXT_BOX,
-    DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX,
-    DELAY_WET_DRY_INPUT_TEXT_BOX,
-    DELAY_SIGNAL_INPUT_TOGGLE_BUTTON,
-    DELAY_DELAY_TIME_INPUT_TOGGLE_BUTTON,
-    DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON,
-    DELAY_WET_DRY_INPUT_TOGGLE_BUTTON,
-};
-
-/***************************
- * DELAY DEPENDENCIES ENUM *
- ***************************/
-
-enum DelayDependencies
-{
-    DELAY_SIGNAL = 0,
-    DELAY_MAX_DELAY_TIME,
-    DELAY_DELAY_TIME,
-    DELAY_FEEDBACK_AMOUNT,
-    DELAY_WET_DRY
-};
-
 /**************************
  * DELAY CLASS DEFINITION *
  **************************/
@@ -56,6 +21,35 @@ enum DelayDependencies
 class Delay: public Module
 {
 public:
+    // Delay graphics objects enum
+    enum DelayGraphicsObjects
+    {
+        DELAY_RESET_BUFFER_BUTTON = 3,
+        DELAY_SIGNAL_TEXT,
+        DELAY_MAX_DELAY_TIME_AND_DELAY_TIME_TEXT,
+        DELAY_FEEDBACK_AMOUNT_AND_WET_DRY_TEXT,
+        DELAY_OUTPUT_WAVEFORM,
+        DELAY_SIGNAL_INPUT_TEXT_BOX,
+        DELAY_MAX_DELAY_TIME_INPUT_TEXT_BOX,
+        DELAY_DELAY_TIME_INPUT_TEXT_BOX,
+        DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX,
+        DELAY_WET_DRY_INPUT_TEXT_BOX,
+        DELAY_SIGNAL_INPUT_TOGGLE_BUTTON,
+        DELAY_DELAY_TIME_INPUT_TOGGLE_BUTTON,
+        DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON,
+        DELAY_WET_DRY_INPUT_TOGGLE_BUTTON,
+    };
+
+    // Delay dependencies enum
+    enum DelayDependencies
+    {
+        DELAY_SIGNAL = 0,
+        DELAY_MAX_DELAY_TIME,
+        DELAY_DELAY_TIME,
+        DELAY_FEEDBACK_AMOUNT,
+        DELAY_WET_DRY
+    };
+
     // Delayed buffer
     std::vector<float> circular_buffer;
     double current_sample;

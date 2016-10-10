@@ -15,34 +15,6 @@
 
 // No includes necessary
 
-/************************************
- * MULTIPLIER GRAPHICS OBJECTS ENUM *
- ************************************/
-
-enum MultiplierGraphicsObjects
-{
-    MULTIPLIER_INPUT_TEXT = 3,
-    MULTIPLIER_DRY_WET_TEXT,
-    MULTIPLIER_OUTPUT_WAVEFORM,
-    MULTIPLIER_SIGNAL_INPUT_TEXT_BOX,
-    MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX,
-    MULTIPLIER_DRY_WET_INPUT_TEXT_BOX,
-    MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON,
-    MULTIPLIER_MULTIPLIER_INPUT_TOGGLE_BUTTON,
-    MULTIPLIER_DRY_WET_INPUT_TOGGLE_BUTTON
-};
-
-/********************************
- * MULTIPLIER DEPENDENCIES ENUM *
- ********************************/
-
-enum MultiplierDependencies
-{
-    MULTIPLIER_SIGNAL = 0,
-    MULTIPLIER_MULTIPLIER,
-    MULTIPLIER_DRY_WET
-};
-
 /*******************************
  * MULTIPLIER CLASS DEFINITION *
  *******************************/
@@ -50,6 +22,28 @@ enum MultiplierDependencies
 class Multiplier: public Module
 {
 public:
+    // Multiplier graphics objects enum
+    enum MultiplierGraphicsObjects
+    {
+        MULTIPLIER_INPUT_TEXT = 3,
+        MULTIPLIER_DRY_WET_TEXT,
+        MULTIPLIER_OUTPUT_WAVEFORM,
+        MULTIPLIER_SIGNAL_INPUT_TEXT_BOX,
+        MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX,
+        MULTIPLIER_DRY_WET_INPUT_TEXT_BOX,
+        MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON,
+        MULTIPLIER_MULTIPLIER_INPUT_TOGGLE_BUTTON,
+        MULTIPLIER_DRY_WET_INPUT_TOGGLE_BUTTON
+    };
+
+    // Multiplier dependencies enum
+    enum MultiplierDependencies
+    {
+        MULTIPLIER_SIGNAL = 0,
+        MULTIPLIER_MULTIPLIER,
+        MULTIPLIER_DRY_WET
+    };
+
     // Constructor and destructor
     Multiplier();
     virtual ~Multiplier();

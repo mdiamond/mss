@@ -44,11 +44,8 @@
 Adsr::Adsr() :
     Module(ADSR),
     current_amplitude(0),
-    adsr_phase(ADSR_A_PHASE)
+    adsr_stage(ADSR_A_STAGE)
 {
-    // Frequency starts at 0, phase offset at 0,
-    // pulse width at .5, range low at -1, range high
-    // at 1
     inputs[ADSR_A].val = 500;
     inputs[ADSR_D].val = 500;
     inputs[ADSR_S].val = 1;
@@ -89,14 +86,14 @@ void Adsr::process()
         // Determine whether or not a note on value is detected
         bool note_on = inputs[ADSR_NOTE].val == 1;
 
-        // Do something different based on the current envelope phase
-        switch (adsr_phase)
+        // Do something different based on the current envelope stage
+        switch (adsr_stage)
         {
-            // During the attack phase, note on will result in incrementing
-            // towards full amplitude and switching to the decay phase when full
+            // During the attack stage, note on will result in incrementing
+            // towards full amplitude and switching to the decay stage when full
             // amplitude is reached, note off will result in skipping ahead to
-            // the release phase
-            case ADSR_A_PHASE:
+            // the release stage
+            case ADSR_A_STAGE:
                 if(note_on)
                 {
                     double increment = 1 / ((inputs[ADSR_A].val / 1000) * SAMPLE_RATE);
@@ -104,17 +101,17 @@ void Adsr::process()
                     if(current_amplitude >= 1)
                     {
                         current_amplitude = 1;
-                        adsr_phase = ADSR_D_PHASE;
+                        adsr_stage = ADSR_D_STAGE;
                     }
                 }
                 else
-                    adsr_phase = ADSR_R_PHASE;
+                    adsr_stage = ADSR_R_STAGE;
                 break;
-            // During the decay phase, note on will result in decrementing
-            // towards sustain amplitude and switching to the sustain phase once
+            // During the decay stage, note on will result in decrementing
+            // towards sustain amplitude and switching to the sustain stage once
             // sustain amplitude is reached, note off will result in skipping
-            // ahead to the release phase
-            case ADSR_D_PHASE:
+            // ahead to the release stage
+            case ADSR_D_STAGE:
                 if(note_on)
                 {
                     double decrement = (1 - inputs[ADSR_S].val) / ((inputs[ADSR_D].val / 1000) * SAMPLE_RATE);
@@ -122,41 +119,41 @@ void Adsr::process()
                     if(current_amplitude <= inputs[ADSR_S].val)
                     {
                         current_amplitude = inputs[ADSR_S].val;
-                        adsr_phase = ADSR_S_PHASE;
+                        adsr_stage = ADSR_S_STAGE;
                     }
                 }
                 else
-                    adsr_phase = ADSR_R_PHASE;
+                    adsr_stage = ADSR_R_STAGE;
                 break;
-            // During the sustain phase, note on does nothing, note off will
-            // result in skipping ahead to the release phase
-            case ADSR_S_PHASE:
+            // During the sustain stage, note on does nothing, note off will
+            // result in skipping ahead to the release stage
+            case ADSR_S_STAGE:
                 if(!note_on)
-                    adsr_phase = ADSR_R_PHASE;
+                    adsr_stage = ADSR_R_STAGE;
                 break;
-            // During the release phase, note on will result in switching back
-            // to the attack phase, note off will result in decrementing towards
-            // 0 amplitude, and switching to the idle phase once 0 amplitude is
+            // During the release stage, note on will result in switching back
+            // to the attack stage, note off will result in decrementing towards
+            // 0 amplitude, and switching to the idle stage once 0 amplitude is
             // reached
-            case ADSR_R_PHASE:
+            case ADSR_R_STAGE:
                 if(note_on)
-                    adsr_phase = ADSR_A_PHASE;
+                    adsr_stage = ADSR_A_STAGE;
                 else
                 {
                     double decrement = inputs[ADSR_S].val / ((inputs[ADSR_R].val / 1000) * SAMPLE_RATE);
                     current_amplitude -= decrement;
                     if(current_amplitude <= 0)
                     {
-                        adsr_phase = ADSR_IDLE_PHASE;
+                        adsr_stage = ADSR_IDLE_STAGE;
                         current_amplitude = 0;
                     }
                 }
                 break;
-            // During the idle phase, note on will result in switching to the
-            // attack phase, note off does nothing
-            case ADSR_IDLE_PHASE:
+            // During the idle stage, note on will result in switching to the
+            // attack stage, note off does nothing
+            case ADSR_IDLE_STAGE:
                 if(note_on)
-                    adsr_phase = ADSR_A_PHASE;
+                    adsr_stage = ADSR_A_STAGE;
                 break;
         }
     }
@@ -328,7 +325,7 @@ void Adsr::initialize_unique_graphics_objects()
 std::string Adsr::get_unique_text_representation()
 {
     return std::to_string(current_amplitude) + "\n"
-           + std::to_string(adsr_phase) + "\n";
+           + std::to_string(adsr_stage) + "\n";
 }
 
 /*
@@ -337,7 +334,7 @@ std::string Adsr::get_unique_text_representation()
 void Adsr::reset_current_amplitude()
 {
     current_amplitude = 0;
-    adsr_phase = ADSR_A_PHASE;
+    adsr_stage = ADSR_A_STAGE;
 
     std::cout << name << " current amplitude reset" << std::endl;
 }

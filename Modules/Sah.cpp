@@ -43,9 +43,8 @@
 Sah::Sah() :
     Module(SAH)
 {
-    // The signal input needs to be 0, start the hold time at 500 ms
-    inputs[0].val = 0;
-    inputs[1].val = 500;
+    inputs[SAH_SIGNAL].val = 0;
+    inputs[SAH_HOLD_TIME].val = 500;
 }
 
 /*

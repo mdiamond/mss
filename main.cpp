@@ -35,11 +35,11 @@
  **********************/
 
 // Color codes for stdout output
-Color_Modifier DEFAULT_STDOUT(FG_DEFAULT);
-Color_Modifier RED_STDOUT(FG_RED);
-Color_Modifier GREEN_STDOUT(FG_GREEN);
-Color_Modifier BLUE_STDOUT(FG_BLUE);
-Color_Modifier PINK_STDOUT(FG_PINK);
+Color_Modifier DEFAULT_STDOUT(Color_Modifier::FG_DEFAULT);
+Color_Modifier RED_STDOUT(Color_Modifier::FG_RED);
+Color_Modifier GREEN_STDOUT(Color_Modifier::FG_GREEN);
+Color_Modifier BLUE_STDOUT(Color_Modifier::FG_BLUE);
+Color_Modifier PINK_STDOUT(Color_Modifier::FG_PINK);
 
 // Audio information
 int SAMPLE_RATE = 44100;

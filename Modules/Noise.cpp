@@ -44,8 +44,8 @@
 Noise::Noise() :
     Module(NOISE)
 {
-    inputs[0].val = -1;
-    inputs[1].val = 1;
+    inputs[NOISE_RANGE_LOW].val = -1;
+    inputs[NOISE_RANGE_HIGH].val = 1;
 }
 
 /*

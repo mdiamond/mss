@@ -45,9 +45,9 @@ Multiplier::Multiplier() :
 {
     // The signal input needs to be 0, while the others
     // need to be 1 to start out
-    inputs[0].val = 0;
-    inputs[1].val = 1;
-    inputs[2].val = 1;
+    inputs[MULTIPLIER_SIGNAL].val = 0;
+    inputs[MULTIPLIER_MULTIPLIER].val = 1;
+    inputs[MULTIPLIER_DRY_WET].val = 1;
 }
 
 /*

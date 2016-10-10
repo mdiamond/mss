@@ -36,14 +36,14 @@ void create_module(int type)
 
     switch(type)
     {
-        case ADSR: module = new Adsr(); break;
-        case DELAY: module = new Delay(); break;
-        case FILTER: module = new Filter(); break;
-        case MIXER: module = new Mixer(); break;
-        case MULTIPLIER: module = new Multiplier(); break;
-        case NOISE: module = new Noise(); break;
-        case OSCILLATOR: module = new Oscillator(); break;
-        case SAH: module = new Sah(); break;
+        case Module::ADSR: module = new Adsr(); break;
+        case Module::DELAY: module = new Delay(); break;
+        case Module::FILTER: module = new Filter(); break;
+        case Module::MIXER: module = new Mixer(); break;
+        case Module::MULTIPLIER: module = new Multiplier(); break;
+        case Module::NOISE: module = new Noise(); break;
+        case Module::OSCILLATOR: module = new Oscillator(); break;
+        case Module::SAH: module = new Sah(); break;
     }
 
     module->initialize_graphics_objects();

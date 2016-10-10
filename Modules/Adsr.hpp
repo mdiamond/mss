@@ -17,55 +17,6 @@
 
 // No includes necessary
 
-/******************************
- * ADSR GRAPHICS OBJECTS ENUM *
- ******************************/
-
-enum AdsrGraphicsObjects
-{
-    ADSR_RESET_CURRENT_AMPLITUDE_BUTTON = 3,
-    ADSR_NOTE_TEXT,
-    ADSR_A_D_TEXT,
-    ADSR_S_R_TEXT,
-    ADSR_OUTPUT_WAVEFORM,
-    ADSR_NOTE_INPUT_TEXT_BOX,
-    ADSR_A_INPUT_TEXT_BOX,
-    ADSR_D_INPUT_TEXT_BOX,
-    ADSR_S_INPUT_TEXT_BOX,
-    ADSR_R_INPUT_TEXT_BOX,
-    ADSR_NOTE_INPUT_TOGGLE_BUTTON,
-    ADSR_A_INPUT_TOGGLE_BUTTON,
-    ADSR_D_INPUT_TOGGLE_BUTTON,
-    ADSR_S_INPUT_TOGGLE_BUTTON,
-    ADSR_R_INPUT_TOGGLE_BUTTON
-};
-
-/**************************
- * ADSR DEPENDENCIES ENUM *
- **************************/
-
-enum AdsrDependencies
-{
-    ADSR_NOTE = 0,
-    ADSR_A,
-    ADSR_D,
-    ADSR_S,
-    ADSR_R
-};
-
-/********************
- * ADSR PHASES ENUM *
- ********************/
-
-enum AdsrPhase
-{
-    ADSR_A_PHASE = 0,
-    ADSR_D_PHASE,
-    ADSR_S_PHASE,
-    ADSR_R_PHASE,
-    ADSR_IDLE_PHASE
-};
-
 /*************************
  * ADSR CLASS DEFINITION *
  *************************/
@@ -73,10 +24,50 @@ enum AdsrPhase
 class Adsr: public Module
 {
 public:
+    // ADSR stage enum
+    enum AdsrStage
+    {
+        ADSR_A_STAGE = 0,
+        ADSR_D_STAGE,
+        ADSR_S_STAGE,
+        ADSR_R_STAGE,
+        ADSR_IDLE_STAGE
+    };
+
+    // ADSR graphics objects enum
+    enum AdsrGraphicsObjects
+    {
+        ADSR_RESET_CURRENT_AMPLITUDE_BUTTON = 3,
+        ADSR_NOTE_TEXT,
+        ADSR_A_D_TEXT,
+        ADSR_S_R_TEXT,
+        ADSR_OUTPUT_WAVEFORM,
+        ADSR_NOTE_INPUT_TEXT_BOX,
+        ADSR_A_INPUT_TEXT_BOX,
+        ADSR_D_INPUT_TEXT_BOX,
+        ADSR_S_INPUT_TEXT_BOX,
+        ADSR_R_INPUT_TEXT_BOX,
+        ADSR_NOTE_INPUT_TOGGLE_BUTTON,
+        ADSR_A_INPUT_TOGGLE_BUTTON,
+        ADSR_D_INPUT_TOGGLE_BUTTON,
+        ADSR_S_INPUT_TOGGLE_BUTTON,
+        ADSR_R_INPUT_TOGGLE_BUTTON
+    };
+
+    // ADSR dependencies enum
+    enum AdsrDependencies
+    {
+        ADSR_NOTE = 0,
+        ADSR_A,
+        ADSR_D,
+        ADSR_S,
+        ADSR_R
+    };
+
     // The current amplitudes
     double current_amplitude;
     // Which phase of the envelope this module is in
-    AdsrPhase adsr_phase;
+    AdsrStage adsr_stage;
 
     // Constructor and destructor
     Adsr();

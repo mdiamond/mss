@@ -37,46 +37,34 @@
 #include "Graphics_Objects/Text.hpp"
 #include "Graphics_Objects/Waveform.hpp"
 
-/*************************
- * TYPES OF MODULES ENUM *
- *************************/
-
-enum ModuleType
-{
-    ADSR = 0,
-    DELAY,
-    FILTER,
-    MIXER,
-    MULTIPLIER,
-    NOISE,
-    OSCILLATOR,
-    OUTPUT,
-    SAH
-};
-
-/********************************
- * MODULE GRAPHICS OBJECTS ENUM *
- ********************************/
-
-enum ModuleGraphicsObjects
-{
-    MODULE_BACKGROUND_RECT = 0,
-    MODULE_NAME_TEXT,
-    MODULE_REMOVE_MODULE_BUTTON
-};
-
-/***************************
- * MODULE CLASS DEFINITION *
- ***************************/
-
 class Module: public Graphics_Object
 {
 public:
-    // A struct to represent an input to this module
+    // Module type enum
+    enum ModuleType
+    {
+        ADSR = 0,
+        DELAY,
+        FILTER,
+        MIXER,
+        MULTIPLIER,
+        NOISE,
+        OSCILLATOR,
+        OUTPUT,
+        SAH
+    };
+
+    // Module graphics objects enum, these are common to all modules
+    enum ModuleGraphicsObjects
+    {
+        MODULE_BACKGROUND_RECT = 0,
+        MODULE_NAME_TEXT,
+        MODULE_REMOVE_MODULE_BUTTON
+    };
+
+    // A struct to represent an input parameter for a module
     struct Input
     {
-        // Name of the input parameter
-        std::string name;
         // Module that is producing the data to be received
         Module *from;
         // Output buffer of the above module
@@ -88,6 +76,15 @@ public:
         // Whether or not this input is currently live
         bool live;
     };
+
+    // Maps of useful information about modules, defined in
+    // Module.cpp
+    //   Map of the number of inputs per module type
+    static const std::map<ModuleType, int> num_inputs;
+    //   Map of the names per module type
+    static const std::map<ModuleType, std::string> names;
+    //   Map of the parameters per module type
+    static const std::map<ModuleType, std::vector<std::string> > parameter_names;
 
     // Module information
     ModuleType module_type;

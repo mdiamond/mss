@@ -15,32 +15,6 @@
 
 // No includes necessary
 
-/*****************************
- * SAH GRAPHICS OBJECTS ENUM *
- *****************************/
-
-enum SahGraphicsObjects
-{
-    SAH_RESET_SAMPLER_BUTTON = 3,
-    SAH_INPUT_TEXT,
-    SAH_HOLD_TIME_TEXT,
-    SAH_OUTPUT_WAVEFORM,
-    SAH_SIGNAL_INPUT_TEXT_BOX,
-    SAH_HOLD_TIME_INPUT_TEXT_BOX,
-    SAH_SIGNAL_INPUT_TOGGLE_BUTTON,
-    SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON
-};
-
-/*************************
- * SAH DEPENDENCIES ENUM *
- *************************/
-
-enum SahDependencies
-{
-    SAH_SIGNAL = 0,
-    SAH_HOLD_TIME
-};
-
 /************************
  * SAH CLASS DEFINITION *
  ************************/
@@ -48,6 +22,26 @@ enum SahDependencies
 class Sah: public Module
 {
 public:
+    // Sample and hold graphics objects enum
+    enum SahGraphicsObjects
+    {
+        SAH_RESET_SAMPLER_BUTTON = 3,
+        SAH_INPUT_TEXT,
+        SAH_HOLD_TIME_TEXT,
+        SAH_OUTPUT_WAVEFORM,
+        SAH_SIGNAL_INPUT_TEXT_BOX,
+        SAH_HOLD_TIME_INPUT_TEXT_BOX,
+        SAH_SIGNAL_INPUT_TOGGLE_BUTTON,
+        SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON
+    };
+
+    // Sample and hold dependencies enum
+    enum SahDependencies
+    {
+        SAH_SIGNAL = 0,
+        SAH_HOLD_TIME
+    };
+
     double sample;
     double time_to_next_sample;
 

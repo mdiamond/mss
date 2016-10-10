@@ -47,9 +47,6 @@ Oscillator::Oscillator() :
     waveform_type(SIN), sin_on(true), tri_on(false),
     saw_on(false), sqr_on(false)
 {
-    // Frequency starts at 0, phase offset at 0,
-    // pulse width at .5, range low at -1, range high
-    // at 1
     inputs[OSCILLATOR_PULSE_WIDTH].val = .5;
     inputs[OSCILLATOR_RANGE_LOW].val = -1;
     inputs[OSCILLATOR_RANGE_HIGH].val = 1;

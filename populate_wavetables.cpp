@@ -30,8 +30,8 @@
  */
 void populate_sin()
 {
-    for(unsigned int i = 0; i < WAVETABLES[SIN].size(); i ++)
-        WAVETABLES[SIN][i] = sin(((float) i / SAMPLE_RATE) * (2 * M_PI));
+    for(unsigned int i = 0; i < WAVETABLES[Oscillator::SIN].size(); i ++)
+        WAVETABLES[Oscillator::SIN][i] = sin(((float) i / SAMPLE_RATE) * (2 * M_PI));
 }
 
 /*
@@ -39,20 +39,20 @@ void populate_sin()
  */
 void populate_tri()
 {
-    for(unsigned int i = 0; i < WAVETABLES[TRI].size(); i ++)
+    for(unsigned int i = 0; i < WAVETABLES[Oscillator::TRI].size(); i ++)
     {
-        float one_fourth = (WAVETABLES[TRI].size() / 4);
-        float half = (WAVETABLES[TRI].size() / 2);
+        float one_fourth = (WAVETABLES[Oscillator::TRI].size() / 4);
+        float half = (WAVETABLES[Oscillator::TRI].size() / 2);
         float three_fourths = one_fourth * 3;
 
         if(i < one_fourth)
-            WAVETABLES[TRI][i] = i / one_fourth;
+            WAVETABLES[Oscillator::TRI][i] = i / one_fourth;
         else if(i < half)
-            WAVETABLES[TRI][i] = (1 - ((i - one_fourth) / (one_fourth)));
+            WAVETABLES[Oscillator::TRI][i] = (1 - ((i - one_fourth) / (one_fourth)));
         else if(i < three_fourths)
-            WAVETABLES[TRI][i] = ((i - half) / one_fourth) * -1;
+            WAVETABLES[Oscillator::TRI][i] = ((i - half) / one_fourth) * -1;
         else
-            WAVETABLES[TRI][i] = ((1 - ((i - three_fourths) / (one_fourth))) * -1);
+            WAVETABLES[Oscillator::TRI][i] = ((1 - ((i - three_fourths) / (one_fourth))) * -1);
     }
 }
 
@@ -61,14 +61,14 @@ void populate_tri()
  */
 void populate_saw()
 {
-    for(unsigned int i = 0; i < WAVETABLES[SAW].size(); i ++)
+    for(unsigned int i = 0; i < WAVETABLES[Oscillator::SAW].size(); i ++)
     {
-        float half = (WAVETABLES[SAW].size() / 2);
+        float half = (WAVETABLES[Oscillator::SAW].size() / 2);
 
         if(i < half)
-            WAVETABLES[SAW][i] = -1 * (1 - (i / half));
+            WAVETABLES[Oscillator::SAW][i] = -1 * (1 - (i / half));
         else
-            WAVETABLES[SAW][i] = -1 * (0 - ((i - half) / half));
+            WAVETABLES[Oscillator::SAW][i] = -1 * (0 - ((i - half) / half));
     }
 }
 
@@ -77,14 +77,14 @@ void populate_saw()
  */
 void populate_sqr()
 {
-    for(unsigned int i = 0; i < WAVETABLES[SQR].size(); i ++)
+    for(unsigned int i = 0; i < WAVETABLES[Oscillator::SQR].size(); i ++)
     {
-        float half = (WAVETABLES[SQR].size() / 2);
+        float half = (WAVETABLES[Oscillator::SQR].size() / 2);
 
         if(i < half)
-            WAVETABLES[SQR][i] = 1;
+            WAVETABLES[Oscillator::SQR][i] = 1;
         else
-            WAVETABLES[SQR][i] = -1;
+            WAVETABLES[Oscillator::SQR][i] = -1;
     }
 }
 

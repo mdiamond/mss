@@ -25,6 +25,7 @@
 // Included classes
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Page.hpp"
+#include "Module.hpp"
 
 /********************
  * HELPER FUNCTIONS *
@@ -40,42 +41,42 @@ void keydown_event(SDL_Event *e)
     if(e->key.keysym.sym == SDLK_1)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(ADSR);
+            create_module(Module::ADSR);
     }
     else if(e->key.keysym.sym == SDLK_2)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(DELAY);
+            create_module(Module::DELAY);
     }
     else if(e->key.keysym.sym == SDLK_3)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(FILTER);
+            create_module(Module::FILTER);
     }
     else if(e->key.keysym.sym == SDLK_4)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(MIXER);
+            create_module(Module::MIXER);
     }
     else if(e->key.keysym.sym == SDLK_5)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(MULTIPLIER);
+            create_module(Module::MULTIPLIER);
     }
     else if(e->key.keysym.sym == SDLK_6)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(NOISE);
+            create_module(Module::NOISE);
     }
     else if(e->key.keysym.sym == SDLK_7)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(OSCILLATOR);
+            create_module(Module::OSCILLATOR);
     }
     else if(e->key.keysym.sym == SDLK_8)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
-            create_module(SAH);
+            create_module(Module::SAH);
     }
     else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
     {

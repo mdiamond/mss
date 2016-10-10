@@ -63,21 +63,21 @@ void no_parent_function_forwarder(Graphics_Object *g)
                       "next page (button)", "save patch (text box)", "load patch (text box)"};
 
     if(g->name == possible_names[0])
-        create_module(ADSR);
+        create_module(Module::ADSR);
     else if(g->name == possible_names[1])
-        create_module(DELAY);
+        create_module(Module::DELAY);
     else if(g->name == possible_names[2])
-        create_module(FILTER);
+        create_module(Module::FILTER);
     else if(g->name == possible_names[3])
-        create_module(MIXER);
+        create_module(Module::MIXER);
     else if(g->name == possible_names[4])
-        create_module(MULTIPLIER);
+        create_module(Module::MULTIPLIER);
     else if(g->name == possible_names[5])
-        create_module(NOISE);
+        create_module(Module::NOISE);
     else if(g->name == possible_names[6])
-        create_module(OSCILLATOR);
+        create_module(Module::OSCILLATOR);
     else if(g->name == possible_names[7])
-        create_module(SAH);
+        create_module(Module::SAH);
     else if(g->name == possible_names[8])
         increment_page_number(-1);
     else if(g->name == possible_names[9])
