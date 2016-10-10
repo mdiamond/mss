@@ -1,3 +1,0 @@
-/home/matthew/synth/bin/CMakeFiles/edit_cache.dir
-/home/matthew/synth/bin/CMakeFiles/rebuild_cache.dir
-/home/matthew/synth/bin/CMakeFiles/synth.dir

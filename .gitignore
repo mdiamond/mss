@@ -38,7 +38,7 @@
 *.DS_Store
 
 # Build files
-build
+bin
 
 # Ctags files
 tags
