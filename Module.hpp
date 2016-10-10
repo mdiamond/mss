@@ -112,16 +112,16 @@ public:
     virtual void process() = 0;
     //   Update parameters at the k rate
     virtual void update_control_values() = 0;
-    //   Calculate the locations of graphics objects unique to this module type
-    virtual void calculate_unique_graphics_object_locations() = 0;
-    //   Initialize the graphics objects unique to this module type
-    virtual void initialize_unique_graphics_objects() = 0;
     //   Output the module's unique information as text
     virtual std::string get_unique_text_representation() = 0;
     //   Handle a button press
     virtual void button_function(Button *) = 0;
     //   Handle a toggle button press
     virtual void toggle_button_function(Toggle_Button *) = 0;
+    //   Calculate the locations of graphics objects unique to this module type
+    virtual void calculate_unique_graphics_object_locations();
+    //   Initialize the graphics objects unique to this module type
+    virtual void initialize_unique_graphics_objects();
 
     // Member functions
     //   Process all modules that this module depends upon
@@ -129,8 +129,12 @@ public:
     //   Grab samples from index i in all input buffers, store them as
     //   individual floats
     void update_input_vals(int);
+    //   Initialize all graphics objects in this module
+    void initialize_graphics_objects();
     //   Calculate the locations of all graphics objects in this module
     void calculate_graphics_object_locations();
+    //   Update the locations of all graphics objects in this module
+    void update_graphics_object_locations();
     //   Initialize input text box graphics objects
     void initialize_input_text_box_objects(std::vector<std::string>,
                                            std::vector<SDL_Rect>,
@@ -158,10 +162,6 @@ public:
                                                 std::vector<Module *>,
                                                 std::vector<int>,
                                                 std::vector<Input_Text_Box *>);
-    //   Initialize all graphics objects in this module
-    void initialize_graphics_objects();
-    //   Update the locations of all graphics objects in this module
-    void update_graphics_object_locations();
     //   Set a parameter to a certain value
     void set(float, int);
     //   Set a parameter to be updated by another module's output
