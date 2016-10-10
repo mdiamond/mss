@@ -69,20 +69,85 @@ const std::map<Module::ModuleType, std::string> Module::names = {
  ******************************************/
 
 const std::map<Module::ModuleType, std::vector<std::string> > Module::parameter_names = {
-    {ADSR, {"NOTE ON/OFF", "ATTACK", "DECAY", "SUSTAIN", "RELEASE"}},
-    {DELAY, {"SIGNAL", "MAX DELAY TIME", "DELAY TIME", "FEEDBACK AMOUNT", "WET/DRY AMOUNT"}},
-    {FILTER, {"SIGNAL", "FREQUENCY CUTOFF", "FILTER QUALITY"}},
-    {MIXER, {"SIGNAL 1", "SIGNAL 1 MULTIPLIER", "SIGNAL 2", "SIGNAL 2 MULTIPLIER", "SIGNAL 3",
-             "SIGNAL 3 MULTIPLIER", "SIGNAL 4", "SIGNAL 4 MULTIPLIER", "SIGNAL 5",
-             "SIGNAL 5 MULTIPLIER", "SIGNAL 6", "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER",
-             "SIGNAL 8", "SIGNAL 8 MULTIPLIER", "SIGNAL 3 MULTIPLIER", "SIGNAL 4",
-             "SIGNAL 4 MULTIPLIER", "SIGNAL 5", "SIGNAL 5 MULTIPLIER", "SIGNAL 6",
-             "SIGNAL 6 MULTIPLIER", "SIGNAL 7 MULTIPLIER", "SIGNAL 8", "SIGNAL 8 MULTIPLIER"}},
-    {MULTIPLIER, {"SIGNAL", "MULTIPLIER", "DRY/WET"}},
-    {NOISE, {"RANGE LOW", "RANGE HIGH"}},
-    {OSCILLATOR, {"FREQUENCY", "PHASE OFFSET", "PULSE WIDTH", "RANGE LOW", "RANGE HIGH"}},
-    {OUTPUT, {"LEFT SIGNAL", "RIGHT SIGNAL"}},
-    {SAH, {"SIGNAL", "HOLD TIME"}}
+    {ADSR,
+        {
+            "NOTE ON/OFF",
+            "ATTACK",
+            "DECAY",
+            "SUSTAIN",
+            "RELEASE"
+        }
+    },
+    {DELAY,
+        {
+            "SIGNAL",
+            "MAX DELAY TIME",
+            "DELAY TIME",
+            "FEEDBACK AMOUNT",
+            "WET/DRY AMOUNT"
+        }
+    },
+    {FILTER,
+        {
+            "SIGNAL",
+            "FREQUENCY CUTOFF",
+            "FILTER QUALITY"
+        }
+    },
+    {MIXER,
+        {
+            "SIGNAL 1",
+            "SIGNAL 1 MULTIPLIER",
+            "SIGNAL 2",
+            "SIGNAL 2 MULTIPLIER",
+            "SIGNAL 3",
+            "SIGNAL 3 MULTIPLIER",
+            "SIGNAL 4",
+            "SIGNAL 4 MULTIPLIER",
+            "SIGNAL 5",
+            "SIGNAL 5 MULTIPLIER",
+            "SIGNAL 6",
+            "SIGNAL 6 MULTIPLIER",
+            "SIGNAL 7",
+            "SIGNAL 7 MULTIPLIER",
+            "SIGNAL 8",
+            "SIGNAL 8 MULTIPLIER"
+        }
+    },
+    {MULTIPLIER,
+        {
+            "SIGNAL",
+            "MULTIPLIER",
+            "DRY/WET"
+        }
+    },
+    {NOISE,
+        {
+            "RANGE LOW",
+            "RANGE HIGH"
+        }
+    },
+    {OSCILLATOR,
+        {
+            "FREQUENCY",
+            "PHASE OFFSET",
+            "PULSE WIDTH",
+            "RANGE LOW",
+            "RANGE HIGH"
+        }
+    },
+    {OUTPUT,
+        {
+            "LEFT SIGNAL",
+            "RIGHT SIGNAL"
+        }
+    },
+    {SAH,
+        {
+            "SIGNAL",
+            "HOLD TIME"
+        }
+    }
 };
 
 /***************************
@@ -99,9 +164,6 @@ Module::Module(ModuleType _module_type) :
     inputs(std::vector<Input>(num_inputs.at(_module_type))),
     output(std::vector<float>(BUFFER_SIZE, 0))
 {
-    if(module_type == OUTPUT)
-        name = "output";
-
     // Set this module's color randomly, but with enough contrast
     std::vector<SDL_Color> colors = generate_module_colors();
     primary_module_color = colors[0];
@@ -333,16 +395,27 @@ void Module::initialize_graphics_objects()
 
     // graphics_objects[0] is the slightly smaller rectangle within the outermost
     // rectangle
-    rect = new Rect(name + " background (rect)", graphics_object_locations[MODULE_BACKGROUND_RECT], &primary_module_color, this);
+    rect = new Rect(name + " background (rect)",
+                    graphics_object_locations[MODULE_BACKGROUND_RECT],
+                    &primary_module_color,
+                    this);
     graphics_objects.push_back(rect);
 
     // graphics_objects[1] is the objects name
-    text = new Text(name + " module name (text)", graphics_object_locations[MODULE_NAME_TEXT], &secondary_module_color, name, FONT_BOLD);
+    text = new Text(name + " module name (text)",
+                    graphics_object_locations[MODULE_NAME_TEXT],
+                    &secondary_module_color,
+                    name,
+                    FONT_BOLD);
     graphics_objects.push_back(text);
 
     // graphics_objects[2] is the remove module button
-    button = new Button(name + " remove module (button)", graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
-                        &secondary_module_color, &primary_module_color, "X", this);
+    button = new Button(name + " remove module (button)",
+                        graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
+                        &secondary_module_color,
+                        &primary_module_color,
+                        "X",
+                        this);
     graphics_objects.push_back(button);
 
     // Initialize all graphics objects specific to this module type

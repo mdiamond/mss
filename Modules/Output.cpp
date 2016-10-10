@@ -40,7 +40,9 @@
  */
 Output::Output() :
     Module(OUTPUT)
-{}
+{
+    name = "output";
+}
 
 /*
  * Destructor.
