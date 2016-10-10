@@ -32,22 +32,6 @@
 #include "Modules/Output.hpp"
 #include "Modules/Sah.hpp"
 
-/******************************
- * NUM INPUTS PER MODULE TYPE *
- ******************************/
-
-const std::map<Module::ModuleType, int> Module::num_inputs = {
-    {ADSR, 5},
-    {DELAY, 5},
-    {FILTER, 3},
-    {MIXER, 16},
-    {MULTIPLIER, 3},
-    {NOISE, 2},
-    {OSCILLATOR, 5},
-    {OUTPUT, 2},
-    {SAH, 2}
-};
-
 /*******************************
  * MODULE NAME PER MODULE TYPE *
  *******************************/
@@ -68,7 +52,7 @@ const std::map<Module::ModuleType, std::string> Module::names = {
  * MODULE PARAMETER NAMES PER MODULE TYPE *
  ******************************************/
 
-const std::map<Module::ModuleType, std::vector<std::string> > Module::parameter_names = {
+const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters = {
     {ADSR,
         {
             "NOTE ON/OFF",
@@ -161,7 +145,7 @@ Module::Module(ModuleType _module_type) :
     Graphics_Object(names.at(_module_type) + " " + std::to_string(find_available_module_number(_module_type)),
     MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
     module_type(_module_type), number(find_available_module_slot()), processed(false),
-    inputs(std::vector<Input>(num_inputs.at(_module_type))),
+    inputs(std::vector<Input>(parameters.at(_module_type).size())),
     output(std::vector<float>(BUFFER_SIZE, 0))
 {
     // Set this module's color randomly, but with enough contrast
@@ -453,7 +437,7 @@ void Module::set(float val, int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
+    std::cout << name << " " << parameters.at(module_type).at(input_num)
          << " changed to " << val << std::endl;
 }
 
@@ -489,7 +473,7 @@ void Module::set(Module *src, int input_num)
     // Ensure that the input toggle button associated with this input is turned
     // on
 
-    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
+    std::cout << name << " " << parameters.at(module_type).at(input_num)
          << " is now coming from " << src->name << std::endl;
 }
 
@@ -520,7 +504,7 @@ void Module::cancel_input(int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
+    std::cout << name << " " << parameters.at(module_type).at(input_num)
          << " input cancelled" << std::endl;
 }
 

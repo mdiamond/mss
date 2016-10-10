@@ -79,12 +79,10 @@ public:
 
     // Maps of useful information about modules, defined in
     // Module.cpp
-    //   Map of the number of inputs per module type
-    static const std::map<ModuleType, int> num_inputs;
     //   Map of the names per module type
     static const std::map<ModuleType, std::string> names;
     //   Map of the parameters per module type
-    static const std::map<ModuleType, std::vector<std::string> > parameter_names;
+    static const std::map<ModuleType, std::vector<std::string> > parameters;
 
     // Module information
     ModuleType module_type;
