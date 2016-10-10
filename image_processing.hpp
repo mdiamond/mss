@@ -11,7 +11,7 @@
  * INCLUDES *
  ************/
 
-// Included classes
+// Included modules classes
 #include "Module.hpp"
 
 /*************************

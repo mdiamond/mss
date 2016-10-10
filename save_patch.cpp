@@ -20,7 +20,7 @@
 // Included files
 #include "main.hpp"
 
-// Included classes
+// Included modules classes
 #include "Module.hpp"
 #include "Modules/Mixer.hpp"
 #include "Modules/Oscillator.hpp"

@@ -13,8 +13,7 @@
 // Included files
 #include "main.hpp"
 
-// Included classes
-#include "Module.hpp"
+// Included modules classes
 #include "Module.hpp"
 #include "Modules/Adsr.hpp"
 #include "Modules/Delay.hpp"

@@ -10,7 +10,7 @@
  * INCLUDES *
  ************/
 
-// Included classes
+// Included graphics classes
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Button.hpp"
 #include "Graphics_Objects/Text_Box.hpp"

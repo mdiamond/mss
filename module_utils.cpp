@@ -20,7 +20,7 @@
 #include "main.hpp"
 #include "module_utils.hpp"
 
-// Included classes
+// Included modules classes
 #include "Module.hpp"
 
 /********************

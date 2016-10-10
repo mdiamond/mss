@@ -24,14 +24,15 @@
 #include "main_helpers.hpp"
 #include "signal_processing.hpp"
 
-// Included classes
+// Included modules classes
+#include "Modules/Oscillator.hpp"
+#include "Modules/Output.hpp"
+
+// Included graphics classes
 #include "Graphics_Objects/Button.hpp"
 #include "Graphics_Objects/Page.hpp"
 #include "Graphics_Objects/Rect.hpp"
 #include "Graphics_Objects/Waveform.hpp"
-#include "Module.hpp"
-#include "Modules/Oscillator.hpp"
-#include "Modules/Output.hpp"
 
 /****************************
  * INITIALIZATION FUNCTIONS *

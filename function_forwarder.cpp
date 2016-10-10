@@ -31,13 +31,7 @@
 #include "module_utils.hpp"
 #include "save_patch.hpp"
 
-// Included classes
-#include "Graphics_Object.hpp"
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text_Box.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
+// Included modules classes
 #include "Module.hpp"
 #include "Modules/Adsr.hpp"
 #include "Modules/Delay.hpp"
@@ -48,6 +42,14 @@
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
 #include "Modules/Sah.hpp"
+
+// Included graphics classes
+#include "Graphics_Object.hpp"
+#include "Graphics_Objects/Button.hpp"
+#include "Graphics_Objects/Input_Toggle_Button.hpp"
+#include "Graphics_Objects/Text_Box.hpp"
+#include "Graphics_Objects/Toggle_Button.hpp"
+#include "Graphics_Objects/Waveform.hpp"
 
 /*
  * Handle functions for the graphics objects with

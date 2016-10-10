@@ -13,7 +13,7 @@
 // Included SDL components
 #include "SDL.h"
 
-// Included files
+// Included "other" classes
 #include "Timer.hpp"
 
 /**************************

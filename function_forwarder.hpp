@@ -10,9 +10,11 @@
  * INCLUDES *
  ************/
 
-// Included classes
-#include "Graphics_Object.hpp"
+// Included modules classes
 #include "Module.hpp"
+
+// Included graphics classes
+#include "Graphics_Object.hpp"
 
 /*************************
  * FUNCTION DECLARATIONS *

@@ -5,10 +5,10 @@
 # and then use cmake to generate a makefile, followed
 # by make to build the program.
 
-if [ ! -d build ]; then
-    mkdir build
+if [ ! -d bin ]; then
+    mkdir bin
 fi
-cd build
+cd bin
 cmake -G Ninja ..
 ninja
 

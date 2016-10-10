@@ -20,7 +20,7 @@
 #include "main.hpp"
 #include "signal_processing.hpp"
 
-// Included classes
+// Included modules classes
 #include "Module.hpp"
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"

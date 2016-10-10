@@ -17,12 +17,16 @@
 // Included SDL components
 #include "SDL_ttf.h"
 
-// Included classes
-#include "Color_Modifier.hpp"
+// Included modules classes
 #include "Module.hpp"
+
+// Included graphics classes
 #include "Graphics_Objects/Input_Toggle_Button.hpp"
 #include "Graphics_Objects/Page.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
+
+// Included "other" classes
+#include "Color_Modifier.hpp"
 
 /**********************
  * EXTERNAL VARIABLES *

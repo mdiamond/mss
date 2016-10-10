@@ -22,8 +22,7 @@
 #include "main.hpp"
 #include "module_utils.hpp"
 
-// Included classes
-#include "Module.hpp"
+// Included modules classes
 #include "Modules/Adsr.hpp"
 #include "Modules/Delay.hpp"
 #include "Modules/Filter.hpp"

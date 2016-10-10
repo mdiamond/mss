@@ -20,13 +20,6 @@
 #include "image_processing.hpp"
 #include "main.hpp"
 
-// Included classes
-#include "Graphics_Object.hpp"
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Text_Box.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /********************
  * HELPER FUNCTIONS *
  ********************/

@@ -10,8 +10,7 @@
  * INCLUDES *
  ************/
 
-// Included classes
-#include "Module.hpp"
+// No includes necessary
 
 /*************************
  * FUNCTION DECLARATIONS *

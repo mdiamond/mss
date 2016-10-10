@@ -22,10 +22,12 @@
 #include "main.hpp"
 #include "module_utils.hpp"
 
-// Included classes
+// Included modules classes
+#include "Module.hpp"
+
+// Included graphics classes
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Page.hpp"
-#include "Module.hpp"
 
 /********************
  * HELPER FUNCTIONS *

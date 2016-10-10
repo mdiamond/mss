@@ -25,9 +25,10 @@
 #include "signal_processing.hpp"
 #include "tests.hpp"
 
-// Included classes
-#include "Color_Modifier.hpp"
+// Included modules classes
 #include "Module.hpp"
+
+// Included "other" classes
 #include "Timer.hpp"
 
 /**********************
