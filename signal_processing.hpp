@@ -17,10 +17,6 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
-// Initialization functions
-int open_audio_device();
-void initialize_output();
-
 // Audio and k rate callback functions
 void audio_callback(void *, Uint8 *, int);
 Uint32 k_rate_callback_function(Uint32, void *);

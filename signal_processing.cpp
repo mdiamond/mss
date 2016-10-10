@@ -25,58 +25,6 @@
 #include "Modules/Oscillator.hpp"
 #include "Modules/Output.hpp"
 
-/****************************
- * INITIALIZATION FUNCTIONS *
- ****************************/
-
-/*
- * Open the audio device with a simple configuration.
- */
-int open_audio_device()
-{
-    SDL_AudioSpec wanted, obtained;
-
-    wanted.freq = SAMPLE_RATE;
-    wanted.format = AUDIO_F32SYS;
-    wanted.channels = 2;
-    wanted.samples = 512;
-    wanted.callback = audio_callback;
-    wanted.userdata = NULL;
-
-    if(SDL_OpenAudio(&wanted, &obtained) == -1)
-    {
-        std::cout << RED_STDOUT << "Could not open the audio device: "
-             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
-        return 0;
-    }
-
-    std::cout << "Audio device opened." << std::endl;
-    std::cout << "Audio details:" << std::endl;
-    std::cout << "    Sample rate: " << obtained.freq << std::endl;
-    std::cout << "    Format: " << obtained.format << std::endl;
-    std::cout << "    Channels: " << obtained.channels << std::endl;
-    std::cout << "    Buffer size in samples: " << obtained.samples << std::endl;
-    std::cout << "    Buffer size in bytes: " << obtained.size << std::endl;
-
-    BUFFER_SIZE = obtained.samples;
-
-    // Return success
-    return 1;
-}
-
-/*
- * Initialize the one and only output module.
- */
-void initialize_output()
-{
-    // Create the output module
-    Output *output = new Output();
-    output->initialize_graphics_objects();
-    MODULES.push_back(output);
-
-    std::cout << "Output initialized." << std::endl;
-}
-
 /***************************
  * AUDIO CALLBACK FUNCTION *
  ***************************/

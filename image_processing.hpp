@@ -18,14 +18,6 @@
  * FUNCTION DECLARATIONS *
  *************************/
 
-// Initialization functions
-int open_window();
-int create_renderer();
-int create_texture();
-int load_fonts();
-void initialize_utilities_page();
-void prettify_utilities_page();
-
 // Image processing functions
 Module *hovering_over();
 void draw_surface();

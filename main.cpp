@@ -19,10 +19,9 @@
 
 // Included files
 #include "event_handler.hpp"
-#include "image_processing.hpp"
+#include "initialize.hpp"
 #include "main.hpp"
 #include "main_helpers.hpp"
-#include "signal_processing.hpp"
 #include "tests.hpp"
 
 // Included modules classes

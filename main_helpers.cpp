@@ -18,9 +18,8 @@
 // Included files
 #include "event_handler.hpp"
 #include "image_processing.hpp"
+#include "initialize.hpp"
 #include "main.hpp"
-#include "populate_wavetables.hpp"
-#include "signal_processing.hpp"
 #include "tests.hpp"
 
 // Included modules classes
@@ -78,78 +77,6 @@ void cleanup()
     SDL_Quit();
     std::cout << "SDL terminated." << std::endl;
 
-}
-
-/*
- * Initialize all of the stuff that needs to be initialized
- * before audio can be processed:
- *   - initialize SDL
- *   - open the audio device
- *   - initialize the utilities sub page
- *   - open a window
- *   - create a renderer
- *   - initialize SDL_ttf
- *   - open ttf fonts
- *   - initialize the synthesizer output module
- *   - start audio to begin requesting buffers from the audio
- *     callback function
- * Return true if all of this succeeds, false if anything fails.
- */
-bool initialize()
-{
-    // system("clear");
-
-    // Initialize SDL with the video and audio subsystems
-    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) {
-        std::cout << "Could not initialize SDL: " << SDL_GetError() << std::endl;
-        return false;
-    }
-    std::cout << "SDL initialized." << std::endl;
-
-    // Initialize audio device
-    if(!open_audio_device())
-        return false;
-
-    // Initialize truetype
-    if(TTF_Init() == -1)
-    {
-        std::cout << "Could not initialize TTF: " << TTF_GetError() << std::endl;
-        return false;
-    }
-
-    // Open ttf fonts
-    if(!load_fonts())
-        return false;
-
-    // Open a window
-    if(!open_window())
-        return false;
-
-    // Create a renderer
-    if(!create_renderer())
-        return false;
-
-    // Initialize utilities sub page
-    initialize_utilities_page();
-
-    // Create a texture to render to
-    if(!create_texture())
-        return false;
-
-    // Populate wavetables
-    populate_wavetables();
-
-    // Initialize the output module
-    initialize_output();
-
-    // Set colors on the utilities page graphics objects
-    prettify_utilities_page();
-
-    // Unpause the audio
-    SDL_PauseAudio(0);
-    std::cout << "Audio unpaused." << std::endl;
-
-    return true;
 }
 
 /*************************

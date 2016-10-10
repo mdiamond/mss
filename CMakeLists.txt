@@ -9,6 +9,7 @@ set(TOP_SOURCES
     function_forwarder.cpp
     graphics_object_utils.cpp
     image_processing.cpp
+    initialize.cpp
     load_patch.cpp
     main.cpp
     main_helpers.cpp
@@ -51,6 +52,7 @@ add_executable(synth ${TOP_SOURCES} ${MODULE_SOURCES} ${GRAPHICS_OBJECT_SOURCES}
 find_package(PkgConfig REQUIRED)
 pkg_search_module(SDL2 REQUIRED sdl2)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
+message(STATUS "Root level project directory: " ${synth_SOURCE_DIR})
 message(STATUS "SDL2 include directory: " ${SDL2_INCLUDE_DIRS})
 message(STATUS "SDL2 library directory: " ${SDL2_LIBRARIES})
 message(STATUS "SDL2 cflags other: " ${SDL2_CFLAGS_OTHER})
