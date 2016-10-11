@@ -4,8 +4,8 @@
  * to type into it to select inputs or change parameters.
  */
 
-#ifndef SYNTH_INPUT_TEXT_BOX_HPP
-#define SYNTH_INPUT_TEXT_BOX_HPP
+#ifndef MSS_INPUT_TEXT_BOX_HPP
+#define MSS_INPUT_TEXT_BOX_HPP
 
 /************
  * INCLUDES *

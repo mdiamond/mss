@@ -5,8 +5,8 @@
  * controls.
  */
 
-#ifndef SYNTH_DELAY_HPP
-#define SYNTH_DELAY_HPP
+#ifndef MSS_DELAY_HPP
+#define MSS_DELAY_HPP
 
 /************
  * INCLUDES *

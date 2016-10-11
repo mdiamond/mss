@@ -5,8 +5,8 @@
  * based on how many channels are active if desired.
  */
 
-#ifndef SYNTH_MIXER_HPP
-#define SYNTH_MIXER_HPP
+#ifndef MSS_MIXER_HPP
+#define MSS_MIXER_HPP
 
 /************
  * INCLUDES *

@@ -3,8 +3,8 @@
  * Header file for the functions for handling events in the main thread.
  */
 
-#ifndef SYNTH_EVENT_HANDLER_HPP
-#define SYNTH_EVENT_HANDLER_HPP
+#ifndef MSS_EVENT_HANDLER_HPP
+#define MSS_EVENT_HANDLER_HPP
 
 /************
  * INCLUDES *

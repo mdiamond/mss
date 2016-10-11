@@ -6,8 +6,8 @@
  * stdout text to change its color.
  */
 
-#ifndef SYNTH_COLOR_MODIFIER_HPP
-#define SYNTH_COLOR_MODIFIER_HPP
+#ifndef MSS_COLOR_MODIFIER_HPP
+#define MSS_COLOR_MODIFIER_HPP
 
 /************
  * INCLUDES *

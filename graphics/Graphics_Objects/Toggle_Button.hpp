@@ -5,8 +5,8 @@
  * to toggle a boolean associated with the button.
  */
 
-#ifndef SYNTH_TOGGLE_BUTTON_HPP
-#define SYNTH_TOGGLE_BUTTON_HPP
+#ifndef MSS_TOGGLE_BUTTON_HPP
+#define MSS_TOGGLE_BUTTON_HPP
 
 /************
  * INCLUDES *

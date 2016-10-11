@@ -4,8 +4,8 @@
  * to type into it. The data entered can be used to change parameters.
  */
 
-#ifndef SYNTH_TEXT_BOX_HPP
-#define SYNTH_TEXT_BOX_HPP
+#ifndef MSS_TEXT_BOX_HPP
+#define MSS_TEXT_BOX_HPP
 
 /************
  * INCLUDES *

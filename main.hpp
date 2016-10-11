@@ -4,8 +4,8 @@
  * all external variables.
  */
 
-#ifndef SYNTH_MAIN_HPP
-#define SYNTH_MAIN_HPP
+#ifndef MSS_MAIN_HPP
+#define MSS_MAIN_HPP
 
 /************
  * INCLUDES *

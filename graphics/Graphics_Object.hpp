@@ -13,8 +13,8 @@
  *   - Waveform
  */
 
-#ifndef SYNTH_GRAPHICS_OBJECT_HPP
-#define SYNTH_GRAPHICS_OBJECT_HPP
+#ifndef MSS_GRAPHICS_OBJECT_HPP
+#define MSS_GRAPHICS_OBJECT_HPP
 
 /************
  * INCLUDES *

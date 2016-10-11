@@ -5,8 +5,8 @@
  * defines the class.
  */
 
-#ifndef SYNTH_TIMER_HPP
-#define SYNTH_TIMER_HPP
+#ifndef MSS_TIMER_HPP
+#define MSS_TIMER_HPP
 
 /************
  * INCLUDES *

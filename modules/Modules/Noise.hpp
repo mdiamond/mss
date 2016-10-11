@@ -4,8 +4,8 @@
  * generating different types of noise.
  */
 
-#ifndef SYNTH_NOISE_HPP
-#define SYNTH_NOISE_HPP
+#ifndef MSS_NOISE_HPP
+#define MSS_NOISE_HPP
 
 /************
  * INCLUDES *

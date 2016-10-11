@@ -3,8 +3,8 @@
  * Header file for the testing functions.
  */
 
-#ifndef SYNTH_TESTS_HPP
-#define SYNTH_TESTS_HPP
+#ifndef MSS_TESTS_HPP
+#define MSS_TESTS_HPP
 
 /************
  * INCLUDES *

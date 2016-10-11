@@ -3,8 +3,8 @@
  * Header file for the patch loading functions.
  */
 
-#ifndef SYNTH_LOAD_PATCH_HPP
-#define SYNTH_LOAD_PATCH_HPP
+#ifndef MSS_LOAD_PATCH_HPP
+#define MSS_LOAD_PATCH_HPP
 
 /************
  * INCLUDES *

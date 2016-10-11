@@ -6,8 +6,8 @@
  * control values signal.
  */
 
-#ifndef SYNTH_SAH_HPP
-#define SYNTH_SAH_HPP
+#ifndef MSS_SAH_HPP
+#define MSS_SAH_HPP
 
 /************
  * INCLUDES *

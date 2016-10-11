@@ -4,8 +4,8 @@
  * in some place in the window, with some color.
  */
 
-#ifndef SYNTH_TEXT_HPP
-#define SYNTH_TEXT_HPP
+#ifndef MSS_TEXT_HPP
+#define MSS_TEXT_HPP
 
 /************
  * INCLUDES *

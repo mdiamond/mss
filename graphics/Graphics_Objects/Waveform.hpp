@@ -4,8 +4,8 @@
  * visualizer for a given buffer rendered wherever is desired.
  */
 
-#ifndef SYNTH_WAVEFORM_HPP
-#define SYNTH_WAVEFORM_HPP
+#ifndef MSS_WAVEFORM_HPP
+#define MSS_WAVEFORM_HPP
 
 /************
  * INCLUDES *

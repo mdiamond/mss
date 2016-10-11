@@ -3,8 +3,8 @@
  * Header file for initialization functions.
  */
 
-#ifndef SYNTH_INITIALIZE_HPP
-#define SYNTH_INITIALIZE_HPP
+#ifndef MSS_INITIALIZE_HPP
+#define MSS_INITIALIZE_HPP
 
 /************
  * INCLUDES *

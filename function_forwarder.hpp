@@ -3,8 +3,8 @@
  * Header file for the function forwarder.
  */
 
-#ifndef SYNTH_FUNCTION_FORWARDER_HPP
-#define SYNTH_FUNCTION_FORWARDER_HPP
+#ifndef MSS_FUNCTION_FORWARDER_HPP
+#define MSS_FUNCTION_FORWARDER_HPP
 
 /************
  * INCLUDES *

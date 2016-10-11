@@ -3,8 +3,8 @@
  * The filter module.
  */
 
-#ifndef SYNTH_FILTER_HPP
-#define SYNTH_FILTER_HPP
+#ifndef MSS_FILTER_HPP
+#define MSS_FILTER_HPP
 
 /************
  * INCLUDES *

@@ -7,8 +7,8 @@
  * defines the class.
  */
 
-#ifndef SYNTH_OUTPUT_HPP
-#define SYNTH_OUTPUT_HPP
+#ifndef MSS_OUTPUT_HPP
+#define MSS_OUTPUT_HPP
 
 /************
  * INCLUDES *

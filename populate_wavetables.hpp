@@ -3,8 +3,8 @@
  * Header file for the functions for populating the wavetables.
  */
 
-#ifndef SYNTH_POPULATE_WAVETABLES_HPP
-#define SYNTH_POPULATE_WAVETABLES_HPP
+#ifndef MSS_POPULATE_WAVETABLES_HPP
+#define MSS_POPULATE_WAVETABLES_HPP
 
 /************
  * INCLUDES *

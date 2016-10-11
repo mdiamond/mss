@@ -6,8 +6,8 @@
  * control values signal.
  */
 
-#ifndef SYNTH_MULTIPLIER_HPP
-#define SYNTH_MULTIPLIER_HPP
+#ifndef MSS_MULTIPLIER_HPP
+#define MSS_MULTIPLIER_HPP
 
 /************
  * INCLUDES *

@@ -1,3 +1,3 @@
-# synth
-A very basic modular synthesizer for learning.
+# MSS - Modular Software-based Synthesizer
+A modular synthesizer for creating sound.
 

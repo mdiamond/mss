@@ -8,8 +8,8 @@
  * in a release to no volume over the release time.
  */
 
-#ifndef SYNTH_ADSR_HPP
-#define SYNTH_ADSR_HPP
+#ifndef MSS_ADSR_HPP
+#define MSS_ADSR_HPP
 
 /************
  * INCLUDES *

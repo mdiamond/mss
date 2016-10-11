@@ -14,8 +14,8 @@
  *   - Output
  */
 
-#ifndef SYNTH_MODULE_HPP
-#define SYNTH_MODULE_HPP
+#ifndef MSS_MODULE_HPP
+#define MSS_MODULE_HPP
 
 /************
  * INCLUDES *

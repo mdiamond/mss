@@ -9,8 +9,8 @@
  * This file defines the class.
  */
 
-#ifndef SYNTH_OSCILLATOR_HPP
-#define SYNTH_OSCILLATOR_HPP
+#ifndef MSS_OSCILLATOR_HPP
+#define MSS_OSCILLATOR_HPP
 
 /************
  * INCLUDES *

@@ -5,8 +5,8 @@
  * makes it possible to select input modules by clicking.
  */
 
-#ifndef SYNTH_RECT_HPP
-#define SYNTH_RECT_HPP
+#ifndef MSS_RECT_HPP
+#define MSS_RECT_HPP
 
 /************
  * INCLUDES *

@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -Wall -fdiagnostics-color=always")
 
-project(synth)
+project(mss)
 
 set(TOP_SOURCES
     event_handler.cpp
@@ -47,12 +47,12 @@ set(GRAPHICS_OBJECT_SOURCES
     graphics/Graphics_Objects/Waveform.cpp
 )
 
-add_executable(synth ${TOP_SOURCES} ${MODULE_SOURCES} ${GRAPHICS_OBJECT_SOURCES})
+add_executable(mss ${TOP_SOURCES} ${MODULE_SOURCES} ${GRAPHICS_OBJECT_SOURCES})
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(SDL2 REQUIRED sdl2)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
-message(STATUS "Root level project directory: " ${synth_SOURCE_DIR})
+message(STATUS "Root level project directory: " ${mss_SOURCE_DIR})
 message(STATUS "SDL2 include directory: " ${SDL2_INCLUDE_DIRS})
 message(STATUS "SDL2 library directory: " ${SDL2_LIBRARIES})
 message(STATUS "SDL2 cflags other: " ${SDL2_CFLAGS_OTHER})
@@ -60,13 +60,13 @@ message(STATUS "SDL2_ttf include directory: " ${SDL2TTF_INCLUDE_DIRS})
 message(STATUS "SDL2_ttf library directory: " ${SDL2TTF_LIBRARIES})
 message(STATUS "SDL2_ttf cflags other: " ${SDL2TTF_CFLAGS_OTHER})
 
-target_link_libraries(synth ${SDL2_LIBRARIES})
-target_link_libraries(synth ${SDL2TTF_LIBRARIES})
-target_include_directories(synth PUBLIC ${SDL2_INCLUDE_DIRS})
-target_include_directories(synth PUBLIC ${SDL2TTF_INCLUDE_DIRS})
-target_include_directories(synth PUBLIC ${synth_SOURCE_DIR})
-target_include_directories(synth PUBLIC ${synth_SOURCE_DIR}/graphics)
-target_include_directories(synth PUBLIC ${synth_SOURCE_DIR}/modules)
-target_compile_options(synth PUBLIC ${SDL2_CFLAGS_OTHER})
-target_compile_options(synth PUBLIC ${SDL2TTF_CFLAGS_OTHER})
+target_link_libraries(mss ${SDL2_LIBRARIES})
+target_link_libraries(mss ${SDL2TTF_LIBRARIES})
+target_include_directories(mss PUBLIC ${SDL2_INCLUDE_DIRS})
+target_include_directories(mss PUBLIC ${SDL2TTF_INCLUDE_DIRS})
+target_include_directories(mss PUBLIC ${mss_SOURCE_DIR})
+target_include_directories(mss PUBLIC ${mss_SOURCE_DIR}/graphics)
+target_include_directories(mss PUBLIC ${mss_SOURCE_DIR}/modules)
+target_compile_options(mss PUBLIC ${SDL2_CFLAGS_OTHER})
+target_compile_options(mss PUBLIC ${SDL2TTF_CFLAGS_OTHER})
 

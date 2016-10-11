@@ -8,8 +8,8 @@
  * when a module is selected using this type of toggle button.
  */
 
-#ifndef SYNTH_INPUT_TOGGLE_BUTTON_HPP
-#define SYNTH_INPUT_TOGGLE_BUTTON_HPP
+#ifndef MSS_INPUT_TOGGLE_BUTTON_HPP
+#define MSS_INPUT_TOGGLE_BUTTON_HPP
 
 /************
  * INCLUDES *

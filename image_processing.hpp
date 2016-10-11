@@ -4,8 +4,8 @@
  * initialization functions
  */
 
-#ifndef SYNTH_IMAGE_PROCESSING_HPP
-#define SYNTH_IMAGE_PROCESSING_HPP
+#ifndef MSS_IMAGE_PROCESSING_HPP
+#define MSS_IMAGE_PROCESSING_HPP
 
 /************
  * INCLUDES *

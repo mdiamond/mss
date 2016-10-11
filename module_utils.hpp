@@ -3,8 +3,8 @@
  * Header file for useful functions related to modules.
  */
 
-#ifndef SYNTH_MODULE_UTILS_HPP
-#define SYNTH_MODULE_UTILS_HPP
+#ifndef MSS_MODULE_UTILS_HPP
+#define MSS_MODULE_UTILS_HPP
 
 /************
  * INCLUDES *

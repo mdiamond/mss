@@ -5,8 +5,8 @@
  * saving, adding a module, etc.
  */
 
-#ifndef SYNTH_PAGE_HPP
-#define SYNTH_PAGE_HPP
+#ifndef MSS_PAGE_HPP
+#define MSS_PAGE_HPP
 
 /************
  * INCLUDES *

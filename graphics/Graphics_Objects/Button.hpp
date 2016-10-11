@@ -5,8 +5,8 @@
  * to call some function.
  */
 
-#ifndef SYNTH_BUTTON_HPP
-#define SYNTH_BUTTON_HPP
+#ifndef MSS_BUTTON_HPP
+#define MSS_BUTTON_HPP
 
 /************
  * INCLUDES *
