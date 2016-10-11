@@ -54,3 +54,4 @@ Uint32 Timer::check_time_elapsed()
     last_checked_ms = SDL_GetTicks();
     return time_elapsed_ms;
 }
+

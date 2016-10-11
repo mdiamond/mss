@@ -104,3 +104,4 @@ void function_forwarder(Graphics_Object *g)
     if(g->parent == NULL)
         no_parent_function_forwarder(g);
 }
+

@@ -75,3 +75,4 @@ void Input_Toggle_Button::toggle()
         CURRENT_INPUT_TOGGLE_BUTTON = this;
     }
 }
+

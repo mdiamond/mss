@@ -362,3 +362,4 @@ void Filter::toggle_button_function(Toggle_Button *toggle_button)
     else if(toggle_button == graphics_objects[FILTER_HP_TOGGLE_BUTTON])
         switch_filter(HIGHPASS);
 }
+

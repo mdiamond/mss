@@ -24,3 +24,4 @@ bool testing_mode();
 bool normal_mode();
 
 #endif
+

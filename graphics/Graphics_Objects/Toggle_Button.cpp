@@ -127,3 +127,4 @@ void Toggle_Button::set_colors(SDL_Color *_color, SDL_Color *_color_off,
     text_off.set_color(_text_color_off);
     updated = true;
 }
+

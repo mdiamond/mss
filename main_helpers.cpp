@@ -149,3 +149,4 @@ bool normal_mode()
     // Return success
     return true;
 }
+

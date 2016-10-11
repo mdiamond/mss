@@ -193,3 +193,4 @@ void multiply_signals(std::vector<float> *buffer, float val, std::vector<float> 
     for(unsigned int i = 0; i < buffer->size(); i ++)
         (*dst)[i] = (*buffer)[i] * val;
 }
+

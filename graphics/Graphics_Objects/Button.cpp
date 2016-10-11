@@ -91,3 +91,4 @@ void Button::set_colors(SDL_Color *_color, SDL_Color *_text_color)
     background.updated = true;
     text.updated = true;
 }
+

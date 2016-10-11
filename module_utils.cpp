@@ -221,3 +221,4 @@ std::vector<SDL_Color> generate_module_colors()
     std::vector<SDL_Color> colors = {color, text_color};
     return colors;
 }
+

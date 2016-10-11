@@ -69,3 +69,4 @@ target_include_directories(synth PUBLIC ${synth_SOURCE_DIR}/graphics)
 target_include_directories(synth PUBLIC ${synth_SOURCE_DIR}/modules)
 target_compile_options(synth PUBLIC ${SDL2_CFLAGS_OTHER})
 target_compile_options(synth PUBLIC ${SDL2TTF_CFLAGS_OTHER})
+

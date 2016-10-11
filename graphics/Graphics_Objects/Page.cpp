@@ -66,3 +66,4 @@ void Page::clicked()
         if(graphics_objects[i]->was_clicked())
             graphics_objects[i]->clicked();
 }
+

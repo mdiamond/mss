@@ -45,3 +45,4 @@ std::vector<Graphics_Object *> initialize_waveform_objects(std::vector<std::stri
 							                               std::vector<float>, std::vector<std::vector<float> *>);
 
 #endif
+

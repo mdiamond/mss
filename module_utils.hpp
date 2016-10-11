@@ -51,3 +51,4 @@ SDL_Rect find_module_location(int);
 std::vector<SDL_Color> generate_module_colors();
 
 #endif
+

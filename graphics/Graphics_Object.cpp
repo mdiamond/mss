@@ -75,3 +75,4 @@ void Graphics_Object::update_location(SDL_Rect _location)
     else
         location = _location;
 }
+

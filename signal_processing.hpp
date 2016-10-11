@@ -31,3 +31,4 @@ void multiply_signals(std::vector<float> *, std::vector<float> *, std::vector<fl
 void multiply_signals(std::vector<float> *, float, std::vector<float> *);
 
 #endif
+

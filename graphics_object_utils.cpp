@@ -150,3 +150,4 @@ std::vector<Graphics_Object *> initialize_waveform_objects(std::vector<std::stri
 
     return graphics_objects;
 }
+

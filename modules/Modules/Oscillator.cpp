@@ -456,3 +456,4 @@ void Oscillator::toggle_button_function(Toggle_Button *toggle_button)
     else if(toggle_button == graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])
         switch_waveform(SQR);
 }
+

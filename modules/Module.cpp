@@ -634,3 +634,4 @@ void Module::clicked()
         }
     }
 }
+

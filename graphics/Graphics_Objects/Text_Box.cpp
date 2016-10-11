@@ -227,3 +227,4 @@ void Text_Box::set_colors(SDL_Color *_color, SDL_Color *_text_color)
     typing_text.set_color(_text_color);
     updated = true;
 }
+

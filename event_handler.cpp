@@ -193,3 +193,4 @@ bool event_handler(SDL_Event *e)
 
     return quit;
 }
+

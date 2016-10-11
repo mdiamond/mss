@@ -24,3 +24,4 @@
 void function_forwarder(Graphics_Object *);
 
 #endif
+

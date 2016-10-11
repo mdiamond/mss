@@ -148,3 +148,4 @@ void draw_surface()
     SDL_RenderPresent(RENDERER);
     SDL_SetRenderTarget(RENDERER, TEXTURE);
 }
+

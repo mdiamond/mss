@@ -20,3 +20,4 @@
 bool event_handler(SDL_Event *);
 
 #endif
+

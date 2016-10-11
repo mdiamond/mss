@@ -110,3 +110,4 @@ void Input_Text_Box::entered()
     active = false;
     typing_text.text = "";
 }
+

@@ -142,3 +142,4 @@ void Waveform::update_location(SDL_Rect _location)
     location = _location;
     background.update_location(_location);
 }
+

@@ -253,3 +253,4 @@ void Output::toggle_button_function(Toggle_Button *toggle_button)
     if(toggle_button == graphics_objects[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON])
         toggle_audio_on();
 }
+

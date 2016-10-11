@@ -92,3 +92,4 @@ void Rect::set_color(SDL_Color *_color)
     color = _color;
     updated = true;
 }
+
