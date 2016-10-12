@@ -107,8 +107,6 @@ public:
     // Virtual member functions
     //   Process audio for the output buffer
     virtual void process() = 0;
-    //   Update parameters at the k rate
-    virtual void update_control_values() = 0;
     //   Output the module's unique information as text
     virtual std::string get_unique_text_representation() = 0;
     //   Handle a button press

@@ -292,9 +292,9 @@ void prettify_utilities_page()
 {
     for(unsigned int i = 0; i < UTILITIES_PAGE->graphics_objects.size(); i ++)
     {
-        if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == BUTTON)
+        if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == Graphics_Object::BUTTON)
             ((Button *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
-        else if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == TEXT_BOX)
+        else if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == Graphics_Object::TEXT_BOX)
             ((Text_Box *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
     }
 }

@@ -90,22 +90,6 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     // }
 }
 
-/*
- * K rate callback is triggered by an SDL_Timer, and simply updates
- * control values for all modules at a rate specified in main.cpp.
- */
-Uint32 k_rate_callback_function(Uint32 interval, void *param)
-{
-    if(SDL_GetAudioStatus() == SDL_AUDIO_PAUSED)
-        return 0;
-
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-        if(MODULES[i] != NULL)
-            MODULES[i]->update_control_values();
-
-    return interval;
-}
-
 /*******************************
  * SIGNAL PROCESSING FUNCTIONS *
  *******************************/

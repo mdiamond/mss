@@ -135,7 +135,7 @@ void draw_surface()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-                if(MODULES[i]->graphics_objects[j]->graphics_object_type == WAVEFORM)
+                if(MODULES[i]->graphics_objects[j]->graphics_object_type == Graphics_Object::WAVEFORM)
                     ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
     SDL_UnlockAudio();
 

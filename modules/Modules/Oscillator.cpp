@@ -168,12 +168,6 @@ void Oscillator::process()
 }
 
 /*
- * Update parameters at the k rate.
- */
-void Oscillator::update_control_values()
-{}
-
-/*
  * Calculate the locations of graphics objects unique to this module type.
  */
 void Oscillator::calculate_unique_graphics_object_locations()

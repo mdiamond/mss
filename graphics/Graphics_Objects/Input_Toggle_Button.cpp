@@ -39,7 +39,7 @@ Input_Toggle_Button::Input_Toggle_Button(std::string name_, SDL_Rect location_,
                                          TTF_Font *font_,
                                          std::string text_on_,
                                          std::string text_off_, bool b_,
-                                         Module *parent, int input_num_,
+                                         Module *parent_, int input_num_,
                                          Input_Text_Box *input_text_box_) :
     Toggle_Button(name_, location_, color_, color_off_, text_color_on_,
                  text_color_off_, font_, text_on_, text_off_, b_, parent_),
@@ -71,7 +71,7 @@ void Input_Toggle_Button::toggle()
         input_text_box->update_current_text(input_text_box->prompt_text.text);
         if(!(input_text_box->prompt_text.text == "input"))
         {
-            float input val = parent->inputs[input_num].val;
+            float input_val = parent->inputs[input_num].val;
             std::string input_val_str = std::to_string(input_val);
             input_text_box->update_current_text(input_val_str);
         }

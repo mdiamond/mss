@@ -134,14 +134,6 @@ void Filter::process()
 }
 
 /*
- * Update parameters at the k rate.
- */
-void Filter::update_control_values()
-{
-
-}
-
-/*
  * Calculate the locations of graphics objects unique to this module type.
  */
 void Filter::calculate_unique_graphics_object_locations()

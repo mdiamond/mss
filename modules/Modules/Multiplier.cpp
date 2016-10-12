@@ -80,7 +80,7 @@ void Multiplier::process()
                      * (1 - inputs[MULTIPLIER_DRY_WET].val))
                     + (inputs[MULTIPLIER_SIGNAL].val
                        * inputs[MULTIPLIER_MULTIPLIER].val
-                       * * inputs[MULTIPLIER_DRY_WET].val);
+                       * inputs[MULTIPLIER_DRY_WET].val);
     }
 
     processed = true;
@@ -231,5 +231,7 @@ void Multiplier::button_function(Button *button)
  * Multiplier has no toggle buttons. This is a dummy function.
  */
 void Multiplier::toggle_button_function(Toggle_Button *toggle_button)
-{}
+{
+
+}
 
