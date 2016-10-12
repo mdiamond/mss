@@ -1,8 +1,7 @@
 /*
  * Matthew Diamond 2015
- * The delay module. This module is capable of applying a
- * delay line to a signal, complete with wet/dry and feedback amount
- * controls.
+ * The delay module. This module is capable of applying a delay line to a
+ * signal, complete with wet/dry and feedback amount controls.
  */
 
 #ifndef MSS_DELAY_HPP

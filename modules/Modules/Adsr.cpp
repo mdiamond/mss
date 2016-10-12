@@ -45,8 +45,7 @@
  */
 Adsr::Adsr() :
     Module(ADSR),
-    current_amplitude(0),
-    adsr_stage(ADSR_A_STAGE)
+    current_amplitude(0), adsr_stage(ADSR_A_STAGE)
 {
     inputs[ADSR_A].val = 500;
     inputs[ADSR_D].val = 500;
@@ -58,15 +57,11 @@ Adsr::Adsr() :
  * Destructor.
  */
 Adsr::~Adsr()
-{
-
-}
+{}
 
 /*
- * Process all dependencies, then
- * fill the output buffer with a waveform given
- * the data contained within this class and the
- * audio device information.
+ * Process all dependencies, then fill the output buffer with a waveform given
+ * the data contained within this class and the audio device information.
  */
 void Adsr::process()
 {
@@ -98,7 +93,8 @@ void Adsr::process()
             case ADSR_A_STAGE:
                 if(note_on)
                 {
-                    double increment = 1 / ((inputs[ADSR_A].val / 1000) * SAMPLE_RATE);
+                    double increment = 1 / ((inputs[ADSR_A].val / 1000)
+                                            * SAMPLE_RATE);
                     current_amplitude += increment;
                     if(current_amplitude >= 1)
                     {
@@ -116,7 +112,9 @@ void Adsr::process()
             case ADSR_D_STAGE:
                 if(note_on)
                 {
-                    double decrement = (1 - inputs[ADSR_S].val) / ((inputs[ADSR_D].val / 1000) * SAMPLE_RATE);
+                    double decrement = (1 - inputs[ADSR_S].val)
+                                       / ((inputs[ADSR_D].val / 1000)
+                                          * SAMPLE_RATE);
                     current_amplitude -= decrement;
                     if(current_amplitude <= inputs[ADSR_S].val)
                     {
@@ -142,7 +140,9 @@ void Adsr::process()
                     adsr_stage = ADSR_A_STAGE;
                 else
                 {
-                    double decrement = inputs[ADSR_S].val / ((inputs[ADSR_R].val / 1000) * SAMPLE_RATE);
+                    double decrement = inputs[ADSR_S].val
+                                       / ((inputs[ADSR_R].val / 1000)
+                                          * SAMPLE_RATE);
                     current_amplitude -= decrement;
                     if(current_amplitude <= 0)
                     {
@@ -161,14 +161,6 @@ void Adsr::process()
     }
 
     processed = true;
-}
-
-/*
- * Update parameters at the k rate.
- */
-void Adsr::update_control_values()
-{
-
 }
 
 /*
@@ -206,28 +198,40 @@ void Adsr::calculate_unique_graphics_object_locations()
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
-    graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y7, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y9, w_signals, h_text_box});
-    graphics_object_locations.push_back({x_signal_cv, y9, w_signals - 1, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_signal_input_toggle_button, y7, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_signal_input_toggle_button, y9, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_text_box, y3, w_waveform,
+                                         h_waveform});
+    graphics_object_locations.push_back({x_text_box, y5, w_text_box,
+                                         h_text_box});
+    graphics_object_locations.push_back({x_text_box, y7, w_signals,
+                                         h_text_box});
+    graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1,
+                                         h_text_box});
+    graphics_object_locations.push_back({x_text_box, y9, w_signals,
+                                         h_text_box});
+    graphics_object_locations.push_back({x_signal_cv, y9, w_signals - 1,
+                                         h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button, y5,
+                                         w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_signal_input_toggle_button, y7,
+                                         w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button, y7,
+                                         w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_signal_input_toggle_button, y9,
+                                         w_input_toggle_button, h_text_box});
+    graphics_object_locations.push_back({x_input_toggle_button, y9,
+                                         w_input_toggle_button, h_text_box});
 }
 
 /*
- * Initialize all graphics objects unique to this module type, and add them to the array
- * of graphics objects.
+ * Initialize all graphics objects unique to this module type, and add them to
+ * the array of graphics objects.
  */
 void Adsr::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+                             text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -241,11 +245,13 @@ void Adsr::initialize_unique_graphics_objects()
 
     Button *button;
     button = new Button(name + " reset current amplitude (button)",
-                    graphics_object_locations[ADSR_RESET_CURRENT_AMPLITUDE_BUTTON],
-                    &secondary_module_color, &primary_module_color, "0", this);
+                        graphics_object_locations[ADSR_RESET_CURRENT_AMPLITUDE_BUTTON],
+                        &secondary_module_color, &primary_module_color, "0",
+                        this);
     graphics_objects.push_back(button);
 
-    names = {name + " note on/off (text)", name + " attack and decay (text)", name + " sustain and release (text)"};
+    names = {name + " note on/off (text)", name + " attack and decay (text)",
+             name + " sustain and release (text)"};
     locations = {graphics_object_locations[ADSR_NOTE_TEXT],
                  graphics_object_locations[ADSR_A_D_TEXT],
                  graphics_object_locations[ADSR_S_R_TEXT]};
@@ -253,8 +259,11 @@ void Adsr::initialize_unique_graphics_objects()
     texts = {"NOTE ON/OFF:", "ATTACK & DECAY:", "SUSTAIN & RELEASE:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors,
+                                                   texts, fonts);
+    graphics_objects.insert(graphics_objects.end(),
+                            tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[ADSR_OUTPUT_WAVEFORM]};
@@ -264,11 +273,19 @@ void Adsr::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
+                                                       background_colors,
+                                                       range_lows, range_highs,
+                                                       buffers);
+    graphics_objects.insert(graphics_objects.end(),
+                            tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
-    names = {name + " note on/off (input text box)", name + " attack (input text box)", name + " decay (input text box)",
-             name + " sustain (input text box)", name + " release (input text box)"};
+    names = {name + " note on/off (input text box)",
+             name + " attack (input text box)",
+             name + " decay (input text box)",
+             name + " sustain (input text box)",
+             name + " release (input text box)"};
     locations = {graphics_object_locations[ADSR_NOTE_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_A_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_D_INPUT_TEXT_BOX],
@@ -282,7 +299,9 @@ void Adsr::initialize_unique_graphics_objects()
     input_nums = {ADSR_NOTE, ADSR_A, ADSR_D, ADSR_S, ADSR_R};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(5, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
+    initialize_input_text_box_objects(names, locations, colors, text_colors,
+                                      prompt_texts, fonts, parents, input_nums,
+                                      input_toggle_buttons);
 
     names = {name + " note on/off (input toggle button)",
              name + " attack (input toggle button)",
@@ -357,7 +376,5 @@ void Adsr::button_function(Button *button)
  * Adsr has no toggle buttons. This is a dummy function.
  */
 void Adsr::toggle_button_function(Toggle_Button *toggle_button)
-{
-
-}
+{}
 

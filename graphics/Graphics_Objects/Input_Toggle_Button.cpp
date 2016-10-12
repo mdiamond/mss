@@ -31,15 +31,20 @@
 /*
  * Constructor.
  */
-Input_Toggle_Button::Input_Toggle_Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
-                             SDL_Color *_color_off, SDL_Color *_text_color_on,
-                             SDL_Color *_text_color_off, TTF_Font *_font, std::string _text_on,
-                             std::string _text_off, bool _b, Module *_parent, int _input_num,
-                             Input_Text_Box *_input_text_box) :
-    Toggle_Button(_name, _location, _color, _color_off, _text_color_on, _text_color_off,
-                  _font, _text_on, _text_off, _b, _parent),
-    input_num(_input_num),
-    input_text_box(_input_text_box)
+Input_Toggle_Button::Input_Toggle_Button(std::string name_, SDL_Rect location_,
+                                         SDL_Color *color_,
+                                         SDL_Color *color_off_,
+                                         SDL_Color *text_color_on_,
+                                         SDL_Color *text_color_off_,
+                                         TTF_Font *font_,
+                                         std::string text_on_,
+                                         std::string text_off_, bool b_,
+                                         Module *parent, int input_num_,
+                                         Input_Text_Box *input_text_box_) :
+    Toggle_Button(name_, location_, color_, color_off_, text_color_on_,
+                 text_color_off_, font_, text_on_, text_off_, b_, parent_),
+    input_num(input_num_),
+    input_text_box(input_text_box_)
 {
     // Overwrite the default type of a toggle button
     graphics_object_type = INPUT_TOGGLE_BUTTON;
@@ -49,14 +54,14 @@ Input_Toggle_Button::Input_Toggle_Button(std::string _name, SDL_Rect _location, 
  * Destructor.
  */
 Input_Toggle_Button::~Input_Toggle_Button()
-{
-
-}
+{}
 
 /*
- * If the input is live, cancel input,
- * otherwise, enter input select mode and
- * set this as the current input toggle button.
+ * If the input is live, cancel input, otherwise, enter input select mode and
+ * set this as the current input toggle button. If canceling input, ensure
+ * that this input toggle button's associated input text box displays either
+ * the correct value for the parameter, or "input" if the parameter must be
+ * live for processing.
  */
 void Input_Toggle_Button::toggle()
 {
@@ -65,7 +70,11 @@ void Input_Toggle_Button::toggle()
         parent->cancel_input(input_num);
         input_text_box->update_current_text(input_text_box->prompt_text.text);
         if(!(input_text_box->prompt_text.text == "input"))
-            input_text_box->update_current_text(std::to_string(parent->inputs[input_num].val));
+        {
+            float input val = parent->inputs[input_num].val;
+            std::string input_val_str = std::to_string(input_val);
+            input_text_box->update_current_text(input_val_str);
+        }
         b = false;
     }
 

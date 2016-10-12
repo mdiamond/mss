@@ -54,9 +54,7 @@ Noise::Noise() :
  * Destructor.
  */
 Noise::~Noise()
-{
-
-}
+{}
 
 /*
  * Produce a random number in the range [-1, 1].
@@ -79,18 +77,11 @@ void Noise::process()
         update_input_vals(i);
 
         output[i] = produce_white_noise_sample();
-        output[i] = scale_sample(output[i], -1, 1, inputs[NOISE_RANGE_LOW].val, inputs[NOISE_RANGE_HIGH].val);
+        output[i] = scale_sample(output[i], -1, 1, inputs[NOISE_RANGE_LOW].val,
+                                 inputs[NOISE_RANGE_HIGH].val);
     }
 
     processed = true;
-}
-
-/*
- * Update parameters at the k rate.
- */
-void Noise::update_control_values()
-{
-
 }
 
 /*
@@ -257,7 +248,5 @@ void Noise::button_function(Button *button)
  * Noise has no toggle buttons. This is a dummy function.
  */
 void Noise::toggle_button_function(Toggle_Button *toggle_button)
-{
-
-}
+{}
 

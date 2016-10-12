@@ -29,12 +29,12 @@
 /*
  * Constructor.
  */
-Page::Page(std::string _name, SDL_Rect _location, SDL_Color *_color,
-           std::vector<Graphics_Object *> *_graphics_objects) :
-    Graphics_Object(_name, PAGE, NULL, _location, _color)
+Page::Page(std::string name_, SDL_Rect location_, SDL_Color *color_,
+           std::vector<Graphics_Object *> *graphics_objects_) :
+    Graphics_Object(name_, PAGE, NULL, location_, color_)
 {
     if(_graphics_objects != NULL)
-        graphics_objects = std::vector<Graphics_Object *>(*_graphics_objects);
+        graphics_objects = std::vector<Graphics_Object *>(*graphics_objects_);
     else
         graphics_objects = std::vector<Graphics_Object *>();
 }

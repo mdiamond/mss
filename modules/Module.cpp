@@ -519,9 +519,9 @@ std::string Module::get_name()
 }
 
 /*
- * Return this module's short name.
- * For example, if this module's name is "oscillator 1", its short
- * name will be "osc 1". A short name is always 5 characters long.
+ * Return this module's short name. For example, if this module's name is
+ * "oscillator 1", its short name will be "osc 1". A short name is always 5
+ * characters long.
  */
 std::string Module::get_short_name()
 {
@@ -529,8 +529,8 @@ std::string Module::get_short_name()
 }
 
 /*
- * Return a text representation of this module. It should
- * contain any information necessary to reconstruct the module.
+ * Return a text representation of this module. It should contain any
+ * information necessary to reconstruct the module.
  */
 std::string Module::get_text_representation()
 {
@@ -553,9 +553,9 @@ std::string Module::get_text_representation()
 }
 
 /*
- * Set the colors of all input text boxes and input
- * toggle buttons to match their input modules' colors
- * if applicable. If not, set them to this module's colors.
+ * Set the colors of all input text boxes and input toggle buttons to match
+ * their input modules' colors if applicable. If not, set them to this module's
+ * colors.
  */
 void Module::adopt_input_colors()
 {

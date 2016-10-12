@@ -56,9 +56,7 @@ Mixer::Mixer() :
  * Destructor.
  */
 Mixer::~Mixer()
-{
-
-}
+{}
 
 /*
  * Process all dependencies, then sum and attenuate all signal inputs.
@@ -88,28 +86,20 @@ void Mixer::process()
                 num_channels ++;
 
         // For each live signal, fetch the relevant sample, multiply by the
-        // associated input multiplier, then add it to the associated sample
-        // in the output buffer
+        // associated input multiplier, then add it to the associated sample in
+        // the output buffer
         for(unsigned int j = 0; j < inputs.size(); j += 2)
             if(inputs[j].live)
                 output[i] += inputs[j].val * inputs[j + 1].val;
 
-        // If auto attenuation is enabled, divide the signal by the number
-        // of signals active
+        // If auto attenuation is enabled, divide the signal by the number of
+        // signals active
         if(auto_attenuate)
             if(num_channels != 0)
                 output[i] /= num_channels;
     }
 
     processed = true;
-}
-
-/*
- * Update parameters at the k rate.
- */
-void Mixer::update_control_values()
-{
-
 }
 
 /*

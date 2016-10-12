@@ -1,11 +1,10 @@
 /*
  * Matthew Diamond 2015
- * The ADSR module. This module is capable of generating an
- * envelope given a 1 or 0 as input. A 1 represents note on,
- * resulting in a rise to initial volume over the attack time,
- * then a decay to sustain volume over the decay time, and then
- * sustain at the sustain volume. A 0 represents note off, resulting
- * in a release to no volume over the release time.
+ * The ADSR module. This module is capable of generating an envelope given a 1
+ * or 0 as input. A 1 represents note on, resulting in a rise to initial
+ * volume over the attack time, then a decay to sustain volume over the decay
+ * time, and then sustain at the sustain volume. A 0 represents note off,
+ * resulting in a release to no volume over the release time.
  */
 
 #ifndef MSS_ADSR_HPP

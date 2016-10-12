@@ -1,8 +1,7 @@
 /*
  * Matthew Diamond 2015
- * Member functions for the Filter class.
- * Filtering functionality adapted from the math on
- * the following webpage:
+ * Member functions for the Filter class. Filtering functionality adapted from
+ * the math on the following webpage:
  * http://www.musicdsp.org/files/Audio-EQ-Cookbook.txt
  */
 
@@ -62,15 +61,11 @@ Filter::Filter() :
  * Destructor.
  */
 Filter::~Filter()
-{
-
-}
+{}
 
 /*
- * Process all dependencies, then
- * fill the output buffer with a waveform given
- * the data contained within this class and the
- * audio device information.
+ * Process all dependencies, then fill the output buffer with a waveform given
+ * the data contained within this class and the audio device information.
  */
 void Filter::process()
 {
@@ -122,7 +117,8 @@ void Filter::process()
         if(!inputs[FILTER_SIGNAL].live)
             inputs[FILTER_SIGNAL].val = 0;
 
-        output[i] = (iir_coefficients[0] / iir_coefficients[3]) * inputs[FILTER_SIGNAL].val
+        output[i] = (iir_coefficients[0] / iir_coefficients[3])
+                    * inputs[FILTER_SIGNAL].val
                     + (iir_coefficients[1] / iir_coefficients[3] * x1)
                     + (iir_coefficients[2] / iir_coefficients[3] * x2)
                     - (iir_coefficients[4] / iir_coefficients[3] * y1)

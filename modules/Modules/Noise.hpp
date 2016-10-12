@@ -1,7 +1,7 @@
 /*
  * Matthew Diamond 2015
- * The noise module. This module is capable of
- * generating different types of noise.
+ * The noise module. This module is capable of generating different types of
+ * noise.
  */
 
 #ifndef MSS_NOISE_HPP

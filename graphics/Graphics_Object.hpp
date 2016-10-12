@@ -23,24 +23,6 @@
 // Included SDL components
 #include "SDL.h"
 
-/**********************************
- * TYPES OF GRAPHICS_OBJECTS ENUM *
- **********************************/
-
-enum GraphicsObjectType
-{
-    BUTTON = 0,
-    INPUT_TEXT_BOX,
-    INPUT_TOGGLE_BUTTON,
-    MODULE,
-    PAGE,
-    RECT,
-    TEXT,
-    TEXT_BOX,
-    TOGGLE_BUTTON,
-    WAVEFORM
-};
-
 /************************************
  * GRAPHICS_OBJECT CLASS DEFINITION *
  ************************************/
@@ -51,6 +33,21 @@ class Module;
 class Graphics_Object
 {
 public:
+    // Graphics_Object type enum
+    enum GraphicsObjectType
+    {
+        BUTTON = 0,
+        INPUT_TEXT_BOX,
+        INPUT_TOGGLE_BUTTON,
+        MODULE,
+        PAGE,
+        RECT,
+        TEXT,
+        TEXT_BOX,
+        TOGGLE_BUTTON,
+        WAVEFORM
+    };
+
     // Module information
     std::string name;
     GraphicsObjectType graphics_object_type;
@@ -59,8 +56,8 @@ public:
     SDL_Color *color;
     bool updated;
     // Constructor and destructor
-    Graphics_Object(std::string, GraphicsObjectType graphics_object_type, Module *,
-                    SDL_Rect, SDL_Color *);
+    Graphics_Object(std::string, GraphicsObjectType graphics_object_type,
+                    Module *, SDL_Rect, SDL_Color *);
     virtual ~Graphics_Object();
 
     // Virtual member functions

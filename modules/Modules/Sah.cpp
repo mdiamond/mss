@@ -53,9 +53,7 @@ Sah::Sah() :
  * Destructor.
  */
 Sah::~Sah()
-{
-
-}
+{}
 
 /*
  * Process all dependencies, then start sampling and holding.
@@ -72,9 +70,9 @@ void Sah::process()
         if(!inputs[SAH_SIGNAL].live)
             inputs[SAH_SIGNAL].val = 0;
 
-        // If the amount of time until the next sample has passed,
-        // update the sample to hold, update the hold time,
-        // then update the time to next sample
+        // If the amount of time until the next sample has passed, update the
+        // sample to hold, update the hold time, then update the time to next
+        // sample
         if(time_to_next_sample <= 0)
         {
             sample = inputs[SAH_SIGNAL].val;
@@ -89,14 +87,6 @@ void Sah::process()
     }
 
     processed = true;
-}
-
-/*
- * Update parameters at the k rate.
- */
-void Sah::update_control_values()
-{
-
 }
 
 /*
@@ -253,7 +243,5 @@ void Sah::button_function(Button *button)
  * Sah has no toggle buttons. This is a dummy function.
  */
 void Sah::toggle_button_function(Toggle_Button *toggle_button)
-{
-
-}
+{}
 

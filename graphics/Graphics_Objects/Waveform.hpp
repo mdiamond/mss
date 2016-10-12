@@ -1,7 +1,7 @@
 /*
  * Matthew Diamond 2015
- * The Waveform graphics object. This object is a waveform
- * visualizer for a given buffer rendered wherever is desired.
+ * The Waveform graphics object. This object is a waveform visualizer for a
+ * given buffer rendered wherever is desired.
  */
 
 #ifndef MSS_WAVEFORM_HPP
@@ -21,10 +21,9 @@
 class Waveform: public Graphics_Object
 {
 public:
-    // The background color, the range of display,
-    // the pointer to the buffer to be rendered,
-    // and an internal buffer to store the buffer
-    // in the main thread
+    // The background color, the range of display, the pointer to the buffer to
+    // be rendered, and an internal buffer to store the buffer in the main
+    // thread
     SDL_Color *background_color;
     float range_low, range_high;
     std::vector<float> *buffer, render_buffer;

@@ -30,8 +30,9 @@
 /*
  * Constructor.
  */
-Rect::Rect(std::string _name, SDL_Rect _location, SDL_Color *_color, Module *_parent) :
-    Graphics_Object(_name, RECT, _parent, _location, _color)
+Rect::Rect(std::string name_, SDL_Rect location_, SDL_Color *color_,
+           Module *parent_) :
+    Graphics_Object(name_, RECT, parent_, location_, color_)
 {
     fill = true;
 }
@@ -40,21 +41,27 @@ Rect::Rect(std::string _name, SDL_Rect _location, SDL_Color *_color, Module *_pa
  * Destructor.
  */
 Rect::~Rect()
-{
-
-}
+{}
 
 /*
- * Render the rectangle. If fill is set, fill it, otherwise,
- * just draw the outline.
+ * Render the rectangle. If fill is set, fill it, otherwise, just draw the
+ * outline.
  */
 void Rect::render()
 {
-    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->was_clicked()) ||
-       name == "background (rect)")
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
+    if(!SELECTING_SRC
+       || (SELECTING_SRC && parent != NULL && parent->was_clicked())
+       || name == "background (rect)")
+    {
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
+                               color->a);
+    }
     else
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);
+    {
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
+                               color->a / 2);
+    }
+
     if(fill)
         SDL_RenderFillRect(RENDERER, &location);
     else
@@ -62,19 +69,20 @@ void Rect::render()
 }
 
 /*
- * Rectangles only respond to clicks during input select mode.
- * When a rectangle is clicked it will call upon its parent module to become
- * a source for the parent of the active input toggle box
+ * Rectangles only respond to clicks during input select mode. When a rectangle
+ * is clicked it will call upon its parent module to become a source for the
+ * parent of the active input toggle box.
  */
 void Rect::clicked()
 {
     if(parent != NULL)
     {
-        std::cout << PINK_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT << std::endl;
+        std::cout << PINK_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT
+                  << std::endl;
 
-        // If it is currently module selection mode (there is an active
-        // input toggle button and we are selecting a source), then this
-        // module has been selected as a source for some input
+        // If it is currently module selection mode (there is an active input
+        // toggle button and we are selecting a source), then this module has
+        // been selected as a source for some input
         if(SELECTING_SRC && CURRENT_INPUT_TOGGLE_BUTTON != NULL &&
            CURRENT_INPUT_TOGGLE_BUTTON->parent != parent)
         {
@@ -87,9 +95,9 @@ void Rect::clicked()
 /*
  * Set this text object's color.
  */
-void Rect::set_color(SDL_Color *_color)
+void Rect::set_color(SDL_Color *color_)
 {
-    color = _color;
+    color = color_;
     updated = true;
 }
 

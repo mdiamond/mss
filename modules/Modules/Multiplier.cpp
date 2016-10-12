@@ -45,8 +45,8 @@
 Multiplier::Multiplier() :
     Module(MULTIPLIER)
 {
-    // The signal input needs to be 0, while the others
-    // need to be 1 to start out
+    // The signal input needs to be 0, while the others need to be 1 to start
+    // out
     inputs[MULTIPLIER_SIGNAL].val = 0;
     inputs[MULTIPLIER_MULTIPLIER].val = 1;
     inputs[MULTIPLIER_DRY_WET].val = 1;
@@ -56,15 +56,13 @@ Multiplier::Multiplier() :
  * Destructor.
  */
 Multiplier::~Multiplier()
-{
-
-}
+{}
 
 /*
- * Process all dependencies, then multiply the original signal by
- * 1 - the control values, and multiply the original signal by
- * the control values scaled. One done, sum the two to get the
- * final output signal for the multiplier module.
+ * Process all dependencies, then multiply the original signal by 1 - the
+ * control values, and multiply the original signal by the control values
+ * scaled. One done, sum the two to get the final output signal for the
+ * multiplier module.
  */
 void Multiplier::process()
 {
@@ -78,19 +76,14 @@ void Multiplier::process()
     {
         update_input_vals(i);
 
-        output[i] = (inputs[MULTIPLIER_SIGNAL].val * (1 - inputs[MULTIPLIER_DRY_WET].val)) +
-                       (inputs[MULTIPLIER_SIGNAL].val * inputs[MULTIPLIER_MULTIPLIER].val * inputs[MULTIPLIER_DRY_WET].val);
+        output[i] = (inputs[MULTIPLIER_SIGNAL].val
+                     * (1 - inputs[MULTIPLIER_DRY_WET].val))
+                    + (inputs[MULTIPLIER_SIGNAL].val
+                       * inputs[MULTIPLIER_MULTIPLIER].val
+                       * * inputs[MULTIPLIER_DRY_WET].val);
     }
 
     processed = true;
-}
-
-/*
- * Update parameters at the k rate.
- */
-void Multiplier::update_control_values()
-{
-
 }
 
 /*
@@ -238,7 +231,5 @@ void Multiplier::button_function(Button *button)
  * Multiplier has no toggle buttons. This is a dummy function.
  */
 void Multiplier::toggle_button_function(Toggle_Button *toggle_button)
-{
-
-}
+{}
 

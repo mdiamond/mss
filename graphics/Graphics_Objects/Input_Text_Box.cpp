@@ -31,12 +31,15 @@
 /*
  * Constructor.
  */
-Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color *_color,
-                               SDL_Color *_text_color, std::string _prompt_text, TTF_Font *_font,
-                               Module *_parent, int _input_num,
-                               Input_Toggle_Button *_input_toggle_button) :
-    Text_Box(_name, _location, _color, _text_color, _prompt_text, _font, _parent),
-    input_num(_input_num), input_toggle_button(_input_toggle_button)
+Input_Text_Box::Input_Text_Box(std::string name_, SDL_Rect location_,
+                               SDL_Color *color_, SDL_Color *text_color_,
+                               std::string prompt_text_, TTF_Font *font_,
+                               Module *parent_, int input_num_,
+                               Input_Toggle_Button *input_toggle_button_) :
+    Text_Box(name_, location_, color_, text_color_, prompt_text_, font_,
+             parent_),
+    input_num(input_num_),
+    input_toggle_button(input_toggle_button_)
 {
     // Override the default type of a text box
     graphics_object_type = INPUT_TEXT_BOX;
@@ -46,13 +49,11 @@ Input_Text_Box::Input_Text_Box(std::string _name, SDL_Rect _location, SDL_Color 
  * Destructor.
  */
 Input_Text_Box::~Input_Text_Box()
-{
-
-}
+{}
 
 /*
- * Return true if it is possible to turn this string into
- * a float. Return false otherwise.
+ * Return true if it is possible to turn this string into a float. Return false
+ * otherwise.
  */
 bool Input_Text_Box::can_floatify(std::string *string)
 {
@@ -69,17 +70,18 @@ bool Input_Text_Box::can_floatify(std::string *string)
 }
 
 /*
- * Stop SDL text input, send this graphics object to the function
- * forwarder, set the current text to be what is in the typing buffer,
- * then set this text box as updated. After that, deactivate this text box
- * and clear the typing buffer.
+ * Stop SDL text input, send this graphics object to the function forwarder,
+ * set the current text to be what is in the typing buffer, then set this text
+ * box as updated. After that, deactivate this text box and clear the typing
+ * buffer.
  */
 void Input_Text_Box::entered()
 {
     Module *src = NULL;
     float val = 0;
 
-    std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << std::endl;
+    std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT
+              << std::endl;
 
     SDL_StopTextInput();
     text.text = typing_text.text;
@@ -94,15 +96,17 @@ void Input_Text_Box::entered()
         else
         {
             src = find_module_as_source(&text.text, &MODULES, parent);
-            text.text = text.text.substr(0, 3) + " " + text.text.substr(text.text.find(" ") + 1);
+            text.text = text.text.substr(0, 3) + " "
+                        + text.text.substr(text.text.find(" ") + 1);
             parent->set(src, input_num);
             input_toggle_button->b = true;
         }
     }
     else
     {
-        std::cout << RED_STDOUT << "entered string contained no characters, idiot"
-             << DEFAULT_STDOUT << std::endl;
+        std::cout << RED_STDOUT
+                  << "entered string contained no characters, idiot"
+                  << DEFAULT_STDOUT << std::endl;
     }
 
     text.updated = true;

@@ -32,18 +32,21 @@
 /*
  * Constructor.
  */
-Text_Box::Text_Box(std::string _name, SDL_Rect _location, SDL_Color *_color,
-                   SDL_Color *_text_color, std::string _prompt_text,
-                   TTF_Font *_font, Module *_parent) :
-    Graphics_Object(_name, TEXT_BOX, _parent, _location, _color),
-    text_color(_text_color),
-    active(false), font(_font),
-    background(Rect(name + " background rect (rect)", location, color, NULL)),
-    text(Text(name + " idle text (text)", _location, text_color, "", _font)),
-    prompt_text(Text(name + " prompt text (text)", _location, text_color, _prompt_text, _font)),
-    typing_text(Text(name + " typing text (text)", _location, text_color, "", _font))
+Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color *color_,
+                   SDL_Color *text_color_, std::string prompt_text_,
+                   TTF_Font *font_, Module *parent_) :
+    Graphics_Object(name_, TEXT_BOX, parent_, location_, color_),
+    text_color(text_color_),
+    active(false), font(font_),
+    background(Rect(name_ + " background rect (rect)", location_, color_,
+                    NULL)),
+    text(Text(name_ + " idle text (text)", location_, text_color_, "", font_)),
+    prompt_text(Text(name_ + " prompt text (text)", location_, text_color_,
+                     prompt_text_, font_)),
+    typing_text(Text(name_ + " typing text (text)", location_, text_color_, "",
+                     font_))
 {
-    SDL_Rect text_location = location;
+    SDL_Rect text_location = location_;
     text_location.x += 1;
     text_location.y += 1;
     text_location.w = 0;
@@ -64,14 +67,11 @@ Text_Box::Text_Box(std::string _name, SDL_Rect _location, SDL_Color *_color,
  * Destructor.
  */
 Text_Box::~Text_Box()
-{
-
-}
+{}
 
 /*
- * Render the text box. If the text has changed, first
- * update the text. If the text box is active, draw a flashing
- * cursor within it.
+ * Render the text box. If the text has changed, first update the text. If the
+ * text box is active, draw a flashing cursor within it.
  */
 void Text_Box::render()
 {
@@ -87,12 +87,11 @@ void Text_Box::render()
         // The current text is not empty, so render that
         if(text.text != "")
             text.render();
-        // The current text is empty, but not the typing text,
-        // so render that
+        // The current text is empty, but not the typing text, so render that
         else if(typing_text.text != "")
             typing_text.render();
-        // Neither the current text or the typing text contain anything,
-        // so render the prompt text
+        // Neither the current text or the typing text contain anything, so
+        // render the prompt text
         else
             prompt_text.render();
     }
@@ -101,8 +100,10 @@ void Text_Box::render()
     // draw the typing cursor
     if(active && CURSOR_ON)
     {
-        SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g, text_color->b, text_color->a);
-        SDL_RenderDrawLine(RENDERER, typing_text.location.x + typing_text.location.w,
+        SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g,
+                               text_color->b, text_color->a);
+        SDL_RenderDrawLine(RENDERER,
+                           typing_text.location.x + typing_text.location.w,
                            typing_text.location.y + 2,
                            typing_text.location.x + typing_text.location.w,
                            typing_text.location.y + 11);
@@ -112,13 +113,13 @@ void Text_Box::render()
 /*
  * Update the location of this text box.
  */
-void Text_Box::update_location(SDL_Rect _location)
+void Text_Box::update_location(SDL_Rect location_)
 {
-    location = _location;
-    background.update_location(_location);
-    text.update_location(_location);
-    typing_text.update_location(_location);
-    prompt_text.update_location(_location);
+    location = location_;
+    background.update_location(location_);
+    text.update_location(location_);
+    typing_text.update_location(location_);
+    prompt_text.update_location(location_);
     text.updated = true;
     typing_text.updated = true;
     prompt_text.updated = true;
@@ -127,9 +128,9 @@ void Text_Box::update_location(SDL_Rect _location)
 /*
  * Update the current text displayed in this text box.
  */
-void Text_Box::update_current_text(std::string s)
+void Text_Box::update_current_text(std::string text_)
 {
-    text.update_text(s);
+    text.update_text(text_);
 }
 
 /*
@@ -164,7 +165,8 @@ void Text_Box::clicked()
 {
     if(!OBJECT_CLICKED)
     {
-        std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << std::endl;
+        std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
+                  << std::endl;
 
         if(!active)
         {
@@ -178,16 +180,17 @@ void Text_Box::clicked()
 }
 
 /*
- * Stop SDL text input, send this graphics object to the function
- * forwarder, set the current text to be what is in the typing buffer,
- * then set this text box as updated. After that, deactivate this text box
- * and clear the typing buffer.
+ * Stop SDL text input, send this graphics object to the function forwarder,
+ * set the current text to be what is in the typing buffer, then set this text
+ * box as updated. After that, deactivate this text box and clear the typing
+ * buffer.
  */
 void Text_Box::entered()
 {
     if(graphics_object_type == TEXT_BOX)
     {
-        std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT << std::endl;
+        std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT
+                  << std::endl;
 
         SDL_StopTextInput();
         text.text = typing_text.text;
@@ -202,12 +205,12 @@ void Text_Box::entered()
 }
 
 /*
- * Cancel input to this text box.
- * Make it inactive, stop SDL text input, etc.
+ * Cancel input to this text box. Make it inactive, stop SDL text input, etc.
  */
 void Text_Box::cancel_input()
 {
-    std::cout << PINK_STDOUT << name << " text input cancelled" << DEFAULT_STDOUT << std::endl;
+    std::cout << PINK_STDOUT << name << " text input cancelled"
+              << DEFAULT_STDOUT << std::endl;
 
     SDL_StopTextInput();
     text.updated = true;
@@ -218,13 +221,13 @@ void Text_Box::cancel_input()
 /*
  * Set the colors of this text box.
  */
-void Text_Box::set_colors(SDL_Color *_color, SDL_Color *_text_color)
+void Text_Box::set_colors(SDL_Color *color_, SDL_Color *text_color_)
 {
-    color = _color;
-    background.set_color(_color);
-    text.set_color(_text_color);
-    prompt_text.set_color(_text_color);
-    typing_text.set_color(_text_color);
+    color = color_;
+    background.set_color(color_);
+    text.set_color(text_color_);
+    prompt_text.set_color(text_color_);
+    typing_text.set_color(text_color_);
     updated = true;
 }
 

@@ -59,17 +59,25 @@ void Text::render()
 {
     if(updated)
     {
-        SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), *color);
+        SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(),
+                                                      *color);
         SDL_DestroyTexture(texture);
         texture = SDL_CreateTextureFromSurface(RENDERER, surface);
         SDL_QueryTexture(texture, NULL, NULL, &location.w, &location.h);
         updated = false;
     }
 
-    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
+    if(!SELECTING_SRC
+       || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
+    {
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
+                               color->a);
+    }
     else
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);
+    {
+        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
+                               color->a / 2);
+    }
 
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
 }
@@ -85,18 +93,18 @@ void Text::clicked()
 /*
  * Update this text object's stored text.
  */
-void Text::update_text(std::string s)
+void Text::update_text(std::string text_)
 {
-    text = s;
+    text = text_;
     updated = true;
 }
 
 /*
  * Set this text object's color.
  */
-void Text::set_color(SDL_Color *_color)
+void Text::set_color(SDL_Color *color_)
 {
-    color = _color;
+    color = color_;
     updated = true;
 }
 

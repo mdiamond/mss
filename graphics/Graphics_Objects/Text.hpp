@@ -1,7 +1,7 @@
 /*
  * Matthew Diamond 2015
- * The Text graphics object. This object is just some text
- * in some place in the window, with some color.
+ * The Text graphics object. This object is just some text in some place in the
+ * window, with some color.
  */
 
 #ifndef MSS_TEXT_HPP
@@ -21,15 +21,13 @@
 class Text: public Graphics_Object
 {
 public:
-    // The font of the text, the text as a string,
-    // and the text as a texture
+    // The font of the text, the text as a string, and the text as a texture
     TTF_Font *font;
     std::string text;
     SDL_Texture *texture;
 
     // Constructor and destructor
-    Text(std::string, SDL_Rect, SDL_Color *,
-         std::string, TTF_Font *);
+    Text(std::string, SDL_Rect, SDL_Color *, std::string, TTF_Font *);
     virtual ~Text();
 
     // Member functions

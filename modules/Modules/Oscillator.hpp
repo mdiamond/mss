@@ -1,12 +1,10 @@
 /*
  * Matthew Diamond 2015
- * The oscillator module. This module is capable of
- * generating a sine, square, triangle, and sawtooth
- * wave given a frequency and pulse width. It can then
- * be modulated with some other oscillator. The
- * resulting waveform can then be processed or output.
- * This module fills its output buffer with the generated signal.
- * This file defines the class.
+ * The oscillator module. This module is capable of generating a sine, square,
+ * triangle, and sawtooth wave given a frequency and pulse width. It can then
+ * be modulated with some other oscillator. The resulting waveform can then
+ * be processed or output. This module fills its output buffer with the
+ * generated signal. This file defines the class.
  */
 
 #ifndef MSS_OSCILLATOR_HPP

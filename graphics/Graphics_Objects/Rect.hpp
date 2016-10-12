@@ -1,8 +1,8 @@
 /*
  * Matthew Diamond 2015
- * The Rect graphics object. This object is just a rectangle
- * in some place in the window, with some color. It also
- * makes it possible to select input modules by clicking.
+ * The Rect graphics object. This object is just a rectangle in some place in
+ * the window, with some color. It also makes it possible to select input
+ * modules by clicking.
  */
 
 #ifndef MSS_RECT_HPP

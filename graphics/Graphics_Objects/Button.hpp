@@ -1,8 +1,7 @@
 /*
  * Matthew Diamond 2015
- * The Button graphics object. This object is
- * just a text box with the ability to be clicked in order
- * to call some function.
+ * The Button graphics object. This object is just a text box with the ability
+ * to be clicked in order to call some function.
  */
 
 #ifndef MSS_BUTTON_HPP
@@ -30,7 +29,8 @@ public:
     Text text;
 
     // Constructor and destructor
-    Button(std::string, SDL_Rect, SDL_Color *, SDL_Color *, std::string, Module *);
+    Button(std::string, SDL_Rect, SDL_Color *, SDL_Color *, std::string,
+           Module *);
     virtual ~Button();
 
     // Member functions

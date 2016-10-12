@@ -1,8 +1,7 @@
 /*
  * Matthew Diamond 2015
- * The header for a base class to represent a generic synthesizer module.
- * Other classes will extend this class and represent different
- * types of modules.
+ * The header for a base class to represent a generic synthesizer module. Other
+ * classes will extend this class and represent different types of modules.
  * The following classes are derived from the Module class:
  *   - ADSR
  *   - Delay
@@ -77,8 +76,7 @@ public:
         bool live;
     };
 
-    // Maps of useful information about modules, defined in
-    // Module.cpp
+    // Maps of useful information about modules, defined in Module.cpp
     //   Map of the names per module type
     static const std::map<ModuleType, std::string> names;
     //   Map of the parameters per module type
@@ -92,13 +90,12 @@ public:
     bool processed;
     SDL_Point upper_left;
     bool graphics_objects_initialized;
-    // A vector containing any graphics objects
-    // necessary for rendering this module, and
-    // their current locations
+    // A vector containing any graphics objects necessary for rendering this
+    // module, and their current locations
     std::vector<SDL_Rect> graphics_object_locations;
     std::vector<Graphics_Object *> graphics_objects;
-    // A vector of inputs, accessed for any processing operations
-    // that depend on the output of other modules
+    // A vector of inputs, accessed for any processing operations that depend
+    // on the output of other modules
     std::vector<Input> inputs;
     // Output buffer
     std::vector<float> output;
@@ -145,10 +142,10 @@ public:
                                            std::vector<Module *>,
                                            std::vector<int>,
                                            std::vector<Input_Toggle_Button *>);
-    //   Initialize input toggle button graphics objects
-    //   (must always be used immediately after, and with the same size arrays for input
-    //    as initialize_input_text_box_objects() because each input toggle button depends
-    //    on and must be able to reference a particular input text object)
+    //   Initialize input toggle button graphics objects (must always be used
+    //   immediately after, and with the same size arrays for input as
+    //   initialize_input_text_box_objects() because each input toggle button
+    //   depends on and must be able to reference a particular input text object)
     void initialize_input_toggle_button_objects(std::vector<std::string>,
                                                 std::vector<SDL_Rect>,
                                                 std::vector<SDL_Color *>,
@@ -177,8 +174,8 @@ public:
     //   Make this module's input stuff adopt the colors of whatever is
     //   outputting to it
     void adopt_input_colors();
-    //   Handle a background rectangle click (this module has been selected
-    //   as a source for some other module's input)
+    //   Handle a background rectangle click (this module has been selected as a
+    //   source for some other module's input)
     void module_selected();
     //   Render this module to the window
     void render();

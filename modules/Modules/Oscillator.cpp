@@ -58,13 +58,10 @@ Oscillator::Oscillator() :
  * Destructor.
  */
 Oscillator::~Oscillator()
-{
-
-}
+{}
 
 /*
- * Given a phase from 0 to 1, calculate
- * and return a sine wave sample.
+ * Given a phase from 0 to 1, calculate and return a sine wave sample.
  */
 double Oscillator::produce_sin_sample(double phase)
 {
@@ -72,8 +69,7 @@ double Oscillator::produce_sin_sample(double phase)
 }
 
 /*
- * Given a phase from 0 to 1, calculate
- * and return a triangle wave sample.
+ * Given a phase from 0 to 1, calculate and return a triangle wave sample.
  */
 double Oscillator::produce_tri_sample(double phase)
 {
@@ -88,8 +84,7 @@ double Oscillator::produce_tri_sample(double phase)
 }
 
 /*
- * Given a phase from 0 to 1, calculate
- * and return a saw wave sample.
+ * Given a phase from 0 to 1, calculate and return a saw wave sample.
  */
 double Oscillator::produce_saw_sample(double phase)
 {
@@ -100,8 +95,7 @@ double Oscillator::produce_saw_sample(double phase)
 }
 
 /*
- * Given a phase from 0 to 1, calculate
- * and return a square wave sample.
+ * Given a phase from 0 to 1, calculate and return a square wave sample.
  */
 double Oscillator::produce_sqr_sample(double phase)
 {
@@ -112,10 +106,8 @@ double Oscillator::produce_sqr_sample(double phase)
 }
 
 /*
- * Process all dependencies, then
- * fill the output buffer with a waveform given
- * the data contained within this class and the
- * audio device information.
+ * Process all dependencies, then fill the output buffer with a waveform given
+ * the data contained within this class and the audio device information.
  */
 void Oscillator::process()
 {
@@ -128,12 +120,14 @@ void Oscillator::process()
     {
         update_input_vals(i);
 
-        phase_offset_diff = inputs[OSCILLATOR_PHASE_OFFSET].val - previous_phase_offset;
+        phase_offset_diff = inputs[OSCILLATOR_PHASE_OFFSET].val
+                            - previous_phase_offset;
         previous_phase_offset = inputs[OSCILLATOR_PHASE_OFFSET].val;
 
         // Calculate and store the current samples amplitude
         // based on phase
-        if(inputs[OSCILLATOR_FREQUENCY].val < 1 && inputs[OSCILLATOR_FREQUENCY].val > -1)
+        if(inputs[OSCILLATOR_FREQUENCY].val < 1
+           && inputs[OSCILLATOR_FREQUENCY].val > -1)
         {
             if(waveform_type == SIN)
                 output[i] = produce_sin_sample(current_phase);
@@ -146,7 +140,8 @@ void Oscillator::process()
         }
         else
             if(waveform_type != SQR || inputs[OSCILLATOR_PULSE_WIDTH].val == .5)
-                output[i] = WAVETABLES[waveform_type][(int) (current_phase * SAMPLE_RATE)];
+                output[i] = WAVETABLES[waveform_type][(int) (current_phase
+                                                             * SAMPLE_RATE)];
             else
                 output[i] = produce_sqr_sample(current_phase);
 
@@ -158,9 +153,10 @@ void Oscillator::process()
                                      inputs[OSCILLATOR_RANGE_LOW].val,
                                      inputs[OSCILLATOR_RANGE_HIGH].val);
 
-        // Increment the current phase according to the frequency, sample rate, and difference in phase offset
-        // since the last sample was calculated
-        current_phase += ((double) inputs[OSCILLATOR_FREQUENCY].val / SAMPLE_RATE) + phase_offset_diff;
+        // Increment the current phase according to the frequency, sample rate,
+        // and difference in phase offset since the last sample was calculated
+        current_phase += ((double) inputs[OSCILLATOR_FREQUENCY].val
+                          / SAMPLE_RATE) + phase_offset_diff;
         // Wrap around if the phase goes above 1 or below 0
         while(current_phase > 1)
             current_phase -= 1;
@@ -175,9 +171,7 @@ void Oscillator::process()
  * Update parameters at the k rate.
  */
 void Oscillator::update_control_values()
-{
-
-}
+{}
 
 /*
  * Calculate the locations of graphics objects unique to this module type.

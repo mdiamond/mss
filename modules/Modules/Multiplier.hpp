@@ -1,9 +1,8 @@
 /*
  * Matthew Diamond 2015
- * The multiplier module. This module applies control values
- * to another signal. Essentially, it just multiplies two signals,
- * but it is also possible to specify an amount to apply for the
- * control values signal.
+ * The multiplier module. This module applies control values to another signal.
+ * Essentially, it just multiplies two signals, but it is also possible to
+ * specify an amount to apply for the control values signal.
  */
 
 #ifndef MSS_MULTIPLIER_HPP

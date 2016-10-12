@@ -31,11 +31,13 @@
 /*
  * Constructor.
  */
-Button::Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
-               SDL_Color *_text_color, std::string _text, Module *_parent) :
-    Graphics_Object(_name, BUTTON, _parent, _location, _color),
-    background(Rect(name + " background rect (rect)", _location, _color, NULL)),
-    text(Text("button text (text)", _location, _text_color, _text, FONT_REGULAR))
+Button::Button(std::string name_, SDL_Rect location_, SDL_Color *color_,
+               SDL_Color *text_color_, std::string text_, Module *parent_) :
+    Graphics_Object(name_, BUTTON, parent_, location_, color_),
+    background(Rect(name_ + " background rect (rect)", location_, color_,
+                    NULL)),
+    text(Text(name_ + "button text (text)", location_, text_color_, text_,
+              FONT_REGULAR))
 {
     // Make the text start 1 pixel away from the edge of the containing box
     text.location.x += 1;
@@ -45,9 +47,7 @@ Button::Button(std::string _name, SDL_Rect _location, SDL_Color *_color,
  * Destructor.
  */
 Button::~Button()
-{
-
-}
+{}
 
 /*
  * Render the Button.
@@ -64,7 +64,8 @@ void Button::render()
  */
 void Button::clicked()
 {
-    std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT << std::endl;
+    std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
+              << std::endl;
 
     if(!OBJECT_CLICKED)
     {

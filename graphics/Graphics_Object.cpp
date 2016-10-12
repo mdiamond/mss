@@ -28,27 +28,23 @@
 /*
  * Constructor.
  */
-Graphics_Object::Graphics_Object(std::string _name,
-                                 GraphicsObjectType _graphics_object_type,
-                                 Module *_parent, SDL_Rect _location,
-                                 SDL_Color *_color) :
-    name(_name), graphics_object_type(_graphics_object_type), parent(_parent),
-    location(_location), color(_color), updated(true)
-{
-
-}
+Graphics_Object::Graphics_Object(std::string name_,
+                                 GraphicsObjectType graphics_object_type_,
+                                 Module *parent_, SDL_Rect location_,
+                                 SDL_Color *color_) :
+    name(name_), graphics_object_type(graphics_object_type_), parent(parent_),
+    location(location_), color(color_), updated(true)
+{}
 
 /*
  * Destructor.
  */
 Graphics_Object::~Graphics_Object()
-{
-
-}
+{}
 
 /*
- * Check if this graphics object was clicked.
- * Return true if it was, false if it wasn't.
+ * Check if this graphics object was clicked. Return true if it was, false if
+ * it wasn't.
  */
 bool Graphics_Object::was_clicked()
 {
@@ -62,17 +58,29 @@ bool Graphics_Object::was_clicked()
 /*
  * Update the location of this graphics object to the one given.
  */
-void Graphics_Object::update_location(SDL_Rect _location)
+void Graphics_Object::update_location(SDL_Rect location_)
 {
     if(graphics_object_type == BUTTON)
-        ((Button *) this)->update_location(_location);
-    else if(graphics_object_type == TEXT_BOX || graphics_object_type == INPUT_TEXT_BOX)
-        ((Text_Box *) this)->update_location(_location);
-    else if(graphics_object_type == TOGGLE_BUTTON || graphics_object_type == INPUT_TOGGLE_BUTTON)
-        ((Toggle_Button *) this)->update_location(_location);
+    {
+        ((Button *) this)->update_location(location_);
+    }
+    else if(graphics_object_type == TEXT_BOX
+            || graphics_object_type == INPUT_TEXT_BOX)
+    {
+        ((Text_Box *) this)->update_location(location_);
+    }
+    else if(graphics_object_type == TOGGLE_BUTTON
+            || graphics_object_type == INPUT_TOGGLE_BUTTON)
+    {
+        ((Toggle_Button *) this)->update_location(location_);
+    }
     else if(graphics_object_type == WAVEFORM)
-        ((Waveform *) this)->update_location(_location);
+    {
+        ((Waveform *) this)->update_location(location_);
+    }
     else
-        location = _location;
+    {
+        location = location_;
+    }
 }
 

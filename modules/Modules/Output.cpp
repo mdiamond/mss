@@ -50,26 +50,15 @@ Output::Output() :
  * Destructor.
  */
 Output::~Output()
-{
-
-}
+{}
 
 /*
- * This function simply calls upon dependencies for
- * processing. The output module depends on all other
- * modules.
+ * This function simply calls upon dependencies for processing. The output
+ * module depends on all other modules.
  */
 void Output::process()
 {
     process_dependencies();
-}
-
-/*
- * Update parameters at the k rate.
- */
-void Output::update_control_values()
-{
-
 }
 
 /*
@@ -212,8 +201,8 @@ void Output::initialize_unique_graphics_objects()
 }
 
 /*
- * Toggle audio processing by either starting or pausing SDL
- * audio, which will halt or start calling of the callback function.
+ * Toggle audio processing by either starting or pausing SDL audio, which will
+ * halt or start calling of the callback function.
  */
 void Output::toggle_audio_on()
 {

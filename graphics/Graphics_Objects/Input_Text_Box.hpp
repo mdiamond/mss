@@ -33,9 +33,8 @@ public:
     Input_Toggle_Button *input_toggle_button;
 
     // Constructor and destructor
-    Input_Text_Box(std::string, SDL_Rect, SDL_Color *, SDL_Color *,
-                   std::string, TTF_Font *, Module *, int,
-                   Input_Toggle_Button *);
+    Input_Text_Box(std::string, SDL_Rect, SDL_Color *, SDL_Color *, std::string,
+                   TTF_Font *, Module *, int, Input_Toggle_Button *);
     virtual ~Input_Text_Box();
 
     // Member functions

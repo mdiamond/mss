@@ -30,13 +30,14 @@
 /*
  * Constructor.
  */
-Waveform::Waveform(std::string _name, SDL_Rect _location,
-                   SDL_Color *_color, SDL_Color *_background_color, float _range_low,
-                   float _range_high, std::vector<float> *_buffer) :
-    Graphics_Object(_name, WAVEFORM, NULL, _location, _color),
-    background_color(_background_color), range_low(_range_low),
-    range_high(_range_high), buffer(_buffer),
-    background(Rect(name + " background rect (rect)", location, background_color, NULL))
+Waveform::Waveform(std::string name_, SDL_Rect location_, SDL_Color *color_,
+                   SDL_Color *background_color_, float range_low_,
+                   float range_high_, std::vector<float> *buffer_) :
+    Graphics_Object(name_, WAVEFORM, NULL, location_, color_),
+    background_color(background_color_), range_low(range_low_),
+    range_high(range_high_), buffer(buffer_),
+    background(Rect(name_ + " background rect (rect)", location_,
+                    background_color_, NULL))
 {
     render_buffer = std::vector<float>(location.w, 0);
 }
@@ -45,13 +46,10 @@ Waveform::Waveform(std::string _name, SDL_Rect _location,
  * Destructor.
  */
 Waveform::~Waveform()
-{
-
-}
+{}
 
 /*
- * Calculate the y pixel location in the waveform line at
- * the given sample i.
+ * Calculate the y pixel location in the waveform line at the given sample i.
  */
 float Waveform::calculate_y(int i)
 {
@@ -59,13 +57,11 @@ float Waveform::calculate_y(int i)
     int y;
 
     if(range_low != -1 || range_high != 1)
-        sample = scale_sample(render_buffer[i],
-                              range_low, range_high, -1, 1);
+        sample = scale_sample(render_buffer[i], range_low, range_high, -1, 1);
     else
         sample = render_buffer[i];
 
-    y = (location.y + location.h / 2) +
-        (sample * -1) * (location.h / 2);
+    y = (location.y + location.h / 2) + (sample * -1) * (location.h / 2);
 
     if(y < location.y)
         y = location.y;
@@ -76,9 +72,9 @@ float Waveform::calculate_y(int i)
 }
 
 /*
- * Copy the buffer to be rendered to inside of this waveform object.
- * This should always be done with audio locked before rendering to
- * avoid interleaving between the main thread and the audio thread.
+ * Copy the buffer to be rendered to inside of this waveform object. This
+ * should always be done with audio locked before rendering to avoid
+ * interleaving between the main thread and the audio thread.
  */
 void Waveform::copy_buffer()
 {
@@ -120,10 +116,15 @@ void Waveform::render()
 
     background.render();
 
-    if(!SELECTING_SRC || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
+    if(!SELECTING_SRC
+       || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
+    {
         SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
+    }
     else
+    {
         SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a / 2);
+    }
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
     SDL_RenderDrawLines(RENDERER, &points2[0], points.size());
     SDL_RenderDrawLines(RENDERER, &points3[0], points.size());
@@ -137,9 +138,12 @@ void Waveform::clicked()
 
 }
 
-void Waveform::update_location(SDL_Rect _location)
+/*
+ * Update the location of this waveform object.
+ */
+void Waveform::update_location(SDL_Rect location_)
 {
-    location = _location;
-    background.update_location(_location);
+    location = location_;
+    background.update_location(location_);
 }
 

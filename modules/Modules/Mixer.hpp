@@ -1,8 +1,8 @@
 /*
  * Matthew Diamond 2015
- * The mixer module. This module attenuates and then sums
- * a few signals. It is capable of automatically attenuating
- * based on how many channels are active if desired.
+ * The mixer module. This module attenuates and then sums a few signals. It is
+ * capable of automatically attenuating based on how many channels are active
+ * if desired.
  */
 
 #ifndef MSS_MIXER_HPP
@@ -81,8 +81,7 @@ public:
         MIXER_SIGNAL_8_MULTIPLIER,
     };
 
-    // A boolean to represent whether or not auto attenuation
-    // should be used
+    // A boolean to represent whether or not auto attenuation should be used
     bool auto_attenuate;
 
     // Constructor and destructor
