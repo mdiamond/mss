@@ -156,7 +156,7 @@ int find_available_module_number(int module_type)
         if(MODULES[i] != NULL && MODULES[i]->module_type == module_type)
         {
             current_num = stoi(
-                              MODULES[i]->name.substr(MODULES[i]->name.find(" ")).substr(1));
+                MODULES[i]->name.substr(MODULES[i]->name.find(" ")).substr(1));
 
             while(nums.size() < current_num)
             {
