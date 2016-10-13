@@ -56,13 +56,21 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     for(int i = 0; i < BUFFER_SIZE; i ++)
     {
         if((output->inputs)[Output::OUTPUT_INPUT_L].input != NULL)
+        {
             buffer[0] = (output->inputs)[Output::OUTPUT_INPUT_L].input->at(i);
+        }
         else
+        {
             buffer[0] = 0;
+        }
         if((output->inputs)[Output::OUTPUT_INPUT_R].input != NULL)
+        {
             buffer[1] = (output->inputs)[Output::OUTPUT_INPUT_R].input->at(i);
+        }
         else
+        {
             buffer[1] = 0;
+        }
 
         buffer += 2;
     }
@@ -72,7 +80,9 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
 
     for(unsigned int i = 1; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
+        {
             MODULES[i]->processed = false;
+        }
 
     // for(unsigned int i = 1; i < MODULES.size(); i ++)
     // {
@@ -104,9 +114,13 @@ void clip_signal(std::vector<float> *buffer, float min, float max)
     for(unsigned int i = 0; i < buffer->size(); i ++)
     {
         if((*buffer)[i] > max)
+        {
             (*buffer)[i] = max;
+        }
         else if((*buffer)[i] < min)
+        {
             (*buffer)[i] = min;
+        }
     }
 }
 
@@ -116,7 +130,9 @@ void clip_signal(std::vector<float> *buffer, float min, float max)
 void copy_signal(std::vector<float> *src, std::vector<float> *dst)
 {
     for(unsigned int i = 0; i < src->size(); i ++)
+    {
         (*dst)[i] = (*src)[i];
+    }
 }
 
 /*
@@ -138,7 +154,7 @@ void scale_signal(std::vector<float> *buffer, float original_low,
  * Scale a sample and return the scaled sample.
  */
 float scale_sample(float sample, float original_low,
-                  float original_high, float low, float high)
+                   float original_high, float low, float high)
 {
     sample = (sample - original_low) / (original_high - original_low);
     sample *= high - low;
@@ -150,31 +166,40 @@ float scale_sample(float sample, float original_low,
 /*
  * Add two signals into a destination buffer.
  */
-void add_signals(std::vector<float> *buffer1, std::vector<float> *buffer2, std::vector<float> *dst)
+void add_signals(std::vector<float> *buffer1, std::vector<float> *buffer2,
+                 std::vector<float> *dst)
 {
     // For each sample
     for(unsigned int i = 0; i < buffer1->size(); i ++)
+    {
         (*dst)[i] = (*buffer1)[i] + (*buffer2)[i];
+    }
 }
 
 /*
  * Multiply two signals into a destination buffer.
  */
-void multiply_signals(std::vector<float> *buffer1, std::vector<float> *buffer2, std::vector<float> *dst)
+void multiply_signals(std::vector<float> *buffer1, std::vector<float> *buffer2,
+                      std::vector<float> *dst)
 {
     // For each sample
     for(unsigned int i = 0; i < buffer1->size(); i ++)
+    {
         (*dst)[i] = (*buffer1)[i] * (*buffer2)[i];
+    }
 }
 
 /*
  * Multiply a signal by some constant and put the resulting signal
  * into a destination buffer.
  */
-void multiply_signals(std::vector<float> *buffer, float val, std::vector<float> *dst)
+void multiply_signals(std::vector<float> *buffer, float val,
+                      std::vector<float> *dst)
 {
     // For each sample
     for(unsigned int i = 0; i < buffer->size(); i ++)
+    {
         (*dst)[i] = (*buffer)[i] * val;
+    }
 }
 

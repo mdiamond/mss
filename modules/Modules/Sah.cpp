@@ -68,7 +68,9 @@ void Sah::process()
         update_input_vals(i);
 
         if(!inputs[SAH_SIGNAL].live)
+        {
             inputs[SAH_SIGNAL].val = 0;
+        }
 
         // If the amount of time until the next sample has passed, update the
         // sample to hold, update the hold time, then update the time to next
@@ -118,7 +120,8 @@ void Sah::calculate_unique_graphics_object_locations()
     x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
     graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
-                                         upper_left.y, 9, 15});
+                                         upper_left.y, 9, 15
+                                        });
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
@@ -136,7 +139,8 @@ void Sah::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+        text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -150,19 +154,22 @@ void Sah::initialize_unique_graphics_objects()
 
     Button *button;
     button = new Button(name + " reset sampler (button)",
-                    graphics_object_locations[SAH_RESET_SAMPLER_BUTTON],
-                    &secondary_module_color, &primary_module_color, "0", this);
+                        graphics_object_locations[SAH_RESET_SAMPLER_BUTTON],
+                        &secondary_module_color, &primary_module_color, "0", this);
     graphics_objects.push_back(button);
 
     names = {name + " signal input (text)", name + " hold time (text)"};
     locations = {graphics_object_locations[SAH_INPUT_TEXT],
-                 graphics_object_locations[SAH_HOLD_TIME_TEXT]};
+                 graphics_object_locations[SAH_HOLD_TIME_TEXT]
+                };
     colors = std::vector<SDL_Color *>(2, &secondary_module_color);
     texts = {"SIGNAL:", "HOLD TIME:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
+                                                   fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[SAH_OUTPUT_WAVEFORM]};
@@ -172,13 +179,17 @@ void Sah::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
+                                                       background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " signal (input text box)",
-             name + " hold time (input text box)"};
+             name + " hold time (input text box)"
+            };
     locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TEXT_BOX],
-                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TEXT_BOX]};
+                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TEXT_BOX]
+                };
     colors = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
     prompt_texts = {"input", "# or input"};
@@ -187,11 +198,13 @@ void Sah::initialize_unique_graphics_objects()
     input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
+    initialize_input_text_box_objects(names, locations, colors, text_colors,
+                                      prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " signal input (input toggle button)", name + " hold time input (input toggle button)"};
     locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON]
+                };
     colors = std::vector<SDL_Color *>(2, &RED);
     color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
@@ -204,15 +217,20 @@ void Sah::initialize_unique_graphics_objects()
     input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
 
     input_text_boxes = {(Input_Text_Box *) graphics_objects[SAH_SIGNAL_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX]};
+                        (Input_Text_Box *) graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX]
+                       };
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs,
                                            text_color_ons, text_color_offs,
                                            fonts, texts, text_offs, bs, parents,
                                            input_nums, input_text_boxes);
 
-    ((Input_Text_Box *) graphics_objects[SAH_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[SAH_SIGNAL_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[SAH_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[SAH_SIGNAL_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON];
 }
 
 /*
@@ -234,9 +252,13 @@ std::string Sah::get_unique_text_representation()
 void Sah::button_function(Button *button)
 {
     if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    {
         delete this;
+    }
     else if(button == graphics_objects[SAH_RESET_SAMPLER_BUTTON])
+    {
         reset_sampler();
+    }
 }
 
 /*

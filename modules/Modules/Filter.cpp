@@ -82,30 +82,30 @@ void Filter::process()
     // Use different calculations for the coefficients of each filter type
     switch(filter_type)
     {
-        case LOWPASS:
-            iir_coefficients[0] = (1 - cos(w0)) / 2;
-            iir_coefficients[1] = 1 - cos(w0);
-            iir_coefficients[2] = (1 - cos(w0)) / 2;
-            iir_coefficients[3] = 1 + alpha;
-            iir_coefficients[4] = -2 * cos(w0);
-            iir_coefficients[5] = 1 - alpha;
-            break;
-        case BANDPASS:
-            iir_coefficients[0] = inputs[FILTER_Q].val * alpha;
-            iir_coefficients[1] = 0;
-            iir_coefficients[2] = (inputs[FILTER_Q].val * -1) * alpha;
-            iir_coefficients[3] = 1 + alpha;
-            iir_coefficients[4] = -2 * cos(w0);
-            iir_coefficients[5] = 1 - alpha;
-            break;
-        case HIGHPASS:
-            iir_coefficients[0] = (1 + cos(w0)) / 2;
-            iir_coefficients[1] = (1 + cos(w0)) * -1;
-            iir_coefficients[2] = (1 + cos(w0)) / 2;
-            iir_coefficients[3] = 1 + alpha;
-            iir_coefficients[4] = -2 * cos(w0);
-            iir_coefficients[5] = 1 - alpha;
-            break;
+    case LOWPASS:
+        iir_coefficients[0] = (1 - cos(w0)) / 2;
+        iir_coefficients[1] = 1 - cos(w0);
+        iir_coefficients[2] = (1 - cos(w0)) / 2;
+        iir_coefficients[3] = 1 + alpha;
+        iir_coefficients[4] = -2 * cos(w0);
+        iir_coefficients[5] = 1 - alpha;
+        break;
+    case BANDPASS:
+        iir_coefficients[0] = inputs[FILTER_Q].val * alpha;
+        iir_coefficients[1] = 0;
+        iir_coefficients[2] = (inputs[FILTER_Q].val * -1) * alpha;
+        iir_coefficients[3] = 1 + alpha;
+        iir_coefficients[4] = -2 * cos(w0);
+        iir_coefficients[5] = 1 - alpha;
+        break;
+    case HIGHPASS:
+        iir_coefficients[0] = (1 + cos(w0)) / 2;
+        iir_coefficients[1] = (1 + cos(w0)) * -1;
+        iir_coefficients[2] = (1 + cos(w0)) / 2;
+        iir_coefficients[3] = 1 + alpha;
+        iir_coefficients[4] = -2 * cos(w0);
+        iir_coefficients[5] = 1 - alpha;
+        break;
     }
 
     // Filter the buffer with the determined coefficients
@@ -115,7 +115,9 @@ void Filter::process()
         update_input_vals(i);
 
         if(!inputs[FILTER_SIGNAL].live)
+        {
             inputs[FILTER_SIGNAL].val = 0;
+        }
 
         output[i] = (iir_coefficients[0] / iir_coefficients[3])
                     * inputs[FILTER_SIGNAL].val
@@ -190,7 +192,8 @@ void Filter::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+        text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -204,13 +207,16 @@ void Filter::initialize_unique_graphics_objects()
 
     names = {name + " signal (text)", name + " frequency cutoff and q (text)"};
     locations = {graphics_object_locations[FILTER_SIGNAL_TEXT],
-                 graphics_object_locations[FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT]};
+                 graphics_object_locations[FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT]
+                };
     colors = std::vector<SDL_Color *>(2, &secondary_module_color);
     texts = {"INPUT SIGNAL:", "CUTOFF & Q:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
+                                                   fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[FILTER_OUTPUT_WAVEFORM]};
@@ -220,14 +226,20 @@ void Filter::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
+                                                       background_colors,
+                                                       range_lows, range_highs,
+                                                       buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " signal (input text box)", name + " frequency cutoff (input text box)",
-             name + " q (input text box)"};
+             name + " q (input text box)"
+            };
     locations = {graphics_object_locations[FILTER_SIGNAL_INPUT_TEXT_BOX],
                  graphics_object_locations[FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX],
-                 graphics_object_locations[FILTER_Q_INPUT_TEXT_BOX]};
+                 graphics_object_locations[FILTER_Q_INPUT_TEXT_BOX]
+                };
     colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(3, &primary_module_color);
     prompt_texts = std::vector<std::string>(3, "# or input");
@@ -237,14 +249,18 @@ void Filter::initialize_unique_graphics_objects()
     input_nums = {FILTER_SIGNAL, FILTER_FREQUENCY_CUTOFF, FILTER_Q};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(3, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
+    initialize_input_text_box_objects(names, locations, colors, text_colors,
+                                      prompt_texts, fonts, parents, input_nums,
+                                      input_toggle_buttons);
 
     names = {name + " signal (input toggle button)",
              name + " frequency cutoff (input toggle button)",
-             name + " q (input toggle button)"};
+             name + " q (input toggle button)"
+            };
     locations = {graphics_object_locations[FILTER_SIGNAL_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[FILTER_Q_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[FILTER_Q_INPUT_TOGGLE_BUTTON]
+                };
     colors = std::vector<SDL_Color *>(3, &RED);
     color_offs = std::vector<SDL_Color *>(3, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
@@ -258,18 +274,22 @@ void Filter::initialize_unique_graphics_objects()
 
     input_text_boxes = {(Input_Text_Box *) graphics_objects[FILTER_SIGNAL_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[FILTER_Q_INPUT_TEXT_BOX]};
+                        (Input_Text_Box *) graphics_objects[FILTER_Q_INPUT_TEXT_BOX]
+                       };
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs,
                                            text_color_ons, text_color_offs,
                                            fonts, texts, text_offs, bs, parents,
                                            input_nums, input_text_boxes);
 
-    names = {name + " lowpass toggle (toggle button)", name + " bandpass toggle (toggle button)",
-             name + " highpass toggle (toggle button)"};
+    names = {name + " lowpass toggle (toggle button)",
+             name + " bandpass toggle (toggle button)",
+             name + " highpass toggle (toggle button)"
+            };
     locations = {graphics_object_locations[FILTER_LP_TOGGLE_BUTTON],
                  graphics_object_locations[FILTER_BP_TOGGLE_BUTTON],
-                 graphics_object_locations[FILTER_HP_TOGGLE_BUTTON]};
+                 graphics_object_locations[FILTER_HP_TOGGLE_BUTTON]
+                };
     colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     color_offs = std::vector<SDL_Color *>(3, &primary_module_color);
     text_color_ons = std::vector<SDL_Color *>(3, &primary_module_color);
@@ -280,13 +300,26 @@ void Filter::initialize_unique_graphics_objects()
     bs = {lowpass_on, bandpass_on, highpass_on};
     parents = std::vector<Module *>(3, this);
 
-    tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-                                                        text_color_offs, fonts, texts, text_offs, bs, parents);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_toggle_button_objects(names, locations,
+                                                            colors, color_offs,
+                                                            text_color_ons,
+                                                            text_color_offs,
+                                                            fonts, texts,
+                                                            text_offs, bs,
+                                                            parents);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
-    ((Input_Text_Box *) graphics_objects[FILTER_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[FILTER_SIGNAL_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[FILTER_Q_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[FILTER_Q_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[FILTER_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[FILTER_SIGNAL_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[FILTER_Q_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[FILTER_Q_INPUT_TOGGLE_BUTTON];
 }
 
 /*
@@ -334,7 +367,9 @@ std::string Filter::get_unique_text_representation()
 void Filter::button_function(Button *button)
 {
     if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    {
         delete this;
+    }
 }
 
 /*
@@ -344,10 +379,16 @@ void Filter::button_function(Button *button)
 void Filter::toggle_button_function(Toggle_Button *toggle_button)
 {
     if(toggle_button == graphics_objects[FILTER_LP_TOGGLE_BUTTON])
+    {
         switch_filter(LOWPASS);
+    }
     else if(toggle_button == graphics_objects[FILTER_BP_TOGGLE_BUTTON])
+    {
         switch_filter(BANDPASS);
+    }
     else if(toggle_button == graphics_objects[FILTER_HP_TOGGLE_BUTTON])
+    {
         switch_filter(HIGHPASS);
+    }
 }
 

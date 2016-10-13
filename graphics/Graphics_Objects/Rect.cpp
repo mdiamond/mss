@@ -63,9 +63,13 @@ void Rect::render()
     }
 
     if(fill)
+    {
         SDL_RenderFillRect(RENDERER, &location);
+    }
     else
+    {
         SDL_RenderDrawRect(RENDERER, &location);
+    }
 }
 
 /*

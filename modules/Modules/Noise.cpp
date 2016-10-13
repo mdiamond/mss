@@ -139,7 +139,8 @@ void Noise::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+        text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -159,8 +160,10 @@ void Noise::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
+                                                       background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " range (text)"};
     locations = {graphics_object_locations[NOISE_RANGE_TEXT]};
@@ -168,12 +171,15 @@ void Noise::initialize_unique_graphics_objects()
     texts = {"RANGE LOW & HIGH:"};
     fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
+                                                   fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " range low (input text box)", name + " range high (input text box)"};
     locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TEXT_BOX],
-                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]};
+                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]
+                };
     colors = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
     prompt_texts = std::vector<std::string>(2, "# or input");
@@ -182,11 +188,13 @@ void Noise::initialize_unique_graphics_objects()
     input_nums = {NOISE_RANGE_LOW, NOISE_RANGE_HIGH};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
+    initialize_input_text_box_objects(names, locations, colors, text_colors,
+                                      prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " range low (input toggle button)", name + " range high (input toggle button)"};
     locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON]
+                };
     colors = std::vector<SDL_Color *>(2, &RED);
     color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
@@ -199,7 +207,8 @@ void Noise::initialize_unique_graphics_objects()
     input_nums = {NOISE_RANGE_LOW, NOISE_RANGE_HIGH};
 
     input_text_boxes = {(Input_Text_Box *) graphics_objects[NOISE_RANGE_LOW_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]};
+                        (Input_Text_Box *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]
+                       };
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs,
                                            text_color_ons, text_color_offs,
@@ -226,8 +235,12 @@ void Noise::initialize_unique_graphics_objects()
     //                                                     text_color_offs, fonts, texts, text_offs, bs, parents);
     // graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
-    ((Input_Text_Box *) graphics_objects[NOISE_RANGE_LOW_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[NOISE_RANGE_LOW_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[NOISE_RANGE_HIGH_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON];
 }
 
 std::string Noise::get_unique_text_representation()
@@ -241,7 +254,9 @@ std::string Noise::get_unique_text_representation()
 void Noise::button_function(Button *button)
 {
     if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    {
         delete this;
+    }
 }
 
 /*

@@ -70,9 +70,13 @@ void Button::clicked()
     if(!OBJECT_CLICKED)
     {
         if(parent == NULL)
+        {
             function_forwarder(this);
+        }
         else
+        {
             parent->button_function(this);
+        }
         OBJECT_CLICKED = true;
     }
 }

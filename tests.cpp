@@ -27,14 +27,17 @@
  * Compare two buffers. Return true if they are the same,
  * false if they are not.
  */
-bool compare_buffers(std::vector<float> *buffer1, std::vector<float> *buffer2, int num_samples)
+bool compare_buffers(std::vector<float> *buffer1, std::vector<float> *buffer2,
+                     int num_samples)
 {
     bool same = true;
 
     for(int i = 0; i < num_samples; i ++)
     {
         if((*buffer1)[i] != (*buffer2)[i])
+        {
             same = false;
+        }
     }
 
     return same;
@@ -49,9 +52,13 @@ void print_test_results(std::string *names, int *results, int test_num)
     {
         std::cout << "Test #" << i + 1 << ": " << names[i] << " - ";
         if(results[i])
+        {
             std::cout << "PASSED!";
+        }
         else
-            std::cout << "FAILED!"; 
+        {
+            std::cout << "FAILED!";
+        }
         std::cout << std::endl;
     }
 }
@@ -67,13 +74,19 @@ bool all_tests_passed(int *results, int test_num)
     for(int i = 0; i < test_num ; i ++)
     {
         if(!results[i])
+        {
             passed = false;
+        }
     }
 
     if(passed)
+    {
         std::cout << "ALL TESTS PASSED!" << std::endl;
+    }
     else
+    {
         std::cout << "TESTS FAILED!" << std::endl;
+    }
 
     return passed;
 }
@@ -112,7 +125,9 @@ bool test_add_signals_1()
     add_signals(&buffer1, &buffer2, &result_buffer);
 
     if(compare_buffers(&expected_buffer, &result_buffer, num_samples))
+    {
         return true;
+    }
 
     return false;
 }
@@ -137,7 +152,9 @@ bool run_tests()
     print_test_results(names, results, test_num);
 
     if(all_tests_passed(results, test_num))
+    {
         return true;
+    }
 
     return false;
 }

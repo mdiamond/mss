@@ -49,7 +49,9 @@ Mixer::Mixer() :
     // All multiplier floats should start at 1
     for(unsigned int i = 0; i < inputs.size(); i ++)
         if(i % 2 == 1)
+        {
             inputs[i].val = 1;
+        }
 }
 
 /*
@@ -70,7 +72,9 @@ void Mixer::process()
 
     // Reset the output buffer
     for(int i = 0; i < BUFFER_SIZE; i ++)
+    {
         output[i] = 0;
+    }
 
     // For each sample
     for(int i = 0; i < BUFFER_SIZE; i ++)
@@ -83,20 +87,26 @@ void Mixer::process()
         // Determine how many channels are active
         for(unsigned int j = 0; j < inputs.size(); j += 2)
             if(inputs[j].live)
+            {
                 num_channels ++;
+            }
 
         // For each live signal, fetch the relevant sample, multiply by the
         // associated input multiplier, then add it to the associated sample in
         // the output buffer
         for(unsigned int j = 0; j < inputs.size(); j += 2)
             if(inputs[j].live)
+            {
                 output[i] += inputs[j].val * inputs[j + 1].val;
+            }
 
         // If auto attenuation is enabled, divide the signal by the number of
         // signals active
         if(auto_attenuate)
             if(num_channels != 0)
+            {
                 output[i] /= num_channels;
+            }
     }
 
     processed = true;
@@ -177,7 +187,8 @@ void Mixer::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors, text_color_ons, text_color_offs;
+    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+        text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -195,8 +206,10 @@ void Mixer::initialize_unique_graphics_objects()
     texts = {"SIGNAL & MULTIPLIER:"};
     fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts, fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
+                                                   fonts);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MIXER_OUTPUT_WAVEFORM]};
@@ -206,8 +219,10 @@ void Mixer::initialize_unique_graphics_objects()
     range_highs = {1};
     buffers = {&output};
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors, background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
+    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
+                                                       background_colors, range_lows, range_highs, buffers);
+    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
+                            tmp_graphics_objects.end());
 
     names = {name + " signal 1 (input text box)",
              name + " signal 1 multiplier (input text box)",
@@ -224,7 +239,8 @@ void Mixer::initialize_unique_graphics_objects()
              name + " signal 7 (input text box)",
              name + " signal 7 multiplier (input text box)",
              name + " signal 8 (input text box)",
-             name + " signal 8 multiplier (input text box)"};
+             name + " signal 8 multiplier (input text box)"
+            };
     locations = {graphics_object_locations[MIXER_SIGNAL_1_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_2_INPUT_TEXT_BOX],
@@ -240,7 +256,8 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TEXT_BOX],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TEXT_BOX],
-                 graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]};
+                 graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]
+                };
     colors = std::vector<SDL_Color *>(16, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(16, &primary_module_color);
     prompt_texts = {"input", "# or input",
@@ -250,7 +267,8 @@ void Mixer::initialize_unique_graphics_objects()
                     "input", "# or input",
                     "input", "# or input",
                     "input", "# or input",
-                    "input", "# or input"};
+                    "input", "# or input"
+                   };
     fonts = std::vector<TTF_Font *>(16, FONT_SMALL);
     parents = std::vector<Module *>(16, this);
     input_nums = {MIXER_SIGNAL_1, MIXER_SIGNAL_1_MULTIPLIER,
@@ -260,10 +278,12 @@ void Mixer::initialize_unique_graphics_objects()
                   MIXER_SIGNAL_5, MIXER_SIGNAL_5_MULTIPLIER,
                   MIXER_SIGNAL_6, MIXER_SIGNAL_6_MULTIPLIER,
                   MIXER_SIGNAL_7, MIXER_SIGNAL_7_MULTIPLIER,
-                  MIXER_SIGNAL_8, MIXER_SIGNAL_8_MULTIPLIER};
+                  MIXER_SIGNAL_8, MIXER_SIGNAL_8_MULTIPLIER
+                 };
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(16, NULL);
 
-    initialize_input_text_box_objects(names, locations, colors, text_colors, prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
+    initialize_input_text_box_objects(names, locations, colors, text_colors,
+                                      prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
 
     names = {name + " signal 1 (input toggle button)",
              name + " signal 1 multiplier (input toggle button)",
@@ -280,7 +300,8 @@ void Mixer::initialize_unique_graphics_objects()
              name + " signal 7 (input toggle button)",
              name + " signal 7 multiplier (input toggle button)",
              name + " signal 8 (input toggle button)",
-             name + " signal 8 multiplier (input toggle button)"};
+             name + " signal 8 multiplier (input toggle button)"
+            };
     locations = {graphics_object_locations[MIXER_SIGNAL_1_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_2_INPUT_TOGGLE_BUTTON],
@@ -296,7 +317,8 @@ void Mixer::initialize_unique_graphics_objects()
                  graphics_object_locations[MIXER_SIGNAL_7_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MIXER_SIGNAL_8_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON]
+                };
     colors = std::vector<SDL_Color *>(16, &RED);
     color_offs = std::vector<SDL_Color *>(16, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(16, &WHITE);
@@ -313,7 +335,8 @@ void Mixer::initialize_unique_graphics_objects()
                   MIXER_SIGNAL_5, MIXER_SIGNAL_5_MULTIPLIER,
                   MIXER_SIGNAL_6, MIXER_SIGNAL_6_MULTIPLIER,
                   MIXER_SIGNAL_7, MIXER_SIGNAL_7_MULTIPLIER,
-                  MIXER_SIGNAL_8, MIXER_SIGNAL_8_MULTIPLIER};
+                  MIXER_SIGNAL_8, MIXER_SIGNAL_8_MULTIPLIER
+                 };
 
     input_text_boxes = {(Input_Text_Box *) graphics_objects[MIXER_SIGNAL_1_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TEXT_BOX],
@@ -330,7 +353,8 @@ void Mixer::initialize_unique_graphics_objects()
                         (Input_Text_Box *) graphics_objects[MIXER_SIGNAL_7_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[MIXER_SIGNAL_8_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]};
+                        (Input_Text_Box *) graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX]
+                       };
 
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs,
@@ -338,22 +362,62 @@ void Mixer::initialize_unique_graphics_objects()
                                            fonts, texts, text_offs, bs, parents,
                                            input_nums, input_text_boxes);
 
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_1_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_1_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_2_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_2_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_3_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_3_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_4_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_4_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_5_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_5_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_6_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_6_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_7_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_7_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_8_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_8_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_1_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_1_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_1_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_2_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_2_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_2_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_3_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_3_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_3_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_4_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_4_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_4_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_5_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_5_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_5_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_6_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_6_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_6_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_7_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_7_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_7_MULTIPLIER_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_8_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[MIXER_SIGNAL_8_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TEXT_BOX])->input_toggle_button
+        = (Input_Toggle_Button *)
+          graphics_objects[MIXER_SIGNAL_8_MULTIPLIER_INPUT_TOGGLE_BUTTON];
 }
 
 std::string Mixer::get_unique_text_representation()
@@ -367,7 +431,9 @@ std::string Mixer::get_unique_text_representation()
 void Mixer::button_function(Button *button)
 {
     if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    {
         delete this;
+    }
 }
 
 /*

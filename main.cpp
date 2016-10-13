@@ -47,7 +47,8 @@ int BUFFER_SIZE;
 bool AUDIO_ON = true;
 
 // Wavetables
-std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE, 0));
+std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
+                                                                  0));
 
 // SDL Window and renderer
 SDL_Window *WINDOW;
@@ -134,7 +135,9 @@ int main()
     if(testing)
     {
         if(!testing_mode())
+        {
             exit_status = -1;
+        }
     }
 
     // If this is normal mode, open SDL, initialize necessary
@@ -142,7 +145,9 @@ int main()
     else
     {
         if(!normal_mode())
+        {
             exit_status = -1;
+        }
     }
 
     // Return an exit status based on whether or not

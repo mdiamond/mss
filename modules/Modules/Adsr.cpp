@@ -75,7 +75,9 @@ void Adsr::process()
         update_input_vals(i);
 
         if(!inputs[ADSR_NOTE].live)
+        {
             inputs[ADSR_NOTE].val = 0;
+        }
 
         // Set the current output sample to the current amplitude
         output[i] = current_amplitude;
@@ -84,79 +86,89 @@ void Adsr::process()
         bool note_on = inputs[ADSR_NOTE].val == 1;
 
         // Do something different based on the current envelope stage
-        switch (adsr_stage)
+        switch(adsr_stage)
         {
-            // During the attack stage, note on will result in incrementing
-            // towards full amplitude and switching to the decay stage when full
-            // amplitude is reached, note off will result in skipping ahead to
-            // the release stage
-            case ADSR_A_STAGE:
-                if(note_on)
+        // During the attack stage, note on will result in incrementing
+        // towards full amplitude and switching to the decay stage when full
+        // amplitude is reached, note off will result in skipping ahead to
+        // the release stage
+        case ADSR_A_STAGE:
+            if(note_on)
+            {
+                double increment = 1 / ((inputs[ADSR_A].val / 1000)
+                                        * SAMPLE_RATE);
+                current_amplitude += increment;
+                if(current_amplitude >= 1)
                 {
-                    double increment = 1 / ((inputs[ADSR_A].val / 1000)
-                                            * SAMPLE_RATE);
-                    current_amplitude += increment;
-                    if(current_amplitude >= 1)
-                    {
-                        current_amplitude = 1;
-                        adsr_stage = ADSR_D_STAGE;
-                    }
+                    current_amplitude = 1;
+                    adsr_stage = ADSR_D_STAGE;
                 }
-                else
-                    adsr_stage = ADSR_R_STAGE;
-                break;
-            // During the decay stage, note on will result in decrementing
-            // towards sustain amplitude and switching to the sustain stage once
-            // sustain amplitude is reached, note off will result in skipping
-            // ahead to the release stage
-            case ADSR_D_STAGE:
-                if(note_on)
+            }
+            else
+            {
+                adsr_stage = ADSR_R_STAGE;
+            }
+            break;
+        // During the decay stage, note on will result in decrementing
+        // towards sustain amplitude and switching to the sustain stage once
+        // sustain amplitude is reached, note off will result in skipping
+        // ahead to the release stage
+        case ADSR_D_STAGE:
+            if(note_on)
+            {
+                double decrement = (1 - inputs[ADSR_S].val)
+                                   / ((inputs[ADSR_D].val / 1000)
+                                      * SAMPLE_RATE);
+                current_amplitude -= decrement;
+                if(current_amplitude <= inputs[ADSR_S].val)
                 {
-                    double decrement = (1 - inputs[ADSR_S].val)
-                                       / ((inputs[ADSR_D].val / 1000)
-                                          * SAMPLE_RATE);
-                    current_amplitude -= decrement;
-                    if(current_amplitude <= inputs[ADSR_S].val)
-                    {
-                        current_amplitude = inputs[ADSR_S].val;
-                        adsr_stage = ADSR_S_STAGE;
-                    }
+                    current_amplitude = inputs[ADSR_S].val;
+                    adsr_stage = ADSR_S_STAGE;
                 }
-                else
-                    adsr_stage = ADSR_R_STAGE;
-                break;
-            // During the sustain stage, note on does nothing, note off will
-            // result in skipping ahead to the release stage
-            case ADSR_S_STAGE:
-                if(!note_on)
-                    adsr_stage = ADSR_R_STAGE;
-                break;
-            // During the release stage, note on will result in switching back
-            // to the attack stage, note off will result in decrementing towards
-            // 0 amplitude, and switching to the idle stage once 0 amplitude is
-            // reached
-            case ADSR_R_STAGE:
-                if(note_on)
-                    adsr_stage = ADSR_A_STAGE;
-                else
+            }
+            else
+            {
+                adsr_stage = ADSR_R_STAGE;
+            }
+            break;
+        // During the sustain stage, note on does nothing, note off will
+        // result in skipping ahead to the release stage
+        case ADSR_S_STAGE:
+            if(!note_on)
+            {
+                adsr_stage = ADSR_R_STAGE;
+            }
+            break;
+        // During the release stage, note on will result in switching back
+        // to the attack stage, note off will result in decrementing towards
+        // 0 amplitude, and switching to the idle stage once 0 amplitude is
+        // reached
+        case ADSR_R_STAGE:
+            if(note_on)
+            {
+                adsr_stage = ADSR_A_STAGE;
+            }
+            else
+            {
+                double decrement = inputs[ADSR_S].val
+                                   / ((inputs[ADSR_R].val / 1000)
+                                      * SAMPLE_RATE);
+                current_amplitude -= decrement;
+                if(current_amplitude <= 0)
                 {
-                    double decrement = inputs[ADSR_S].val
-                                       / ((inputs[ADSR_R].val / 1000)
-                                          * SAMPLE_RATE);
-                    current_amplitude -= decrement;
-                    if(current_amplitude <= 0)
-                    {
-                        adsr_stage = ADSR_IDLE_STAGE;
-                        current_amplitude = 0;
-                    }
+                    adsr_stage = ADSR_IDLE_STAGE;
+                    current_amplitude = 0;
                 }
-                break;
-            // During the idle stage, note on will result in switching to the
-            // attack stage, note off does nothing
-            case ADSR_IDLE_STAGE:
-                if(note_on)
-                    adsr_stage = ADSR_A_STAGE;
-                break;
+            }
+            break;
+        // During the idle stage, note on will result in switching to the
+        // attack stage, note off does nothing
+        case ADSR_IDLE_STAGE:
+            if(note_on)
+            {
+                adsr_stage = ADSR_A_STAGE;
+            }
+            break;
         }
     }
 
@@ -194,32 +206,44 @@ void Adsr::calculate_unique_graphics_object_locations()
     x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
     graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
-                                         upper_left.y, 9, 15});
+                                         upper_left.y, 9, 15
+                                        });
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform,
-                                         h_waveform});
+                                         h_waveform
+                                        });
     graphics_object_locations.push_back({x_text_box, y5, w_text_box,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_text_box, y7, w_signals,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_text_box, y9, w_signals,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_signal_cv, y9, w_signals - 1,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_input_toggle_button, y5,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
     graphics_object_locations.push_back({x_signal_input_toggle_button, y7,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
     graphics_object_locations.push_back({x_input_toggle_button, y7,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
     graphics_object_locations.push_back({x_signal_input_toggle_button, y9,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
     graphics_object_locations.push_back({x_input_toggle_button, y9,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
 }
 
 /*
@@ -231,7 +255,7 @@ void Adsr::initialize_unique_graphics_objects()
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
     std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
-                             text_color_ons, text_color_offs;
+        text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -251,10 +275,12 @@ void Adsr::initialize_unique_graphics_objects()
     graphics_objects.push_back(button);
 
     names = {name + " note on/off (text)", name + " attack and decay (text)",
-             name + " sustain and release (text)"};
+             name + " sustain and release (text)"
+            };
     locations = {graphics_object_locations[ADSR_NOTE_TEXT],
                  graphics_object_locations[ADSR_A_D_TEXT],
-                 graphics_object_locations[ADSR_S_R_TEXT]};
+                 graphics_object_locations[ADSR_S_R_TEXT]
+                };
     colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     texts = {"NOTE ON/OFF:", "ATTACK & DECAY:", "SUSTAIN & RELEASE:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
@@ -285,12 +311,14 @@ void Adsr::initialize_unique_graphics_objects()
              name + " attack (input text box)",
              name + " decay (input text box)",
              name + " sustain (input text box)",
-             name + " release (input text box)"};
+             name + " release (input text box)"
+            };
     locations = {graphics_object_locations[ADSR_NOTE_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_A_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_D_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_S_INPUT_TEXT_BOX],
-                 graphics_object_locations[ADSR_R_INPUT_TEXT_BOX]};
+                 graphics_object_locations[ADSR_R_INPUT_TEXT_BOX]
+                };
     colors = std::vector<SDL_Color *>(5, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
@@ -307,12 +335,14 @@ void Adsr::initialize_unique_graphics_objects()
              name + " attack (input toggle button)",
              name + " decay (input toggle button)",
              name + " sustain (input toggle button)",
-             name + " release (input toggle button)"};
+             name + " release (input toggle button)"
+            };
     locations = {graphics_object_locations[ADSR_NOTE_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[ADSR_A_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[ADSR_D_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[ADSR_S_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[ADSR_R_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[ADSR_R_INPUT_TOGGLE_BUTTON]
+                };
     colors = std::vector<SDL_Color *>(5, &RED);
     color_offs = std::vector<SDL_Color *>(5, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(5, &WHITE);
@@ -323,24 +353,36 @@ void Adsr::initialize_unique_graphics_objects()
     bs = std::vector<bool>(5, false);
     parents = std::vector<Module *>(5, this);
     input_nums = {ADSR_NOTE, ADSR_A, ADSR_D,
-                  ADSR_S, ADSR_R};
+                  ADSR_S, ADSR_R
+                 };
 
     input_text_boxes = {(Input_Text_Box *) graphics_objects[ADSR_NOTE_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[ADSR_A_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[ADSR_D_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[ADSR_S_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[ADSR_R_INPUT_TEXT_BOX]};
+                        (Input_Text_Box *) graphics_objects[ADSR_R_INPUT_TEXT_BOX]
+                       };
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs,
                                            text_color_ons, text_color_offs,
                                            fonts, texts, text_offs, bs, parents,
                                            input_nums, input_text_boxes);
 
-    ((Input_Text_Box *) graphics_objects[ADSR_NOTE_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_NOTE_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[ADSR_A_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_A_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[ADSR_D_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_D_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[ADSR_S_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_S_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[ADSR_R_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[ADSR_R_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[ADSR_NOTE_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[ADSR_NOTE_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[ADSR_A_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[ADSR_A_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[ADSR_D_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[ADSR_D_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[ADSR_S_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[ADSR_S_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[ADSR_R_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[ADSR_R_INPUT_TOGGLE_BUTTON];
 }
 
 std::string Adsr::get_unique_text_representation()
@@ -367,9 +409,13 @@ void Adsr::reset_current_amplitude()
 void Adsr::button_function(Button *button)
 {
     if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    {
         delete this;
+    }
     else if(button == graphics_objects[ADSR_RESET_CURRENT_AMPLITUDE_BUTTON])
+    {
         reset_current_amplitude();
+    }
 }
 
 /*

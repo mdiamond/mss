@@ -34,9 +34,13 @@ Page::Page(std::string name_, SDL_Rect location_, SDL_Color *color_,
     Graphics_Object(name_, PAGE, NULL, location_, color_)
 {
     if(graphics_objects_ != NULL)
+    {
         graphics_objects = std::vector<Graphics_Object *>(*graphics_objects_);
+    }
     else
+    {
         graphics_objects = std::vector<Graphics_Object *>();
+    }
 }
 
 /*
@@ -54,7 +58,9 @@ void Page::render()
 {
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
         if(graphics_objects[i] != NULL)
+        {
             graphics_objects[i]->render();
+        }
 }
 
 /*
@@ -64,6 +70,8 @@ void Page::clicked()
 {
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
         if(graphics_objects[i]->was_clicked())
+        {
             graphics_objects[i]->clicked();
+        }
 }
 

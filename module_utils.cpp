@@ -36,14 +36,30 @@ void create_module(int type)
 
     switch(type)
     {
-        case Module::ADSR: module = new Adsr(); break;
-        case Module::DELAY: module = new Delay(); break;
-        case Module::FILTER: module = new Filter(); break;
-        case Module::MIXER: module = new Mixer(); break;
-        case Module::MULTIPLIER: module = new Multiplier(); break;
-        case Module::NOISE: module = new Noise(); break;
-        case Module::OSCILLATOR: module = new Oscillator(); break;
-        case Module::SAH: module = new Sah(); break;
+    case Module::ADSR:
+        module = new Adsr();
+        break;
+    case Module::DELAY:
+        module = new Delay();
+        break;
+    case Module::FILTER:
+        module = new Filter();
+        break;
+    case Module::MIXER:
+        module = new Mixer();
+        break;
+    case Module::MULTIPLIER:
+        module = new Multiplier();
+        break;
+    case Module::NOISE:
+        module = new Noise();
+        break;
+    case Module::OSCILLATOR:
+        module = new Oscillator();
+        break;
+    case Module::SAH:
+        module = new Sah();
+        break;
     }
 
     module->initialize_graphics_objects();
@@ -59,11 +75,15 @@ void create_module(int type)
         }
 
         if(i == MODULES.size() - 1)
+        {
             push_on_back = true;
+        }
     }
 
     if(push_on_back)
+    {
         MODULES.push_back(module);
+    }
 
     MODULES_CHANGED = true;
 }
@@ -79,7 +99,9 @@ Module *find_module(std::string *name, std::vector<Module *> *modules)
         if(MODULES[i] != NULL)
             if(modules->at(i)->get_name() == *name
                || modules->at(i)->get_short_name() == *name)
+            {
                 return modules->at(i);
+            }
     }
 
     return NULL;
@@ -90,20 +112,27 @@ Module *find_module(std::string *name, std::vector<Module *> *modules)
  * is not the same module as the destination module, and is not the
  * output module. Otherwise, return NULL and print an error message.
  */
-Module *find_module_as_source(std::string *name, std::vector<Module *> *modules, Module *dst)
+Module *find_module_as_source(std::string *name, std::vector<Module *> *modules,
+                              Module *dst)
 {
     Module *src = find_module(name, &MODULES);
     if(src == NULL)
-        std::cout << RED_STDOUT << "Input could not be set, no such module" << DEFAULT_STDOUT << std::endl;
+    {
+        std::cout << RED_STDOUT << "Input could not be set, no such module"
+                  << DEFAULT_STDOUT << std::endl;
+    }
     else if(src == MODULES[0])
     {
-        std::cout << RED_STDOUT << "The output module does not output any signals accessible within the context of this software"
-                           << DEFAULT_STDOUT << std::endl;
+        std::cout << RED_STDOUT
+                  << "The output module does not output any signals "
+                  "accessible within the context of this software"
+                  << DEFAULT_STDOUT << std::endl;
         return NULL;
     }
     else if(src == dst)
     {
-        std::cout << RED_STDOUT << "No module may output to itself" << DEFAULT_STDOUT << std::endl;
+        std::cout << RED_STDOUT << "No module may output to itself"
+                  << DEFAULT_STDOUT << std::endl;
         return NULL;
     }
 
@@ -126,10 +155,13 @@ int find_available_module_number(int module_type)
     {
         if(MODULES[i] != NULL && MODULES[i]->module_type == module_type)
         {
-            current_num = stoi(MODULES[i]->name.substr(MODULES[i]->name.find(" ")).substr(1));
+            current_num = stoi(
+                              MODULES[i]->name.substr(MODULES[i]->name.find(" ")).substr(1));
 
             while(nums.size() < current_num)
+            {
                 nums.push_back(false);
+            }
 
             nums[current_num - 1] = true;
         }
@@ -138,7 +170,9 @@ int find_available_module_number(int module_type)
     for(unsigned int i = 0; i < nums.size(); i ++)
     {
         if(!nums[i])
+        {
             return i + 1;
+        }
     }
 
     return nums.size() + 1;
@@ -148,7 +182,9 @@ int find_available_module_slot()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] == NULL)
+        {
             return i;
+        }
 
     return MODULES.size();
 }
@@ -207,7 +243,8 @@ std::vector<SDL_Color> generate_module_colors()
         euclidian_distance = sqrt(pow(yuv[0] - text_yuv[0], 2) +
                                   pow(yuv[1] - text_yuv[1], 2) +
                                   pow(yuv[2] - text_yuv[2], 2));
-    } while(euclidian_distance < .7 || euclidian_distance > .9);
+    }
+    while(euclidian_distance < .7 || euclidian_distance > .9);
 
     color.r = rgb[0] * 255.0;
     color.g = rgb[1] * 255.0;

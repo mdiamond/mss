@@ -57,16 +57,24 @@ float Waveform::calculate_y(int i)
     int y;
 
     if(range_low != -1 || range_high != 1)
+    {
         sample = scale_sample(render_buffer[i], range_low, range_high, -1, 1);
+    }
     else
+    {
         sample = render_buffer[i];
+    }
 
     y = (location.y + location.h / 2) + (sample * -1) * (location.h / 2);
 
     if(y < location.y)
+    {
         y = location.y;
+    }
     if(y > location.y + location.h)
+    {
         y = location.y + location.h;
+    }
 
     return y;
 }
@@ -82,9 +90,13 @@ void Waveform::copy_buffer()
     for(int i = BUFFER_SIZE - location.w; i < BUFFER_SIZE; i ++)
     {
         if(buffer != NULL)
+        {
             render_buffer[index] = (*buffer)[i];
+        }
         else
+        {
             render_buffer[index] = 0;
+        }
         index ++;
     }
 }

@@ -90,7 +90,9 @@ void Toggle_Button::clicked()
                   << std::endl;
 
         if(graphics_object_type == INPUT_TOGGLE_BUTTON)
+        {
             ((Input_Toggle_Button *) this)->toggle();
+        }
         else
         {
             toggle();

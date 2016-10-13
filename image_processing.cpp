@@ -39,7 +39,9 @@ void update_graphics_objects()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
+        {
             MODULES[i]->update_graphics_object_locations();
+        }
 
     MODULES_CHANGED = false;
 }
@@ -55,7 +57,9 @@ Module *hovering_over()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
             if(MODULES[i]->was_clicked())
+            {
                 module = MODULES[i];
+            }
 
     return module;
 }
@@ -82,13 +86,17 @@ void calculate_pages()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         if(graphics_objects.size() == 0)
+        {
             graphics_objects.push_back((Graphics_Object *) UTILITIES_PAGE);
+        }
 
         if(MODULES[i] != NULL)
         {
             // Mark each graphics objects in the module as updated
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+            {
                 MODULES[i]->graphics_objects[j]->updated = true;
+            }
 
             // Add the module to the list of sub page graphics objects
             graphics_objects.push_back((Graphics_Object *) MODULES[i]);
@@ -97,12 +105,13 @@ void calculate_pages()
         // If this is the last sub page in the current page, or
         // if there are no more modules to take into consideration
         if(i % (MODULES_PER_COLUMN * MODULES_PER_ROW) ==
-           (unsigned) (MODULES_PER_COLUMN * MODULES_PER_ROW) - 1 ||
-           i == MODULES.size() - 1)
+           (unsigned)(MODULES_PER_COLUMN * MODULES_PER_ROW) - 1
+           || i == MODULES.size() - 1)
         {
             // Create the page using the created vector of sub pages, add it
             // to the global list of pages
-            current_page = new Page(std::to_string(i / (MODULES_PER_COLUMN * MODULES_PER_ROW)) + " (page)",
+            current_page = new Page(std::to_string(i / (MODULES_PER_COLUMN *
+                                                        MODULES_PER_ROW)) + " (page)",
                                     WINDOW_RECT, &BLACK, &graphics_objects);
             PAGES.push_back(current_page);
             current_page = NULL;
@@ -135,8 +144,11 @@ void draw_surface()
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-                if(MODULES[i]->graphics_objects[j]->graphics_object_type == Graphics_Object::WAVEFORM)
+                if(MODULES[i]->graphics_objects[j]->graphics_object_type
+                   == Graphics_Object::WAVEFORM)
+                {
                     ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
+                }
     SDL_UnlockAudio();
 
     // Render graphics objects for the current page

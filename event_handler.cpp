@@ -43,52 +43,72 @@ void keydown_event(SDL_Event *e)
     if(e->key.keysym.sym == SDLK_1)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::ADSR);
+        }
     }
     else if(e->key.keysym.sym == SDLK_2)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::DELAY);
+        }
     }
     else if(e->key.keysym.sym == SDLK_3)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::FILTER);
+        }
     }
     else if(e->key.keysym.sym == SDLK_4)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::MIXER);
+        }
     }
     else if(e->key.keysym.sym == SDLK_5)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::MULTIPLIER);
+        }
     }
     else if(e->key.keysym.sym == SDLK_6)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::NOISE);
+        }
     }
     else if(e->key.keysym.sym == SDLK_7)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::OSCILLATOR);
+        }
     }
     else if(e->key.keysym.sym == SDLK_8)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             create_module(Module::SAH);
+        }
     }
     else if(e->key.keysym.sym == SDLK_LEFTBRACKET)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             increment_page_number(-1);
+        }
     }
     else if(e->key.keysym.sym == SDLK_RIGHTBRACKET)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
+        {
             increment_page_number(1);
+        }
     }
     else if(ACTIVE_TEXT_BOX != NULL && e->key.keysym.sym == SDLK_ESCAPE)
     {
@@ -104,7 +124,7 @@ void keydown_event(SDL_Event *e)
     // text box, call its entered() function and pass it the
     // text that's been recorded from the keyboard previously
     else if(ACTIVE_TEXT_BOX != NULL && (e->key.keysym.sym == SDLK_RETURN ||
-            e->key.keysym.sym == SDLK_KP_ENTER))
+                                        e->key.keysym.sym == SDLK_KP_ENTER))
     {
         ACTIVE_TEXT_BOX->entered();
     }
@@ -130,7 +150,9 @@ void check_click()
     // If there is an active text box, and it is not what was clicked,
     // make the text box inactive
     if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->was_clicked())
+    {
         ACTIVE_TEXT_BOX->cancel_input();
+    }
 
     OBJECT_CLICKED = false;
 
@@ -147,7 +169,9 @@ void mouse_event(SDL_Event *e)
     MOUSE_X = e->motion.x;
     MOUSE_Y = e->motion.y;
     if(e->type == SDL_MOUSEBUTTONDOWN)
+    {
         check_click();
+    }
 }
 
 /*****************
@@ -169,11 +193,15 @@ bool event_handler(SDL_Event *e)
         // out of the event handler loop, and the calling function
         // will terminate the program
         if(e->type == SDL_QUIT)
+        {
             quit = true;
+        }
 
         // Otherwise, if a keyboard key is pressed...
         else if(e->type == SDL_KEYDOWN)
+        {
             keydown_event(e);
+        }
 
         // If neither an SDL_QUIT or SDL_KEYDOWN event has been received,
         // but a SDL_TEXTINPUT event has been received, add the typed text
@@ -181,14 +209,18 @@ bool event_handler(SDL_Event *e)
         // impossible to receive an event of this type if no text box is
         // currently active)
         else if(e->type == SDL_TEXTINPUT && ACTIVE_TEXT_BOX != NULL)
+        {
             ACTIVE_TEXT_BOX->add_characters(e->text.text);
+        }
 
         // If none of the above events have been received, but any kind of
         // mouse event has been received, get the mouse coordinates, and
         // if the event is an SDL_MOUSEBUTTONDOWN, check for clicked objects
         else if(e->type == SDL_MOUSEBUTTONDOWN ||
                 e->type == SDL_MOUSEMOTION)
+        {
             mouse_event(e);
+        }
     }
 
     return quit;

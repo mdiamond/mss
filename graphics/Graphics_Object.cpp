@@ -48,9 +48,11 @@ Graphics_Object::~Graphics_Object()
  */
 bool Graphics_Object::was_clicked()
 {
-    if(MOUSE_X >= location.x && MOUSE_X < location.x + location.w &&
-       MOUSE_Y >= location.y && MOUSE_Y < location.y + location.h)
+    if(MOUSE_X >= location.x && MOUSE_X < location.x + location.w
+       && MOUSE_Y >= location.y && MOUSE_Y < location.y + location.h)
+    {
         return true;
+    }
 
     return false;
 }

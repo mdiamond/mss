@@ -38,7 +38,8 @@
  * MODULE NAME PER MODULE TYPE *
  *******************************/
 
-const std::map<Module::ModuleType, std::string> Module::names = {
+const std::map<Module::ModuleType, std::string> Module::names =
+{
     {ADSR, "adsr"},
     {DELAY, "delay"},
     {FILTER, "filter"},
@@ -54,8 +55,11 @@ const std::map<Module::ModuleType, std::string> Module::names = {
  * MODULE PARAMETER NAMES PER MODULE TYPE *
  ******************************************/
 
-const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters = {
-    {ADSR,
+const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
+=
+{
+    {
+        ADSR,
         {
             "NOTE ON/OFF",
             "ATTACK",
@@ -64,7 +68,8 @@ const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
             "RELEASE"
         }
     },
-    {DELAY,
+    {
+        DELAY,
         {
             "SIGNAL",
             "MAX DELAY TIME",
@@ -73,14 +78,16 @@ const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
             "WET/DRY AMOUNT"
         }
     },
-    {FILTER,
+    {
+        FILTER,
         {
             "SIGNAL",
             "FREQUENCY CUTOFF",
             "FILTER QUALITY"
         }
     },
-    {MIXER,
+    {
+        MIXER,
         {
             "SIGNAL 1",
             "SIGNAL 1 MULTIPLIER",
@@ -100,20 +107,23 @@ const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
             "SIGNAL 8 MULTIPLIER"
         }
     },
-    {MULTIPLIER,
+    {
+        MULTIPLIER,
         {
             "SIGNAL",
             "MULTIPLIER",
             "DRY/WET"
         }
     },
-    {NOISE,
+    {
+        NOISE,
         {
             "RANGE LOW",
             "RANGE HIGH"
         }
     },
-    {OSCILLATOR,
+    {
+        OSCILLATOR,
         {
             "FREQUENCY",
             "PHASE OFFSET",
@@ -122,13 +132,15 @@ const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
             "RANGE HIGH"
         }
     },
-    {OUTPUT,
+    {
+        OUTPUT,
         {
             "LEFT SIGNAL",
             "RIGHT SIGNAL"
         }
     },
-    {SAH,
+    {
+        SAH,
         {
             "SIGNAL",
             "HOLD TIME"
@@ -144,9 +156,12 @@ const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
  * Constructor.
  */
 Module::Module(ModuleType _module_type) :
-    Graphics_Object(names.at(_module_type) + " " + std::to_string(find_available_module_number(_module_type)),
-    MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
-    module_type(_module_type), number(find_available_module_slot()), processed(false),
+    Graphics_Object(
+        names.at(_module_type) + " "
+        + std::to_string(find_available_module_number(_module_type)),
+        MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
+    module_type(_module_type), number(find_available_module_slot()),
+    processed(false),
     inputs(std::vector<Input>(parameters.at(_module_type).size())),
     output(std::vector<float>(BUFFER_SIZE, 0))
 {
@@ -169,23 +184,31 @@ Module::~Module()
     // Remove this module from the list of modules
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL && MODULES[i] == this)
+        {
             MODULES[i] = NULL;
+        }
 
     // Cancel any inputs that this module is outputting to
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
             for(unsigned int j = 0; j < MODULES[i]->inputs.size(); j ++)
                 if(MODULES[i]->inputs[j].from == this)
+                {
                     MODULES[i]->cancel_input(j);
+                }
 
     // Erase this module from the list of modules
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL && MODULES[i] == this)
+        {
             MODULES.erase(MODULES.begin() + i);
+        }
 
     // Delete all graphics objects
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+    {
         delete graphics_objects[i];
+    }
 
     // Make sure that all inputs that were using this module as a source have
     // their associated input text boxes reset, and their input toggle buttons
@@ -200,18 +223,25 @@ Module::~Module()
 
             for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
             {
-                if(MODULES[i]->graphics_objects[j]->graphics_object_type == INPUT_TOGGLE_BUTTON)
+                if(MODULES[i]->graphics_objects[j]->graphics_object_type
+                   == INPUT_TOGGLE_BUTTON)
                 {
-                    input_toggle_button = ((Input_Toggle_Button *) MODULES[i]->graphics_objects[j]);
+                    input_toggle_button =
+                        ((Input_Toggle_Button *) MODULES[i]->graphics_objects[j]);
                     if(input_toggle_button->b)
                     {
                         input_text_box = input_toggle_button->input_text_box;
                         if(input_text_box->text.text == get_short_name())
                         {
                             if(input_text_box->prompt_text.text == "input")
+                            {
                                 input_text_box->update_current_text("");
+                            }
                             else
-                                input_text_box->update_current_text(std::to_string(MODULES[i]->inputs[dependency_num].val));
+                            {
+                                input_text_box->update_current_text(
+                                    std::to_string(MODULES[i]->inputs[dependency_num].val));
+                            }
                             input_toggle_button->b = false;
                         }
                     }
@@ -238,13 +268,16 @@ Module::~Module()
                    && MODULES[i]->inputs[dependency_num].live)
                 {
                     input_text_box = (Input_Text_Box *) MODULES[i]->graphics_objects[j];
-                    dependency_short_name = MODULES[i]->inputs[dependency_num].from->get_short_name();
+                    dependency_short_name =
+                        MODULES[i]->inputs[dependency_num].from->get_short_name();
                     input_text_box->update_current_text(dependency_short_name);
                     dependency_num ++;
                 }
                 else if(MODULES[i]->graphics_objects[j]->graphics_object_type == INPUT_TEXT_BOX
                         && !MODULES[i]->inputs[dependency_num].live)
+                {
                     dependency_num ++;
+                }
             }
 
             text = (Text *) MODULES[i]->graphics_objects[MODULE_NAME_TEXT];
@@ -269,7 +302,9 @@ void Module::process_dependencies()
 {
     for(unsigned int i = 0; i < inputs.size(); i ++)
         if(inputs[i].live && !inputs[i].from->processed)
+        {
             inputs[i].from->process();
+        }
 }
 
 /*
@@ -281,7 +316,9 @@ void Module::update_input_vals(int i)
 {
     for(unsigned int j = 0; j < inputs.size(); j ++)
         if(inputs[j].live)
+        {
             inputs[j].val = inputs[j].input->at(i);
+        }
 }
 
 /*
@@ -300,10 +337,14 @@ void Module::calculate_graphics_object_locations()
     upper_left.y = ((y * MODULE_HEIGHT) + (y * MODULE_SPACING));
 
     graphics_object_locations.push_back({upper_left.x, upper_left.y,
-                                        MODULE_WIDTH, MODULE_HEIGHT});
-    graphics_object_locations.push_back({upper_left.x + 2, upper_left.y + 3, 0, 0});
+                                         MODULE_WIDTH, MODULE_HEIGHT
+                                        });
+    graphics_object_locations.push_back({upper_left.x + 2, upper_left.y + 3, 0,
+                                         0
+                                        });
     graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 9,
-                                         upper_left.y, 9, 15});
+                                         upper_left.y, 9, 15
+                                        });
 
     calculate_unique_graphics_object_locations();
 }
@@ -312,21 +353,23 @@ void Module::calculate_graphics_object_locations()
  * Initialize a batch of input text box objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_text_box_objects(std::vector<std::string> names,
-                                               std::vector<SDL_Rect> locations,
-                                               std::vector<SDL_Color *> colors,
-                                               std::vector<SDL_Color *> text_colors,
-                                               std::vector<std::string> prompt_texts,
-                                               std::vector<TTF_Font *> fonts,
-                                               std::vector<Module *> parents,
-                                               std::vector<int> input_nums,
-                                               std::vector<Input_Toggle_Button *> input_toggle_buttons)
+void Module::initialize_input_text_box_objects(
+    std::vector<std::string> names,
+    std::vector<SDL_Rect> locations,
+    std::vector<SDL_Color *> colors,
+    std::vector<SDL_Color *> text_colors,
+    std::vector<std::string> prompt_texts,
+    std::vector<TTF_Font *> fonts,
+    std::vector<Module *> parents,
+    std::vector<int> input_nums,
+    std::vector<Input_Toggle_Button *> input_toggle_buttons)
 {
     Input_Text_Box *input_text_box = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)
     {
-        input_text_box = new Input_Text_Box(names[i], locations[i], colors[i], text_colors[i],
+        input_text_box = new Input_Text_Box(names[i], locations[i], colors[i],
+                                            text_colors[i],
                                             prompt_texts[i], fonts[i], parents[i], input_nums[i],
                                             input_toggle_buttons[i]);
         graphics_objects.push_back(input_text_box);
@@ -337,27 +380,31 @@ void Module::initialize_input_text_box_objects(std::vector<std::string> names,
  * Initialize a batch of input toggle button objects given arrays of contructor inputs.
  * Return a vector of the contructed graphics objects.
  */
-void Module::initialize_input_toggle_button_objects(std::vector<std::string> names,
-                                                    std::vector<SDL_Rect> locations,
-                                                    std::vector<SDL_Color *> colors,
-                                                    std::vector<SDL_Color *> color_offs,
-                                                    std::vector<SDL_Color *> text_color_ons,
-                                                    std::vector<SDL_Color *> text_color_offs,
-                                                    std::vector<TTF_Font *> fonts,
-                                                    std::vector<std::string> text_ons,
-                                                    std::vector<std::string> text_offs,
-                                                    std::vector<bool> bs,
-                                                    std::vector<Module *> parents,
-                                                    std::vector<int> input_nums,
-                                                    std::vector<Input_Text_Box *> input_text_boxes)
+void Module::initialize_input_toggle_button_objects(
+    std::vector<std::string> names,
+    std::vector<SDL_Rect> locations,
+    std::vector<SDL_Color *> colors,
+    std::vector<SDL_Color *> color_offs,
+    std::vector<SDL_Color *> text_color_ons,
+    std::vector<SDL_Color *> text_color_offs,
+    std::vector<TTF_Font *> fonts,
+    std::vector<std::string> text_ons,
+    std::vector<std::string> text_offs,
+    std::vector<bool> bs,
+    std::vector<Module *> parents,
+    std::vector<int> input_nums,
+    std::vector<Input_Text_Box *> input_text_boxes)
 {
     Input_Toggle_Button *input_toggle_button = NULL;
 
     for(unsigned int i = 0; i < names.size(); i ++)
     {
-        input_toggle_button = new Input_Toggle_Button(names[i], locations[i], colors[i], color_offs[i], text_color_ons[i],
-                                            text_color_offs[i], fonts[i], text_ons[i], text_offs[i], bs[i], parents[i],
-                                            input_nums[i], input_text_boxes[i]);
+        input_toggle_button = new Input_Toggle_Button(
+            names[i], locations[i], colors[i],
+            color_offs[i], text_color_ons[i],
+            text_color_offs[i], fonts[i], text_ons[i],
+            text_offs[i], bs[i], parents[i],
+            input_nums[i], input_text_boxes[i]);
         graphics_objects.push_back(input_toggle_button);
     }
 }
@@ -421,7 +468,9 @@ void Module::update_graphics_object_locations()
 
     // Update graphics object locations
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+    {
         graphics_objects[i]->update_location(graphics_object_locations[i]);
+    }
 }
 
 /*
@@ -440,7 +489,7 @@ void Module::set(float val, int input_num)
     adopt_input_colors();
 
     std::cout << name << " " << parameters.at(module_type).at(input_num)
-         << " changed to " << val << std::endl;
+              << " changed to " << val << std::endl;
 }
 
 /*
@@ -463,9 +512,13 @@ void Module::set(Module *src, int input_num)
     {
         Waveform *waveform;
         if(input_num == Output::OUTPUT_INPUT_L)
+        {
             waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM];
+        }
         else
+        {
             waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM];
+        }
         waveform->buffer = &src->output;
     }
 
@@ -476,7 +529,7 @@ void Module::set(Module *src, int input_num)
     // on
 
     std::cout << name << " " << parameters.at(module_type).at(input_num)
-         << " is now coming from " << src->name << std::endl;
+              << " is now coming from " << src->name << std::endl;
 }
 
 /*
@@ -498,16 +551,20 @@ void Module::cancel_input(int input_num)
     {
         Waveform *waveform;
         if(input_num == Output::OUTPUT_INPUT_L)
+        {
             waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM];
+        }
         else
+        {
             waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM];
+        }
         waveform->buffer = NULL;
     }
 
     adopt_input_colors();
 
     std::cout << name << " " << parameters.at(module_type).at(input_num)
-         << " input cancelled" << std::endl;
+              << " input cancelled" << std::endl;
 }
 
 /*
@@ -538,12 +595,18 @@ std::string Module::get_text_representation()
 
     result += std::to_string(module_type) + " (" + name + ")" + "\n";
     for(unsigned int i = 0; i < inputs.size(); i ++)
+    {
         result += std::to_string(inputs[i].val) + "\n";
+    }
     for(unsigned int i = 0; i < inputs.size(); i ++)
         if(inputs[i].from == NULL)
+        {
             result += "NULL\n";
+        }
         else
+        {
             result += inputs[i].from->name + "\n";
+        }
 
     result += this->get_unique_text_representation();
 
@@ -566,11 +629,15 @@ void Module::adopt_input_colors()
         if(graphics_objects[i]->graphics_object_type == INPUT_TEXT_BOX)
         {
             if(inputs[dependency_num].live)
-                ((Input_Text_Box *) graphics_objects[i])->set_colors(&inputs[dependency_num].from->primary_module_color,
-                                                                     &inputs[dependency_num].from->secondary_module_color);
+                ((Input_Text_Box *) graphics_objects[i])->set_colors(
+                    &inputs[dependency_num].from->primary_module_color,
+                    &inputs[dependency_num].from->secondary_module_color);
             else
-                ((Input_Text_Box *) graphics_objects[i])->set_colors(&secondary_module_color, &primary_module_color);
-
+            {
+                ((Input_Text_Box *) graphics_objects[i])->set_colors(
+                    &secondary_module_color,
+                    &primary_module_color);
+            }
             dependency_num ++;
         }
     }
@@ -595,24 +662,36 @@ void Module::module_selected()
     if(module_type == OUTPUT)
     {
         std::cout << RED_STDOUT
-        << "The output module cannot be the source for any inputs"
-        << DEFAULT_STDOUT << std::endl;
+                  << "The output module cannot be the source for any inputs"
+                  << DEFAULT_STDOUT << std::endl;
     }
     else
     {
-        CURRENT_INPUT_TOGGLE_BUTTON->parent->set(this, CURRENT_INPUT_TOGGLE_BUTTON->input_num);
+        CURRENT_INPUT_TOGGLE_BUTTON->parent->set(this,
+                                                 CURRENT_INPUT_TOGGLE_BUTTON->input_num);
         CURRENT_INPUT_TOGGLE_BUTTON->b = true;
         SELECTING_SRC = false;
-        CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->update_current_text(get_short_name());
+        CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->update_current_text(
+            get_short_name());
         // If it's the output module, set the waveform's buffer
         if(CURRENT_INPUT_TOGGLE_BUTTON->parent->module_type == OUTPUT)
         {
             // If it's the left input, update the left waveform
-            if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON])
-                ((Waveform *) MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM])->buffer = &this->output;
+            if(CURRENT_INPUT_TOGGLE_BUTTON
+               == MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON])
+            {
+                ((Waveform *)
+                 MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM])->buffer =
+                     &this->output;
+            }
             // Else, update the right waveform
-            else if(CURRENT_INPUT_TOGGLE_BUTTON == MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON])
-                ((Waveform *) MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM])->buffer = &this->output;
+            else if(CURRENT_INPUT_TOGGLE_BUTTON
+                    == MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON])
+            {
+                ((Waveform *)
+                 MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM])->buffer =
+                     &this->output;
+            }
         }
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;
     }
@@ -621,7 +700,9 @@ void Module::module_selected()
 void Module::render()
 {
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
+    {
         graphics_objects[i]->render();
+    }
 }
 
 void Module::clicked()

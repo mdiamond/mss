@@ -62,32 +62,57 @@ void no_parent_function_forwarder(Graphics_Object *g)
     possible_names = {"add adsr (button)", "add delay (button)", "add filter (button)",
                       "add mixer (button)", "add multiplier (button)", "add noise (button)",
                       "add oscillator (button)", "add sah (button)", "previous page (button)",
-                      "next page (button)", "save patch (text box)", "load patch (text box)"};
+                      "next page (button)", "save patch (text box)", "load patch (text box)"
+                     };
 
     if(g->name == possible_names[0])
+    {
         create_module(Module::ADSR);
+    }
     else if(g->name == possible_names[1])
+    {
         create_module(Module::DELAY);
+    }
     else if(g->name == possible_names[2])
+    {
         create_module(Module::FILTER);
+    }
     else if(g->name == possible_names[3])
+    {
         create_module(Module::MIXER);
+    }
     else if(g->name == possible_names[4])
+    {
         create_module(Module::MULTIPLIER);
+    }
     else if(g->name == possible_names[5])
+    {
         create_module(Module::NOISE);
+    }
     else if(g->name == possible_names[6])
+    {
         create_module(Module::OSCILLATOR);
+    }
     else if(g->name == possible_names[7])
+    {
         create_module(Module::SAH);
+    }
     else if(g->name == possible_names[8])
+    {
         increment_page_number(-1);
+    }
     else if(g->name == possible_names[9])
+    {
         increment_page_number(1);
+    }
     else if(g->name == possible_names[10])
+    {
         save_patch(((Text_Box *) g)->text.text);
+    }
     else if(g->name == possible_names[11])
+    {
         load_patch(((Text_Box *) g)->text.text);
+    }
 }
 
 /**********************
@@ -102,6 +127,8 @@ void function_forwarder(Graphics_Object *g)
 {
     // If the graphics object has no parent, find out what to do with it
     if(g->parent == NULL)
+    {
         no_parent_function_forwarder(g);
+    }
 }
 

@@ -39,7 +39,9 @@
 void destroy_pages()
 {
     for(unsigned int i = 0; i < PAGES.size(); i ++)
+    {
         delete PAGES[i];
+    }
 }
 
 /*
@@ -49,7 +51,9 @@ void destroy_modules()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
         if(MODULES[i] != NULL)
+        {
             delete MODULES[i];
+        }
 }
 
 /*
@@ -118,7 +122,9 @@ bool normal_mode()
     {
         // Handle any events
         if(event_handler(&e))
+        {
             break;
+        }
 
         // Draw the surface
         draw_surface();
@@ -127,14 +133,17 @@ bool normal_mode()
         // Every 100 frames, print out the framerate
         if(frame % 100 == 0)
         {
-            std::cout << GREEN_STDOUT << ((frame - frame_previous) / (frame_timer->check_time_elapsed() / 1000.0))
-                 << " frames per second." << DEFAULT_STDOUT << std::endl;
+            std::cout << GREEN_STDOUT << ((frame - frame_previous) /
+                                          (frame_timer->check_time_elapsed() / 1000.0))
+                      << " frames per second." << DEFAULT_STDOUT << std::endl;
             frame_previous = frame;
         }
 
         // Every 30 frames, negate the status of the typing cursor
         if(frame % 30 == 0)
+        {
             CURSOR_ON = !CURSOR_ON;
+        }
     }
 
     // Pause audio

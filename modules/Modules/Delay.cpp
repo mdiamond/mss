@@ -75,15 +75,17 @@ float Delay::calculate_wet_sample()
     float x0, x1, y0, y1, interpolated_sample;
     float delayed_sample = current_sample - delay_samples;
     while(delayed_sample < 0)
+    {
         delayed_sample += circular_buffer.size();
+    }
 
     x0 = ((int) delayed_sample) % circular_buffer.size();
-    x1 = ((int) (delayed_sample + 1)) % circular_buffer.size();
+    x1 = ((int)(delayed_sample + 1)) % circular_buffer.size();
     y0 = circular_buffer[x0];
     y1 = circular_buffer[x1];
 
     interpolated_sample = y0 + ((y1 - y0) * ((delayed_sample - x0)
-                          / (x1 - x0)));
+                                             / (x1 - x0)));
 
     return interpolated_sample;
 }
@@ -116,7 +118,9 @@ void Delay::process()
         update_input_vals(i);
 
         if(!inputs[DELAY_SIGNAL].live)
+        {
             inputs[DELAY_SIGNAL].val = 0;
+        }
 
         // If the delay time has changed, update the number of samples for which
         // to delay, then store the new delay time as the new previous delay
@@ -189,30 +193,41 @@ void Delay::calculate_unique_graphics_object_locations()
     x_signal_input_toggle_button = x_text_box + w_signals + 1;
 
     graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
-                                         upper_left.y, 9, 15});
+                                         upper_left.y, 9, 15
+                                        });
     graphics_object_locations.push_back({x_text, y4, 0, 0});
     graphics_object_locations.push_back({x_text, y6, 0, 0});
     graphics_object_locations.push_back({x_text, y8, 0, 0});
     graphics_object_locations.push_back({x_text_box, y3, w_waveform,
-                                         h_waveform});
+                                         h_waveform
+                                        });
     graphics_object_locations.push_back({x_text_box, y5, w_text_box,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_text_box, y7, w_signals + 11,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_text_box, y9, w_signals,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_signal_cv, y9, w_signals - 1,
-                                         h_text_box});
+                                         h_text_box
+                                        });
     graphics_object_locations.push_back({x_input_toggle_button, y5,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
     graphics_object_locations.push_back({x_input_toggle_button, y7,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
     graphics_object_locations.push_back({x_signal_input_toggle_button, y9,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
     graphics_object_locations.push_back({x_input_toggle_button, y9,
-                                         w_input_toggle_button, h_text_box});
+                                         w_input_toggle_button, h_text_box
+                                        });
 }
 
 /*
@@ -224,7 +239,7 @@ void Delay::initialize_unique_graphics_objects()
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
     std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
-                             text_color_ons, text_color_offs;
+        text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
     std::vector<int> input_nums;
@@ -238,16 +253,18 @@ void Delay::initialize_unique_graphics_objects()
 
     Button *button;
     button = new Button(name + " reset buffer (button)",
-                    graphics_object_locations[DELAY_RESET_BUFFER_BUTTON],
-                    &secondary_module_color, &primary_module_color, "0", this);
+                        graphics_object_locations[DELAY_RESET_BUFFER_BUTTON],
+                        &secondary_module_color, &primary_module_color, "0", this);
     graphics_objects.push_back(button);
 
     names = {name + " signal (text)",
              name + " max delay time and delay time (text)",
-             name + " feedback amount and wet/dry (text)"};
+             name + " feedback amount and wet/dry (text)"
+            };
     locations = {graphics_object_locations[DELAY_SIGNAL_TEXT],
                  graphics_object_locations[DELAY_MAX_DELAY_TIME_AND_DELAY_TIME_TEXT],
-                 graphics_object_locations[DELAY_FEEDBACK_AMOUNT_AND_WET_DRY_TEXT]};
+                 graphics_object_locations[DELAY_FEEDBACK_AMOUNT_AND_WET_DRY_TEXT]
+                };
     colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     texts = {"SIGNAL INPUT:", "MAX DELAY & DELAY:", "FEEDBACK & WET/DRY:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
@@ -278,12 +295,14 @@ void Delay::initialize_unique_graphics_objects()
              name + " max delay time (input text box)",
              name + " delay time (input text box)",
              name + " feedback amount (input text box)",
-             name + " wet/dry (input text box)"};
+             name + " wet/dry (input text box)"
+            };
     locations = {graphics_object_locations[DELAY_SIGNAL_INPUT_TEXT_BOX],
                  graphics_object_locations[DELAY_MAX_DELAY_TIME_INPUT_TEXT_BOX],
                  graphics_object_locations[DELAY_DELAY_TIME_INPUT_TEXT_BOX],
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX],
-                 graphics_object_locations[DELAY_WET_DRY_INPUT_TEXT_BOX]};
+                 graphics_object_locations[DELAY_WET_DRY_INPUT_TEXT_BOX]
+                };
     colors = std::vector<SDL_Color *>(5, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
@@ -292,7 +311,8 @@ void Delay::initialize_unique_graphics_objects()
     fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
     parents = std::vector<Module *>(5, this);
     input_nums = {DELAY_SIGNAL, DELAY_MAX_DELAY_TIME, DELAY_DELAY_TIME,
-                  DELAY_FEEDBACK_AMOUNT, DELAY_WET_DRY};
+                  DELAY_FEEDBACK_AMOUNT, DELAY_WET_DRY
+                 };
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(5, NULL);
 
     initialize_input_text_box_objects(names, locations, colors, text_colors,
@@ -302,11 +322,13 @@ void Delay::initialize_unique_graphics_objects()
     names = {name + " signal (input toggle button)",
              name + " delay time (input toggle button)",
              name + " feedback amount (input toggle button)",
-             name + " wet/dry (input toggle button)"};
+             name + " wet/dry (input toggle button)"
+            };
     locations = {graphics_object_locations[DELAY_SIGNAL_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[DELAY_DELAY_TIME_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON]};
+                 graphics_object_locations[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON]
+                };
     colors = std::vector<SDL_Color *>(4, &RED);
     color_offs = std::vector<SDL_Color *>(4, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(4, &WHITE);
@@ -317,22 +339,33 @@ void Delay::initialize_unique_graphics_objects()
     bs = std::vector<bool>(4, false);
     parents = std::vector<Module *>(4, this);
     input_nums = {DELAY_SIGNAL, DELAY_DELAY_TIME, DELAY_FEEDBACK_AMOUNT,
-                  DELAY_WET_DRY};
+                  DELAY_WET_DRY
+                 };
 
     input_text_boxes = {(Input_Text_Box *) graphics_objects[DELAY_SIGNAL_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[DELAY_DELAY_TIME_INPUT_TEXT_BOX],
                         (Input_Text_Box *) graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[DELAY_WET_DRY_INPUT_TEXT_BOX]};
+                        (Input_Text_Box *) graphics_objects[DELAY_WET_DRY_INPUT_TEXT_BOX]
+                       };
 
     initialize_input_toggle_button_objects(names, locations, colors, color_offs,
                                            text_color_ons, text_color_offs,
                                            fonts, texts, text_offs, bs, parents,
                                            input_nums, input_text_boxes);
 
-    ((Input_Text_Box *) graphics_objects[DELAY_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[DELAY_SIGNAL_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[DELAY_DELAY_TIME_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[DELAY_DELAY_TIME_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON];
-    ((Input_Text_Box *) graphics_objects[DELAY_WET_DRY_INPUT_TEXT_BOX])->input_toggle_button = (Input_Toggle_Button *) graphics_objects[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[DELAY_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[DELAY_SIGNAL_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[DELAY_DELAY_TIME_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[DELAY_DELAY_TIME_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *)
+         graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON];
+    ((Input_Text_Box *)
+     graphics_objects[DELAY_WET_DRY_INPUT_TEXT_BOX])->input_toggle_button =
+         (Input_Toggle_Button *) graphics_objects[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON];
 }
 
 std::string Delay::get_unique_text_representation()
@@ -358,9 +391,13 @@ void Delay::reset_buffer()
 void Delay::button_function(Button *button)
 {
     if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    {
         delete this;
+    }
     else if(button == graphics_objects[DELAY_RESET_BUFFER_BUTTON])
+    {
         reset_buffer();
+    }
 }
 
 /*

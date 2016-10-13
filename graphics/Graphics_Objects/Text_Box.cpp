@@ -80,20 +80,28 @@ void Text_Box::render()
 
     // The text box is active, render the typing buffer
     if(active)
+    {
         typing_text.render();
+    }
     // Otherwise
     else
     {
         // The current text is not empty, so render that
         if(text.text != "")
+        {
             text.render();
+        }
         // The current text is empty, but not the typing text, so render that
         else if(typing_text.text != "")
+        {
             typing_text.render();
+        }
         // Neither the current text or the typing text contain anything, so
         // render the prompt text
         else
+        {
             prompt_text.render();
+        }
     }
 
     // If the text box is active and the cursor is current supposed to be drawn,
@@ -148,7 +156,9 @@ void Text_Box::add_characters(char *ch)
 void Text_Box::delete_character()
 {
     if(!typing_text.text.empty())
+    {
         typing_text.text.pop_back();
+    }
 
     typing_text.updated = true;
 }
@@ -201,7 +211,9 @@ void Text_Box::entered()
         typing_text.text = "";
     }
     else
+    {
         ((Input_Text_Box *) this)->entered();
+    }
 }
 
 /*

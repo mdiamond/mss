@@ -45,6 +45,9 @@ void save_patch(std::string filename)
         std::cout << "Patch saving not implemented" << std::endl;
     }
     else
-        std::cout << RED_STDOUT << "Patch could not be saved!" << DEFAULT_STDOUT << std::endl;
+    {
+        std::cout << RED_STDOUT << "Patch could not be saved!" << DEFAULT_STDOUT
+                  << std::endl;
+    }
 }
 

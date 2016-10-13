@@ -52,7 +52,8 @@ bool initialize()
     // system("clear");
 
     // Initialize SDL with the video and audio subsystems
-    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1)) {
+    if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1))
+    {
         std::cout << "Could not initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
@@ -60,7 +61,9 @@ bool initialize()
 
     // Initialize audio device
     if(!open_audio_device())
+    {
         return false;
+    }
 
     // Initialize truetype
     if(TTF_Init() == -1)
@@ -71,22 +74,30 @@ bool initialize()
 
     // Open ttf fonts
     if(!load_fonts())
+    {
         return false;
+    }
 
     // Open a window
     if(!open_window())
+    {
         return false;
+    }
 
     // Create a renderer
     if(!create_renderer())
+    {
         return false;
+    }
 
     // Initialize utilities sub page
     initialize_utilities_page();
 
     // Create a texture to render to
     if(!create_texture())
+    {
         return false;
+    }
 
     // Populate wavetables
     populate_wavetables();
@@ -122,9 +133,10 @@ int open_window()
                               WINDOW_HEIGHT,
                               window_flags);
 
-    if(WINDOW == NULL) {
+    if(WINDOW == NULL)
+    {
         std::cout << RED_STDOUT << "Could not create window: "
-             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
+                  << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
@@ -143,9 +155,10 @@ int create_renderer()
 
     RENDERER = SDL_CreateRenderer(WINDOW, -1, render_flags);
 
-    if(WINDOW == NULL) {
+    if(WINDOW == NULL)
+    {
         std::cout << RED_STDOUT << "Could not create renderer: "
-             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
+                  << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
@@ -160,13 +173,14 @@ int create_renderer()
  */
 int create_texture()
 {
-    TEXTURE = SDL_CreateTexture(RENDERER, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET,
+    TEXTURE = SDL_CreateTexture(RENDERER, SDL_PIXELFORMAT_RGBA8888,
+                                SDL_TEXTUREACCESS_TARGET,
                                 WINDOW_WIDTH, WINDOW_HEIGHT);
 
     if(TEXTURE == NULL)
     {
         std::cout << RED_STDOUT << "Could not create texture: "
-             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
+                  << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
@@ -190,7 +204,7 @@ int load_fonts()
     if(!FONT_REGULAR || !FONT_SMALL || !FONT_BOLD)
     {
         std::cout << RED_STDOUT << "Could not open one of the TTF fonts: "
-             << TTF_GetError() << DEFAULT_STDOUT << std::endl;
+                  << TTF_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
@@ -251,28 +265,36 @@ void initialize_utilities_page()
     names = {"add adsr (button)", "add delay (button)", "add filter (button)",
              "add mixer (button)", "add multiplier (button)", "add noise (button)",
              "add oscillator (button)", "add sah (button)", "previous page (button)",
-             "next page (button)"};
+             "next page (button)"
+            };
 
     colors = std::vector<SDL_Color *>(10, &WHITE);
     text_colors = std::vector<SDL_Color *>(10, &BLACK);
     texts = {"ADD ADSR", "ADD DELAY", "ADD FILTER", "ADD MIXER", "ADD MULTIPLIER",
-             "ADD NOISE", "ADD OSCILLATOR", "ADD SAH", "PREVIOUS PAGE", "NEXT PAGE"};
+             "ADD NOISE", "ADD OSCILLATOR", "ADD SAH", "PREVIOUS PAGE", "NEXT PAGE"
+            };
     parents = std::vector<Module *>(10, NULL);
 
-    tmp_graphics_objects = initialize_button_objects(names, locations, colors, text_colors, texts, parents);
+    tmp_graphics_objects = initialize_button_objects(names, locations, colors,
+                                                     text_colors, texts, parents);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                                      tmp_graphics_objects.end());
+                            tmp_graphics_objects.end());
 
     names = {"save patch (text box)", "load patch (text box)"};
     locations = {{2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 2, 15},
-               {(WINDOW_WIDTH / 2) + 2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 3, 15}};
+        {
+            (WINDOW_WIDTH / 2) + 2, WINDOW_HEIGHT - 17,
+            (WINDOW_WIDTH / 2) - 3, 15
+        }
+    };
     colors = std::vector<SDL_Color *>(2, &WHITE);
     text_colors = std::vector<SDL_Color *>(2, &BLACK);
     texts = {"enter a name here to save your patch", "enter a patch name to load here"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     parents = std::vector<Module *>(2, NULL);
 
-    tmp_graphics_objects = initialize_text_box_objects(names, locations, colors, text_colors, texts, fonts, parents);
+    tmp_graphics_objects = initialize_text_box_objects(names, locations, colors,
+                                                       text_colors, texts, fonts, parents);
     graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
                             tmp_graphics_objects.end());
 
@@ -292,10 +314,18 @@ void prettify_utilities_page()
 {
     for(unsigned int i = 0; i < UTILITIES_PAGE->graphics_objects.size(); i ++)
     {
-        if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == Graphics_Object::BUTTON)
-            ((Button *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
-        else if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type == Graphics_Object::TEXT_BOX)
-            ((Text_Box *) UTILITIES_PAGE->graphics_objects[i])->set_colors(&MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
+        if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type
+           == Graphics_Object::BUTTON)
+        {
+            ((Button *) UTILITIES_PAGE->graphics_objects[i])->set_colors(
+                &MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
+        }
+        else if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type
+                == Graphics_Object::TEXT_BOX)
+        {
+            ((Text_Box *) UTILITIES_PAGE->graphics_objects[i])->set_colors(
+                &MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
+        }
     }
 }
 
@@ -320,7 +350,7 @@ int open_audio_device()
     if(SDL_OpenAudio(&wanted, &obtained) == -1)
     {
         std::cout << RED_STDOUT << "Could not open the audio device: "
-             << SDL_GetError() << DEFAULT_STDOUT << std::endl;
+                  << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 

@@ -58,14 +58,20 @@ Input_Text_Box::~Input_Text_Box()
 bool Input_Text_Box::can_floatify(std::string *string)
 {
     if(string->empty())
+    {
         return false;
-    if(!(isdigit((*string)[0]) || (*string)[0] == '-' ||
-       (*string)[0] == '.'))
+    }
+    if(!(isdigit((*string)[0]) || (*string)[0] == '-'
+         || (*string)[0] == '.'))
+    {
         return false;
+    }
     if(string->size() > 1)
-        if(!(isdigit((*string)[1]) ||
-           (*string)[1] == '.'))
+        if(!(isdigit((*string)[1])
+             || (*string)[1] == '.'))
+        {
             return false;
+        }
     return true;
 }
 
