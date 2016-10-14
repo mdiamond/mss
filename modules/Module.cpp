@@ -183,26 +183,36 @@ Module::~Module()
 
     // Remove this module from the list of modules
     for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
         if(MODULES[i] != NULL && MODULES[i] == this)
         {
             MODULES[i] = NULL;
         }
+    }
 
     // Cancel any inputs that this module is outputting to
     for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
         if(MODULES[i] != NULL)
+        {
             for(unsigned int j = 0; j < MODULES[i]->inputs.size(); j ++)
+            {
                 if(MODULES[i]->inputs[j].from == this)
                 {
                     MODULES[i]->cancel_input(j);
                 }
+            }
+        }
+    }
 
     // Erase this module from the list of modules
     for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
         if(MODULES[i] != NULL && MODULES[i] == this)
         {
             MODULES.erase(MODULES.begin() + i);
         }
+    }
 
     // Delete all graphics objects
     for(unsigned int i = 0; i < graphics_objects.size(); i ++)
@@ -301,10 +311,12 @@ Module::~Module()
 void Module::process_dependencies()
 {
     for(unsigned int i = 0; i < inputs.size(); i ++)
+    {
         if(inputs[i].live && !inputs[i].from->processed)
         {
             inputs[i].from->process();
         }
+    }
 }
 
 /*
@@ -315,10 +327,12 @@ void Module::process_dependencies()
 void Module::update_input_vals(int i)
 {
     for(unsigned int j = 0; j < inputs.size(); j ++)
+    {
         if(inputs[j].live)
         {
             inputs[j].val = inputs[j].input->at(i);
         }
+    }
 }
 
 /*
