@@ -305,6 +305,73 @@ Module::~Module()
 }
 
 /*
+ * This function determines the locations of this module's graphics objects
+ * based on how many inputs are detected for this module type. This is the
+ * defualt implementation, but derived module classes may override it to have
+ * more customized interfaces.
+ */
+void Module::calculate_unique_graphics_object_locations()
+{
+    std::cout << "INSIDE calculate_unique_graphics_object_locations" << std::endl;
+    int current_y, gap_y;
+    current_y = upper_left.y + 23;
+    gap_y = 10;
+
+    for(unsigned int i = 0; i < inputs.size(); i++)
+    {
+        graphics_object_locations.push_back({upper_left.x + 2, current_y,
+                                             MODULE_WIDTH - 4, 10
+                                            });
+        current_y += gap_y;
+        graphics_object_locations.push_back({upper_left.x, current_y,
+                                             MODULE_WIDTH - 11,
+                                             10
+                                            });
+        graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 10,
+                                             current_y, 10, 10
+                                            });
+        current_y += gap_y;
+    }
+}
+
+/*
+ * This function initializes this module's graphics objects based on the
+ * locations determined in calculate_unique_graphics_locations(). This is the
+ * default implementation, but derived module classes may override it to have
+ * more customized interfaces.
+ */
+void Module::initialize_unique_graphics_objects()
+{
+    std::cout << "INSIDE initialize_unique_graphics_object" << std::endl;
+    for(unsigned int i = 3; i < graphics_object_locations.size(); i += 3)
+    {
+        Text *text = new Text(
+            name + " " + parameters.at(module_type).at((i - 1) / 3) + " (text)",
+            graphics_object_locations[i], &secondary_module_color,
+            parameters.at(module_type).at((i - 1) / 3),
+            FONT_REGULAR);
+
+        Input_Text_Box *input_text_box = new Input_Text_Box(
+            name + " " + parameters.at(module_type).at((i - 1) / 3) + " (input text box)",
+            graphics_object_locations[i + 1], &secondary_module_color,
+            &primary_module_color, "input", FONT_REGULAR, this, (i - 1) / 3,
+            NULL);
+
+        Input_Toggle_Button *input_toggle_button = new Input_Toggle_Button(
+            name + " " + parameters.at(module_type).at((i - 1) / 3) + " (input toggle button)",
+            graphics_object_locations[i + 2], &RED, &secondary_module_color,
+            &WHITE, &primary_module_color, FONT_REGULAR, "I", "I", false, this,
+            (i - 1) / 3, input_text_box);
+
+        input_text_box->input_toggle_button = input_toggle_button;
+
+        graphics_objects.push_back(text);
+        graphics_objects.push_back(input_text_box);
+        graphics_objects.push_back(input_toggle_button);
+    }
+}
+
+/*
  * This function calls upon this module's dependencies
  * to process samples.
  */
@@ -383,8 +450,8 @@ void Module::initialize_input_text_box_objects(
     for(unsigned int i = 0; i < names.size(); i ++)
     {
         input_text_box = new Input_Text_Box(names[i], locations[i], colors[i],
-                                            text_colors[i],
-                                            prompt_texts[i], fonts[i], parents[i], input_nums[i],
+                                            text_colors[i], prompt_texts[i],
+                                            fonts[i], parents[i], input_nums[i],
                                             input_toggle_buttons[i]);
         graphics_objects.push_back(input_text_box);
     }
@@ -440,15 +507,14 @@ void Module::initialize_graphics_objects()
     // Calculate the locations of all graphics objects
     calculate_graphics_object_locations();
 
-    // graphics_objects[0] is the slightly smaller rectangle within the outermost
-    // rectangle
+    // graphics_objects[0] is the background rectangle
     rect = new Rect(name + " background (rect)",
                     graphics_object_locations[MODULE_BACKGROUND_RECT],
                     &primary_module_color,
                     this);
     graphics_objects.push_back(rect);
 
-    // graphics_objects[1] is the objects name
+    // graphics_objects[1] is the name of the object
     text = new Text(name + " module name (text)",
                     graphics_object_locations[MODULE_NAME_TEXT],
                     &secondary_module_color,

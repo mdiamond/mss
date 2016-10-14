@@ -106,17 +106,30 @@ public:
 
     // Virtual member functions
     //   Process audio for the output buffer
+    //   Each derived module class must define its own signal processing
+    //   capabilities
     virtual void process() = 0;
     //   Output the module's unique information as text
+    //   Each derived module class must define its own function for outputting
+    //   a text representation of itself
+    //   This function is used to save patches as text files
     virtual std::string get_unique_text_representation() = 0;
     //   Handle a button press
+    //   Each derived module class must define its own button click handling
+    //   functionality
     virtual void button_function(Button *) = 0;
     //   Handle a toggle button press
+    //   Each derived module class must define its own toggle button click
+    //   handling functionality
     virtual void toggle_button_function(Toggle_Button *) = 0;
     //   Calculate the locations of graphics objects unique to this module type
-    virtual void calculate_unique_graphics_object_locations() = 0;
+    //   This function should have a defualt implementation, but should also
+    //   be possible to override
+    virtual void calculate_unique_graphics_object_locations();
     //   Initialize the graphics objects unique to this module type
-    virtual void initialize_unique_graphics_objects() = 0;
+    //   This function should have a default implementation, but should also
+    //   be possible to override
+    virtual void initialize_unique_graphics_objects();
 
     // Member functions
     //   Process all modules that this module depends upon
@@ -168,12 +181,13 @@ public:
     //   Return module short name
     std::string get_short_name();
     //   Output the module as text
+    //   This function is used to save patches as text files
     std::string get_text_representation();
-    //   Make this module's input stuff adopt the colors of whatever is
-    //   outputting to it
+    //   Make the input text boxes in this module adopt the colors of whatever
+    //   modules are outputting to the inputs associated with them
     void adopt_input_colors();
-    //   Handle a background rectangle click (this module has been selected as a
-    //   source for some other module's input)
+    //   Do what is necessary to become the module outputting to an input on 
+    //   another module
     void module_selected();
     //   Render this module to the window
     void render();
