@@ -197,11 +197,9 @@ int create_texture()
  */
 int load_fonts()
 {
-    FONT_REGULAR = TTF_OpenFont("../fonts/SourceCodePro-Regular.ttf", 11);
-    FONT_SMALL = TTF_OpenFont("../fonts/SourceCodePro-Regular.ttf", 10);
-    FONT_BOLD = TTF_OpenFont("../fonts/SourceCodePro-Bold.ttf", 11);
+    FONT_REGULAR = TTF_OpenFont("../fonts/visitor1.ttf", 10);
 
-    if(!FONT_REGULAR || !FONT_SMALL || !FONT_BOLD)
+    if(!FONT_REGULAR)
     {
         std::cout << RED_STDOUT << "Could not open one of the TTF fonts: "
                   << TTF_GetError() << DEFAULT_STDOUT << std::endl;

@@ -308,7 +308,7 @@ void Delay::initialize_unique_graphics_objects()
     prompt_texts = std::vector<std::string>(5, "# or input");
     prompt_texts[0] = "input";
     prompt_texts[1] = "#";
-    fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
     parents = std::vector<Module *>(5, this);
     input_nums = {DELAY_SIGNAL, DELAY_MAX_DELAY_TIME, DELAY_DELAY_TIME,
                   DELAY_FEEDBACK_AMOUNT, DELAY_WET_DRY
@@ -333,7 +333,7 @@ void Delay::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(4, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(4, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(4, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(4, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
     texts = std::vector<std::string>(4, "I");
     text_offs = texts;
     bs = std::vector<bool>(4, false);

@@ -159,7 +159,7 @@ void Output::initialize_unique_graphics_objects()
     colors = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
     prompt_texts = std::vector<std::string>(2, "input");
-    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     parents = std::vector<Module *>(2, this);
     input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
@@ -175,7 +175,7 @@ void Output::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(2, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     texts = std::vector<std::string>(2, "I");
     text_offs = texts;
     bs = std::vector<bool>(2, false);
@@ -197,7 +197,7 @@ void Output::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(1, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(1, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(1, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(1, FONT_BOLD);
+    fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
     texts = std::vector<std::string>(1, "ON");
     text_offs = std::vector<std::string>(1, "OFF");
     bs = {true};

@@ -74,8 +74,6 @@ SDL_Rect WINDOW_RECT = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
 // Fonts
 TTF_Font *FONT_REGULAR;
-TTF_Font *FONT_SMALL;
-TTF_Font *FONT_BOLD;
 
 // Colors
 SDL_Color BLACK = {0, 0, 0, 255};

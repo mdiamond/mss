@@ -244,7 +244,7 @@ void Filter::initialize_unique_graphics_objects()
     text_colors = std::vector<SDL_Color *>(3, &primary_module_color);
     prompt_texts = std::vector<std::string>(3, "# or input");
     prompt_texts[0] = "input";
-    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     parents = std::vector<Module *>(3, this);
     input_nums = {FILTER_SIGNAL, FILTER_FREQUENCY_CUTOFF, FILTER_Q};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(3, NULL);
@@ -265,7 +265,7 @@ void Filter::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(3, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(3, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     texts = std::vector<std::string>(3, "I");
     text_offs = texts;
     bs = std::vector<bool>(3, false);

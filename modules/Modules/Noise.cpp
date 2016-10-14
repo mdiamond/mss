@@ -183,7 +183,7 @@ void Noise::initialize_unique_graphics_objects()
     colors = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
     prompt_texts = std::vector<std::string>(2, "# or input");
-    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     parents = std::vector<Module *>(2, this);
     input_nums = {NOISE_RANGE_LOW, NOISE_RANGE_HIGH};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
@@ -199,7 +199,7 @@ void Noise::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(2, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(2, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     texts = std::vector<std::string>(2, "I");
     text_offs = texts;
     bs = std::vector<bool>(2, false);
@@ -214,26 +214,6 @@ void Noise::initialize_unique_graphics_objects()
                                            text_color_ons, text_color_offs,
                                            fonts, texts, text_offs, bs, parents,
                                            input_nums, input_text_boxes);
-
-    // names = {name + " sin toggle (toggle button)", name + " tri toggle (toggle button)",
-    //          name + " saw toggle (toggle button)", name + " sqr toggle (toggle button)"};
-    // locations = {graphics_object_locations[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON],
-    //              graphics_object_locations[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON],
-    //              graphics_object_locations[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON],
-    //              graphics_object_locations[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON]};
-    // colors = std::vector<SDL_Color *>(4, &text_color);
-    // color_offs = std::vector<SDL_Color *>(4, &color);
-    // text_color_ons = std::vector<SDL_Color *>(4, &color);
-    // text_color_offs = std::vector<SDL_Color *>(4, &text_color);
-    // fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
-    // texts = {"SIN", "TRI", "SAW", "SQR"};
-    // text_offs = {"SIN", "TRI", "SAW", "SQR"};
-    // bs = {sin_on, tri_on, saw_on, sqr_on};
-    // parents = std::vector<Module *>(4, this);
-
-    // tmp_graphics_objects = initialize_toggle_button_objects(names, locations, colors, color_offs, text_color_ons,
-    //                                                     text_color_offs, fonts, texts, text_offs, bs, parents);
-    // graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(), tmp_graphics_objects.end());
 
     ((Input_Text_Box *)
      graphics_objects[NOISE_RANGE_LOW_INPUT_TEXT_BOX])->input_toggle_button =

@@ -65,8 +65,6 @@ extern int WINDOW_HEIGHT;
 extern SDL_Rect WINDOW_RECT;
 //   Fonts
 extern TTF_Font *FONT_REGULAR;
-extern TTF_Font *FONT_SMALL;
-extern TTF_Font *FONT_BOLD;
 //   Colors
 extern SDL_Color BLACK;
 extern SDL_Color WHITE;

@@ -322,7 +322,7 @@ void Adsr::initialize_unique_graphics_objects()
     colors = std::vector<SDL_Color *>(5, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
-    fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
     parents = std::vector<Module *>(5, this);
     input_nums = {ADSR_NOTE, ADSR_A, ADSR_D, ADSR_S, ADSR_R};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(5, NULL);
@@ -347,7 +347,7 @@ void Adsr::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(5, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(5, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(5, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(5, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
     texts = std::vector<std::string>(5, "I");
     text_offs = texts;
     bs = std::vector<bool>(5, false);

@@ -269,7 +269,7 @@ void Mixer::initialize_unique_graphics_objects()
                     "input", "# or input",
                     "input", "# or input"
                    };
-    fonts = std::vector<TTF_Font *>(16, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(16, FONT_REGULAR);
     parents = std::vector<Module *>(16, this);
     input_nums = {MIXER_SIGNAL_1, MIXER_SIGNAL_1_MULTIPLIER,
                   MIXER_SIGNAL_2, MIXER_SIGNAL_2_MULTIPLIER,
@@ -323,7 +323,7 @@ void Mixer::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(16, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(16, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(16, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(16, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(16, FONT_REGULAR);
     texts = std::vector<std::string>(16, "I");
     text_offs = texts;
     bs = std::vector<bool>(16, false);

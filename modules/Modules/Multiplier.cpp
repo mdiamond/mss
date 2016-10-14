@@ -184,7 +184,7 @@ void Multiplier::initialize_unique_graphics_objects()
     colors = std::vector<SDL_Color *>(3, &secondary_module_color);
     text_colors = std::vector<SDL_Color *>(3, &primary_module_color);
     prompt_texts = {"input", "# or input", "# or input"};
-    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     parents = std::vector<Module *>(3, this);
     input_nums = {MULTIPLIER_SIGNAL, MULTIPLIER_MULTIPLIER, MULTIPLIER_DRY_WET};
     input_toggle_buttons = std::vector<Input_Toggle_Button *>(3, NULL);
@@ -203,7 +203,7 @@ void Multiplier::initialize_unique_graphics_objects()
     color_offs = std::vector<SDL_Color *>(3, &secondary_module_color);
     text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
     text_color_offs = std::vector<SDL_Color *>(3, &primary_module_color);
-    fonts = std::vector<TTF_Font *>(3, FONT_SMALL);
+    fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     texts = std::vector<std::string>(3, "I");
     text_offs = texts;
     bs = std::vector<bool>(3, false);

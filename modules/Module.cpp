@@ -453,7 +453,7 @@ void Module::initialize_graphics_objects()
                     graphics_object_locations[MODULE_NAME_TEXT],
                     &secondary_module_color,
                     name,
-                    FONT_BOLD);
+                    FONT_REGULAR);
     graphics_objects.push_back(text);
 
     // graphics_objects[2] is the remove module button
