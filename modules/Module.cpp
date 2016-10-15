@@ -38,7 +38,7 @@
  * MODULE NAME PER MODULE TYPE *
  *******************************/
 
-const std::map<Module::ModuleType, std::string> Module::names =
+const std::map<Module::ModuleType, std::string> Module::module_names =
 {
     {ADSR, "adsr"},
     {DELAY, "delay"},
@@ -55,7 +55,7 @@ const std::map<Module::ModuleType, std::string> Module::names =
  * MODULE PARAMETER NAMES PER MODULE TYPE *
  ******************************************/
 
-const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
+const std::map<Module::ModuleType, std::vector<std::string> > Module::parameter_names
 =
 {
     {
@@ -157,12 +157,12 @@ const std::map<Module::ModuleType, std::vector<std::string> > Module::parameters
  */
 Module::Module(ModuleType _module_type) :
     Graphics_Object(
-        names.at(_module_type) + " "
+        module_names.at(_module_type) + " "
         + std::to_string(find_available_module_number(_module_type)),
         MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
     module_type(_module_type), number(find_available_module_slot()),
     processed(false),
-    inputs(std::vector<Input>(parameters.at(_module_type).size())),
+    inputs(std::vector<Parameter>(parameter_names.at(_module_type).size())),
     output(std::vector<float>(BUFFER_SIZE, 0))
 {
     // Set this module's color randomly, but with enough contrast
@@ -346,19 +346,19 @@ void Module::initialize_unique_graphics_objects()
     for(unsigned int i = 3; i < graphics_object_locations.size(); i += 3)
     {
         Text *text = new Text(
-            name + " " + parameters.at(module_type).at((i - 1) / 3) + " (text)",
+            name + " " + parameter_names.at(module_type).at((i - 1) / 3) + " (text)",
             graphics_object_locations[i], &secondary_module_color,
-            parameters.at(module_type).at((i - 1) / 3),
+            parameter_names.at(module_type).at((i - 1) / 3),
             FONT_REGULAR);
 
         Input_Text_Box *input_text_box = new Input_Text_Box(
-            name + " " + parameters.at(module_type).at((i - 1) / 3) + " (input text box)",
+            name + " " + parameter_names.at(module_type).at((i - 1) / 3) + " (input text box)",
             graphics_object_locations[i + 1], &secondary_module_color,
             &primary_module_color, "input", FONT_REGULAR, this, (i - 1) / 3,
             NULL);
 
         Input_Toggle_Button *input_toggle_button = new Input_Toggle_Button(
-            name + " " + parameters.at(module_type).at((i - 1) / 3) + " (input toggle button)",
+            name + " " + parameter_names.at(module_type).at((i - 1) / 3) + " (input toggle button)",
             graphics_object_locations[i + 2], &RED, &secondary_module_color,
             &WHITE, &primary_module_color, FONT_REGULAR, "I", "I", false, this,
             (i - 1) / 3, input_text_box);
@@ -397,7 +397,7 @@ void Module::update_input_vals(int i)
     {
         if(inputs[j].live)
         {
-            inputs[j].val = inputs[j].input->at(i);
+            inputs[j].val = inputs[j].in->at(i);
         }
     }
 }
@@ -561,14 +561,14 @@ void Module::set(float val, int input_num)
 {
     // Set the input and dependency to NULL,
     // the float to val, and the live boolean to false
-    inputs[input_num].input = NULL;
+    inputs[input_num].in = NULL;
     inputs[input_num].val = val;
     inputs[input_num].live = false;
     inputs[input_num].from = NULL;
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameters.at(module_type).at(input_num)
+    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
               << " changed to " << val << std::endl;
 }
 
@@ -581,7 +581,7 @@ void Module::set(Module *src, int input_num)
     // Set the input to the output of src, the dependency to src,
     // the live boolean to true, and the SELECTING_SRC program state variable
     // to false
-    inputs[input_num].input = &src->output;
+    inputs[input_num].in = &src->output;
     inputs[input_num].live = true;
     inputs[input_num].from = src;
     SELECTING_SRC = false;
@@ -608,7 +608,7 @@ void Module::set(Module *src, int input_num)
     // Ensure that the input toggle button associated with this input is turned
     // on
 
-    std::cout << name << " " << parameters.at(module_type).at(input_num)
+    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
               << " is now coming from " << src->name << std::endl;
 }
 
@@ -621,7 +621,7 @@ void Module::cancel_input(int input_num)
 {
     // Set the input and dependency to NULL,
     // and the live boolean to false
-    inputs[input_num].input = NULL;
+    inputs[input_num].in = NULL;
     inputs[input_num].live = false;
     inputs[input_num].from = NULL;
 
@@ -643,7 +643,7 @@ void Module::cancel_input(int input_num)
 
     adopt_input_colors();
 
-    std::cout << name << " " << parameters.at(module_type).at(input_num)
+    std::cout << name << " " << parameter_names.at(module_type).at(input_num)
               << " input cancelled" << std::endl;
 }
 
