@@ -50,7 +50,7 @@ void increment_page_number(int num)
  */
 std::vector<Graphics_Object *> initialize_button_objects(
     std::vector<std::string> names, std::vector<SDL_Rect> locations,
-    std::vector<SDL_Color *> colors, std::vector<SDL_Color *> text_colors,
+    std::vector<SDL_Color> colors, std::vector<SDL_Color> text_colors,
     std::vector<std::string> texts, std::vector<Module *> parents)
 {
     std::vector<Graphics_Object *> graphics_objects =
@@ -73,7 +73,7 @@ std::vector<Graphics_Object *> initialize_button_objects(
  */
 std::vector<Graphics_Object *> initialize_text_objects(
     std::vector<std::string> names, std::vector<SDL_Rect> locations,
-    std::vector<SDL_Color *> colors, std::vector<std::string> texts,
+    std::vector<SDL_Color> colors, std::vector<std::string> texts,
     std::vector<TTF_Font *> fonts)
 {
     std::vector<Graphics_Object *> graphics_objects =
@@ -95,7 +95,7 @@ std::vector<Graphics_Object *> initialize_text_objects(
  */
 std::vector<Graphics_Object *> initialize_text_box_objects(
     std::vector<std::string> names, std::vector<SDL_Rect> locations,
-    std::vector<SDL_Color *> colors,std::vector<SDL_Color *> text_colors,
+    std::vector<SDL_Color> colors,std::vector<SDL_Color> text_colors,
     std::vector<std::string> prompt_texts, std::vector<TTF_Font *> fonts,
     std::vector<Module *> parents)
 {
@@ -119,9 +119,9 @@ std::vector<Graphics_Object *> initialize_text_box_objects(
  */
 std::vector<Graphics_Object *> initialize_toggle_button_objects(
     std::vector<std::string> names, std::vector<SDL_Rect> locations,
-    std::vector<SDL_Color *> colors,
-    std::vector<SDL_Color *> color_offs, std::vector<SDL_Color *> text_color_ons,
-    std::vector<SDL_Color *> text_color_offs,
+    std::vector<SDL_Color> colors,
+    std::vector<SDL_Color> color_offs, std::vector<SDL_Color> text_color_ons,
+    std::vector<SDL_Color> text_color_offs,
     std::vector<TTF_Font *> fonts,
     std::vector<std::string> text_ons, std::vector<std::string> text_offs,
     std::vector<bool> bs, std::vector<Module *> parents)
@@ -149,7 +149,7 @@ std::vector<Graphics_Object *> initialize_toggle_button_objects(
  */
 std::vector<Graphics_Object *> initialize_waveform_objects(
     std::vector<std::string> names, std::vector<SDL_Rect> locations,
-    std::vector<SDL_Color *> colors, std::vector<SDL_Color *> background_colors,
+    std::vector<SDL_Color> colors, std::vector<SDL_Color> background_colors,
     std::vector<float> range_lows, std::vector<float> range_highs,
     std::vector<std::vector<float> *> buffers)
 {

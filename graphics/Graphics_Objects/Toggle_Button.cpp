@@ -33,9 +33,9 @@
  * Constructor.
  */
 Toggle_Button::Toggle_Button(std::string name_, SDL_Rect location_,
-                             SDL_Color *color_, SDL_Color *color_off_,
-                             SDL_Color *text_color_on_,
-                             SDL_Color *text_color_off_, TTF_Font *font_,
+                             SDL_Color color_, SDL_Color color_off_,
+                             SDL_Color text_color_on_,
+                             SDL_Color text_color_off_, TTF_Font *font_,
                              std::string text_on_, std::string text_off_,
                              bool b_, Module *parent_) :
     Graphics_Object(name_, TOGGLE_BUTTON, parent_, location_, color_),
@@ -64,14 +64,11 @@ void Toggle_Button::render()
     if(b)
     {
         background.render();
-        text_on.location.x = location.x + (location.w - text_on.location.w) / 2;
         text_on.render();
     }
     else
     {
         background_off.render();
-        text_off.location.x = location.x + (location.w - text_off.location.w)
-                              / 2;
         text_off.render();
     }
 }
@@ -113,20 +110,19 @@ void Toggle_Button::toggle()
 void Toggle_Button::update_location(SDL_Rect location_)
 {
     location = location_;
-    text_on.update_location(location_);
-    text_off.update_location(location_);
     background.update_location(location_);
     background_off.update_location(location_);
-    text_on.updated = true;
-    text_off.updated = true;
+    text_on.update_location(location_);
+    text_off.update_location(location_);
+    updated = true;
 }
 
 /*
  * Updated this toggle button's colors.
  */
-void Toggle_Button::set_colors(SDL_Color *color_, SDL_Color *color_off_,
-                               SDL_Color *text_color_on_,
-                               SDL_Color *text_color_off_)
+void Toggle_Button::set_colors(SDL_Color color_, SDL_Color color_off_,
+                               SDL_Color text_color_on_,
+                               SDL_Color text_color_off_)
 {
     background.set_color(color_);
     background_off.set_color(color_off_);

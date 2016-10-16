@@ -159,11 +159,12 @@ Module::Module(ModuleType _module_type) :
     Graphics_Object(
         module_names.at(_module_type) + " "
         + std::to_string(find_available_module_number(_module_type)),
-        MODULE, NULL, find_module_location(find_available_module_slot()), NULL),
+        MODULE, NULL, find_module_location(find_available_module_slot()),
+        BLACK),
     module_type(_module_type), number(find_available_module_slot()),
     processed(false),
     inputs(std::vector<Parameter>(parameter_names.at(_module_type).size())),
-    output(std::vector<float>(BUFFER_SIZE, 0))
+    out(std::vector<float>(BUFFER_SIZE))
 {
     // Set this module's color randomly, but with enough contrast
     std::vector<SDL_Color> colors = generate_module_colors();
@@ -347,20 +348,20 @@ void Module::initialize_unique_graphics_objects()
     {
         Text *text = new Text(
             name + " " + parameter_names.at(module_type).at((i - 1) / 3) + " (text)",
-            graphics_object_locations[i], &secondary_module_color,
+            graphics_object_locations[i], secondary_module_color,
             parameter_names.at(module_type).at((i - 1) / 3),
             FONT_REGULAR);
 
         Input_Text_Box *input_text_box = new Input_Text_Box(
             name + " " + parameter_names.at(module_type).at((i - 1) / 3) + " (input text box)",
-            graphics_object_locations[i + 1], &secondary_module_color,
-            &primary_module_color, "input", FONT_REGULAR, this, (i - 1) / 3,
+            graphics_object_locations[i + 1], secondary_module_color,
+            primary_module_color, "input", FONT_REGULAR, this, (i - 1) / 3,
             NULL);
 
         Input_Toggle_Button *input_toggle_button = new Input_Toggle_Button(
             name + " " + parameter_names.at(module_type).at((i - 1) / 3) + " (input toggle button)",
-            graphics_object_locations[i + 2], &RED, &secondary_module_color,
-            &WHITE, &primary_module_color, FONT_REGULAR, "I", "I", false, this,
+            graphics_object_locations[i + 2], RED, secondary_module_color,
+            WHITE, primary_module_color, FONT_REGULAR, "I", "I", false, this,
             (i - 1) / 3, input_text_box);
 
         input_text_box->input_toggle_button = input_toggle_button;
@@ -437,8 +438,8 @@ void Module::calculate_graphics_object_locations()
 void Module::initialize_input_text_box_objects(
     std::vector<std::string> names,
     std::vector<SDL_Rect> locations,
-    std::vector<SDL_Color *> colors,
-    std::vector<SDL_Color *> text_colors,
+    std::vector<SDL_Color> colors,
+    std::vector<SDL_Color> text_colors,
     std::vector<std::string> prompt_texts,
     std::vector<TTF_Font *> fonts,
     std::vector<Module *> parents,
@@ -464,10 +465,10 @@ void Module::initialize_input_text_box_objects(
 void Module::initialize_input_toggle_button_objects(
     std::vector<std::string> names,
     std::vector<SDL_Rect> locations,
-    std::vector<SDL_Color *> colors,
-    std::vector<SDL_Color *> color_offs,
-    std::vector<SDL_Color *> text_color_ons,
-    std::vector<SDL_Color *> text_color_offs,
+    std::vector<SDL_Color> colors,
+    std::vector<SDL_Color> color_offs,
+    std::vector<SDL_Color> text_color_ons,
+    std::vector<SDL_Color> text_color_offs,
     std::vector<TTF_Font *> fonts,
     std::vector<std::string> text_ons,
     std::vector<std::string> text_offs,
@@ -510,14 +511,14 @@ void Module::initialize_graphics_objects()
     // graphics_objects[0] is the background rectangle
     rect = new Rect(name + " background (rect)",
                     graphics_object_locations[MODULE_BACKGROUND_RECT],
-                    &primary_module_color,
+                    primary_module_color,
                     this);
     graphics_objects.push_back(rect);
 
     // graphics_objects[1] is the name of the object
     text = new Text(name + " module name (text)",
                     graphics_object_locations[MODULE_NAME_TEXT],
-                    &secondary_module_color,
+                    secondary_module_color,
                     name,
                     FONT_REGULAR);
     graphics_objects.push_back(text);
@@ -525,8 +526,8 @@ void Module::initialize_graphics_objects()
     // graphics_objects[2] is the remove module button
     button = new Button(name + " remove module (button)",
                         graphics_object_locations[MODULE_REMOVE_MODULE_BUTTON],
-                        &secondary_module_color,
-                        &primary_module_color,
+                        secondary_module_color,
+                        primary_module_color,
                         "X",
                         this);
     graphics_objects.push_back(button);
@@ -581,7 +582,7 @@ void Module::set(Module *src, int input_num)
     // Set the input to the output of src, the dependency to src,
     // the live boolean to true, and the SELECTING_SRC program state variable
     // to false
-    inputs[input_num].in = &src->output;
+    inputs[input_num].in = &src->out;
     inputs[input_num].live = true;
     inputs[input_num].from = src;
     SELECTING_SRC = false;
@@ -599,7 +600,7 @@ void Module::set(Module *src, int input_num)
         {
             waveform = (Waveform *) graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM];
         }
-        waveform->buffer = &src->output;
+        waveform->buffer = &src->out;
     }
 
     // Set the colors of the text box to be the colors of the source module
@@ -710,13 +711,12 @@ void Module::adopt_input_colors()
         {
             if(inputs[dependency_num].live)
                 ((Input_Text_Box *) graphics_objects[i])->set_colors(
-                    &inputs[dependency_num].from->primary_module_color,
-                    &inputs[dependency_num].from->secondary_module_color);
+                    inputs[dependency_num].from->primary_module_color,
+                    inputs[dependency_num].from->secondary_module_color);
             else
             {
                 ((Input_Text_Box *) graphics_objects[i])->set_colors(
-                    &secondary_module_color,
-                    &primary_module_color);
+                    secondary_module_color, primary_module_color);
             }
             dependency_num ++;
         }
@@ -762,7 +762,7 @@ void Module::module_selected()
             {
                 ((Waveform *)
                  MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_L_WAVEFORM])->buffer =
-                     &this->output;
+                     &this->out;
             }
             // Else, update the right waveform
             else if(CURRENT_INPUT_TOGGLE_BUTTON
@@ -770,7 +770,7 @@ void Module::module_selected()
             {
                 ((Waveform *)
                  MODULES[0]->graphics_objects[Output::OUTPUT_INPUT_R_WAVEFORM])->buffer =
-                     &this->output;
+                     &this->out;
             }
         }
         CURRENT_INPUT_TOGGLE_BUTTON = NULL;

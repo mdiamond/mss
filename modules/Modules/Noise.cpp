@@ -72,12 +72,12 @@ void Noise::process()
 {
     process_dependencies();
 
-    for(unsigned short i = 0; i < output.size(); i ++)
+    for(unsigned short i = 0; i < out.size(); i ++)
     {
         update_input_vals(i);
 
-        output[i] = produce_white_noise_sample();
-        output[i] = scale_sample(output[i], -1, 1, inputs[NOISE_RANGE_LOW].val,
+        out[i] = produce_white_noise_sample();
+        out[i] = scale_sample(out[i], -1, 1, inputs[NOISE_RANGE_LOW].val,
                                  inputs[NOISE_RANGE_HIGH].val);
     }
 
@@ -139,7 +139,7 @@ void Noise::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
         text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
@@ -154,11 +154,11 @@ void Noise::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[NOISE_OUTPUT_WAVEFORM]};
-    colors = {&primary_module_color};
-    background_colors = {&secondary_module_color};
+    colors = {primary_module_color};
+    background_colors = {secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
-    buffers = {&output};
+    buffers = {&out};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
                                                        background_colors, range_lows, range_highs, buffers);
@@ -167,7 +167,7 @@ void Noise::initialize_unique_graphics_objects()
 
     names = {name + " range (text)"};
     locations = {graphics_object_locations[NOISE_RANGE_TEXT]};
-    colors = std::vector<SDL_Color *>(1, &secondary_module_color);
+    colors = std::vector<SDL_Color>(1, secondary_module_color);
     texts = {"RANGE LOW & HIGH:"};
     fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
 
@@ -180,8 +180,8 @@ void Noise::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TEXT_BOX],
                  graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]
                 };
-    colors = std::vector<SDL_Color *>(2, &secondary_module_color);
-    text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
+    colors = std::vector<SDL_Color>(2, secondary_module_color);
+    text_colors = std::vector<SDL_Color>(2, primary_module_color);
     prompt_texts = std::vector<std::string>(2, "# or input");
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     parents = std::vector<Module *>(2, this);
@@ -195,10 +195,10 @@ void Noise::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(2, &RED);
-    color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(2, &primary_module_color);
+    colors = std::vector<SDL_Color>(2, RED);
+    color_offs = std::vector<SDL_Color>(2, secondary_module_color);
+    text_color_ons = std::vector<SDL_Color>(2, WHITE);
+    text_color_offs = std::vector<SDL_Color>(2, primary_module_color);
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     texts = std::vector<std::string>(2, "I");
     text_offs = texts;

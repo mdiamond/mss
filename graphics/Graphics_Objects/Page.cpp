@@ -29,7 +29,7 @@
 /*
  * Constructor.
  */
-Page::Page(std::string name_, SDL_Rect location_, SDL_Color *color_,
+Page::Page(std::string name_, SDL_Rect location_, SDL_Color color_,
            std::vector<Graphics_Object *> *graphics_objects_) :
     Graphics_Object(name_, PAGE, NULL, location_, color_)
 {

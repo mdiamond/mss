@@ -134,12 +134,12 @@ void Delay::process()
         if(inputs[DELAY_MAX_DELAY_TIME].val >= inputs[DELAY_DELAY_TIME].val)
         {
             // Apply the dry signal
-            output[i] = (1 - inputs[DELAY_WET_DRY].val)
+            out[i] = (1 - inputs[DELAY_WET_DRY].val)
                         * inputs[DELAY_SIGNAL].val;
 
             // Apply the linearly interpolated wet signal
             float wet_sample = calculate_wet_sample();
-            output[i] += inputs[DELAY_WET_DRY].val * wet_sample;
+            out[i] += inputs[DELAY_WET_DRY].val * wet_sample;
 
             // Update the sample in the circular buffer
             circular_buffer[current_sample] = inputs[DELAY_FEEDBACK_AMOUNT].val
@@ -238,7 +238,7 @@ void Delay::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
         text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
@@ -254,7 +254,7 @@ void Delay::initialize_unique_graphics_objects()
     Button *button;
     button = new Button(name + " reset buffer (button)",
                         graphics_object_locations[DELAY_RESET_BUFFER_BUTTON],
-                        &secondary_module_color, &primary_module_color, "0", this);
+                        secondary_module_color, primary_module_color, "0", this);
     graphics_objects.push_back(button);
 
     names = {name + " signal (text)",
@@ -265,7 +265,7 @@ void Delay::initialize_unique_graphics_objects()
                  graphics_object_locations[DELAY_MAX_DELAY_TIME_AND_DELAY_TIME_TEXT],
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_AND_WET_DRY_TEXT]
                 };
-    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
+    colors = std::vector<SDL_Color>(3, secondary_module_color);
     texts = {"SIGNAL INPUT:", "MAX DELAY & DELAY:", "FEEDBACK & WET/DRY:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
@@ -277,11 +277,11 @@ void Delay::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[DELAY_OUTPUT_WAVEFORM]};
-    colors = {&primary_module_color};
-    background_colors = {&secondary_module_color};
+    colors = {primary_module_color};
+    background_colors = {secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
-    buffers = {&output};
+    buffers = {&out};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
                                                        background_colors,
@@ -303,8 +303,8 @@ void Delay::initialize_unique_graphics_objects()
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX],
                  graphics_object_locations[DELAY_WET_DRY_INPUT_TEXT_BOX]
                 };
-    colors = std::vector<SDL_Color *>(5, &secondary_module_color);
-    text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
+    colors = std::vector<SDL_Color>(5, secondary_module_color);
+    text_colors = std::vector<SDL_Color>(5, primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
     prompt_texts[0] = "input";
     prompt_texts[1] = "#";
@@ -329,10 +329,10 @@ void Delay::initialize_unique_graphics_objects()
                  graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(4, &RED);
-    color_offs = std::vector<SDL_Color *>(4, &secondary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(4, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(4, &primary_module_color);
+    colors = std::vector<SDL_Color>(4, RED);
+    color_offs = std::vector<SDL_Color>(4, secondary_module_color);
+    text_color_ons = std::vector<SDL_Color>(4, WHITE);
+    text_color_offs = std::vector<SDL_Color>(4, primary_module_color);
     fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
     texts = std::vector<std::string>(4, "I");
     text_offs = texts;
@@ -404,7 +404,5 @@ void Delay::button_function(Button *button)
  * Delay has no toggle buttons. This is a dummy function.
  */
 void Delay::toggle_button_function(Toggle_Button *toggle_button)
-{
-
-}
+{}
 

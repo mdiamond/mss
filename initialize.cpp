@@ -221,14 +221,14 @@ void initialize_utilities_page()
 
     std::vector<std::string> names, texts;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, text_colors;
+    std::vector<SDL_Color> colors, text_colors;
     std::vector<Module *> parents;
     std::vector<TTF_Font *> fonts;
 
     names = std::vector<std::string>();
     locations = std::vector<SDL_Rect>();
-    colors = std::vector<SDL_Color *>();
-    text_colors = std::vector<SDL_Color *>();
+    colors = std::vector<SDL_Color>();
+    text_colors = std::vector<SDL_Color>();
     texts = std::vector<std::string>();
     fonts = std::vector<TTF_Font *>();
     parents = std::vector<Module *>();
@@ -257,7 +257,7 @@ void initialize_utilities_page()
 
     // Create the background and add it to the list of graphics
     // objects
-    Rect *background = new Rect("background (rect)", WINDOW_RECT, &BLACK, NULL);
+    Rect *background = new Rect("background (rect)", WINDOW_RECT, BLACK, NULL);
     graphics_objects.push_back(background);
 
     names = {"add adsr (button)", "add delay (button)", "add filter (button)",
@@ -266,8 +266,8 @@ void initialize_utilities_page()
              "next page (button)"
             };
 
-    colors = std::vector<SDL_Color *>(10, &WHITE);
-    text_colors = std::vector<SDL_Color *>(10, &BLACK);
+    colors = std::vector<SDL_Color>(10, WHITE);
+    text_colors = std::vector<SDL_Color>(10, BLACK);
     texts = {"ADD ADSR", "ADD DELAY", "ADD FILTER", "ADD MIXER", "ADD MULTIPLIER",
              "ADD NOISE", "ADD OSCILLATOR", "ADD SAH", "PREVIOUS PAGE", "NEXT PAGE"
             };
@@ -285,8 +285,8 @@ void initialize_utilities_page()
             (WINDOW_WIDTH / 2) - 3, 15
         }
     };
-    colors = std::vector<SDL_Color *>(2, &WHITE);
-    text_colors = std::vector<SDL_Color *>(2, &BLACK);
+    colors = std::vector<SDL_Color>(2, WHITE);
+    text_colors = std::vector<SDL_Color>(2, BLACK);
     texts = {"enter a name here to save your patch", "enter a patch name to load here"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     parents = std::vector<Module *>(2, NULL);
@@ -298,7 +298,7 @@ void initialize_utilities_page()
 
     // Create the sub page and add it to the list of sub pages
     // for the current page
-    UTILITIES_PAGE = new Page("utilities & background (page)", WINDOW_RECT, &BLACK,
+    UTILITIES_PAGE = new Page("utilities & background (page)", WINDOW_RECT, BLACK,
                               &graphics_objects);
 
     std::cout << "Utilities page initialized." << std::endl;
@@ -316,13 +316,13 @@ void prettify_utilities_page()
            == Graphics_Object::BUTTON)
         {
             ((Button *) UTILITIES_PAGE->graphics_objects[i])->set_colors(
-                &MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
+                MODULES[0]->primary_module_color, MODULES[0]->secondary_module_color);
         }
         else if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type
                 == Graphics_Object::TEXT_BOX)
         {
             ((Text_Box *) UTILITIES_PAGE->graphics_objects[i])->set_colors(
-                &MODULES[0]->primary_module_color, &MODULES[0]->secondary_module_color);
+                MODULES[0]->primary_module_color, MODULES[0]->secondary_module_color);
         }
     }
 }

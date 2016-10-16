@@ -53,11 +53,11 @@ public:
     GraphicsObjectType graphics_object_type;
     Module *parent;
     SDL_Rect location;
-    SDL_Color *color;
+    SDL_Color color;
     bool updated;
     // Constructor and destructor
     Graphics_Object(std::string, GraphicsObjectType graphics_object_type,
-                    Module *, SDL_Rect, SDL_Color *);
+                    Module *, SDL_Rect, SDL_Color);
     virtual ~Graphics_Object();
 
     // Virtual member functions
@@ -65,12 +65,14 @@ public:
     virtual void render() = 0;
     //   Execute on click
     virtual void clicked() = 0;
+    //   Update the location of this graphics object
+    virtual void update_location(SDL_Rect);
+    //   Set the color of this graphics object
+    void set_color(SDL_Color);
 
     // Member functions
     //   Return true if clicked, false otherwise
     bool was_clicked();
-    //   Update this graphics object's location
-    void update_location(SDL_Rect);
 };
 
 #endif

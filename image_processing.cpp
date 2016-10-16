@@ -112,7 +112,7 @@ void calculate_pages()
             // to the global list of pages
             current_page = new Page(std::to_string(i / (MODULES_PER_COLUMN *
                                                         MODULES_PER_ROW)) + " (page)",
-                                    WINDOW_RECT, &BLACK, &graphics_objects);
+                                    WINDOW_RECT, BLACK, &graphics_objects);
             PAGES.push_back(current_page);
             current_page = NULL;
             graphics_objects.clear();

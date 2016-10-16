@@ -29,16 +29,16 @@
 /*
  * Constructor.
  */
-Text::Text(std::string _name, SDL_Rect _location, SDL_Color *_color,
+Text::Text(std::string _name, SDL_Rect _location, SDL_Color _color,
            std::string _text, TTF_Font *_font) :
     Graphics_Object(_name, TEXT, NULL, _location, _color),
     font(_font), text(_text)
 {
     // Render the text for the first time
-    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), *color);
+    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
     texture = SDL_CreateTextureFromSurface(RENDERER, surface);
     SDL_QueryTexture(texture, NULL, NULL, &location.w, &location.h);
-    SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b, color->a);
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
     updated = false;
 }
@@ -60,7 +60,7 @@ void Text::render()
     if(updated)
     {
         SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(),
-                                                      *color);
+                                                      color);
         SDL_DestroyTexture(texture);
         texture = SDL_CreateTextureFromSurface(RENDERER, surface);
         SDL_QueryTexture(texture, NULL, NULL, &location.w, &location.h);
@@ -70,13 +70,13 @@ void Text::render()
     if(!SELECTING_SRC
        || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
     {
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
-                               color->a);
+        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                               color.a);
     }
     else
     {
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
-                               color->a / 2);
+        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                               color.a / 2);
     }
 
     SDL_RenderCopy(RENDERER, texture, NULL, &location);
@@ -96,15 +96,6 @@ void Text::clicked()
 void Text::update_text(std::string text_)
 {
     text = text_;
-    updated = true;
-}
-
-/*
- * Set this text object's color.
- */
-void Text::set_color(SDL_Color *color_)
-{
-    color = color_;
     updated = true;
 }
 

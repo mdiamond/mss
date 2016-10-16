@@ -32,7 +32,7 @@
  * Constructor.
  */
 Input_Text_Box::Input_Text_Box(std::string name_, SDL_Rect location_,
-                               SDL_Color *color_, SDL_Color *text_color_,
+                               SDL_Color color_, SDL_Color text_color_,
                                std::string prompt_text_, TTF_Font *font_,
                                Module *parent_, int input_num_,
                                Input_Toggle_Button *input_toggle_button_) :

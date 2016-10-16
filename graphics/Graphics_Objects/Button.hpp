@@ -29,7 +29,7 @@ public:
     Text text;
 
     // Constructor and destructor
-    Button(std::string, SDL_Rect, SDL_Color *, SDL_Color *, std::string,
+    Button(std::string, SDL_Rect, SDL_Color, SDL_Color, std::string,
            Module *);
     virtual ~Button();
 
@@ -39,7 +39,7 @@ public:
     //   Override the default graphics object update_location() function
     void update_location(SDL_Rect);
     //   Set the colors of this button
-    void set_colors(SDL_Color *, SDL_Color *);
+    void set_colors(SDL_Color, SDL_Color);
 };
 
 #endif

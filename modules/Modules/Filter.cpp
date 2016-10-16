@@ -119,7 +119,7 @@ void Filter::process()
             inputs[FILTER_SIGNAL].val = 0;
         }
 
-        output[i] = (iir_coefficients[0] / iir_coefficients[3])
+        out[i] = (iir_coefficients[0] / iir_coefficients[3])
                     * inputs[FILTER_SIGNAL].val
                     + (iir_coefficients[1] / iir_coefficients[3] * x1)
                     + (iir_coefficients[2] / iir_coefficients[3] * x2)
@@ -129,7 +129,7 @@ void Filter::process()
         x2 = x1;
         x1 = inputs[FILTER_SIGNAL].val;
         y2 = y1;
-        y1 = output[i];
+        y1 = out[i];
     }
 
     processed = true;
@@ -192,7 +192,7 @@ void Filter::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
         text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
@@ -209,7 +209,7 @@ void Filter::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[FILTER_SIGNAL_TEXT],
                  graphics_object_locations[FILTER_FREQUENCY_CUTOFF_AND_Q_TEXT]
                 };
-    colors = std::vector<SDL_Color *>(2, &secondary_module_color);
+    colors = std::vector<SDL_Color>(2, secondary_module_color);
     texts = {"INPUT SIGNAL:", "CUTOFF & Q:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
@@ -220,11 +220,11 @@ void Filter::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[FILTER_OUTPUT_WAVEFORM]};
-    colors = {&primary_module_color};
-    background_colors = {&secondary_module_color};
+    colors = {primary_module_color};
+    background_colors = {secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
-    buffers = {&output};
+    buffers = {&out};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
                                                        background_colors,
@@ -240,8 +240,8 @@ void Filter::initialize_unique_graphics_objects()
                  graphics_object_locations[FILTER_FREQUENCY_CUTOFF_INPUT_TEXT_BOX],
                  graphics_object_locations[FILTER_Q_INPUT_TEXT_BOX]
                 };
-    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
-    text_colors = std::vector<SDL_Color *>(3, &primary_module_color);
+    colors = std::vector<SDL_Color>(3, secondary_module_color);
+    text_colors = std::vector<SDL_Color>(3, primary_module_color);
     prompt_texts = std::vector<std::string>(3, "# or input");
     prompt_texts[0] = "input";
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
@@ -261,10 +261,10 @@ void Filter::initialize_unique_graphics_objects()
                  graphics_object_locations[FILTER_FREQUENCY_CUTOFF_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[FILTER_Q_INPUT_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(3, &RED);
-    color_offs = std::vector<SDL_Color *>(3, &secondary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(3, &primary_module_color);
+    colors = std::vector<SDL_Color>(3, RED);
+    color_offs = std::vector<SDL_Color>(3, secondary_module_color);
+    text_color_ons = std::vector<SDL_Color>(3, WHITE);
+    text_color_offs = std::vector<SDL_Color>(3, primary_module_color);
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     texts = std::vector<std::string>(3, "I");
     text_offs = texts;
@@ -290,10 +290,10 @@ void Filter::initialize_unique_graphics_objects()
                  graphics_object_locations[FILTER_BP_TOGGLE_BUTTON],
                  graphics_object_locations[FILTER_HP_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
-    color_offs = std::vector<SDL_Color *>(3, &primary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(3, &primary_module_color);
-    text_color_offs = std::vector<SDL_Color *>(3, &secondary_module_color);
+    colors = std::vector<SDL_Color>(3, secondary_module_color);
+    color_offs = std::vector<SDL_Color>(3, primary_module_color);
+    text_color_ons = std::vector<SDL_Color>(3, primary_module_color);
+    text_color_offs = std::vector<SDL_Color>(3, secondary_module_color);
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     texts = {"LP", "BP", "HP"};
     text_offs = {"LP", "BP", "HP"};

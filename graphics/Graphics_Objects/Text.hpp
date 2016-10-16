@@ -27,7 +27,7 @@ public:
     SDL_Texture *texture;
 
     // Constructor and destructor
-    Text(std::string, SDL_Rect, SDL_Color *, std::string, TTF_Font *);
+    Text(std::string, SDL_Rect, SDL_Color, std::string, TTF_Font *);
     virtual ~Text();
 
     // Member functions
@@ -35,8 +35,6 @@ public:
     void clicked();
     //   Update the text displayed
     void update_text(std::string);
-    //   Set the text color
-    void set_color(SDL_Color *);
 };
 
 #endif

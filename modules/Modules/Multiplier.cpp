@@ -74,11 +74,11 @@ void Multiplier::process()
         inputs[MULTIPLIER_SIGNAL].val = 0;
     }
 
-    for(unsigned short i = 0; i < output.size(); i ++)
+    for(unsigned short i = 0; i < out.size(); i ++)
     {
         update_input_vals(i);
 
-        output[i] = (inputs[MULTIPLIER_SIGNAL].val
+        out[i] = (inputs[MULTIPLIER_SIGNAL].val
                      * (1 - inputs[MULTIPLIER_DRY_WET].val))
                     + (inputs[MULTIPLIER_SIGNAL].val
                        * inputs[MULTIPLIER_MULTIPLIER].val
@@ -135,7 +135,7 @@ void Multiplier::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
         text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
@@ -152,7 +152,7 @@ void Multiplier::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[MULTIPLIER_INPUT_TEXT],
                  graphics_object_locations[MULTIPLIER_DRY_WET_TEXT]
                 };
-    colors = std::vector<SDL_Color *>(2, &secondary_module_color);
+    colors = std::vector<SDL_Color>(2, secondary_module_color);
     texts = {"SIGNAL & MULTIPLIER:", "DRY/WET:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
@@ -163,11 +163,11 @@ void Multiplier::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[MULTIPLIER_OUTPUT_WAVEFORM]};
-    colors = {&primary_module_color};
-    background_colors = {&secondary_module_color};
+    colors = {primary_module_color};
+    background_colors = {secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
-    buffers = {&output};
+    buffers = {&out};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
                                                        background_colors, range_lows, range_highs, buffers);
@@ -181,8 +181,8 @@ void Multiplier::initialize_unique_graphics_objects()
                  graphics_object_locations[MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX],
                  graphics_object_locations[MULTIPLIER_DRY_WET_INPUT_TEXT_BOX]
                 };
-    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
-    text_colors = std::vector<SDL_Color *>(3, &primary_module_color);
+    colors = std::vector<SDL_Color>(3, secondary_module_color);
+    text_colors = std::vector<SDL_Color>(3, primary_module_color);
     prompt_texts = {"input", "# or input", "# or input"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     parents = std::vector<Module *>(3, this);
@@ -199,10 +199,10 @@ void Multiplier::initialize_unique_graphics_objects()
                  graphics_object_locations[MULTIPLIER_MULTIPLIER_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[MULTIPLIER_DRY_WET_INPUT_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(3, &RED);
-    color_offs = std::vector<SDL_Color *>(3, &secondary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(3, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(3, &primary_module_color);
+    colors = std::vector<SDL_Color>(3, RED);
+    color_offs = std::vector<SDL_Color>(3, secondary_module_color);
+    text_color_ons = std::vector<SDL_Color>(3, WHITE);
+    text_color_offs = std::vector<SDL_Color>(3, primary_module_color);
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
     texts = std::vector<std::string>(3, "I");
     text_offs = texts;

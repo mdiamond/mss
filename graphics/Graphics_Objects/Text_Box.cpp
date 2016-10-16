@@ -32,8 +32,8 @@
 /*
  * Constructor.
  */
-Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color *color_,
-                   SDL_Color *text_color_, std::string prompt_text_,
+Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color color_,
+                   SDL_Color text_color_, std::string prompt_text_,
                    TTF_Font *font_, Module *parent_) :
     Graphics_Object(name_, TEXT_BOX, parent_, location_, color_),
     text_color(text_color_),
@@ -108,8 +108,8 @@ void Text_Box::render()
     // draw the typing cursor
     if(active && CURSOR_ON)
     {
-        SDL_SetRenderDrawColor(RENDERER, text_color->r, text_color->g,
-                               text_color->b, text_color->a);
+        SDL_SetRenderDrawColor(RENDERER, text_color.r, text_color.g,
+                               text_color.b, text_color.a);
         SDL_RenderDrawLine(RENDERER,
                            typing_text.location.x + typing_text.location.w,
                            typing_text.location.y + 2,
@@ -197,23 +197,16 @@ void Text_Box::clicked()
  */
 void Text_Box::entered()
 {
-    if(graphics_object_type == TEXT_BOX)
-    {
-        std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT
-                  << std::endl;
+    std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT
+              << std::endl;
 
-        SDL_StopTextInput();
-        text.text = typing_text.text;
-        function_forwarder(this);
-        text.updated = true;
-        ACTIVE_TEXT_BOX = NULL;
-        active = false;
-        typing_text.text = "";
-    }
-    else
-    {
-        ((Input_Text_Box *) this)->entered();
-    }
+    SDL_StopTextInput();
+    text.text = typing_text.text;
+    function_forwarder(this);
+    text.updated = true;
+    ACTIVE_TEXT_BOX = NULL;
+    active = false;
+    typing_text.text = "";
 }
 
 /*
@@ -233,7 +226,7 @@ void Text_Box::cancel_input()
 /*
  * Set the colors of this text box.
  */
-void Text_Box::set_colors(SDL_Color *color_, SDL_Color *text_color_)
+void Text_Box::set_colors(SDL_Color color_, SDL_Color text_color_)
 {
     color = color_;
     background.set_color(color_);

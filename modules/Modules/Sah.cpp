@@ -84,7 +84,7 @@ void Sah::process()
         // Set the output samples to the currently held sample,
         // then decrement the time to next sample by a single sample
         // in ms
-        output[i] = sample;
+        out[i] = sample;
         time_to_next_sample -= ((double) 1000.0 / (double) SAMPLE_RATE);
     }
 
@@ -139,7 +139,7 @@ void Sah::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
         text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
@@ -155,14 +155,14 @@ void Sah::initialize_unique_graphics_objects()
     Button *button;
     button = new Button(name + " reset sampler (button)",
                         graphics_object_locations[SAH_RESET_SAMPLER_BUTTON],
-                        &secondary_module_color, &primary_module_color, "0", this);
+                        secondary_module_color, primary_module_color, "0", this);
     graphics_objects.push_back(button);
 
     names = {name + " signal input (text)", name + " hold time (text)"};
     locations = {graphics_object_locations[SAH_INPUT_TEXT],
                  graphics_object_locations[SAH_HOLD_TIME_TEXT]
                 };
-    colors = std::vector<SDL_Color *>(2, &secondary_module_color);
+    colors = std::vector<SDL_Color>(2, secondary_module_color);
     texts = {"SIGNAL:", "HOLD TIME:"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
 
@@ -173,11 +173,11 @@ void Sah::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[SAH_OUTPUT_WAVEFORM]};
-    colors = {&primary_module_color};
-    background_colors = {&secondary_module_color};
+    colors = {primary_module_color};
+    background_colors = {secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
-    buffers = {&output};
+    buffers = {&out};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
                                                        background_colors, range_lows, range_highs, buffers);
@@ -190,8 +190,8 @@ void Sah::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TEXT_BOX],
                  graphics_object_locations[SAH_HOLD_TIME_INPUT_TEXT_BOX]
                 };
-    colors = std::vector<SDL_Color *>(2, &secondary_module_color);
-    text_colors = std::vector<SDL_Color *>(2, &primary_module_color);
+    colors = std::vector<SDL_Color>(2, secondary_module_color);
+    text_colors = std::vector<SDL_Color>(2, primary_module_color);
     prompt_texts = {"input", "# or input"};
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     parents = std::vector<Module *>(2, this);
@@ -205,10 +205,10 @@ void Sah::initialize_unique_graphics_objects()
     locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(2, &RED);
-    color_offs = std::vector<SDL_Color *>(2, &secondary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(2, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(2, &primary_module_color);
+    colors = std::vector<SDL_Color>(2, RED);
+    color_offs = std::vector<SDL_Color>(2, secondary_module_color);
+    text_color_ons = std::vector<SDL_Color>(2, WHITE);
+    text_color_offs = std::vector<SDL_Color>(2, primary_module_color);
     fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
     texts = std::vector<std::string>(2, "I");
     text_offs = texts;

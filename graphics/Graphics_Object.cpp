@@ -31,7 +31,7 @@
 Graphics_Object::Graphics_Object(std::string name_,
                                  GraphicsObjectType graphics_object_type_,
                                  Module *parent_, SDL_Rect location_,
-                                 SDL_Color *color_) :
+                                 SDL_Color color_) :
     name(name_), graphics_object_type(graphics_object_type_), parent(parent_),
     location(location_), color(color_), updated(true)
 {}
@@ -62,27 +62,16 @@ bool Graphics_Object::was_clicked()
  */
 void Graphics_Object::update_location(SDL_Rect location_)
 {
-    if(graphics_object_type == BUTTON)
-    {
-        ((Button *) this)->update_location(location_);
-    }
-    else if(graphics_object_type == TEXT_BOX
-            || graphics_object_type == INPUT_TEXT_BOX)
-    {
-        ((Text_Box *) this)->update_location(location_);
-    }
-    else if(graphics_object_type == TOGGLE_BUTTON
-            || graphics_object_type == INPUT_TOGGLE_BUTTON)
-    {
-        ((Toggle_Button *) this)->update_location(location_);
-    }
-    else if(graphics_object_type == WAVEFORM)
-    {
-        ((Waveform *) this)->update_location(location_);
-    }
-    else
-    {
-        location = location_;
-    }
+    location = location_;
+    updated = true;
+}
+
+/*
+ * Set the color of this graphics object to the one given.
+ */
+void Graphics_Object::set_color(SDL_Color color_)
+{
+    color = color_;
+    updated = true;
 }
 

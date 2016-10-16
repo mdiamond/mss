@@ -97,7 +97,7 @@ public:
     // on the output of other modules
     std::vector<Parameter> inputs;
     // Output buffer
-    std::vector<float> output;
+    std::vector<float> out;
 
     // Constructor and destructor
     Module(ModuleType);
@@ -145,8 +145,8 @@ public:
     //   Initialize input text box graphics objects
     void initialize_input_text_box_objects(std::vector<std::string>,
                                            std::vector<SDL_Rect>,
-                                           std::vector<SDL_Color *>,
-                                           std::vector<SDL_Color *>,
+                                           std::vector<SDL_Color>,
+                                           std::vector<SDL_Color>,
                                            std::vector<std::string>,
                                            std::vector<TTF_Font *>,
                                            std::vector<Module *>,
@@ -158,10 +158,10 @@ public:
     //   depends on and must be able to reference a particular input text object)
     void initialize_input_toggle_button_objects(std::vector<std::string>,
                                                 std::vector<SDL_Rect>,
-                                                std::vector<SDL_Color *>,
-                                                std::vector<SDL_Color *>,
-                                                std::vector<SDL_Color *>,
-                                                std::vector<SDL_Color *>,
+                                                std::vector<SDL_Color>,
+                                                std::vector<SDL_Color>,
+                                                std::vector<SDL_Color>,
+                                                std::vector<SDL_Color>,
                                                 std::vector<TTF_Font *>,
                                                 std::vector<std::string>,
                                                 std::vector<std::string>,

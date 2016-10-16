@@ -132,7 +132,7 @@ void Oscillator::process()
 
     double phase_offset_diff;
     // Calculate an amplitude for each sample
-    for(unsigned short i = 0; i < output.size(); i ++)
+    for(unsigned short i = 0; i < out.size(); i ++)
     {
         update_input_vals(i);
 
@@ -147,34 +147,34 @@ void Oscillator::process()
         {
             if(waveform_type == SIN)
             {
-                output[i] = produce_sin_sample(current_phase);
+                out[i] = produce_sin_sample(current_phase);
             }
             else if(waveform_type == TRI)
             {
-                output[i] = produce_tri_sample(current_phase);
+                out[i] = produce_tri_sample(current_phase);
             }
             else if(waveform_type == SAW)
             {
-                output[i] = produce_saw_sample(current_phase);
+                out[i] = produce_saw_sample(current_phase);
             }
             else if(waveform_type == SQR)
             {
-                output[i] = produce_sqr_sample(current_phase);
+                out[i] = produce_sqr_sample(current_phase);
             }
         }
         else if(waveform_type != SQR || inputs[OSCILLATOR_PULSE_WIDTH].val == .5)
-            output[i] = WAVETABLES[waveform_type][(int)(current_phase
+            out[i] = WAVETABLES[waveform_type][(int)(current_phase
                                                         * SAMPLE_RATE)];
         else
         {
-            output[i] = produce_sqr_sample(current_phase);
+            out[i] = produce_sqr_sample(current_phase);
         }
 
         // If the oscillator has an abnormal range, scale the sample to
         // that range
         if(inputs[OSCILLATOR_RANGE_LOW].val != -1
            || inputs[OSCILLATOR_RANGE_HIGH].val != 1)
-            output[i] = scale_sample(output[i], -1, 1,
+            out[i] = scale_sample(out[i], -1, 1,
                                      inputs[OSCILLATOR_RANGE_LOW].val,
                                      inputs[OSCILLATOR_RANGE_HIGH].val);
 
@@ -263,7 +263,7 @@ void Oscillator::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
         text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
@@ -279,7 +279,7 @@ void Oscillator::initialize_unique_graphics_objects()
     Button *button;
     button = new Button(name + " reset current phase (button)",
                         graphics_object_locations[OSCILLATOR_RESET_CURRENT_PHASE_BUTTON],
-                        &secondary_module_color, &primary_module_color, "0", this);
+                        secondary_module_color, primary_module_color, "0", this);
     graphics_objects.push_back(button);
 
     names = {name + " frequency (text)", name + " phase offset (text)",
@@ -290,7 +290,7 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_PULSE_WIDTH_TEXT],
                  graphics_object_locations[OSCILLATOR_RANGE_TEXT]
                 };
-    colors = std::vector<SDL_Color *>(4, &secondary_module_color);
+    colors = std::vector<SDL_Color>(4, secondary_module_color);
     texts = {"FREQUENCY:", "PHASE OFFSET:", "PULSE WIDTH:", "RANGE LOW & HIGH:"};
     fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
 
@@ -301,11 +301,11 @@ void Oscillator::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[OSCILLATOR_OUTPUT_WAVEFORM]};
-    colors = {&primary_module_color};
-    background_colors = {&secondary_module_color};
+    colors = {primary_module_color};
+    background_colors = {secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
-    buffers = {&output};
+    buffers = {&out};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
                                                        background_colors, range_lows, range_highs, buffers);
@@ -322,8 +322,8 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX],
                  graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX]
                 };
-    colors = std::vector<SDL_Color *>(5, &secondary_module_color);
-    text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
+    colors = std::vector<SDL_Color>(5, secondary_module_color);
+    text_colors = std::vector<SDL_Color>(5, primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
     fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
     parents = std::vector<Module *>(5, this);
@@ -347,10 +347,10 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(5, &RED);
-    color_offs = std::vector<SDL_Color *>(5, &secondary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(5, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(5, &primary_module_color);
+    colors = std::vector<SDL_Color>(5, RED);
+    color_offs = std::vector<SDL_Color>(5, secondary_module_color);
+    text_color_ons = std::vector<SDL_Color>(5, WHITE);
+    text_color_offs = std::vector<SDL_Color>(5, primary_module_color);
     fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
     texts = std::vector<std::string>(5, "I");
     text_offs = texts;
@@ -381,10 +381,10 @@ void Oscillator::initialize_unique_graphics_objects()
                  graphics_object_locations[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON],
                  graphics_object_locations[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(4, &secondary_module_color);
-    color_offs = std::vector<SDL_Color *>(4, &primary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(4, &primary_module_color);
-    text_color_offs = std::vector<SDL_Color *>(4, &secondary_module_color);
+    colors = std::vector<SDL_Color>(4, secondary_module_color);
+    color_offs = std::vector<SDL_Color>(4, primary_module_color);
+    text_color_ons = std::vector<SDL_Color>(4, primary_module_color);
+    text_color_offs = std::vector<SDL_Color>(4, secondary_module_color);
     fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
     texts = {"SIN", "TRI", "SAW", "SQR"};
     text_offs = {"SIN", "TRI", "SAW", "SQR"};

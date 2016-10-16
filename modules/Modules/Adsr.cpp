@@ -69,7 +69,7 @@ void Adsr::process()
     process_dependencies();
 
     // Calculate an amplitude for each sample
-    for(unsigned short i = 0; i < output.size(); i ++)
+    for(unsigned short i = 0; i < out.size(); i ++)
     {
         // Update parameters
         update_input_vals(i);
@@ -80,7 +80,7 @@ void Adsr::process()
         }
 
         // Set the current output sample to the current amplitude
-        output[i] = current_amplitude;
+        out[i] = current_amplitude;
 
         // Determine whether or not a note on value is detected
         bool note_on = inputs[ADSR_NOTE].val == 1;
@@ -254,7 +254,7 @@ void Adsr::initialize_unique_graphics_objects()
 {
     std::vector<std::string> names, texts, prompt_texts, text_offs;
     std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color *> colors, background_colors, color_offs, text_colors,
+    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
         text_color_ons, text_color_offs;
     std::vector<TTF_Font *> fonts;
     std::vector<float> range_lows, range_highs;
@@ -270,7 +270,7 @@ void Adsr::initialize_unique_graphics_objects()
     Button *button;
     button = new Button(name + " reset current amplitude (button)",
                         graphics_object_locations[ADSR_RESET_CURRENT_AMPLITUDE_BUTTON],
-                        &secondary_module_color, &primary_module_color, "0",
+                        secondary_module_color, primary_module_color, "0",
                         this);
     graphics_objects.push_back(button);
 
@@ -281,7 +281,7 @@ void Adsr::initialize_unique_graphics_objects()
                  graphics_object_locations[ADSR_A_D_TEXT],
                  graphics_object_locations[ADSR_S_R_TEXT]
                 };
-    colors = std::vector<SDL_Color *>(3, &secondary_module_color);
+    colors = std::vector<SDL_Color>(3, secondary_module_color);
     texts = {"NOTE ON/OFF:", "ATTACK & DECAY:", "SUSTAIN & RELEASE:"};
     fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
@@ -293,11 +293,11 @@ void Adsr::initialize_unique_graphics_objects()
 
     names = {name + " waveform visualizer (waveform)"};
     locations = {graphics_object_locations[ADSR_OUTPUT_WAVEFORM]};
-    colors = {&primary_module_color};
-    background_colors = {&secondary_module_color};
+    colors = {primary_module_color};
+    background_colors = {secondary_module_color};
     range_lows = {-1};
     range_highs = {1};
-    buffers = {&output};
+    buffers = {&out};
 
     tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
                                                        background_colors,
@@ -319,8 +319,8 @@ void Adsr::initialize_unique_graphics_objects()
                  graphics_object_locations[ADSR_S_INPUT_TEXT_BOX],
                  graphics_object_locations[ADSR_R_INPUT_TEXT_BOX]
                 };
-    colors = std::vector<SDL_Color *>(5, &secondary_module_color);
-    text_colors = std::vector<SDL_Color *>(5, &primary_module_color);
+    colors = std::vector<SDL_Color>(5, secondary_module_color);
+    text_colors = std::vector<SDL_Color>(5, primary_module_color);
     prompt_texts = std::vector<std::string>(5, "# or input");
     fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
     parents = std::vector<Module *>(5, this);
@@ -343,10 +343,10 @@ void Adsr::initialize_unique_graphics_objects()
                  graphics_object_locations[ADSR_S_INPUT_TOGGLE_BUTTON],
                  graphics_object_locations[ADSR_R_INPUT_TOGGLE_BUTTON]
                 };
-    colors = std::vector<SDL_Color *>(5, &RED);
-    color_offs = std::vector<SDL_Color *>(5, &secondary_module_color);
-    text_color_ons = std::vector<SDL_Color *>(5, &WHITE);
-    text_color_offs = std::vector<SDL_Color *>(5, &primary_module_color);
+    colors = std::vector<SDL_Color>(5, RED);
+    color_offs = std::vector<SDL_Color>(5, secondary_module_color);
+    text_color_ons = std::vector<SDL_Color>(5, WHITE);
+    text_color_offs = std::vector<SDL_Color>(5, primary_module_color);
     fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
     texts = std::vector<std::string>(5, "I");
     text_offs = texts;

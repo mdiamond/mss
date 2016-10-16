@@ -31,8 +31,8 @@
 /*
  * Constructor.
  */
-Button::Button(std::string name_, SDL_Rect location_, SDL_Color *color_,
-               SDL_Color *text_color_, std::string text_, Module *parent_) :
+Button::Button(std::string name_, SDL_Rect location_, SDL_Color color_,
+               SDL_Color text_color_, std::string text_, Module *parent_) :
     Graphics_Object(name_, BUTTON, parent_, location_, color_),
     background(Rect(name_ + " background rect (rect)", location_, color_,
                     NULL)),
@@ -81,19 +81,18 @@ void Button::clicked()
     }
 }
 
-void Button::update_location(SDL_Rect _location)
+void Button::update_location(SDL_Rect location_)
 {
-    location = _location;
-    background.update_location(_location);
-    text.update_location(_location);
-    text.updated = true;
+    location = location_;
+    background.update_location(location_);
+    text.update_location(location_);
+    updated = true;
 }
 
-void Button::set_colors(SDL_Color *_color, SDL_Color *_text_color)
+void Button::set_colors(SDL_Color color_, SDL_Color text_color_)
 {
-    background.color = _color;
-    text.color = _text_color;
-    background.updated = true;
-    text.updated = true;
+    background.set_color(color_);
+    text.set_color(text_color_);
+    updated = true;
 }
 

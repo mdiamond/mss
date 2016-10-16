@@ -28,7 +28,7 @@ public:
     // The text color, whether or not this text box
     // is active, the font, the background rectangle,
     // the text, the prompt text, and the typing text
-    SDL_Color *text_color;
+    SDL_Color text_color;
     bool active;
     TTF_Font *font;
     Rect background;
@@ -37,7 +37,7 @@ public:
     Text typing_text;
 
     // Constructor and destructor
-    Text_Box(std::string, SDL_Rect, SDL_Color *, SDL_Color *,
+    Text_Box(std::string, SDL_Rect, SDL_Color, SDL_Color,
              std::string, TTF_Font *, Module *);
     virtual ~Text_Box();
 
@@ -57,7 +57,7 @@ public:
     //   Cancel text input
     void cancel_input();
     //   Set the colors of the text box
-    void set_colors(SDL_Color *, SDL_Color *);
+    void set_colors(SDL_Color, SDL_Color);
 };
 
 #endif

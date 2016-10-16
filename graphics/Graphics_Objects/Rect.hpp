@@ -25,14 +25,12 @@ public:
     bool fill;
 
     // Constructor and destructor
-    Rect(std::string, SDL_Rect, SDL_Color *, Module *);
+    Rect(std::string, SDL_Rect, SDL_Color, Module *);
     virtual ~Rect();
 
     // Member functions
     void render();
     void clicked();
-    //   Set the text color
-    void set_color(SDL_Color *);
 };
 
 #endif

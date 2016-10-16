@@ -30,7 +30,7 @@
 /*
  * Constructor.
  */
-Rect::Rect(std::string name_, SDL_Rect location_, SDL_Color *color_,
+Rect::Rect(std::string name_, SDL_Rect location_, SDL_Color color_,
            Module *parent_) :
     Graphics_Object(name_, RECT, parent_, location_, color_)
 {
@@ -53,13 +53,13 @@ void Rect::render()
        || (SELECTING_SRC && parent != NULL && parent->was_clicked())
        || name == "background (rect)")
     {
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
-                               color->a);
+        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                               color.a);
     }
     else
     {
-        SDL_SetRenderDrawColor(RENDERER, color->r, color->g, color->b,
-                               color->a / 2);
+        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                               color.a / 2);
     }
 
     if(fill)
@@ -94,14 +94,5 @@ void Rect::clicked()
             OBJECT_CLICKED = true;
         }
     }
-}
-
-/*
- * Set this text object's color.
- */
-void Rect::set_color(SDL_Color *color_)
-{
-    color = color_;
-    updated = true;
 }
 

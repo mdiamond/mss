@@ -24,7 +24,7 @@ public:
     std::vector<Graphics_Object *> graphics_objects;
 
     // Constructor and destructor
-    Page(std::string, SDL_Rect, SDL_Color *, std::vector<Graphics_Object *> *);
+    Page(std::string, SDL_Rect, SDL_Color, std::vector<Graphics_Object *> *);
     virtual ~Page();
 
     // Member functions
