@@ -56,24 +56,24 @@ SDL_Renderer *RENDERER;
 SDL_Texture *TEXTURE;
 
 // Module dimensions and amount of modules per page
-int MODULE_WIDTH = 150;
-int MODULE_HEIGHT = 225;
+int MODULE_WIDTH = 160;
+int MODULE_HEIGHT = 135;
 int MODULES_PER_ROW = 6;
-int MODULES_PER_COLUMN = 3;
+int MODULES_PER_COLUMN = 5;
 int MODULES_PER_PAGE = MODULES_PER_ROW * MODULES_PER_COLUMN;
-int MODULE_SPACING = 1;
+int MODULE_SPACING = 2;
 
 // Window dimensions
-int MENU_HEIGHT = 19;
+int MENU_HEIGHT = 9 + MODULE_SPACING;
 int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
                    ((MODULES_PER_ROW - 1) * MODULE_SPACING);
 int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MODULES_PER_COLUMN * MODULE_SPACING) +
-                    (MENU_HEIGHT * 2) - 3;
+                    (MENU_HEIGHT * 2);
 SDL_Rect WINDOW_RECT = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
-// Fonts
-TTF_Font *FONT_REGULAR;
+// Font
+TTF_Font *FONT;
 
 // Colors
 SDL_Color BLACK = {0, 0, 0, 255};
@@ -102,6 +102,9 @@ Text_Box *ACTIVE_TEXT_BOX = NULL;
 // and the input toggle button for the associated parameter
 bool SELECTING_SRC = false;
 Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON = NULL;
+
+// Whether or not to use black and white for everything
+bool COLORBLIND_ON = false;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

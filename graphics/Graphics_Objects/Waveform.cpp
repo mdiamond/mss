@@ -31,13 +31,12 @@
  * Constructor.
  */
 Waveform::Waveform(std::string name_, SDL_Rect location_, SDL_Color color_,
-                   SDL_Color background_color_, float range_low_,
-                   float range_high_, std::vector<float> *buffer_) :
+                   SDL_Color background_color_, std::vector<float> *buffer_) :
     Graphics_Object(name_, WAVEFORM, NULL, location_, color_),
-    background_color(background_color_), range_low(range_low_),
-    range_high(range_high_), buffer(buffer_),
+    background_color(background_color_), range_low(-1),
+    range_high(1), buffer(buffer_),
     render_buffer(std::vector<float>(location.w, 0)),
-    background(Rect(name_ + " background rect (rect)", location_,
+    background(Rect(name_ + " background rect", location_,
                     background_color_, NULL))
 {}
 
@@ -53,7 +52,7 @@ Waveform::~Waveform()
 float Waveform::calculate_y(int i)
 {
     float sample;
-    int y;
+    float y;
 
     if(range_low != -1 || range_high != 1)
     {
@@ -64,7 +63,7 @@ float Waveform::calculate_y(int i)
         sample = render_buffer[i];
     }
 
-    y = (location.y + location.h / 2) + (sample * -1) * (location.h / 2);
+    y = (location.y + (location.h / 2.0)) + (-sample * (location.h / 2.0));
 
     if(y < location.y)
     {
@@ -106,7 +105,7 @@ void Waveform::copy_buffer()
 void Waveform::render()
 {
     SDL_Point zero = {0, 0};
-    std::vector<SDL_Point> points, points2, points3;
+    std::vector<SDL_Point> points;
 
     points = std::vector<SDL_Point>(location.w, zero);
 
@@ -114,15 +113,6 @@ void Waveform::render()
     {
         points[i].x = location.x + i;
         points[i].y = calculate_y(i);
-    }
-
-    points2 = points;
-    points3 = points;
-
-    for(unsigned int i = 0; i < points.size(); i ++)
-    {
-        points2[i].y += 1;
-        points3[i].y -= 1;
     }
 
     background.render();
@@ -137,17 +127,13 @@ void Waveform::render()
         SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a / 2);
     }
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
-    SDL_RenderDrawLines(RENDERER, &points2[0], points.size());
-    SDL_RenderDrawLines(RENDERER, &points3[0], points.size());
 }
 
 /*
  * Waveforms do not respond to clicks.
  */
 void Waveform::clicked()
-{
-
-}
+{}
 
 /*
  * Update the location of this waveform object.

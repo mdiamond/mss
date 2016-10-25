@@ -23,7 +23,7 @@ bool initialize();
 int open_window();
 int create_renderer();
 int create_texture();
-int load_fonts();
+int load_font();
 void initialize_utilities_page();
 void prettify_utilities_page();
 

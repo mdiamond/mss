@@ -30,9 +30,9 @@
  * Constructor.
  */
 Text::Text(std::string _name, SDL_Rect _location, SDL_Color _color,
-           std::string _text, TTF_Font *_font) :
+           std::string _text) :
     Graphics_Object(_name, TEXT, NULL, _location, _color),
-    font(_font), text(_text)
+    font(FONT), text(_text)
 {
     // Render the text for the first time
     SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);

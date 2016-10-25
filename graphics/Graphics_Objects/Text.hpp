@@ -27,7 +27,7 @@ public:
     SDL_Texture *texture;
 
     // Constructor and destructor
-    Text(std::string, SDL_Rect, SDL_Color, std::string, TTF_Font *);
+    Text(std::string, SDL_Rect, SDL_Color, std::string);
     virtual ~Text();
 
     // Member functions

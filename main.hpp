@@ -63,8 +63,8 @@ extern int MENU_HEIGHT;
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 extern SDL_Rect WINDOW_RECT;
-//   Fonts
-extern TTF_Font *FONT_REGULAR;
+//   Font
+extern TTF_Font *FONT;
 //   Colors
 extern SDL_Color BLACK;
 extern SDL_Color WHITE;
@@ -86,6 +86,8 @@ extern Text_Box *ACTIVE_TEXT_BOX;
 //   Selecting a source module or not
 extern bool SELECTING_SRC;
 extern Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON;
+//   Colorblind mode toggle
+extern bool COLORBLIND_ON;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

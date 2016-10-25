@@ -93,9 +93,10 @@ void calculate_pages()
         if(MODULES[i] != NULL)
         {
             // Mark each graphics objects in the module as updated
-            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
+            for(auto itr = MODULES[i]->graphics_objects.begin();
+                itr != MODULES[i]->graphics_objects.end(); itr ++)
             {
-                MODULES[i]->graphics_objects[j]->updated = true;
+                itr->second->updated = true;
             }
 
             // Add the module to the list of sub page graphics objects
@@ -142,13 +143,20 @@ void draw_surface()
     // Copy audio data into waveform objects so that they will render without hiccups
     SDL_LockAudio();
     for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
         if(MODULES[i] != NULL)
-            for(unsigned int j = 0; j < MODULES[i]->graphics_objects.size(); j ++)
-                if(MODULES[i]->graphics_objects[j]->graphics_object_type
+        {
+            for(auto itr = MODULES[i]->graphics_objects.begin();
+                itr != MODULES[i]->graphics_objects.end(); itr ++)
+            {
+                if(((Graphics_Object *) itr->second)->graphics_object_type
                    == Graphics_Object::WAVEFORM)
                 {
-                    ((Waveform *) MODULES[i]->graphics_objects[j])->copy_buffer();
+                    ((Waveform *) itr->second)->copy_buffer();
                 }
+            }
+        }
+    }
     SDL_UnlockAudio();
 
     // Render graphics objects for the current page

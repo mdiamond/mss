@@ -56,11 +56,11 @@ Page::~Page()
  */
 void Page::render()
 {
-    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
-        if(graphics_objects[i] != NULL)
-        {
-            graphics_objects[i]->render();
-        }
+    for(auto itr = graphics_objects.begin(); itr != graphics_objects.end();
+        itr ++)
+    {
+        (*itr)->render();
+    }
 }
 
 /*
@@ -68,10 +68,13 @@ void Page::render()
  */
 void Page::clicked()
 {
-    for(unsigned int i = 0; i < graphics_objects.size(); i ++)
-        if(graphics_objects[i]->was_clicked())
+    for(auto itr = graphics_objects.begin(); itr != graphics_objects.end();
+        itr ++)
+    {
+        if((*itr)->was_clicked())
         {
-            graphics_objects[i]->clicked();
+            (*itr)->clicked();
         }
+    }
 }
 

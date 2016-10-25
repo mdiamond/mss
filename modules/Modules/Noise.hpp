@@ -20,17 +20,6 @@
 class Noise: public Module
 {
 public:
-    // Noise graphics objects enum
-    enum NoiseGraphicsObjects
-    {
-        NOISE_OUTPUT_WAVEFORM = 3,
-        NOISE_RANGE_TEXT,
-        NOISE_RANGE_LOW_INPUT_TEXT_BOX,
-        NOISE_RANGE_HIGH_INPUT_TEXT_BOX,
-        NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON,
-        NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON,
-    };
-
     // Noise dependencies enum
     enum NoiseDependencies
     {

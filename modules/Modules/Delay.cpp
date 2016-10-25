@@ -163,209 +163,155 @@ void Delay::process()
 }
 
 /*
- * Calculate the locations of graphics objects unique to this module type.
+ * Calculate the locations of graphics objects unique to this module type, add
+ * them to the map of graphics object locations.
  */
 void Delay::calculate_unique_graphics_object_locations()
 {
-    int x_text, x_text_box, w_text_box, h_text_box,
-        x_input_toggle_button, w_input_toggle_button,
-        w_waveform, h_waveform,
-        x_signal_cv, x_signal_input_toggle_button, w_signals,
-        y3, y4, y5, y6, y7, y8, y9;
+    SDL_Rect location;
 
-    x_text = upper_left.x + 2;
-    x_text_box = upper_left.x;
-    w_text_box = MODULE_WIDTH - 11;
-    h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box + 1;
-    w_input_toggle_button = 10;
-    w_waveform = MODULE_WIDTH;
-    h_waveform = 104;
-    y3 = upper_left.y + 23;
-    y4 = y3 + 106;
-    y5 = y4 + 15;
-    y6 = y5 + 15;
-    y7 = y6 + 15;
-    y8 = y7 + 15;
-    y9 = y8 + 15;
-    x_signal_cv = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_signals = (MODULE_WIDTH / 2) - 11;
-    x_signal_input_toggle_button = x_text_box + w_signals + 1;
+    // Reset buffer button location
+    location = {upper_left.x + MODULE_WIDTH - 15, upper_left.y, 7, 9};
+    graphics_object_locations["reset buffer button"] = location;
 
-    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
-                                         upper_left.y, 9, 15
-                                        });
-    graphics_object_locations.push_back({x_text, y4, 0, 0});
-    graphics_object_locations.push_back({x_text, y6, 0, 0});
-    graphics_object_locations.push_back({x_text, y8, 0, 0});
-    graphics_object_locations.push_back({x_text_box, y3, w_waveform,
-                                         h_waveform
-                                        });
-    graphics_object_locations.push_back({x_text_box, y5, w_text_box,
-                                         h_text_box
-                                        });
-    graphics_object_locations.push_back({x_text_box, y7, w_signals + 11,
-                                         h_text_box
-                                        });
-    graphics_object_locations.push_back({x_signal_cv, y7, w_signals - 1,
-                                         h_text_box
-                                        });
-    graphics_object_locations.push_back({x_text_box, y9, w_signals,
-                                         h_text_box
-                                        });
-    graphics_object_locations.push_back({x_signal_cv, y9, w_signals - 1,
-                                         h_text_box
-                                        });
-    graphics_object_locations.push_back({x_input_toggle_button, y5,
-                                         w_input_toggle_button, h_text_box
-                                        });
-    graphics_object_locations.push_back({x_input_toggle_button, y7,
-                                         w_input_toggle_button, h_text_box
-                                        });
-    graphics_object_locations.push_back({x_signal_input_toggle_button, y9,
-                                         w_input_toggle_button, h_text_box
-                                        });
-    graphics_object_locations.push_back({x_input_toggle_button, y9,
-                                         w_input_toggle_button, h_text_box
-                                        });
+    // Waveform viewer location
+    location = {upper_left.x, location.y + 15, MODULE_WIDTH, 54};
+    graphics_object_locations["waveform"] = location;
+
+    // Signal input related graphics object locations
+    location = {upper_left.x + 2, location.y + 57, 0, 0};
+    graphics_object_locations["signal text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["signal text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["signal toggle button"] = location;
+
+    // Max delay time/delay time related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["max delay time/delay time text"] = location;
+    location = {upper_left.x, location.y + 10, (MODULE_WIDTH / 2) - 1, 9};
+    graphics_object_locations["max delay time text box"] = location;
+    location = {location.x + location.w + 1, location.y, (MODULE_WIDTH / 2) - 8, 9};
+    graphics_object_locations["delay time text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["delay time toggle button"] = location;
+
+    // Feedback amount/wet/dry amount related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["feedback amount/wet/dry amount text"] = location;
+    location = {upper_left.x, location.y + 10, (MODULE_WIDTH / 2) - 9, 9};
+    graphics_object_locations["feedback amount text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["feedback amount toggle button"] = location;
+    location = {location.x + location.w + 1, location.y, (MODULE_WIDTH / 2) - 8, 9};
+    graphics_object_locations["wet/dry amount text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["wet/dry amount toggle button"] = location;
 }
 
 /*
- * Initialize all graphics objects unique to this module type, and add them to
- * the array of graphics objects.
+ * Initialize graphics objects unique to this module type, add them to the
+ * map of graphics objects.
  */
 void Delay::initialize_unique_graphics_objects()
 {
-    std::vector<std::string> names, texts, prompt_texts, text_offs;
-    std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
-        text_color_ons, text_color_offs;
-    std::vector<TTF_Font *> fonts;
-    std::vector<float> range_lows, range_highs;
-    std::vector<int> input_nums;
-    std::vector<std::vector<float> *> buffers;
-    std::vector<Module *> parents;
-    std::vector<bool> bs;
-    std::vector<Input_Text_Box *> input_text_boxes;
-    std::vector<Input_Toggle_Button *> input_toggle_buttons;
+    // Initialize reset buffer button
+    graphics_objects["reset buffer button"] =
+        new Button(name + " reset buffer button",
+                   graphics_object_locations["reset buffer button"],
+                   secondary_module_color, primary_module_color, "0", this);
 
-    std::vector<Graphics_Object *> tmp_graphics_objects;
+    // Initialize text objects
+    graphics_objects["signal text"] =
+        new Text(name + " signal text",
+                 graphics_object_locations["signal text"],
+                 secondary_module_color, "SIGNAL INPUT:");
+    graphics_objects["max delay time/delay time text"] =
+        new Text(name + " max delay time/delay time text",
+                 graphics_object_locations["max delay time/delay time text"],
+                 secondary_module_color, "MAX DELAY & DELAY (ms):");
+    graphics_objects["feedback amount/wet/dry amount text"] =
+        new Text(name + " feedback amount/wet/dry amount text",
+                 graphics_object_locations["feedback amount/wet/dry amount text"],
+                 secondary_module_color, "FEEDBACK (#) & WET/DRY (0-1):");
 
-    Button *button;
-    button = new Button(name + " reset buffer (button)",
-                        graphics_object_locations[DELAY_RESET_BUFFER_BUTTON],
-                        secondary_module_color, primary_module_color, "0", this);
-    graphics_objects.push_back(button);
+    // Initialize waveform viewer
+    graphics_objects["waveform"] =
+        new Waveform(name + " waveform",
+                     graphics_object_locations["waveform"],
+                     primary_module_color, secondary_module_color, &out);
 
-    names = {name + " signal (text)",
-             name + " max delay time and delay time (text)",
-             name + " feedback amount and wet/dry (text)"
-            };
-    locations = {graphics_object_locations[DELAY_SIGNAL_TEXT],
-                 graphics_object_locations[DELAY_MAX_DELAY_TIME_AND_DELAY_TIME_TEXT],
-                 graphics_object_locations[DELAY_FEEDBACK_AMOUNT_AND_WET_DRY_TEXT]
-                };
-    colors = std::vector<SDL_Color>(3, secondary_module_color);
-    texts = {"SIGNAL INPUT:", "MAX DELAY & DELAY:", "FEEDBACK & WET/DRY:"};
-    fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
+    // Initialize input text boxes
+    graphics_objects["signal text box"] =
+        new Input_Text_Box(name + " signal text box",
+                           graphics_object_locations["signal text box"],
+                           secondary_module_color, primary_module_color,
+                           "input", this, DELAY_SIGNAL, NULL);
+    graphics_objects["max delay time text box"] =
+        new Input_Text_Box(name + " max delay time text box",
+                           graphics_object_locations["max delay time text box"],
+                           secondary_module_color, primary_module_color,
+                           "#", this, DELAY_MAX_DELAY_TIME, NULL);
+    graphics_objects["delay time text box"] =
+        new Input_Text_Box(name + " delay time text box",
+                           graphics_object_locations["delay time text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, DELAY_DELAY_TIME, NULL);
+    graphics_objects["feedback amount text box"] =
+        new Input_Text_Box(name + " feedback amount text box",
+                           graphics_object_locations["feedback amount text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, DELAY_FEEDBACK_AMOUNT, NULL);
+    graphics_objects["wet/dry amount text box"] =
+        new Input_Text_Box(name + " wet/dry amount text box",
+                           graphics_object_locations["wet/dry amount text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, DELAY_WET_DRY, NULL);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors,
-                                                   texts, fonts);
-    graphics_objects.insert(graphics_objects.end(),
-                            tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
+    // Initialize input toggle buttons
+    graphics_objects["signal toggle button"] =
+        new Input_Toggle_Button(name + " signal toggle button",
+                                graphics_object_locations["signal toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, DELAY_SIGNAL,
+                                (Input_Text_Box *) graphics_objects["signal text box"]);
+    graphics_objects["delay time toggle button"] =
+        new Input_Toggle_Button(name + " delay time toggle button",
+                                graphics_object_locations["delay time toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, DELAY_DELAY_TIME,
+                                (Input_Text_Box *) graphics_objects["delay time text box"]);
+    graphics_objects["feedback amount toggle button"] =
+        new Input_Toggle_Button(name + " feedback amount toggle button",
+                                graphics_object_locations["feedback amount toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, DELAY_FEEDBACK_AMOUNT,
+                                (Input_Text_Box *) graphics_objects["feedback amount text box"]);
+    graphics_objects["wet/dry amount toggle button"] =
+        new Input_Toggle_Button(name + " wet/dry amount toggle button",
+                                graphics_object_locations["wet/dry amount toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, DELAY_WET_DRY,
+                                (Input_Text_Box *) graphics_objects["wet/dry amount text box"]);
 
-    names = {name + " waveform visualizer (waveform)"};
-    locations = {graphics_object_locations[DELAY_OUTPUT_WAVEFORM]};
-    colors = {primary_module_color};
-    background_colors = {secondary_module_color};
-    range_lows = {-1};
-    range_highs = {1};
-    buffers = {&out};
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
-                                                       background_colors,
-                                                       range_lows, range_highs,
-                                                       buffers);
-    graphics_objects.insert(graphics_objects.end(),
-                            tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
-    names = {name + " signal (input text box)",
-             name + " max delay time (input text box)",
-             name + " delay time (input text box)",
-             name + " feedback amount (input text box)",
-             name + " wet/dry (input text box)"
-            };
-    locations = {graphics_object_locations[DELAY_SIGNAL_INPUT_TEXT_BOX],
-                 graphics_object_locations[DELAY_MAX_DELAY_TIME_INPUT_TEXT_BOX],
-                 graphics_object_locations[DELAY_DELAY_TIME_INPUT_TEXT_BOX],
-                 graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX],
-                 graphics_object_locations[DELAY_WET_DRY_INPUT_TEXT_BOX]
-                };
-    colors = std::vector<SDL_Color>(5, secondary_module_color);
-    text_colors = std::vector<SDL_Color>(5, primary_module_color);
-    prompt_texts = std::vector<std::string>(5, "# or input");
-    prompt_texts[0] = "input";
-    prompt_texts[1] = "#";
-    fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
-    parents = std::vector<Module *>(5, this);
-    input_nums = {DELAY_SIGNAL, DELAY_MAX_DELAY_TIME, DELAY_DELAY_TIME,
-                  DELAY_FEEDBACK_AMOUNT, DELAY_WET_DRY
-                 };
-    input_toggle_buttons = std::vector<Input_Toggle_Button *>(5, NULL);
-
-    initialize_input_text_box_objects(names, locations, colors, text_colors,
-                                      prompt_texts, fonts, parents, input_nums,
-                                      input_toggle_buttons);
-
-    names = {name + " signal (input toggle button)",
-             name + " delay time (input toggle button)",
-             name + " feedback amount (input toggle button)",
-             name + " wet/dry (input toggle button)"
-            };
-    locations = {graphics_object_locations[DELAY_SIGNAL_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[DELAY_DELAY_TIME_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON]
-                };
-    colors = std::vector<SDL_Color>(4, RED);
-    color_offs = std::vector<SDL_Color>(4, secondary_module_color);
-    text_color_ons = std::vector<SDL_Color>(4, WHITE);
-    text_color_offs = std::vector<SDL_Color>(4, primary_module_color);
-    fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
-    texts = std::vector<std::string>(4, "I");
-    text_offs = texts;
-    bs = std::vector<bool>(4, false);
-    parents = std::vector<Module *>(4, this);
-    input_nums = {DELAY_SIGNAL, DELAY_DELAY_TIME, DELAY_FEEDBACK_AMOUNT,
-                  DELAY_WET_DRY
-                 };
-
-    input_text_boxes = {(Input_Text_Box *) graphics_objects[DELAY_SIGNAL_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[DELAY_DELAY_TIME_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[DELAY_WET_DRY_INPUT_TEXT_BOX]
-                       };
-
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
-                                           text_color_ons, text_color_offs,
-                                           fonts, texts, text_offs, bs, parents,
-                                           input_nums, input_text_boxes);
-
+    // Point input text boxes to their associated input toggle buttons
     ((Input_Text_Box *)
-     graphics_objects[DELAY_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[DELAY_SIGNAL_INPUT_TOGGLE_BUTTON];
+     graphics_objects["signal text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["signal toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[DELAY_DELAY_TIME_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[DELAY_DELAY_TIME_INPUT_TOGGLE_BUTTON];
+     graphics_objects["delay time text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["delay time toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *)
-         graphics_objects[DELAY_FEEDBACK_AMOUNT_INPUT_TOGGLE_BUTTON];
+     graphics_objects["feedback amount text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["feedback amount toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[DELAY_WET_DRY_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[DELAY_WET_DRY_INPUT_TOGGLE_BUTTON];
+     graphics_objects["wet/dry amount text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["wet/dry amount toggle button"];
 }
 
 std::string Delay::get_unique_text_representation()
@@ -390,11 +336,11 @@ void Delay::reset_buffer()
  */
 void Delay::button_function(Button *button)
 {
-    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    if(button == graphics_objects["remove module button"])
     {
         delete this;
     }
-    else if(button == graphics_objects[DELAY_RESET_BUFFER_BUTTON])
+    else if(button == graphics_objects["reset buffer button"])
     {
         reset_buffer();
     }

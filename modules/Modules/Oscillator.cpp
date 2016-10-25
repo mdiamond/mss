@@ -145,21 +145,20 @@ void Oscillator::process()
         if(inputs[OSCILLATOR_FREQUENCY].val < 1
            && inputs[OSCILLATOR_FREQUENCY].val > -1)
         {
-            if(waveform_type == SIN)
+            switch(waveform_type)
             {
+            case SIN :
                 out[i] = produce_sin_sample(current_phase);
-            }
-            else if(waveform_type == TRI)
-            {
+                break;
+            case TRI :
                 out[i] = produce_tri_sample(current_phase);
-            }
-            else if(waveform_type == SAW)
-            {
+                break;
+            case SAW:
                 out[i] = produce_saw_sample(current_phase);
-            }
-            else if(waveform_type == SQR)
-            {
+                break;
+            case SQR:
                 out[i] = produce_sqr_sample(current_phase);
+                break;
             }
         }
         else if(waveform_type != SQR || inputs[OSCILLATOR_PULSE_WIDTH].val == .5)
@@ -197,280 +196,261 @@ void Oscillator::process()
 }
 
 /*
- * Calculate the locations of graphics objects unique to this module type.
+ * Calculate the locations of graphics objects unique to this module type, add
+ * them to the map of graphics object locations.
  */
 void Oscillator::calculate_unique_graphics_object_locations()
 {
-    int x_text, x_text_box, w_text_box, h_text_box,
-        x_input_toggle_button, w_input_toggle_button,
-        w_waveform, h_waveform,
-        y3, y4, y5, y6, y7, y8, y9, y10, y11, y12,
-        x_range_high, x_range_low_input_toggle_button, w_range,
-        w_wave_selector;
+    SDL_Rect location;
 
-    x_text = upper_left.x + 2;
-    x_text_box = upper_left.x;
-    w_text_box = MODULE_WIDTH - 11;
-    h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box + 1;
-    w_input_toggle_button = 10;
-    w_waveform = MODULE_WIDTH;
-    h_waveform = 45;
-    y3 = upper_left.y + 23;
-    y4 = y3 + 46;
-    y5 = y4 + 15;
-    y6 = y5 + 16;
-    y7 = y6 + 15;
-    y8 = y7 + 16;
-    y9 = y8 + 15;
-    y10 = y9 + 16;
-    y11 = y10 + 15;
-    y12 = y11 + 27;
-    x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_range = (MODULE_WIDTH / 2) - 11;
-    x_range_low_input_toggle_button = x_text_box + w_range + 1;
-    w_wave_selector = ((MODULE_WIDTH) / 4) - 1;
+    // Reset buffer button location
+    location = {upper_left.x + MODULE_WIDTH - 15, upper_left.y, 7, 9};
+    graphics_object_locations["reset phase button"] = location;
 
-    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
-                                         upper_left.y, 9, 15
-                                        });
-    graphics_object_locations.push_back({x_text, y4, 0, 0});
-    graphics_object_locations.push_back({x_text, y6, 0, 0});
-    graphics_object_locations.push_back({x_text, y8, 0, 0});
-    graphics_object_locations.push_back({x_text, y10, 0, 0});
-    graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y9, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y11, w_range, h_text_box});
-    graphics_object_locations.push_back({x_range_high, y11, w_range - 1, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y9, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y11, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y12, w_wave_selector, h_text_box});
-    graphics_object_locations.push_back({x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box});
-    graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box});
-    graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box});
+    // Waveform viewer location
+    location = {upper_left.x, location.y + 15, MODULE_WIDTH, 34};
+    graphics_object_locations["waveform"] = location;
+
+    // Frequency related graphics object locations
+    location = {upper_left.x + 2, location.y + 37, 0, 0};
+    graphics_object_locations["frequency text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["frequency text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["frequency toggle button"] = location;
+
+    // Phase offset/pulse width related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["phase offset/pulse width text"] = location;
+    location = {upper_left.x, location.y + 10, (MODULE_WIDTH / 2) - 9, 9};
+    graphics_object_locations["phase offset text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["phase offset toggle button"] = location;
+    location = {location.x + location.w + 1, location.y, (MODULE_WIDTH / 2) - 8, 9};
+    graphics_object_locations["pulse width text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["pulse width toggle button"] = location;
+
+    // Range low/range high related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["ranges text"] = location;
+    location = {upper_left.x, location.y + 10, (MODULE_WIDTH / 2) - 9, 9};
+    graphics_object_locations["range low text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["range low toggle button"] = location;
+    location = {location.x + location.w + 1, location.y, (MODULE_WIDTH / 2) - 8, 9};
+    graphics_object_locations["range high text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["range high toggle button"] = location;
+
+    // Waveform type related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["waveform type text"] = location;
+    location = {upper_left.x, location.y + 10, (MODULE_WIDTH / 4) - 1, 9};
+    graphics_object_locations["sin toggle button"] = location;
+    location = {location.x + location.w + 1, location.y, location.w, 9};
+    graphics_object_locations["tri toggle button"] = location;
+    location = {location.x + location.w + 1, location.y, location.w, 9};
+    graphics_object_locations["saw toggle button"] = location;
+    location = {location.x + location.w + 1, location.y, location.w, 9};
+    graphics_object_locations["sqr toggle button"] = location;
 }
 
 /*
- * Initialize all graphics objects unique to this module type, and add them to the array
- * of graphics objects.
+ * Initialize graphics objects unique to this module type, add them to the
+ * map of graphics objects.
  */
 void Oscillator::initialize_unique_graphics_objects()
 {
-    std::vector<std::string> names, texts, prompt_texts, text_offs;
-    std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
-        text_color_ons, text_color_offs;
-    std::vector<TTF_Font *> fonts;
-    std::vector<float> range_lows, range_highs;
-    std::vector<int> input_nums;
-    std::vector<std::vector<float> *> buffers;
-    std::vector<Module *> parents;
-    std::vector<bool> bs;
-    std::vector<Input_Text_Box *> input_text_boxes;
-    std::vector<Input_Toggle_Button *> input_toggle_buttons;
+    // Initialize reset buffer button
+    graphics_objects["reset phase button"] =
+        new Button(name + " reset phase button",
+                   graphics_object_locations["reset phase button"],
+                   secondary_module_color, primary_module_color, "0", this);
 
-    std::vector<Graphics_Object *> tmp_graphics_objects;
+    // Initialize text objects
+    graphics_objects["frequency text"] =
+        new Text(name + " frequency text",
+                 graphics_object_locations["frequency text"],
+                 secondary_module_color, "FREQUENCY (Hz):");
+    graphics_objects["phase offset/pulse width text"] =
+        new Text(name + " phase offset text",
+                 graphics_object_locations["phase offset text"],
+                 secondary_module_color, "OFFSET & WIDTH (0-1):");
+    graphics_objects["ranges text"] =
+        new Text(name + " ranges text",
+                 graphics_object_locations["ranges text"],
+                 secondary_module_color, "RANGE LOW & HIGH (#):");
+    graphics_objects["waveform type text"] =
+        new Text(name + " waveform type text",
+                 graphics_object_locations["waveform type text"],
+                 secondary_module_color, "WAVEFORM TYPE:");
 
-    Button *button;
-    button = new Button(name + " reset current phase (button)",
-                        graphics_object_locations[OSCILLATOR_RESET_CURRENT_PHASE_BUTTON],
-                        secondary_module_color, primary_module_color, "0", this);
-    graphics_objects.push_back(button);
+    // Initialize waveform viewer
+    graphics_objects["waveform"] =
+        new Waveform(name + " waveform",
+                     graphics_object_locations["waveform"],
+                     primary_module_color, secondary_module_color, &out);
 
-    names = {name + " frequency (text)", name + " phase offset (text)",
-             name + " pulse width (text)", name + " range low/high (text)"
-            };
-    locations = {graphics_object_locations[OSCILLATOR_FREQUENCY_TEXT],
-                 graphics_object_locations[OSCILLATOR_PHASE_OFFSET_TEXT],
-                 graphics_object_locations[OSCILLATOR_PULSE_WIDTH_TEXT],
-                 graphics_object_locations[OSCILLATOR_RANGE_TEXT]
-                };
-    colors = std::vector<SDL_Color>(4, secondary_module_color);
-    texts = {"FREQUENCY:", "PHASE OFFSET:", "PULSE WIDTH:", "RANGE LOW & HIGH:"};
-    fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
+    // Initialize input text boxes
+    graphics_objects["frequency text box"] =
+        new Input_Text_Box(name + " frequency text box",
+                           graphics_object_locations["frequency text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, OSCILLATOR_FREQUENCY, NULL);
+    graphics_objects["phase offset text box"] =
+        new Input_Text_Box(name + " phase offset text box",
+                           graphics_object_locations["phase offset text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, OSCILLATOR_PHASE_OFFSET, NULL);
+    graphics_objects["pulse width text box"] =
+        new Input_Text_Box(name + " pulse width text box",
+                           graphics_object_locations["pulse width text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, OSCILLATOR_PULSE_WIDTH, NULL);
+    graphics_objects["range low text box"] =
+        new Input_Text_Box(name + " range low text box",
+                           graphics_object_locations["range low text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, OSCILLATOR_RANGE_LOW, NULL);
+    graphics_objects["range high text box"] =
+        new Input_Text_Box(name + " range high text box",
+                           graphics_object_locations["range high text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, OSCILLATOR_RANGE_HIGH, NULL);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
-                                                   fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
+    // Initialize input toggle buttons
+    graphics_objects["frequency toggle button"] =
+        new Input_Toggle_Button(name + " frequency toggle button",
+                                graphics_object_locations["frequency toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, OSCILLATOR_FREQUENCY,
+                                (Input_Text_Box *) graphics_objects["frequency text box"]);
+    graphics_objects["phase offset toggle button"] =
+        new Input_Toggle_Button(name + " phase offset toggle button",
+                                graphics_object_locations["phase offset toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, OSCILLATOR_PHASE_OFFSET,
+                                (Input_Text_Box *) graphics_objects["phase offset text box"]);
+    graphics_objects["pulse width toggle button"] =
+        new Input_Toggle_Button(name + " pulse width toggle button",
+                                graphics_object_locations["pulse width toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, OSCILLATOR_PULSE_WIDTH,
+                                (Input_Text_Box *) graphics_objects["pulse width text box"]);
+    graphics_objects["range low toggle button"] =
+        new Input_Toggle_Button(name + " range low toggle button",
+                                graphics_object_locations["range low toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, OSCILLATOR_RANGE_LOW,
+                                (Input_Text_Box *) graphics_objects["range low text box"]);
+    graphics_objects["range high toggle button"] =
+        new Input_Toggle_Button(name + " range high toggle button",
+                                graphics_object_locations["range high toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, OSCILLATOR_RANGE_HIGH,
+                                (Input_Text_Box *) graphics_objects["range high text box"]);
 
-    names = {name + " waveform visualizer (waveform)"};
-    locations = {graphics_object_locations[OSCILLATOR_OUTPUT_WAVEFORM]};
-    colors = {primary_module_color};
-    background_colors = {secondary_module_color};
-    range_lows = {-1};
-    range_highs = {1};
-    buffers = {&out};
-
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
-                                                       background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
-    names = {name + " frequency (input text box)", name + " phase offset (input text box)",
-             name + " pulse width (input text box)", name + " range low (input text box)",
-             name + " range high (input text box)"
-            };
-    locations = {graphics_object_locations[OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX],
-                 graphics_object_locations[OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX],
-                 graphics_object_locations[OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX],
-                 graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX],
-                 graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX]
-                };
-    colors = std::vector<SDL_Color>(5, secondary_module_color);
-    text_colors = std::vector<SDL_Color>(5, primary_module_color);
-    prompt_texts = std::vector<std::string>(5, "# or input");
-    fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
-    parents = std::vector<Module *>(5, this);
-    input_nums = {OSCILLATOR_FREQUENCY, OSCILLATOR_PHASE_OFFSET, OSCILLATOR_PULSE_WIDTH,
-                  OSCILLATOR_RANGE_LOW, OSCILLATOR_RANGE_HIGH
-                 };
-    input_toggle_buttons = std::vector<Input_Toggle_Button *>(5, NULL);
-
-    initialize_input_text_box_objects(names, locations, colors, text_colors,
-                                      prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
-
-    names = {name + " frequency input (input toggle button)",
-             name + " phase offset input (input toggle button)",
-             name + " pulse width input (input toggle button)",
-             name + " range low input (input toggle button)",
-             name + " range high input (input toggle button)"
-            };
-    locations = {graphics_object_locations[OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON]
-                };
-    colors = std::vector<SDL_Color>(5, RED);
-    color_offs = std::vector<SDL_Color>(5, secondary_module_color);
-    text_color_ons = std::vector<SDL_Color>(5, WHITE);
-    text_color_offs = std::vector<SDL_Color>(5, primary_module_color);
-    fonts = std::vector<TTF_Font *>(5, FONT_REGULAR);
-    texts = std::vector<std::string>(5, "I");
-    text_offs = texts;
-    bs = std::vector<bool>(5, false);
-    parents = std::vector<Module *>(5, this);
-    input_nums = {OSCILLATOR_FREQUENCY, OSCILLATOR_PHASE_OFFSET,
-                  OSCILLATOR_PULSE_WIDTH, OSCILLATOR_RANGE_LOW,
-                  OSCILLATOR_RANGE_HIGH
-                 };
-
-    input_text_boxes = {(Input_Text_Box *) graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX]
-                       };
-
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
-                                           text_color_ons, text_color_offs,
-                                           fonts, texts, text_offs, bs, parents,
-                                           input_nums, input_text_boxes);
-
-    names = {name + " sin toggle (toggle button)", name + " tri toggle (toggle button)",
-             name + " saw toggle (toggle button)", name + " sqr toggle (toggle button)"
-            };
-    locations = {graphics_object_locations[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON],
-                 graphics_object_locations[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON],
-                 graphics_object_locations[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON],
-                 graphics_object_locations[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON]
-                };
-    colors = std::vector<SDL_Color>(4, secondary_module_color);
-    color_offs = std::vector<SDL_Color>(4, primary_module_color);
-    text_color_ons = std::vector<SDL_Color>(4, primary_module_color);
-    text_color_offs = std::vector<SDL_Color>(4, secondary_module_color);
-    fonts = std::vector<TTF_Font *>(4, FONT_REGULAR);
-    texts = {"SIN", "TRI", "SAW", "SQR"};
-    text_offs = {"SIN", "TRI", "SAW", "SQR"};
-    bs = {sin_on, tri_on, saw_on, sqr_on};
-    parents = std::vector<Module *>(4, this);
-
-    tmp_graphics_objects = initialize_toggle_button_objects(names, locations,
-                                                            colors, color_offs, text_color_ons,
-                                                            text_color_offs, fonts, texts, text_offs, bs, parents);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
+    // Point input text boxes to their associated input toggle buttons
     ((Input_Text_Box *)
-     graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *)
-         graphics_objects[OSCILLATOR_FREQUENCY_INPUT_TOGGLE_BUTTON];
+     graphics_objects["frequency text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["frequency toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TEXT_BOX])->input_toggle_button
-        = (Input_Toggle_Button *)
-          graphics_objects[OSCILLATOR_PHASE_OFFSET_INPUT_TOGGLE_BUTTON];
+     graphics_objects["phase offset text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["phase offset toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TEXT_BOX])->input_toggle_button
-        = (Input_Toggle_Button *)
-          graphics_objects[OSCILLATOR_PULSE_WIDTH_INPUT_TOGGLE_BUTTON];
+     graphics_objects["pulse width text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["pulse width toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *)
-         graphics_objects[OSCILLATOR_RANGE_LOW_INPUT_TOGGLE_BUTTON];
+     graphics_objects["range low text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["range low toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[OSCILLATOR_RANGE_HIGH_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *)
-         graphics_objects[OSCILLATOR_RANGE_HIGH_INPUT_TOGGLE_BUTTON];
+     graphics_objects["range high text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["range high toggle button"];
+
+    // Initialize filter type toggle buttons
+    graphics_objects["sin toggle button"] =
+        new Toggle_Button(name + " sin toggle button",
+                          graphics_object_locations["sin toggle button"],
+                          secondary_module_color, primary_module_color,
+                          primary_module_color, secondary_module_color,
+                          FONT, "SIN", "SIN", sin_on, this);
+    graphics_objects["tri toggle button"] =
+        new Toggle_Button(name + " tri toggle button",
+                          graphics_object_locations["tri toggle button"],
+                          secondary_module_color, primary_module_color,
+                          primary_module_color, secondary_module_color,
+                          FONT, "TRI", "TRI", tri_on, this);
+    graphics_objects["saw toggle button"] =
+        new Toggle_Button(name + " saw toggle button",
+                          graphics_object_locations["saw toggle button"],
+                          secondary_module_color, primary_module_color,
+                          primary_module_color, secondary_module_color,
+                          FONT, "SAW", "SAW", saw_on, this);
+    graphics_objects["sqr toggle button"] =
+        new Toggle_Button(name + " sqr toggle button",
+                          graphics_object_locations["sqr toggle button"],
+                          secondary_module_color, primary_module_color,
+                          primary_module_color, secondary_module_color,
+                          FONT, "SQR", "SQR", sqr_on, this);
 }
 
 /*
  * Switch to outputting the given waveform type.
  */
-void Oscillator::switch_waveform(WaveformType _waveform_type)
+void Oscillator::switch_waveform(WaveformType waveform_type_)
 {
     sin_on = false;
     tri_on = false;
     saw_on = false;
     sqr_on = false;
-    ((Toggle_Button *) graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])->b =
+    ((Toggle_Button *) graphics_objects["sin toggle button"])->b =
         false;
-    ((Toggle_Button *) graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])->b =
+    ((Toggle_Button *) graphics_objects["tri toggle button"])->b =
         false;
-    ((Toggle_Button *) graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])->b =
+    ((Toggle_Button *) graphics_objects["saw toggle button"])->b =
         false;
-    ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b =
+    ((Toggle_Button *) graphics_objects["sqr toggle button"])->b =
         false;
 
-    if(_waveform_type == SIN)
+    switch(waveform_type_)
     {
+    case SIN:
         waveform_type = SIN;
         sin_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])->b =
+        ((Toggle_Button *) graphics_objects["sin toggle button"])->b =
             true;
         std::cout << name << " is now outputting a sine wave" << std::endl;
-    }
-    else if(_waveform_type == TRI)
-    {
+        break;
+    case TRI:
         waveform_type = TRI;
         tri_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])->b =
+        ((Toggle_Button *) graphics_objects["tri toggle button"])->b =
             true;
         std::cout << name << " is now outputting a triangle wave" << std::endl;
-    }
-    else if(_waveform_type == SAW)
-    {
+        break;
+    case SAW:
         waveform_type = SAW;
         saw_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])->b =
+        ((Toggle_Button *) graphics_objects["saw toggle button"])->b =
             true;
         std::cout << name << " is now outputting a sawtooth wave" << std::endl;
-    }
-    else
-    {
+        break;
+    case SQR:
         waveform_type = SQR;
         sqr_on = true;
-        ((Toggle_Button *) graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])->b =
+        ((Toggle_Button *) graphics_objects["sqr toggle button"])->b =
             true;
         std::cout << name << " is now outputting a square wave" << std::endl;
+        break;
     }
 
-    waveform_type = _waveform_type;
+    waveform_type = waveform_type_;
 }
 
 /*
@@ -495,11 +475,11 @@ std::string Oscillator::get_unique_text_representation()
  */
 void Oscillator::button_function(Button *button)
 {
-    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    if(button == graphics_objects["remove module button"])
     {
         delete this;
     }
-    else if(button == graphics_objects[OSCILLATOR_RESET_CURRENT_PHASE_BUTTON])
+    else if(button == graphics_objects["reset phase button"])
     {
         reset_current_phase();
     }
@@ -511,19 +491,19 @@ void Oscillator::button_function(Button *button)
  */
 void Oscillator::toggle_button_function(Toggle_Button *toggle_button)
 {
-    if(toggle_button == graphics_objects[OSCILLATOR_SIN_WAVE_TOGGLE_BUTTON])
+    if(toggle_button == graphics_objects["sin toggle button"])
     {
         switch_waveform(SIN);
     }
-    else if(toggle_button == graphics_objects[OSCILLATOR_TRI_WAVE_TOGGLE_BUTTON])
+    else if(toggle_button == graphics_objects["tri toggle button"])
     {
         switch_waveform(TRI);
     }
-    else if(toggle_button == graphics_objects[OSCILLATOR_SAW_WAVE_TOGGLE_BUTTON])
+    else if(toggle_button == graphics_objects["saw toggle button"])
     {
         switch_waveform(SAW);
     }
-    else if(toggle_button == graphics_objects[OSCILLATOR_SQR_WAVE_TOGGLE_BUTTON])
+    else if(toggle_button == graphics_objects["sqr toggle button"])
     {
         switch_waveform(SQR);
     }

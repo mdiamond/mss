@@ -38,13 +38,12 @@ Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color color_,
     Graphics_Object(name_, TEXT_BOX, parent_, location_, color_),
     text_color(text_color_),
     active(false), font(font_),
-    background(Rect(name_ + " background rect (rect)", location_, color_,
+    background(Rect(name_ + " background rect", location_, color_,
                     NULL)),
-    text(Text(name_ + " idle text (text)", location_, text_color_, "", font_)),
-    prompt_text(Text(name_ + " prompt text (text)", location_, text_color_,
-                     prompt_text_, font_)),
-    typing_text(Text(name_ + " typing text (text)", location_, text_color_, "",
-                     font_))
+    text(Text(name_ + " idle text", location_, text_color_, "")),
+    prompt_text(Text(name_ + " text", location_, text_color_,
+                     prompt_text_)),
+    typing_text(Text(name_ + " typing text", location_, text_color_, ""))
 {
     SDL_Rect text_location = location_;
     text_location.x += 1;

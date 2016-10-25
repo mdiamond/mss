@@ -20,6 +20,9 @@
  * INCLUDES *
  ************/
 
+// Included libraries
+#include <string>
+
 // Included SDL components
 #include "SDL.h"
 

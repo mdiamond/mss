@@ -92,145 +92,101 @@ void Sah::process()
 }
 
 /*
- * Calculate the locations of graphics objects unique to this module type.
+ * Calculate the locations of graphics objects unique to this module type, add
+ * them to the map of graphics object locations.
  */
 void Sah::calculate_unique_graphics_object_locations()
 {
-    int x_text, x_text_box, w_text_box, h_text_box,
-        x_input_toggle_button, w_input_toggle_button,
-        w_waveform, h_waveform,
-        x_signal_multiplier, x_signal_input_toggle_button, w_signals,
-        y3, y4, y5, y6, y7;
+    SDL_Rect location;
 
-    x_text = upper_left.x + 2;
-    x_text_box = upper_left.x;
-    w_text_box = (MODULE_WIDTH) - 11;
-    h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box + 1;
-    w_input_toggle_button = 10;
-    w_waveform = MODULE_WIDTH;
-    h_waveform = 135;
-    y3 = upper_left.y + 23;
-    y4 = y3 + 136;
-    y5 = y4 + 15;
-    y6 = y5 + 15;
-    y7 = y6 + 15;
-    x_signal_multiplier = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_signals = (MODULE_WIDTH / 2) - 11;
-    x_signal_input_toggle_button = x_text_box + w_signals + 1;
+    // Reset sampler button location
+    location = {upper_left.x + MODULE_WIDTH - 15, upper_left.y, 7, 9};
+    graphics_object_locations["reset sampler button"] = location;
 
-    graphics_object_locations.push_back({upper_left.x + MODULE_WIDTH - 19,
-                                         upper_left.y, 9, 15
-                                        });
-    graphics_object_locations.push_back({x_text, y4, 0, 0});
-    graphics_object_locations.push_back({x_text, y6, 0, 0});
-    graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y5, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y5, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
+    // Waveform viewer location
+    location = {upper_left.x, upper_left.y + 15, MODULE_WIDTH, 74};
+    graphics_object_locations["waveform"] = location;
+
+    // Input signal related graphics object locations
+    location = {upper_left.x + 2, location.y + 77, 0, 0};
+    graphics_object_locations["signal text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["signal text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["signal toggle button"] = location;
+
+    // Hold time related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["hold time text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["hold time text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["hold time toggle button"] = location;
 }
 
 /*
- * Initialize all graphics objects unique to this module type, and add them to the array
- * of graphics objects.
+ * Initialize graphics objects unique to this module type, add them to the
+ * map of graphics objects.
  */
 void Sah::initialize_unique_graphics_objects()
 {
-    std::vector<std::string> names, texts, prompt_texts, text_offs;
-    std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
-        text_color_ons, text_color_offs;
-    std::vector<TTF_Font *> fonts;
-    std::vector<float> range_lows, range_highs;
-    std::vector<int> input_nums;
-    std::vector<std::vector<float> *> buffers;
-    std::vector<Module *> parents;
-    std::vector<bool> bs;
-    std::vector<Input_Text_Box *> input_text_boxes;
-    std::vector<Input_Toggle_Button *> input_toggle_buttons;
+    // Initialize reset buffer button
+    graphics_objects["reset sampler button"] =
+        new Button(name + " reset sampler button",
+                   graphics_object_locations["reset sampler button"],
+                   secondary_module_color, primary_module_color, "0", this);
 
-    std::vector<Graphics_Object *> tmp_graphics_objects;
+    // Initialize text objects
+    graphics_objects["signal text"] =
+        new Text(name + " signal text",
+                 graphics_object_locations["signal text"],
+                 secondary_module_color, "INPUT SIGNAL:");
+    graphics_objects["hold time text"] =
+        new Text(name + " hold time text",
+                 graphics_object_locations["hold time text"],
+                 secondary_module_color, "HOLD TIME (ms):");
 
-    Button *button;
-    button = new Button(name + " reset sampler (button)",
-                        graphics_object_locations[SAH_RESET_SAMPLER_BUTTON],
-                        secondary_module_color, primary_module_color, "0", this);
-    graphics_objects.push_back(button);
+    // Initialize waveform viewer
+    graphics_objects["waveform"] =
+        new Waveform(name + " waveform",
+                     graphics_object_locations["waveform"],
+                     primary_module_color, secondary_module_color, &out);
 
-    names = {name + " signal input (text)", name + " hold time (text)"};
-    locations = {graphics_object_locations[SAH_INPUT_TEXT],
-                 graphics_object_locations[SAH_HOLD_TIME_TEXT]
-                };
-    colors = std::vector<SDL_Color>(2, secondary_module_color);
-    texts = {"SIGNAL:", "HOLD TIME:"};
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
+    // Initialize input text boxes
+    graphics_objects["signal text box"] =
+        new Input_Text_Box(name + " signal text box",
+                           graphics_object_locations["signal text box"],
+                           secondary_module_color, primary_module_color,
+                           "input", this, SAH_SIGNAL, NULL);
+    graphics_objects["hold time text box"] =
+        new Input_Text_Box(name + " hold time text box",
+                           graphics_object_locations["hold time text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, SAH_HOLD_TIME, NULL);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
-                                                   fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
+    // Initialize input toggle buttons
+    graphics_objects["signal toggle button"] =
+        new Input_Toggle_Button(name + " signal toggle button",
+                                graphics_object_locations["signal toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, SAH_SIGNAL,
+                                (Input_Text_Box *) graphics_objects["signal text box"]);
+    graphics_objects["hold time toggle button"] =
+        new Input_Toggle_Button(name + " hold time toggle button",
+                                graphics_object_locations["hold time toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, SAH_HOLD_TIME,
+                                (Input_Text_Box *) graphics_objects["hold time text box"]);
 
-    names = {name + " waveform visualizer (waveform)"};
-    locations = {graphics_object_locations[SAH_OUTPUT_WAVEFORM]};
-    colors = {primary_module_color};
-    background_colors = {secondary_module_color};
-    range_lows = {-1};
-    range_highs = {1};
-    buffers = {&out};
-
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
-                                                       background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
-    names = {name + " signal (input text box)",
-             name + " hold time (input text box)"
-            };
-    locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TEXT_BOX],
-                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TEXT_BOX]
-                };
-    colors = std::vector<SDL_Color>(2, secondary_module_color);
-    text_colors = std::vector<SDL_Color>(2, primary_module_color);
-    prompt_texts = {"input", "# or input"};
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    parents = std::vector<Module *>(2, this);
-    input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
-    input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
-
-    initialize_input_text_box_objects(names, locations, colors, text_colors,
-                                      prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
-
-    names = {name + " signal input (input toggle button)", name + " hold time input (input toggle button)"};
-    locations = {graphics_object_locations[SAH_SIGNAL_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON]
-                };
-    colors = std::vector<SDL_Color>(2, RED);
-    color_offs = std::vector<SDL_Color>(2, secondary_module_color);
-    text_color_ons = std::vector<SDL_Color>(2, WHITE);
-    text_color_offs = std::vector<SDL_Color>(2, primary_module_color);
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    texts = std::vector<std::string>(2, "I");
-    text_offs = texts;
-    bs = std::vector<bool>(2, false);
-    parents = std::vector<Module *>(2, this);
-    input_nums = {SAH_SIGNAL, SAH_HOLD_TIME};
-
-    input_text_boxes = {(Input_Text_Box *) graphics_objects[SAH_SIGNAL_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX]
-                       };
-
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
-                                           text_color_ons, text_color_offs,
-                                           fonts, texts, text_offs, bs, parents,
-                                           input_nums, input_text_boxes);
-
+    // Point input text boxes to their associated input toggle buttons
     ((Input_Text_Box *)
-     graphics_objects[SAH_SIGNAL_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[SAH_SIGNAL_INPUT_TOGGLE_BUTTON];
+     graphics_objects["signal text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["signal toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[SAH_HOLD_TIME_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[SAH_HOLD_TIME_INPUT_TOGGLE_BUTTON];
+     graphics_objects["hold time text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["hold time toggle button"];
 }
 
 /*
@@ -251,11 +207,11 @@ std::string Sah::get_unique_text_representation()
  */
 void Sah::button_function(Button *button)
 {
-    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    if(button == graphics_objects["remove module button"])
     {
         delete this;
     }
-    else if(button == graphics_objects[SAH_RESET_SAMPLER_BUTTON])
+    else if(button == graphics_objects["reset sampler button"])
     {
         reset_sampler();
     }

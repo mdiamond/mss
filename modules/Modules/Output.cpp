@@ -62,159 +62,133 @@ void Output::process()
 }
 
 /*
- * Calculate the locations of graphics objects unique to this module type.
+ * Calculate the locations of graphics objects unique to this module type, add
+ * them to the map of graphics object locations.
  */
 void Output::calculate_unique_graphics_object_locations()
 {
-    int x_text, x_text_box, w_text_box, h_text_box,
-        x_input_toggle_button, w_input_toggle_button,
-        x_button,
-        w_waveform, h_waveform,
-        y3, y4, y5, y6, y7, y8, y9, y10;
+    SDL_Rect location;
 
-    x_text = upper_left.x + 2;
-    x_text_box = upper_left.x;
-    w_text_box = MODULE_WIDTH - 11;
-    h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box + 1;
-    w_input_toggle_button = 10;
-    x_button = upper_left.x + 70;
-    w_waveform = MODULE_WIDTH;
-    h_waveform = 57;
-    y3 = upper_left.y + 20;
-    y4 = upper_left.y + 20;
-    y5 = upper_left.y + 40;
-    y6 = upper_left.y + 97;
-    y7 = upper_left.y + 112;
-    y8 = upper_left.y + 133;
-    y9 = upper_left.y + 189;
-    y10 = upper_left.y + 204;
+    // Waveform viewer related graphics object locations
+    location = {upper_left.x, upper_left.y + 15, (MODULE_WIDTH / 2) - 1, 54};
+    graphics_object_locations["waveform left"] = location;
+    location = {location.x + location.w + 1, location.y, MODULE_WIDTH / 2, 54};
+    graphics_object_locations["waveform right"] = location;
 
-    graphics_object_locations.push_back({x_text, y3, 0, 0});
-    graphics_object_locations.push_back({x_text, y6, 0, 0});
-    graphics_object_locations.push_back({x_text, y9, 0, 0});
-    graphics_object_locations.push_back({x_text_box, y5, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y8, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text_box, y7, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_text_box, y10, w_text_box, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y7, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y10, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_button, y4, 25, 15});
+    // Input left related graphics object locations
+    location = {upper_left.x + 2, location.y + 57, 0, 0};
+    graphics_object_locations["input left text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["input left text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["input left toggle button"] = location;
+
+    // Input right related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["input right text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["input right text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["input right toggle button"] = location;
+
+    // Audio on/off related graphics object locations
+    location = {upper_left.x, location.y + 10, 0, 0};
+    graphics_object_locations["audio on/off text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH, 9};
+    graphics_object_locations["audio on/off toggle button"] = location;
+
+    // Remove the remove module button location
+    graphics_object_locations.erase("remove module button");
 }
 
 /*
- * Initialize all graphics objects unique to this module type, and add them to the array
- * of graphics objects.
+ * Initialize graphics objects unique to this module type, add them to the
+ * map of graphics objects.
  */
 void Output::initialize_unique_graphics_objects()
 {
-    std::vector<std::string> names, texts, prompt_texts, text_offs;
-    std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
-        text_color_ons, text_color_offs;
-    std::vector<TTF_Font *> fonts;
-    std::vector<float> range_lows, range_highs;
-    std::vector<int> input_nums;
-    std::vector<std::vector<float> *> buffers;
-    std::vector<Module *> parents;
-    std::vector<bool> bs;
-    std::vector<Input_Text_Box *> input_text_boxes;
-    std::vector<Input_Toggle_Button *> input_toggle_buttons;
+    // Initialize text objects
+    graphics_objects["input left text"] =
+        new Text(name + " input left text",
+                 graphics_object_locations["input left text"],
+                 secondary_module_color, "INPUT LEFT:");
+    graphics_objects["input right text"] =
+        new Text(name + " input right text",
+                 graphics_object_locations["input right text"],
+                 secondary_module_color, "INPUT RIGHT:");
+    graphics_objects["audio on/off text"] =
+        new Text(name + " audio on/off text",
+                 graphics_object_locations["audio on/off text"],
+                 secondary_module_color, "AUDIO:");
 
-    std::vector<Graphics_Object *> tmp_graphics_objects;
+    // Initialize waveform viewers
+    graphics_objects["waveform left"] =
+        new Waveform(name + " waveform left",
+                     graphics_object_locations["waveform left"],
+                     primary_module_color, secondary_module_color, NULL);
+    graphics_objects["waveform right"] =
+        new Waveform(name + " waveform right",
+                     graphics_object_locations["waveform right"],
+                     primary_module_color, secondary_module_color, NULL);
 
-    names = {name + " on/off (text)", name + " input left (text)", name + " input right (text)"};
-    locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TEXT],
-                 graphics_object_locations[OUTPUT_INPUT_L_TEXT],
-                 graphics_object_locations[OUTPUT_INPUT_R_TEXT]
-                };
-    colors = std::vector<SDL_Color>(3, secondary_module_color);
-    texts = {"AUDIO ON:", "LEFT SIGNAL:", "RIGHT SIGNAL:"};
-    fonts = std::vector<TTF_Font *>(3, FONT_REGULAR);
 
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
-                                                   fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
+    // Initialize input text boxes
+    graphics_objects["input left text box"] =
+        new Input_Text_Box(name + " input left text box",
+                           graphics_object_locations["input left text box"],
+                           secondary_module_color, primary_module_color,
+                           "input", this, OUTPUT_INPUT_L, NULL);
+    graphics_objects["input right text box"] =
+        new Input_Text_Box(name + " input right text box",
+                           graphics_object_locations["input right text box"],
+                           secondary_module_color, primary_module_color,
+                           "input", this, OUTPUT_INPUT_R, NULL);
 
-    names = {name + " waveform visualizer l (waveform)", name + " waveform visualizer r (waveform)"};
-    locations = {graphics_object_locations[OUTPUT_INPUT_L_WAVEFORM],
-                 graphics_object_locations[OUTPUT_INPUT_R_WAVEFORM]
-                };
-    colors = std::vector<SDL_Color>(2, primary_module_color);
-    background_colors = std::vector<SDL_Color>(2, secondary_module_color);
-    range_lows = std::vector<float>(2, -1);
-    range_highs = std::vector<float>(2, 1);
-    buffers = std::vector<std::vector<float> *>(2, NULL);
+    // Initialize input toggle buttons
+    graphics_objects["input left toggle button"] =
+        new Input_Toggle_Button(name + " input left toggle button",
+                                graphics_object_locations["input left toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, OUTPUT_INPUT_L,
+                                (Input_Text_Box *) graphics_objects["input left text box"]);
+    graphics_objects["input right toggle button"] =
+        new Input_Toggle_Button(name + " input right toggle button",
+                                graphics_object_locations["input right toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, OUTPUT_INPUT_R,
+                                (Input_Text_Box *) graphics_objects["input right text box"]);
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
-                                                       background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
-    names = {name + " input l (input text box)", name + " input r (input text box)"};
-    locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TEXT_BOX],
-                 graphics_object_locations[OUTPUT_INPUT_R_INPUT_TEXT_BOX]
-                };
-    colors = std::vector<SDL_Color>(2, secondary_module_color);
-    text_colors = std::vector<SDL_Color>(2, primary_module_color);
-    prompt_texts = std::vector<std::string>(2, "input");
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    parents = std::vector<Module *>(2, this);
-    input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
-    input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
-
-    initialize_input_text_box_objects(names, locations, colors, text_colors,
-                                      prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
-
-    names = {name + " input l (input toggle button)", name + " input r (input toggle button)"};
-    locations = {graphics_object_locations[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON]
-                };
-    colors = std::vector<SDL_Color>(2, RED);
-    color_offs = std::vector<SDL_Color>(2, secondary_module_color);
-    text_color_ons = std::vector<SDL_Color>(2, WHITE);
-    text_color_offs = std::vector<SDL_Color>(2, primary_module_color);
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    texts = std::vector<std::string>(2, "I");
-    text_offs = texts;
-    bs = std::vector<bool>(2, false);
-    parents = std::vector<Module *>(2, this);
-    input_nums = {OUTPUT_INPUT_L, OUTPUT_INPUT_R};
-
-    input_text_boxes = {(Input_Text_Box *) graphics_objects[OUTPUT_INPUT_L_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[OUTPUT_INPUT_R_INPUT_TEXT_BOX]
-                       };
-
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
-                                           text_color_ons, text_color_offs,
-                                           fonts, texts, text_offs, bs, parents,
-                                           input_nums, input_text_boxes);
-
-    names = {name + " on/off button (toggle_button)"};
-    locations = {graphics_object_locations[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON]};
-    colors = std::vector<SDL_Color>(1, RED);
-    color_offs = std::vector<SDL_Color>(1, secondary_module_color);
-    text_color_ons = std::vector<SDL_Color>(1, WHITE);
-    text_color_offs = std::vector<SDL_Color>(1, primary_module_color);
-    fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
-    texts = std::vector<std::string>(1, "ON");
-    text_offs = std::vector<std::string>(1, "OFF");
-    bs = {true};
-    parents = std::vector<Module *>(1, this);
-
-    tmp_graphics_objects = initialize_toggle_button_objects(names, locations,
-                                                            colors, color_offs, text_color_ons,
-                                                            text_color_offs, fonts, texts, text_offs, bs, parents);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
+    // Point input text boxes to their associated input toggle buttons
     ((Input_Text_Box *)
-     graphics_objects[OUTPUT_INPUT_L_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON];
+     graphics_objects["input left text box"])->input_toggle_button =
+        (Input_Toggle_Button *) graphics_objects["input left toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[OUTPUT_INPUT_R_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON];
+     graphics_objects["input right text box"])->input_toggle_button =
+        (Input_Toggle_Button *) graphics_objects["input right toggle button"];
+
+    // Initialize filter type toggle buttons
+    if(COLORBLIND_ON)
+    {
+        graphics_objects["audio on/off toggle button"] =
+            new Toggle_Button(name + " audio on/off toggle button",
+                              graphics_object_locations["audio on/off toggle button"],
+                              BLACK, WHITE,
+                              WHITE, BLACK,
+                              FONT, "ON", "OFF", true, this);
+    }
+    else
+    {
+        graphics_objects["audio on/off toggle button"] =
+            new Toggle_Button(name + " audio on/off toggle button",
+                              graphics_object_locations["audio on/off toggle button"],
+                              GREEN, RED,
+                              BLACK, WHITE,
+                              FONT, "ON", "OFF", true, this);
+    }
+
+
+    // Remove the remove module button
+    graphics_objects.erase("remove module button");
 }
 
 /*
@@ -243,16 +217,10 @@ std::string Output::get_unique_text_representation()
 }
 
 /*
- * Handle button presses. Output button presses are not used.
+ * The Output module has no buttons.
  */
 void Output::button_function(Button *button)
-{
-    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
-    {
-        std::cout << RED_STDOUT << "The output module cannot be deleted!"
-                  << DEFAULT_STDOUT << std::endl;
-    }
-}
+{}
 
 /*
  * Handle toggle button presses. Output toggle button presses are used to toggle
@@ -260,7 +228,7 @@ void Output::button_function(Button *button)
  */
 void Output::toggle_button_function(Toggle_Button *toggle_button)
 {
-    if(toggle_button == graphics_objects[OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON])
+    if(toggle_button == graphics_objects["audio on/off toggle button"])
     {
         toggle_audio_on();
     }

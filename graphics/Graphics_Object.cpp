@@ -9,7 +9,6 @@
 
 // Included libraries
 #include <iostream>
-#include <string>
 #include <vector>
 
 // Included SDL components

@@ -9,6 +9,8 @@
 
 // Included libraries
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include <vector>
 
 // Included SDL components
@@ -33,19 +35,8 @@
  ********************************/
 
 /*
- * Initialize all of the stuff that needs to be initialized
- * before audio can be processed:
- *   - initialize SDL
- *   - open the audio device
- *   - initialize the utilities sub page
- *   - open a window
- *   - create a renderer
- *   - initialize SDL_ttf
- *   - open ttf fonts
- *   - initialize the synthesizer output module
- *   - start audio to begin requesting buffers from the audio
- *     callback function
- * Return true if all of this succeeds, false if anything fails.
+ * Initialize all of the stuff that needs to be initialized before audio can be
+ * processed. Return true if all of this succeeds, false if anything fails.
  */
 bool initialize()
 {
@@ -73,7 +64,7 @@ bool initialize()
     }
 
     // Open ttf fonts
-    if(!load_fonts())
+    if(!load_font())
     {
         return false;
     }
@@ -101,6 +92,9 @@ bool initialize()
 
     // Populate wavetables
     populate_wavetables();
+
+    // Seed rand()
+    srand(time(NULL));
 
     // Initialize the output module
     initialize_output();
@@ -192,21 +186,21 @@ int create_texture()
 }
 
 /*
- * Load fonts into external variables so that all
- * modules can render text.
+ * Load font into external variables so that all
+ * graphics objects can render text.
  */
-int load_fonts()
+int load_font()
 {
-    FONT_REGULAR = TTF_OpenFont("../fonts/visitor1.ttf", 10);
+    FONT = TTF_OpenFont("../fonts/visitor1.ttf", 10);
 
-    if(!FONT_REGULAR)
+    if(!FONT)
     {
-        std::cout << RED_STDOUT << "Could not open one of the TTF fonts: "
+        std::cout << RED_STDOUT << "Could not open the TTF font: "
                   << TTF_GetError() << DEFAULT_STDOUT << std::endl;
         return 0;
     }
 
-    std::cout << "Fonts loaded." << std::endl;
+    std::cout << "Font loaded." << std::endl;
 
     return 1;
 }
@@ -218,88 +212,114 @@ int load_fonts()
  */
 void initialize_utilities_page()
 {
+    SDL_Rect location;
+    std::map<std::string, SDL_Rect> locations;
+    std::map<std::string, Graphics_Object *> graphics_objects;
+    std::vector<Graphics_Object *> graphics_objects_vector;
 
-    std::vector<std::string> names, texts;
-    std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, text_colors;
-    std::vector<Module *> parents;
-    std::vector<TTF_Font *> fonts;
+    location =
+        {2, WINDOW_HEIGHT - (MENU_HEIGHT * 2), 51, 9};
+    locations["add adsr button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 57,
+         location.h};
+    locations["add delay button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 63,
+         location.h};
+    locations["add filter button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 57,
+         location.h};
+    locations["add mixer button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 87,
+         location.h};
+    locations["add multiplier button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 57,
+         location.h};
+    locations["add noise button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 87,
+         location.h};
+    locations["add oscillator button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 45,
+         location.h};
+    locations["add sah button"] = location;
+    location =
+        {WINDOW_WIDTH - 81 - 57 - (2 * MODULE_SPACING), location.y, 81,
+         location.h};
+    locations["previous page button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 57,
+         location.h};
+    locations["next page button"] = location;
+    location =
+        {2, location.y + 9 + MODULE_SPACING,
+         (WINDOW_WIDTH / 2) - MODULE_SPACING - 1, location.h};
+    locations["save patch button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, location.w,
+         location.h};
+    locations["load patch button"] = location;
 
-    names = std::vector<std::string>();
-    locations = std::vector<SDL_Rect>();
-    colors = std::vector<SDL_Color>();
-    text_colors = std::vector<SDL_Color>();
-    texts = std::vector<std::string>();
-    fonts = std::vector<TTF_Font *>();
-    parents = std::vector<Module *>();
+    // Create the background and add it to the map of graphics objects
+    graphics_objects["background rect"] =
+        new Rect("background rect", WINDOW_RECT, BLACK, NULL);
 
-    std::vector<Graphics_Object *> tmp_graphics_objects;
-    std::vector<Graphics_Object *> graphics_objects;
+    // Create the button objects and add them to the map of graphics objects
+    graphics_objects["add adsr button"] =
+        new Button("add adsr button", locations["add adsr button"], WHITE,
+                   BLACK, "ADD ADSR", NULL);
+    graphics_objects["add delay button"] =
+        new Button("add delay button", locations["add delay button"], WHITE,
+                   BLACK, "ADD DELAY", NULL);
+    graphics_objects["add filter button"] =
+        new Button("add filter button", locations["add filter button"], WHITE,
+                   BLACK, "ADD FILTER", NULL);
+    graphics_objects["add mixer button"] =
+        new Button("add mixer button", locations["add mixer button"], WHITE,
+                   BLACK, "ADD MIXER", NULL);
+    graphics_objects["add multiplier button"] =
+        new Button("add multiplier button", locations["add multiplier button"],
+                   WHITE, BLACK, "ADD MULTIPLIER", NULL);
+    graphics_objects["add noise button"] =
+        new Button("add noise button", locations["add noise button"], WHITE,
+                   BLACK, "ADD NOISE", NULL);
+    graphics_objects["add oscillator button"] =
+        new Button("add oscillator button", locations["add oscillator button"],
+                   WHITE, BLACK, "ADD OSCILLATOR", NULL);
+    graphics_objects["add sah button"] =
+        new Button("add sah button", locations["add sah button"], WHITE, BLACK,
+                   "ADD SAH", NULL);
+    graphics_objects["previous page button"] =
+        new Button("previous page button", locations["previous page button"],
+                   WHITE, BLACK, "PREVIOUS PAGE", NULL);
+    graphics_objects["next page button"] =
+        new Button("next page button", locations["next page button"], WHITE,
+                   BLACK, "NEXT PAGE", NULL);
+    graphics_objects["save patch button"] =
+        new Button("save patch button", locations["save patch button"], WHITE,
+                   BLACK, "SAVE PATCH", NULL);
+    graphics_objects["load patch button"] =
+        new Button("load patch button", locations["load patch button"], WHITE,
+                   BLACK, "LOAD PATCH", NULL);
 
-    int y = 2;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 60, 15});
-    y += 62;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
-    y += 69;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 74, 15});
-    y += 76;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 66, 15});
-    y += 68;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 101, 15});
-    y += 103;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 67, 15});
-    y += 69;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 102, 15});
-    y += 104;
-    locations.push_back({y, WINDOW_HEIGHT - MENU_HEIGHT - 15, 53, 15});
-    locations.push_back({WINDOW_WIDTH - 162, WINDOW_HEIGHT - MENU_HEIGHT - 15, 93, 15});
-    locations.push_back({WINDOW_WIDTH - 162 + 95, WINDOW_HEIGHT - MENU_HEIGHT - 15, 65, 15});
-
-    // Create the background and add it to the list of graphics
-    // objects
-    Rect *background = new Rect("background (rect)", WINDOW_RECT, BLACK, NULL);
-    graphics_objects.push_back(background);
-
-    names = {"add adsr (button)", "add delay (button)", "add filter (button)",
-             "add mixer (button)", "add multiplier (button)", "add noise (button)",
-             "add oscillator (button)", "add sah (button)", "previous page (button)",
-             "next page (button)"
-            };
-
-    colors = std::vector<SDL_Color>(10, WHITE);
-    text_colors = std::vector<SDL_Color>(10, BLACK);
-    texts = {"ADD ADSR", "ADD DELAY", "ADD FILTER", "ADD MIXER", "ADD MULTIPLIER",
-             "ADD NOISE", "ADD OSCILLATOR", "ADD SAH", "PREVIOUS PAGE", "NEXT PAGE"
-            };
-    parents = std::vector<Module *>(10, NULL);
-
-    tmp_graphics_objects = initialize_button_objects(names, locations, colors,
-                                                     text_colors, texts, parents);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
-    names = {"save patch (text box)", "load patch (text box)"};
-    locations = {{2, WINDOW_HEIGHT - 17, (WINDOW_WIDTH / 2) - 2, 15},
+    graphics_objects_vector.push_back(graphics_objects["background rect"]);
+    for(auto itr = graphics_objects.begin(); itr != graphics_objects.end();
+        itr ++)
+    {
+        if(itr->first != "background rect")
         {
-            (WINDOW_WIDTH / 2) + 2, WINDOW_HEIGHT - 17,
-            (WINDOW_WIDTH / 2) - 3, 15
+            graphics_objects_vector.push_back(itr->second);
         }
-    };
-    colors = std::vector<SDL_Color>(2, WHITE);
-    text_colors = std::vector<SDL_Color>(2, BLACK);
-    texts = {"enter a name here to save your patch", "enter a patch name to load here"};
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    parents = std::vector<Module *>(2, NULL);
+    }
 
-    tmp_graphics_objects = initialize_text_box_objects(names, locations, colors,
-                                                       text_colors, texts, fonts, parents);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
-    // Create the sub page and add it to the list of sub pages
-    // for the current page
-    UTILITIES_PAGE = new Page("utilities & background (page)", WINDOW_RECT, BLACK,
-                              &graphics_objects);
+    // Create the utilities page
+    UTILITIES_PAGE = new Page("utilities & background page", WINDOW_RECT, BLACK,
+                              &graphics_objects_vector);
 
     std::cout << "Utilities page initialized." << std::endl;
 }
@@ -310,18 +330,19 @@ void initialize_utilities_page()
  */
 void prettify_utilities_page()
 {
-    for(unsigned int i = 0; i < UTILITIES_PAGE->graphics_objects.size(); i ++)
+    for(auto itr = UTILITIES_PAGE->graphics_objects.begin();
+        itr != UTILITIES_PAGE->graphics_objects.end(); itr ++)
     {
-        if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type
+        if((*itr)->graphics_object_type
            == Graphics_Object::BUTTON)
         {
-            ((Button *) UTILITIES_PAGE->graphics_objects[i])->set_colors(
+            ((Button *) (*itr))->set_colors(
                 MODULES[0]->primary_module_color, MODULES[0]->secondary_module_color);
         }
-        else if(UTILITIES_PAGE->graphics_objects[i]->graphics_object_type
+        else if((*itr)->graphics_object_type
                 == Graphics_Object::TEXT_BOX)
         {
-            ((Text_Box *) UTILITIES_PAGE->graphics_objects[i])->set_colors(
+            ((Text_Box *) (*itr))->set_colors(
                 MODULES[0]->primary_module_color, MODULES[0]->secondary_module_color);
         }
     }

@@ -21,20 +21,6 @@
 class Multiplier: public Module
 {
 public:
-    // Multiplier graphics objects enum
-    enum MultiplierGraphicsObjects
-    {
-        MULTIPLIER_INPUT_TEXT = 3,
-        MULTIPLIER_DRY_WET_TEXT,
-        MULTIPLIER_OUTPUT_WAVEFORM,
-        MULTIPLIER_SIGNAL_INPUT_TEXT_BOX,
-        MULTIPLIER_MULTIPLIER_INPUT_TEXT_BOX,
-        MULTIPLIER_DRY_WET_INPUT_TEXT_BOX,
-        MULTIPLIER_SIGNAL_INPUT_TOGGLE_BUTTON,
-        MULTIPLIER_MULTIPLIER_INPUT_TOGGLE_BUTTON,
-        MULTIPLIER_DRY_WET_INPUT_TOGGLE_BUTTON
-    };
-
     // Multiplier dependencies enum
     enum MultiplierDependencies
     {

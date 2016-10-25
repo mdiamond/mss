@@ -33,26 +33,6 @@ public:
         ADSR_IDLE_STAGE
     };
 
-    // ADSR graphics objects enum
-    enum AdsrGraphicsObjects
-    {
-        ADSR_RESET_CURRENT_AMPLITUDE_BUTTON = 3,
-        ADSR_NOTE_TEXT,
-        ADSR_A_D_TEXT,
-        ADSR_S_R_TEXT,
-        ADSR_OUTPUT_WAVEFORM,
-        ADSR_NOTE_INPUT_TEXT_BOX,
-        ADSR_A_INPUT_TEXT_BOX,
-        ADSR_D_INPUT_TEXT_BOX,
-        ADSR_S_INPUT_TEXT_BOX,
-        ADSR_R_INPUT_TEXT_BOX,
-        ADSR_NOTE_INPUT_TOGGLE_BUTTON,
-        ADSR_A_INPUT_TOGGLE_BUTTON,
-        ADSR_D_INPUT_TOGGLE_BUTTON,
-        ADSR_S_INPUT_TOGGLE_BUTTON,
-        ADSR_R_INPUT_TOGGLE_BUTTON
-    };
-
     // ADSR dependencies enum
     enum AdsrDependencies
     {
@@ -82,7 +62,7 @@ public:
 
     // Member functions particular to this module
     //   Reset amplitude
-    void reset_current_amplitude();
+    void reset_stage();
 };
 
 #endif

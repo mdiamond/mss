@@ -30,8 +30,7 @@ public:
     Rect background;
 
     // Constructor and destructor
-    Waveform(std::string, SDL_Rect, SDL_Color, SDL_Color,
-             float, float, std::vector<float> *);
+    Waveform(std::string, SDL_Rect, SDL_Color, SDL_Color, std::vector<float> *);
     virtual ~Waveform();
 
     // Member functions

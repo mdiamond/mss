@@ -85,142 +85,91 @@ void Noise::process()
 }
 
 /*
- * Calculate the locations of graphics objects unique to this module type.
+ * Calculate the locations of graphics objects unique to this module type, add
+ * them to the map of graphics object locations.
  */
 void Noise::calculate_unique_graphics_object_locations()
 {
-    int x_text, x_text_box, w_text_box, h_text_box,
-        x_input_toggle_button, w_input_toggle_button,
-        w_waveform, h_waveform,
-        y3, y4, y5, y6, y7, y8, y9, y10, y11, y12,
-        x_range_high, x_range_low_input_toggle_button, w_range,
-        w_wave_selector;
+    SDL_Rect location;
 
-    x_text = upper_left.x + 2;
-    x_text_box = upper_left.x;
-    w_text_box = MODULE_WIDTH - 11;
-    h_text_box = 15;
-    x_input_toggle_button = x_text_box + w_text_box + 1;
-    w_input_toggle_button = 10;
-    w_waveform = MODULE_WIDTH;
-    h_waveform = 138;
-    y3 = upper_left.y + 23;
-    y4 = y3 + 46;
-    y5 = y4 + 15;
-    y6 = y5 + 16;
-    y7 = y6 + 15;
-    y8 = y7 + 16;
-    y9 = y8 + 15;
-    y10 = y9 + 16;
-    y11 = y10 + 15;
-    y12 = y11 + 27;
-    x_range_high = upper_left.x + (MODULE_WIDTH / 2) + 1;
-    w_range = (MODULE_WIDTH / 2) - 11;
-    x_range_low_input_toggle_button = x_text_box + w_range + 1;
-    w_wave_selector = ((MODULE_WIDTH) / 4) - 1;
+    // Waveform viewer location
+    location = {upper_left.x, upper_left.y + 15, MODULE_WIDTH, 74};
+    graphics_object_locations["waveform"] = location;
 
-    graphics_object_locations.push_back({x_text_box, y3, w_waveform, h_waveform});
-    graphics_object_locations.push_back({x_text, y10, 0, 0});
-    graphics_object_locations.push_back({x_text_box, y11, w_range, h_text_box});
-    graphics_object_locations.push_back({x_range_high, y11, w_range - 1, h_text_box});
-    graphics_object_locations.push_back({x_range_low_input_toggle_button, y11, w_input_toggle_button, h_text_box});
-    graphics_object_locations.push_back({x_input_toggle_button, y11, w_input_toggle_button, h_text_box});
-    // graphics_object_locations.push_back({x_text_box, y12, w_wave_selector, h_text_box});
-    // graphics_object_locations.push_back({x_text_box + w_wave_selector + 2, y12, w_wave_selector, h_text_box});
-    // graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 2), y12, w_wave_selector, h_text_box});
-    // graphics_object_locations.push_back({x_text_box + ((w_wave_selector + 2) * 3), y12, w_wave_selector, h_text_box});
+    // Range low related graphics object locations
+    location = {upper_left.x + 2, location.y + 77, 0, 0};
+    graphics_object_locations["range low text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["range low text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["range low toggle button"] = location;
+
+    // Range high related graphics object locations
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
+    graphics_object_locations["range high text"] = location;
+    location = {upper_left.x, location.y + 10, MODULE_WIDTH - 8, 9};
+    graphics_object_locations["range high text box"] = location;
+    location = {location.x + location.w + 1, location.y, 7, 9};
+    graphics_object_locations["range high toggle button"] = location;
 }
 
 /*
- * Initialize all graphics objects unique to this module type, and add them to the array
- * of graphics objects.
+ * Initialize graphics objects unique to this module type, add them to the
+ * map of graphics objects.
  */
 void Noise::initialize_unique_graphics_objects()
 {
-    std::vector<std::string> names, texts, prompt_texts, text_offs;
-    std::vector<SDL_Rect> locations;
-    std::vector<SDL_Color> colors, background_colors, color_offs, text_colors,
-        text_color_ons, text_color_offs;
-    std::vector<TTF_Font *> fonts;
-    std::vector<float> range_lows, range_highs;
-    std::vector<int> input_nums;
-    std::vector<std::vector<float> *> buffers;
-    std::vector<Module *> parents;
-    std::vector<bool> bs;
-    std::vector<Input_Text_Box *> input_text_boxes;
-    std::vector<Input_Toggle_Button *> input_toggle_buttons;
+    // Initialize text objects
+    graphics_objects["range low text"] =
+        new Text(name + " ranges text",
+                 graphics_object_locations["ranges text"],
+                 secondary_module_color, "RANGE LOW (#):");
+    graphics_objects["range high text"] =
+        new Text(name + " range high text",
+                 graphics_object_locations["range high text"],
+                 secondary_module_color, "RANGE HIGH (#):");
 
-    std::vector<Graphics_Object *> tmp_graphics_objects;
+    // Initialize waveform viewer
+    graphics_objects["waveform"] =
+        new Waveform(name + " waveform",
+                     graphics_object_locations["waveform"],
+                     primary_module_color, secondary_module_color, &out);
 
-    names = {name + " waveform visualizer (waveform)"};
-    locations = {graphics_object_locations[NOISE_OUTPUT_WAVEFORM]};
-    colors = {primary_module_color};
-    background_colors = {secondary_module_color};
-    range_lows = {-1};
-    range_highs = {1};
-    buffers = {&out};
+    // Initialize input text boxes
+    graphics_objects["range low text box"] =
+        new Input_Text_Box(name + " range low text box",
+                           graphics_object_locations["range low text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, NOISE_RANGE_LOW, NULL);
+    graphics_objects["range high text box"] =
+        new Input_Text_Box(name + " range high text box",
+                           graphics_object_locations["range high text box"],
+                           secondary_module_color, primary_module_color,
+                           "# or input", this, NOISE_RANGE_HIGH, NULL);
 
-    tmp_graphics_objects = initialize_waveform_objects(names, locations, colors,
-                                                       background_colors, range_lows, range_highs, buffers);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
+    // Initialize input toggle buttons
+    graphics_objects["range low toggle button"] =
+        new Input_Toggle_Button(name + " range low toggle button",
+                                graphics_object_locations["range low toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, NOISE_RANGE_LOW,
+                                (Input_Text_Box *) graphics_objects["range low text box"]);
+    graphics_objects["range high toggle button"] =
+        new Input_Toggle_Button(name + " range high toggle button",
+                                graphics_object_locations["range high toggle button"],
+                                secondary_module_color, primary_module_color,
+                                this, NOISE_RANGE_HIGH,
+                                (Input_Text_Box *) graphics_objects["range high text box"]);
 
-    names = {name + " range (text)"};
-    locations = {graphics_object_locations[NOISE_RANGE_TEXT]};
-    colors = std::vector<SDL_Color>(1, secondary_module_color);
-    texts = {"RANGE LOW & HIGH:"};
-    fonts = std::vector<TTF_Font *>(1, FONT_REGULAR);
-
-    tmp_graphics_objects = initialize_text_objects(names, locations, colors, texts,
-                                                   fonts);
-    graphics_objects.insert(graphics_objects.end(), tmp_graphics_objects.begin(),
-                            tmp_graphics_objects.end());
-
-    names = {name + " range low (input text box)", name + " range high (input text box)"};
-    locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TEXT_BOX],
-                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]
-                };
-    colors = std::vector<SDL_Color>(2, secondary_module_color);
-    text_colors = std::vector<SDL_Color>(2, primary_module_color);
-    prompt_texts = std::vector<std::string>(2, "# or input");
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    parents = std::vector<Module *>(2, this);
-    input_nums = {NOISE_RANGE_LOW, NOISE_RANGE_HIGH};
-    input_toggle_buttons = std::vector<Input_Toggle_Button *>(2, NULL);
-
-    initialize_input_text_box_objects(names, locations, colors, text_colors,
-                                      prompt_texts, fonts, parents, input_nums, input_toggle_buttons);
-
-    names = {name + " range low (input toggle button)", name + " range high (input toggle button)"};
-    locations = {graphics_object_locations[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON],
-                 graphics_object_locations[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON]
-                };
-    colors = std::vector<SDL_Color>(2, RED);
-    color_offs = std::vector<SDL_Color>(2, secondary_module_color);
-    text_color_ons = std::vector<SDL_Color>(2, WHITE);
-    text_color_offs = std::vector<SDL_Color>(2, primary_module_color);
-    fonts = std::vector<TTF_Font *>(2, FONT_REGULAR);
-    texts = std::vector<std::string>(2, "I");
-    text_offs = texts;
-    bs = std::vector<bool>(2, false);
-    parents = std::vector<Module *>(2, this);
-    input_nums = {NOISE_RANGE_LOW, NOISE_RANGE_HIGH};
-
-    input_text_boxes = {(Input_Text_Box *) graphics_objects[NOISE_RANGE_LOW_INPUT_TEXT_BOX],
-                        (Input_Text_Box *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TEXT_BOX]
-                       };
-
-    initialize_input_toggle_button_objects(names, locations, colors, color_offs,
-                                           text_color_ons, text_color_offs,
-                                           fonts, texts, text_offs, bs, parents,
-                                           input_nums, input_text_boxes);
-
+    // Point input text boxes to their associated input toggle buttons
     ((Input_Text_Box *)
-     graphics_objects[NOISE_RANGE_LOW_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_LOW_INPUT_TOGGLE_BUTTON];
+     graphics_objects["range low text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["range low toggle button"];
     ((Input_Text_Box *)
-     graphics_objects[NOISE_RANGE_HIGH_INPUT_TEXT_BOX])->input_toggle_button =
-         (Input_Toggle_Button *) graphics_objects[NOISE_RANGE_HIGH_INPUT_TOGGLE_BUTTON];
+     graphics_objects["range high text box"])->input_toggle_button =
+        (Input_Toggle_Button *)
+        graphics_objects["range high toggle button"];
 }
 
 std::string Noise::get_unique_text_representation()
@@ -233,7 +182,7 @@ std::string Noise::get_unique_text_representation()
  */
 void Noise::button_function(Button *button)
 {
-    if(button == graphics_objects[MODULE_REMOVE_MODULE_BUTTON])
+    if(button == graphics_objects["remove module button"])
     {
         delete this;
     }

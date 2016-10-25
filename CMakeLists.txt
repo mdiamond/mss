@@ -1,53 +1,29 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 2.8.12)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -g -O0 -Wall -fdiagnostics-color=always")
+add_compile_options(-std=c++11)
+add_compile_options(-g)
+add_compile_options(-O0)
+add_compile_options(-Wall)
+add_compile_options(-fdiagnostics-color=always)
+if(APPLE)
+    add_compile_options(-stdlib=libc++)
+endif()
 
 project(mss)
 
-set(TOP_SOURCES
-    event_handler.cpp
-    function_forwarder.cpp
-    graphics_object_utils.cpp
-    image_processing.cpp
-    initialize.cpp
-    load_patch.cpp
-    main.cpp
-    main_helpers.cpp
-    module_utils.cpp
-    populate_wavetables.cpp
-    save_patch.cpp
-    signal_processing.cpp
-    tests.cpp
-    Timer.cpp
-)
+file(GLOB mss_SRC
+     "*.cpp"
+     "*.hpp")
 
-set(MODULE_SOURCES
-    modules/Module.cpp
-    modules/Modules/Adsr.cpp
-    modules/Modules/Delay.cpp
-    modules/Modules/Filter.cpp
-    modules/Modules/Mixer.cpp
-    modules/Modules/Multiplier.cpp
-    modules/Modules/Noise.cpp
-    modules/Modules/Oscillator.cpp
-    modules/Modules/Output.cpp
-    modules/Modules/Sah.cpp
-)
+file(GLOB_RECURSE modules_SRC
+     "modules/*.cpp"
+     "modules/*.hpp")
 
-set(GRAPHICS_OBJECT_SOURCES
-    graphics/Graphics_Object.cpp
-    graphics/Graphics_Objects/Button.cpp
-    graphics/Graphics_Objects/Input_Text_Box.cpp
-    graphics/Graphics_Objects/Input_Toggle_Button.cpp
-    graphics/Graphics_Objects/Page.cpp
-    graphics/Graphics_Objects/Rect.cpp
-    graphics/Graphics_Objects/Text_Box.cpp
-    graphics/Graphics_Objects/Text.cpp
-    graphics/Graphics_Objects/Toggle_Button.cpp
-    graphics/Graphics_Objects/Waveform.cpp
-)
+file(GLOB_RECURSE graphics_SRC
+     "graphics/*.cpp"
+     "graphics/*.hpp")
 
-add_executable(mss ${TOP_SOURCES} ${MODULE_SOURCES} ${GRAPHICS_OBJECT_SOURCES})
+add_executable(mss ${mss_SRC} ${modules_SRC} ${graphics_SRC})
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(SDL2 REQUIRED sdl2)

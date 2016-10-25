@@ -22,21 +22,6 @@
 class Output: public Module
 {
 public:
-    // Output graphics objects enum
-    enum OuputGraphicsObjects
-    {
-        OUTPUT_AUDIO_TOGGLE_TEXT = 3,
-        OUTPUT_INPUT_L_TEXT,
-        OUTPUT_INPUT_R_TEXT,
-        OUTPUT_INPUT_L_WAVEFORM,
-        OUTPUT_INPUT_R_WAVEFORM,
-        OUTPUT_INPUT_L_INPUT_TEXT_BOX,
-        OUTPUT_INPUT_R_INPUT_TEXT_BOX,
-        OUTPUT_INPUT_L_INPUT_TOGGLE_BUTTON,
-        OUTPUT_INPUT_R_INPUT_TOGGLE_BUTTON,
-        OUTPUT_AUDIO_TOGGLE_TOGGLE_BUTTON
-    };
-
     // Output dependencies enum
     enum OuputDependencies
     {

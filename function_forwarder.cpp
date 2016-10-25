@@ -59,10 +59,10 @@ void no_parent_function_forwarder(Graphics_Object *g)
 {
     std::vector<std::string> possible_names;
 
-    possible_names = {"add adsr (button)", "add delay (button)", "add filter (button)",
-                      "add mixer (button)", "add multiplier (button)", "add noise (button)",
-                      "add oscillator (button)", "add sah (button)", "previous page (button)",
-                      "next page (button)", "save patch (text box)", "load patch (text box)"
+    possible_names = {"add adsr button", "add delay button", "add filter button",
+                      "add mixer button", "add multiplier button", "add noise button",
+                      "add oscillator button", "add sah button", "previous page button",
+                      "next page button", "save patch text box", "load patch text box"
                      };
 
     if(g->name == possible_names[0])

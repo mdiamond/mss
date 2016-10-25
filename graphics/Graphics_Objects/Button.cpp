@@ -34,10 +34,9 @@
 Button::Button(std::string name_, SDL_Rect location_, SDL_Color color_,
                SDL_Color text_color_, std::string text_, Module *parent_) :
     Graphics_Object(name_, BUTTON, parent_, location_, color_),
-    background(Rect(name_ + " background rect (rect)", location_, color_,
+    background(Rect(name_ + " background rect", location_, color_,
                     NULL)),
-    text(Text(name_ + "button text (text)", location_, text_color_, text_,
-              FONT_REGULAR))
+    text(Text(name_ + " text", location_, text_color_, text_))
 {
     // Make the text start 1 pixel away from the edge of the containing box
     text.location.x += 1;

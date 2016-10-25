@@ -33,10 +33,10 @@
  */
 Input_Text_Box::Input_Text_Box(std::string name_, SDL_Rect location_,
                                SDL_Color color_, SDL_Color text_color_,
-                               std::string prompt_text_, TTF_Font *font_,
-                               Module *parent_, int input_num_,
+                               std::string prompt_text_, Module *parent_,
+                               int input_num_,
                                Input_Toggle_Button *input_toggle_button_) :
-    Text_Box(name_, location_, color_, text_color_, prompt_text_, font_,
+    Text_Box(name_, location_, color_, text_color_, prompt_text_, FONT,
              parent_),
     input_num(input_num_),
     input_toggle_button(input_toggle_button_)

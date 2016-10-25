@@ -40,13 +40,13 @@ Toggle_Button::Toggle_Button(std::string name_, SDL_Rect location_,
                              bool b_, Module *parent_) :
     Graphics_Object(name_, TOGGLE_BUTTON, parent_, location_, color_),
     b(b_), color_off(color_off_),
-    text_on(Text(name_ + " text on (text)", location_, text_color_on_, text_on_,
-                 font_)),
-    text_off(Text(name_ + " text off (text)", location_, text_color_off_,
-                  text_off_, font_)),
-    background(Rect(name_ + " background rect (rect)", location_, color_,
+    text_on(Text(name_ + " text (on)", location_, text_color_on_,
+                 text_on_)),
+    text_off(Text(name_ + " text (off)", location_, text_color_off_,
+                  text_off_)),
+    background(Rect(name_ + " background rect (on)", location_, color_,
                     NULL)),
-    background_off(Rect(name_ + " background off rect (rect)", location_,
+    background_off(Rect(name_ + " background rect (off)", location_,
                         color_off_, NULL))
 {}
 

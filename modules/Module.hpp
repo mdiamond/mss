@@ -53,14 +53,6 @@ public:
         SAH
     };
 
-    // Module graphics objects enum, these are common to all modules
-    enum ModuleGraphicsObjects
-    {
-        MODULE_BACKGROUND_RECT = 0,
-        MODULE_NAME_TEXT,
-        MODULE_REMOVE_MODULE_BUTTON
-    };
-
     // A struct to represent a parameter for a module
     struct Parameter
     {
@@ -91,8 +83,8 @@ public:
     bool graphics_objects_initialized;
     // A vector containing any graphics objects necessary for rendering this
     // module, and their current locations
-    std::vector<SDL_Rect> graphics_object_locations;
-    std::vector<Graphics_Object *> graphics_objects;
+    std::map<std::string, SDL_Rect> graphics_object_locations;
+    std::map<std::string, Graphics_Object *> graphics_objects;
     // A vector of inputs, accessed for any processing operations that depend
     // on the output of other modules
     std::vector<Parameter> inputs;
@@ -142,33 +134,6 @@ public:
     void calculate_graphics_object_locations();
     //   Update the locations of all graphics objects in this module
     void update_graphics_object_locations();
-    //   Initialize input text box graphics objects
-    void initialize_input_text_box_objects(std::vector<std::string>,
-                                           std::vector<SDL_Rect>,
-                                           std::vector<SDL_Color>,
-                                           std::vector<SDL_Color>,
-                                           std::vector<std::string>,
-                                           std::vector<TTF_Font *>,
-                                           std::vector<Module *>,
-                                           std::vector<int>,
-                                           std::vector<Input_Toggle_Button *>);
-    //   Initialize input toggle button graphics objects (must always be used
-    //   immediately after, and with the same size arrays for input as
-    //   initialize_input_text_box_objects() because each input toggle button
-    //   depends on and must be able to reference a particular input text object)
-    void initialize_input_toggle_button_objects(std::vector<std::string>,
-                                                std::vector<SDL_Rect>,
-                                                std::vector<SDL_Color>,
-                                                std::vector<SDL_Color>,
-                                                std::vector<SDL_Color>,
-                                                std::vector<SDL_Color>,
-                                                std::vector<TTF_Font *>,
-                                                std::vector<std::string>,
-                                                std::vector<std::string>,
-                                                std::vector<bool>,
-                                                std::vector<Module *>,
-                                                std::vector<int>,
-                                                std::vector<Input_Text_Box *>);
     //   Set a parameter to a certain value
     void set(float, int);
     //   Set a parameter to be updated by another module's output
