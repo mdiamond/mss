@@ -97,6 +97,8 @@ void Input_Text_Box::entered()
         {
             val = std::stof(typing_text.text.c_str());
             parent->set(val, input_num);
+            text.text = typing_text.text;
+            text.updated = true;
         }
         else
         {
