@@ -90,22 +90,26 @@ void Input_Text_Box::entered()
               << std::endl;
 
     SDL_StopTextInput();
-    text.text = typing_text.text;
 
-    if(text.text != "")
+    if(typing_text.text != "")
     {
-        if(can_floatify(&text.text))
+        if(can_floatify(&typing_text.text))
         {
-            val = std::stof(text.text.c_str());
+            val = std::stof(typing_text.text.c_str());
             parent->set(val, input_num);
         }
         else
         {
-            src = find_module_as_source(&text.text, &MODULES, parent);
-            text.text = text.text.substr(0, 3) + " "
-                        + text.text.substr(text.text.find(" ") + 1);
-            parent->set(src, input_num);
-            input_toggle_button->b = true;
+            src = find_module_as_source(&typing_text.text, &MODULES, parent);
+            if(src != NULL)
+            {
+                typing_text.text = typing_text.text.substr(0, 3) + " "
+                                   + typing_text.text.substr(typing_text.text.find(" ") + 1);
+                parent->set(src, input_num);
+                input_toggle_button->b = true;
+                text.text = typing_text.text;
+                text.updated = true;
+            }
         }
     }
     else
@@ -115,9 +119,9 @@ void Input_Text_Box::entered()
                   << DEFAULT_STDOUT << std::endl;
     }
 
-    text.updated = true;
     ACTIVE_TEXT_BOX = NULL;
     active = false;
     typing_text.text = "";
+    typing_text.updated = true;
 }
 

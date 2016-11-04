@@ -25,6 +25,7 @@ public:
     TTF_Font *font;
     std::string text;
     SDL_Texture *texture;
+    int max_width = 1000;
 
     // Constructor and destructor
     Text(std::string, SDL_Rect, SDL_Color, std::string);

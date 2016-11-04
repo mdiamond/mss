@@ -55,7 +55,9 @@ Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color color_,
     prompt_text.location = text_location;
     typing_text.location = text_location;
 
-    typing_text.location.w = 0;
+    text.max_width = location.w - 2;
+    prompt_text.max_width = location.w - 2;
+    typing_text.max_width = location.w - 2;
 
     text.updated = true;
     prompt_text.updated = true;
@@ -95,7 +97,7 @@ void Text_Box::render()
         {
             typing_text.render();
         }
-        // Neither the current text or the typing text contain anything, so
+        // Neither the current text nor the typing text contain anything, so
         // render the prompt text
         else
         {
@@ -103,17 +105,18 @@ void Text_Box::render()
         }
     }
 
-    // If the text box is active and the cursor is current supposed to be drawn,
-    // draw the typing cursor
+    // If the text box is active and the cursor is currently supposed to be
+    // drawn draw the typing cursor
     if(active && CURSOR_ON)
     {
         SDL_SetRenderDrawColor(RENDERER, text_color.r, text_color.g,
                                text_color.b, text_color.a);
+
         SDL_RenderDrawLine(RENDERER,
                            typing_text.location.x + typing_text.location.w,
-                           typing_text.location.y + 2,
+                           typing_text.location.y + 1,
                            typing_text.location.x + typing_text.location.w,
-                           typing_text.location.y + 11);
+                           typing_text.location.y + 7);
     }
 }
 
@@ -124,6 +127,7 @@ void Text_Box::update_location(SDL_Rect location_)
 {
     location = location_;
     background.update_location(location_);
+    location_.x += 1;
     text.update_location(location_);
     typing_text.update_location(location_);
     prompt_text.update_location(location_);
@@ -181,7 +185,7 @@ void Text_Box::clicked()
         {
             active = true;
             ACTIVE_TEXT_BOX = this;
-            SDL_SetTextInputRect(&location);
+            SDL_SetTextInputRect(&typing_text.location);
             SDL_StartTextInput();
         }
         OBJECT_CLICKED = true;

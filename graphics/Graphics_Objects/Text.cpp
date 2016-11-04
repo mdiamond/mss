@@ -61,25 +61,36 @@ void Text::render()
     {
         SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(),
                                                       color);
-        SDL_DestroyTexture(texture);
         texture = SDL_CreateTextureFromSurface(RENDERER, surface);
         SDL_QueryTexture(texture, NULL, NULL, &location.w, &location.h);
+        if(text == "")
+        {
+            location.w = 0;
+            location.h = 0;
+        }
+        if(location.w >= max_width)
+        {
+            location.w = max_width;
+        }
         updated = false;
     }
 
-    if(!SELECTING_SRC
-       || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
+    if(text != "")
     {
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
-                               color.a);
-    }
-    else
-    {
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
-                               color.a / 2);
-    }
+        if(!SELECTING_SRC
+           || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
+        {
+            SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                                   color.a);
+        }
+        else
+        {
+            SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                                   color.a / 2);
+        }
 
-    SDL_RenderCopy(RENDERER, texture, NULL, &location);
+        SDL_RenderCopy(RENDERER, texture, NULL, &location);
+    }
 }
 
 /*
