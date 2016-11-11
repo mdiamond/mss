@@ -40,8 +40,9 @@ extern Color_Modifier BLUE_STDOUT;
 extern Color_Modifier PINK_STDOUT;
 
 // Audio information
-extern int SAMPLE_RATE;
-extern int BUFFER_SIZE;
+extern unsigned int SAMPLE_RATE;
+extern unsigned int BUFFER_SIZE;
+extern unsigned int NUM_CHANNELS;
 extern bool AUDIO_ON;
 
 // Wavetables

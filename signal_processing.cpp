@@ -37,10 +37,10 @@
  * processed and ready, the buffer is filled with the waiting samples
  * in the output modules left and right channel output buffers.
  */
-void audio_callback(void *userdata, Uint8 *_buffer, int length)
+void audio_callback(void *userdata_, Uint8 *buffer_, int length_)
 {
     // Cast the buffer to a float buffer
-    float *buffer = (float *) _buffer;
+    float (*buffer)[NUM_CHANNELS] = (float (*)[NUM_CHANNELS]) buffer_;
 
     // Get the address of the output module for later use
     Output *output = (Output *) MODULES[0];
@@ -51,38 +51,22 @@ void audio_callback(void *userdata, Uint8 *_buffer, int length)
     // the beginning of the signal chain will be processed first
     output->process();
 
-    // Fetch the output module's latest processed audio
-    // and insert it into the buffer
-    for(int i = 0; i < BUFFER_SIZE; i ++)
+    for(unsigned int i = 0; i < BUFFER_SIZE; i ++)
     {
-        if((output->inputs)[Output::OUTPUT_INPUT_L].in != NULL)
+        for(unsigned int j = 0; j < NUM_CHANNELS; j ++)
         {
-            buffer[0] = (output->inputs)[Output::OUTPUT_INPUT_L].in->at(i);
+            buffer[i][j] = output->inputs[j].live
+                           ? output->inputs[j].in->at(i) : 0;
         }
-        else
-        {
-            buffer[0] = 0;
-        }
-        if((output->inputs)[Output::OUTPUT_INPUT_R].in != NULL)
-        {
-            buffer[1] = (output->inputs)[Output::OUTPUT_INPUT_R].in->at(i);
-        }
-        else
-        {
-            buffer[1] = 0;
-        }
-
-        buffer += 2;
     }
 
-    // if(clipping)
-    //     std::cout << RED_STDOUT << "OUTPUT CLIPPING" << DEFAULT_STDOUT << std::endl;
-
     for(unsigned int i = 1; i < MODULES.size(); i ++)
+    {
         if(MODULES[i] != NULL)
         {
             MODULES[i]->processed = false;
         }
+    }
 
     // for(unsigned int i = 1; i < MODULES.size(); i ++)
     // {

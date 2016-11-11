@@ -382,6 +382,7 @@ int open_audio_device()
     std::cout << "    Buffer size in bytes: " << obtained.size << std::endl;
 
     BUFFER_SIZE = obtained.samples;
+    NUM_CHANNELS = obtained.channels;
 
     // Return success
     return 1;

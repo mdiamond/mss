@@ -42,8 +42,9 @@ Color_Modifier BLUE_STDOUT(Color_Modifier::FG_BLUE);
 Color_Modifier PINK_STDOUT(Color_Modifier::FG_PINK);
 
 // Audio information
-int SAMPLE_RATE = 44100;
-int BUFFER_SIZE;
+unsigned int SAMPLE_RATE = 44100;
+unsigned int BUFFER_SIZE;
+unsigned int NUM_CHANNELS;
 bool AUDIO_ON = true;
 
 // Wavetables
