@@ -32,7 +32,8 @@ Graphics_Object::Graphics_Object(std::string name_,
                                  Module *parent_, SDL_Rect location_,
                                  SDL_Color color_) :
     name(name_), graphics_object_type(graphics_object_type_), parent(parent_),
-    location(location_), color(color_), updated(true)
+    location(location_), color(color_), updated(true),
+    listener((Graphics_Listener *) parent_)
 {}
 
 /*

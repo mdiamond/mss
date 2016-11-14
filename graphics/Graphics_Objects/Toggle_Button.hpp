@@ -41,12 +41,12 @@ public:
     virtual ~Toggle_Button();
 
     // Member functions
-    void render();
-    void clicked();
+    virtual void render();
+    virtual void clicked();
     //   Toggle this button
     virtual void toggle();
     //   Override the default graphics object update_location() function
-    void update_location(SDL_Rect);
+    virtual void update_location(SDL_Rect);
     //   Set this toggle button's colors
     void set_colors(SDL_Color, SDL_Color, SDL_Color, SDL_Color);
 };

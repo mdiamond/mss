@@ -28,8 +28,8 @@ public:
     virtual ~Page();
 
     // Member functions
-    void render();
-    void clicked();
+    virtual void render();
+    virtual void clicked();
 };
 
 #endif

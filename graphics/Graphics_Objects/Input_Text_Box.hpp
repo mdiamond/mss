@@ -39,7 +39,7 @@ public:
 
     // Member functions
     //   Override the default text box entered() function
-    void entered();
+    virtual void entered();
     //   Check if a string can be turned into a float
     bool can_floatify(std::string *);
 };

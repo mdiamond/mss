@@ -30,8 +30,9 @@
  * GRAPHICS_OBJECT CLASS DEFINITION *
  ************************************/
 
-// Forward declaration of Module class
+// Forward declaration of module and graphics listener classes
 class Module;
+class Graphics_Listener;
 
 class Graphics_Object
 {
@@ -76,6 +77,9 @@ public:
     // Member functions
     //   Return true if clicked, false otherwise
     bool was_clicked();
+
+protected:
+    Graphics_Listener *listener;
 };
 
 #endif

@@ -235,6 +235,18 @@ Module::~Module()
 }
 
 /*
+ * This function allows the module to do something in response to user
+ * interaction with a contained graphics object. Any class that inherits from
+ * the module class may implement its own version, but generally, even if this
+ * function is overwritten, it may need to be called to handle certain actions
+ * before checking for module specific actions. Return true if any action was
+ * taken based on the user interaction, false otherwise.
+ */
+bool Module::handle_event(Graphics_Object *g)
+{
+}
+
+/*
  * This function determines the locations of this module's graphics objects
  * based on how many inputs are detected for this module type. This is the
  * defualt implementation, but derived module classes may override it to have

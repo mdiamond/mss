@@ -39,7 +39,7 @@ public:
 
     // Member functions
     //   Override the default toggle button toggle() function
-    void toggle();
+    virtual void toggle();
 };
 
 #endif

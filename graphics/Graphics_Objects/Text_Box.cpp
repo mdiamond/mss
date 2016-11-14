@@ -131,9 +131,7 @@ void Text_Box::update_location(SDL_Rect location_)
     text.update_location(location_);
     typing_text.update_location(location_);
     prompt_text.update_location(location_);
-    text.updated = true;
-    typing_text.updated = true;
-    prompt_text.updated = true;
+    updated = true;
 }
 
 /*

@@ -37,7 +37,7 @@ public:
     virtual void render();
     virtual void clicked();
     //   Override the default graphics object update_location() function
-    void update_location(SDL_Rect);
+    virtual void update_location(SDL_Rect);
     //   Set the colors of this button
     void set_colors(SDL_Color, SDL_Color);
 };

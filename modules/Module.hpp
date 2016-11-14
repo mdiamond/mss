@@ -28,6 +28,7 @@
 #include "SDL_ttf.h"
 
 // Included graphics classes
+#include "Graphics_Listener.hpp"
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Button.hpp"
 #include "Graphics_Objects/Input_Text_Box.hpp"
@@ -36,7 +37,7 @@
 #include "Graphics_Objects/Text.hpp"
 #include "Graphics_Objects/Waveform.hpp"
 
-class Module: public Graphics_Object
+class Module: public Graphics_Object, public Graphics_Listener
 {
 public:
     // Module type enum
@@ -100,6 +101,10 @@ public:
     //   Each derived module class must define its own signal processing
     //   capabilities
     virtual void process() = 0;
+    //   Handle user interactions with the graphics objects that make up the
+    //   visual representation of this module, return true if any action was
+    //   taken, false otherwise
+    virtual bool handle_event(Graphics_Object *);
     //   Output the module's unique information as text
     //   Each derived module class must define its own function for outputting
     //   a text representation of itself

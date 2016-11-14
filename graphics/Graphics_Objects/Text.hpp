@@ -32,8 +32,8 @@ public:
     virtual ~Text();
 
     // Member functions
-    void render();
-    void clicked();
+    virtual void render();
+    virtual void clicked();
     //   Update the text displayed
     void update_text(std::string);
 };

@@ -34,14 +34,13 @@ public:
     virtual ~Waveform();
 
     // Member functions
-    void render();
-    void clicked();
+    virtual void render();
+    virtual void clicked();
+    virtual void update_location(SDL_Rect);
     //   Calculate the y pixel location for a given sample
     float calculate_y(int);
     //   Copy the buffer to be rendered into internal memory
     void copy_buffer();
-    //   Override the default graphics object update_location() function
-    void update_location(SDL_Rect);
 };
 
 #endif
