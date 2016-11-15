@@ -430,21 +430,21 @@ void Module::initialize_graphics_objects()
     calculate_graphics_object_locations();
 
     // graphics_objects[0] is the background rectangle
-    rect = new Rect(name + " background (rect)",
+    rect = new Rect(name + " background rect",
                     graphics_object_locations["background rect"],
                     primary_module_color,
                     this);
     graphics_objects["background rect"] = rect;
 
     // graphics_objects[1] is the name of the object
-    text = new Text(name + " module name (text)",
+    text = new Text(name + " module name text",
                     graphics_object_locations["name text"],
                     secondary_module_color,
                     name);
     graphics_objects["name text"] = text;
 
     // graphics_objects[2] is the remove module button
-    button = new Button(name + " remove module (button)",
+    button = new Button(name + " remove module button",
                         graphics_object_locations["remove module button"],
                         secondary_module_color,
                         primary_module_color,
