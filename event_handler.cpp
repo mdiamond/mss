@@ -149,7 +149,7 @@ void check_click()
 
     // If there is an active text box, and it is not what was clicked,
     // make the text box inactive
-    if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->was_clicked())
+    if(ACTIVE_TEXT_BOX != NULL && !ACTIVE_TEXT_BOX->mouse_over())
     {
         ACTIVE_TEXT_BOX->cancel_input();
     }

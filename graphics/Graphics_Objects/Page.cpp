@@ -71,7 +71,7 @@ void Page::clicked()
     for(auto itr = graphics_objects.begin(); itr != graphics_objects.end();
         itr ++)
     {
-        if((*itr)->was_clicked())
+        if((*itr)->mouse_over())
         {
             (*itr)->clicked();
         }

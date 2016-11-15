@@ -67,11 +67,13 @@ bool Input_Text_Box::can_floatify(std::string *string)
         return false;
     }
     if(string->size() > 1)
+    {
         if(!(isdigit((*string)[1])
              || (*string)[1] == '.'))
         {
             return false;
         }
+    }
     return true;
 }
 

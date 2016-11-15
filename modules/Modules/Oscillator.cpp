@@ -45,7 +45,7 @@
  */
 Oscillator::Oscillator() :
     Module(OSCILLATOR),
-    current_phase(0), previous_phase_offset(0),
+    phase(0), previous_phase_offset(0),
     waveform_type(SIN), sin_on(true), tri_on(false),
     saw_on(false), sqr_on(false)
 {
@@ -148,25 +148,25 @@ void Oscillator::process()
             switch(waveform_type)
             {
             case SIN :
-                out[i] = produce_sin_sample(current_phase);
+                out[i] = produce_sin_sample(phase);
                 break;
             case TRI :
-                out[i] = produce_tri_sample(current_phase);
+                out[i] = produce_tri_sample(phase);
                 break;
             case SAW:
-                out[i] = produce_saw_sample(current_phase);
+                out[i] = produce_saw_sample(phase);
                 break;
             case SQR:
-                out[i] = produce_sqr_sample(current_phase);
+                out[i] = produce_sqr_sample(phase);
                 break;
             }
         }
         else if(waveform_type != SQR || inputs[OSCILLATOR_PULSE_WIDTH].val == .5)
-            out[i] = WAVETABLES[waveform_type][(int)(current_phase
+            out[i] = WAVETABLES[waveform_type][(int)(phase
                                                         * SAMPLE_RATE)];
         else
         {
-            out[i] = produce_sqr_sample(current_phase);
+            out[i] = produce_sqr_sample(phase);
         }
 
         // If the oscillator has an abnormal range, scale the sample to
@@ -179,20 +179,70 @@ void Oscillator::process()
 
         // Increment the current phase according to the frequency, sample rate,
         // and difference in phase offset since the last sample was calculated
-        current_phase += ((double) inputs[OSCILLATOR_FREQUENCY].val
+        phase += ((double) inputs[OSCILLATOR_FREQUENCY].val
                           / SAMPLE_RATE) + phase_offset_diff;
         // Wrap around if the phase goes above 1 or below 0
-        while(current_phase > 1)
+        while(phase > 1)
         {
-            current_phase -= 1;
+            phase -= 1;
         }
-        while(current_phase < 0)
+        while(phase < 0)
         {
-            current_phase += 1;
+            phase += 1;
         }
     }
 
     processed = true;
+}
+
+/*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Oscillator::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+    // Handle the reset buffer button
+    else if(g == graphics_objects["reset phase button"])
+    {
+        reset_phase();
+        return true;
+    }
+    else if(g == graphics_objects["sin toggle button"])
+    {
+        switch_waveform(SIN);
+        return true;
+    }
+    else if(g == graphics_objects["tri toggle button"])
+    {
+        switch_waveform(TRI);
+        return true;
+    }
+    else if(g == graphics_objects["saw toggle button"])
+    {
+        switch_waveform(SAW);
+        return true;
+    }
+    else if(g == graphics_objects["sqr toggle button"])
+    {
+        switch_waveform(SQR);
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
 }
 
 /*
@@ -456,56 +506,16 @@ void Oscillator::switch_waveform(WaveformType waveform_type_)
 /*
  * Reset this oscillator's phase
  */
-void Oscillator::reset_current_phase()
+void Oscillator::reset_phase()
 {
-    current_phase = 0;
+    phase = 0;
 
-    std::cout << name << " current phase reset" << std::endl;
+    std::cout << name << " phase reset" << std::endl;
 }
 
 std::string Oscillator::get_unique_text_representation()
 {
-    return std::to_string(current_phase) + "\n"
+    return std::to_string(phase) + "\n"
            + std::to_string(waveform_type) + "\n";
-}
-
-/*
- * Handle button presses. Oscillator button presses are used to remove the
- * module or to reset the current phase.
- */
-void Oscillator::button_function(Button *button)
-{
-    if(button == graphics_objects["remove module button"])
-    {
-        delete this;
-    }
-    else if(button == graphics_objects["reset phase button"])
-    {
-        reset_current_phase();
-    }
-}
-
-/*
- * Handle toggle button presses. Oscillator toggle button presses are used to
- * switch waveform type.
- */
-void Oscillator::toggle_button_function(Toggle_Button *toggle_button)
-{
-    if(toggle_button == graphics_objects["sin toggle button"])
-    {
-        switch_waveform(SIN);
-    }
-    else if(toggle_button == graphics_objects["tri toggle button"])
-    {
-        switch_waveform(TRI);
-    }
-    else if(toggle_button == graphics_objects["saw toggle button"])
-    {
-        switch_waveform(SAW);
-    }
-    else if(toggle_button == graphics_objects["sqr toggle button"])
-    {
-        switch_waveform(SQR);
-    }
 }
 

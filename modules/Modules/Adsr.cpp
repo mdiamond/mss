@@ -176,6 +176,36 @@ void Adsr::process()
 }
 
 /*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Adsr::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+    // Handle the reset stage button
+    else if(g == graphics_objects["reset stage button"])
+    {
+        reset_stage();
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
+}
+
+/*
  * Calculate the locations of graphics objects unique to this module type, add
  * them to the map of graphics object locations.
  */
@@ -351,26 +381,4 @@ void Adsr::reset_stage()
 
     std::cout << name << " stage reset" << std::endl;
 }
-
-/*
- * Handle button presses. Adsr button presses are used to remove the module and
- * reset the adsr stage.
- */
-void Adsr::button_function(Button *button)
-{
-    if(button == graphics_objects["remove module button"])
-    {
-        delete this;
-    }
-    else if(button == graphics_objects["reset stage button"])
-    {
-        reset_stage();
-    }
-}
-
-/*
- * Adsr has no toggle buttons. This is a dummy function.
- */
-void Adsr::toggle_button_function(Toggle_Button *toggle_button)
-{}
 

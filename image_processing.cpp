@@ -47,24 +47,6 @@ void update_graphics_objects()
 }
 
 /*
- * Return the module (if any) that is currently
- * being hovered over by the mouse.
- */
-Module *hovering_over()
-{
-    Module *module = NULL;
-
-    for(unsigned int i = 0; i < MODULES.size(); i ++)
-        if(MODULES[i] != NULL)
-            if(MODULES[i]->was_clicked())
-            {
-                module = MODULES[i];
-            }
-
-    return module;
-}
-
-/*
  * Determine what graphics objects go on what pages. Create those pages.
  */
 void calculate_pages()
@@ -76,7 +58,6 @@ void calculate_pages()
     // its sub pages graphics objects, and the current page
     // (no top-level page has any graphics objects, only their sub pages
     // contain graphics objects)
-    Page *current_sub_page = NULL;
     std::vector<Graphics_Object *> graphics_objects;
     std::vector<Graphics_Object *> sub_page_graphics_objects;
     std::string current_page_name;

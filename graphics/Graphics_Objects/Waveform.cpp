@@ -85,7 +85,7 @@ float Waveform::calculate_y(int i)
 void Waveform::copy_buffer()
 {
     int index = 0;
-    for(int i = BUFFER_SIZE - location.w; i < BUFFER_SIZE; i ++)
+    for(unsigned int i = BUFFER_SIZE - location.w; i < BUFFER_SIZE; i ++)
     {
         if(buffer != NULL)
         {
@@ -118,7 +118,7 @@ void Waveform::render()
     background.render();
 
     if(!SELECTING_SRC
-       || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
+       || (SELECTING_SRC && parent != NULL && parent->mouse_over()))
     {
         SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     }

@@ -75,8 +75,9 @@ public:
     void set_color(SDL_Color);
 
     // Member functions
-    //   Return true if clicked, false otherwise
-    bool was_clicked();
+    //   Return true if the mouse is within the graphics object, false
+    //   otherwise
+    bool mouse_over();
 
 protected:
     Graphics_Listener *listener;

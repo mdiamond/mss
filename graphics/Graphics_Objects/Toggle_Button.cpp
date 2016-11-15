@@ -74,20 +74,18 @@ void Toggle_Button::render()
 }
 
 /*
- * If this toggle button is an input toggle button, cast it and call its toggle
- * function. Otherwise, call the normal toggle button toggle function, then send
- * this toggle button to its parent module's toggle button handling function.
- * All toggle buttons are associated with a parent module.
+ * Send this object to its listener, call upon the toggle function to toggle
+ * its state.
  */
 void Toggle_Button::clicked()
 {
-    if(!OBJECT_CLICKED)
+    if(!OBJECT_CLICKED && listener != nullptr)
     {
         std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
                   << std::endl;
 
         toggle();
-        parent->toggle_button_function(this);
+        listener->handle_event(this);
     }
 }
 

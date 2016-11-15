@@ -50,8 +50,8 @@ Rect::~Rect()
 void Rect::render()
 {
     if(!SELECTING_SRC
-       || (SELECTING_SRC && parent != NULL && parent->was_clicked())
-       || name == "background (rect)")
+       || (SELECTING_SRC && parent != NULL && parent->mouse_over())
+       || name == "background rect")
     {
         SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
                                color.a);
@@ -73,24 +73,17 @@ void Rect::render()
 }
 
 /*
- * Rectangles only respond to clicks during input select mode. When a rectangle
- * is clicked it will call upon its parent module to become a source for the
- * parent of the active input toggle box.
+ * Send this object to the handle event function of its listener.
  */
 void Rect::clicked()
 {
-    if(parent != NULL)
+    if(listener != nullptr)
     {
-        std::cout << PINK_STDOUT << parent->name << " clicked" << DEFAULT_STDOUT
+        std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
                   << std::endl;
 
-        // If it is currently module selection mode (there is an active input
-        // toggle button and we are selecting a source), then this module has
-        // been selected as a source for some input
-        if(SELECTING_SRC && CURRENT_INPUT_TOGGLE_BUTTON != NULL &&
-           CURRENT_INPUT_TOGGLE_BUTTON->parent != parent)
+        if(listener->handle_event(this))
         {
-            parent->module_selected();
             OBJECT_CLICKED = true;
         }
     }

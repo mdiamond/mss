@@ -58,8 +58,8 @@ void Button::render()
 }
 
 /*
- * If this button has no parent module, send it to the function forwarder.
- * Otherwise, send it to it's parent module's button handling function.
+ * If this button has no listener, send it to the function forwarder.
+ * Otherwise, send it to the event handling function of its listener.
  */
 void Button::clicked()
 {
@@ -68,13 +68,13 @@ void Button::clicked()
 
     if(!OBJECT_CLICKED)
     {
-        if(parent == NULL)
+        if(listener == nullptr)
         {
             function_forwarder(this);
         }
         else
         {
-            parent->button_function(this);
+            listener->handle_event(this);
         }
         OBJECT_CLICKED = true;
     }

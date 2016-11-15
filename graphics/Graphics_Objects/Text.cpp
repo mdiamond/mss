@@ -78,7 +78,7 @@ void Text::render()
     if(text != "")
     {
         if(!SELECTING_SRC
-           || (SELECTING_SRC && parent != NULL && parent->was_clicked()))
+           || (SELECTING_SRC && parent != NULL && parent->mouse_over()))
         {
             SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
                                    color.a);
@@ -97,9 +97,7 @@ void Text::render()
  * Text objects do not respond to clicks.
  */
 void Text::clicked()
-{
-
-}
+{}
 
 /*
  * Update this text object's stored text.

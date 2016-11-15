@@ -109,7 +109,7 @@ void Filter::process()
     }
 
     // Filter the buffer with the determined coefficients
-    for(int i = 0; i < BUFFER_SIZE; i ++)
+    for(unsigned int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Update parameters
         update_input_vals(i);
@@ -133,6 +133,48 @@ void Filter::process()
     }
 
     processed = true;
+}
+
+/*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Filter::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+    // Handle a click of the lowpass toggle button
+    else if(g == graphics_objects["lowpass toggle button"])
+    {
+        switch_filter(LOWPASS);
+        return true;
+    }
+    // Handle a click of the bandpass toggle button
+    else if(g == graphics_objects["bandpass toggle button"])
+    {
+        switch_filter(BANDPASS);
+        return true;
+    }
+    // Handle a click of the highpass toggle button
+    else if(g == graphics_objects["highpass toggle button"])
+    {
+        switch_filter(HIGHPASS);
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
 }
 
 /*
@@ -312,36 +354,5 @@ void Filter::switch_filter(FilterType filter_type_)
 std::string Filter::get_unique_text_representation()
 {
     return "";
-}
-
-/*
- * Handle button presses. Filter button presses are used to remove the module.
- */
-void Filter::button_function(Button *button)
-{
-    if(button == graphics_objects["remove module button"])
-    {
-        delete this;
-    }
-}
-
-/*
- * Handle toggle button presses. Filter toggle button presses are used to switch
- * filter type.
- */
-void Filter::toggle_button_function(Toggle_Button *toggle_button)
-{
-    if(toggle_button == graphics_objects["lowpass toggle button"])
-    {
-        switch_filter(LOWPASS);
-    }
-    else if(toggle_button == graphics_objects["bandpass toggle button"])
-    {
-        switch_filter(BANDPASS);
-    }
-    else if(toggle_button == graphics_objects["highpass toggle button"])
-    {
-        switch_filter(HIGHPASS);
-    }
 }
 

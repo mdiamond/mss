@@ -62,6 +62,35 @@ void Output::process()
 }
 
 /*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Output::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+    else if(g == graphics_objects["audio on/off toggle button"])
+    {
+        toggle_audio();
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
+}
+
+/*
  * Calculate the locations of graphics objects unique to this module type, add
  * them to the map of graphics object locations.
  */
@@ -195,7 +224,7 @@ void Output::initialize_unique_graphics_objects()
  * Toggle audio processing by either starting or pausing SDL audio, which will
  * halt or start calling of the callback function.
  */
-void Output::toggle_audio_on()
+void Output::toggle_audio()
 {
     AUDIO_ON = !AUDIO_ON;
 
@@ -214,23 +243,5 @@ void Output::toggle_audio_on()
 std::string Output::get_unique_text_representation()
 {
     return "";
-}
-
-/*
- * The Output module has no buttons.
- */
-void Output::button_function(Button *button)
-{}
-
-/*
- * Handle toggle button presses. Output toggle button presses are used to toggle
- * audio processing on or off.
- */
-void Output::toggle_button_function(Toggle_Button *toggle_button)
-{
-    if(toggle_button == graphics_objects["audio on/off toggle button"])
-    {
-        toggle_audio_on();
-    }
 }
 

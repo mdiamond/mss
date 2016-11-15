@@ -112,7 +112,7 @@ void Delay::process()
     }
 
     // Per sample
-    for(int i = 0; i < BUFFER_SIZE; i ++)
+    for(unsigned int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Update parameters
         update_input_vals(i);
@@ -160,6 +160,36 @@ void Delay::process()
     }
 
     processed = true;
+}
+
+/*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Delay::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+    // Handle the reset buffer button
+    else if(g == graphics_objects["reset buffer button"])
+    {
+        reset_buffer();
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
 }
 
 /*
@@ -329,26 +359,4 @@ void Delay::reset_buffer()
 
     std::cout << name << " buffer reset" << std::endl;
 }
-
-/*
- * Handle button presses. Delay button presses are used to remove the module and
- * to reset the delay line to an empty state.
- */
-void Delay::button_function(Button *button)
-{
-    if(button == graphics_objects["remove module button"])
-    {
-        delete this;
-    }
-    else if(button == graphics_objects["reset buffer button"])
-    {
-        reset_buffer();
-    }
-}
-
-/*
- * Delay has no toggle buttons. This is a dummy function.
- */
-void Delay::toggle_button_function(Toggle_Button *toggle_button)
-{}
 

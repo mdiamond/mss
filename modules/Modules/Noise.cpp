@@ -85,6 +85,30 @@ void Noise::process()
 }
 
 /*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Noise::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
+}
+
+/*
  * Calculate the locations of graphics objects unique to this module type, add
  * them to the map of graphics object locations.
  */
@@ -176,21 +200,4 @@ std::string Noise::get_unique_text_representation()
 {
     return "";
 }
-
-/*
- * Handle button presses. Noise button presses are used to remove the module.
- */
-void Noise::button_function(Button *button)
-{
-    if(button == graphics_objects["remove module button"])
-    {
-        delete this;
-    }
-}
-
-/*
- * Noise has no toggle buttons. This is a dummy function.
- */
-void Noise::toggle_button_function(Toggle_Button *toggle_button)
-{}
 

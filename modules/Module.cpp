@@ -244,6 +244,39 @@ Module::~Module()
  */
 bool Module::handle_event(Graphics_Object *g)
 {
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // if g is the background rect and select source mode is not active,
+    // take no action, return false
+    else if(g == graphics_objects["background rect"]
+            && !SELECTING_SRC)
+    {
+        return false;
+    }
+    // if this is not the output module, select source mode is active, and the
+    // background rect is clicked, set this module as the source for an input
+    // to another module, return true
+    else if(module_type != OUTPUT
+            && SELECTING_SRC
+            && g == graphics_objects["background rect"])
+    {
+        module_selected();
+        return true;
+    }
+    // if this is not the output module and the remove module button is
+    // pressed, delete this module, return true
+    else if(module_type != OUTPUT
+            && g == graphics_objects["remove module button"])
+    {
+        delete this;
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
 }
 
 /*
@@ -708,7 +741,7 @@ void Module::clicked()
     for(auto it = graphics_objects.begin(); it != graphics_objects.end();
         it ++)
     {
-        if(it->second->was_clicked())
+        if(it->second->mouse_over())
         {
             it->second->clicked();
         }

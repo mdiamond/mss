@@ -43,7 +43,7 @@ public:
     };
 
     // The current phase of the oscillator
-    double current_phase;
+    double phase;
     // A record of the previous phase offset value
     double previous_phase_offset;
     // Booleans to represent whether or not each of the waveforms is enabled
@@ -57,11 +57,10 @@ public:
 
     // Member functions, explained in Module.hpp
     virtual void process();
+    virtual bool handle_event(Graphics_Object *);
     virtual void calculate_unique_graphics_object_locations();
     virtual void initialize_unique_graphics_objects();
     virtual std::string get_unique_text_representation();
-    virtual void button_function(Button *);
-    virtual void toggle_button_function(Toggle_Button *);
 
     // Member functions particular to this module
     //   Produce samples for the various types of waveforms given a phase
@@ -72,7 +71,7 @@ public:
     //   Switch to outputting the given waveform type
     void switch_waveform(WaveformType);
     //   Reset phase
-    void reset_current_phase();
+    void reset_phase();
 };
 
 #endif

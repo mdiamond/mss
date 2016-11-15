@@ -65,19 +65,16 @@ Mixer::~Mixer()
  */
 void Mixer::process()
 {
+    short num_channels = 0;
+
     // Process any dependencies
     process_dependencies();
 
-    short num_channels = 0;
-
     // Reset the output buffer
-    for(int i = 0; i < BUFFER_SIZE; i ++)
-    {
-        out[i] = 0;
-    }
+    std::fill(out.begin(), out.end(), 0);
 
     // For each sample
-    for(int i = 0; i < BUFFER_SIZE; i ++)
+    for(unsigned int i = 0; i < BUFFER_SIZE; i ++)
     {
         // Update parameters
         update_input_vals(i);
@@ -110,6 +107,36 @@ void Mixer::process()
     }
 
     processed = true;
+}
+
+/*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Mixer::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+    // Handle a click of the auto attenuate on/off toggle button
+    else if(g == graphics_objects["auto attenuate on/off toggle button"])
+    {
+        auto_attenuate = !auto_attenuate;
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
 }
 
 /*
@@ -339,27 +366,5 @@ void Mixer::initialize_unique_graphics_objects()
 std::string Mixer::get_unique_text_representation()
 {
     return "";
-}
-
-/*
- * Handle button presses. Mixer button presses are used to remove the module.
- */
-void Mixer::button_function(Button *button)
-{
-    if(button == graphics_objects["remove module button"])
-    {
-        delete this;
-    }
-}
-
-/*
- * Mixer has no toggle buttons. This is a dummy function.
- */
-void Mixer::toggle_button_function(Toggle_Button *toggle_button)
-{
-    if(toggle_button == graphics_objects["auto attenuate on/off toggle button"])
-    {
-        auto_attenuate = !auto_attenuate;
-    }
 }
 

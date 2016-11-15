@@ -43,21 +43,6 @@ Graphics_Object::~Graphics_Object()
 {}
 
 /*
- * Check if this graphics object was clicked. Return true if it was, false if
- * it wasn't.
- */
-bool Graphics_Object::was_clicked()
-{
-    if(MOUSE_X >= location.x && MOUSE_X < location.x + location.w
-       && MOUSE_Y >= location.y && MOUSE_Y < location.y + location.h)
-    {
-        return true;
-    }
-
-    return false;
-}
-
-/*
  * Update the location of this graphics object to the one given.
  */
 void Graphics_Object::update_location(SDL_Rect location_)
@@ -73,5 +58,20 @@ void Graphics_Object::set_color(SDL_Color color_)
 {
     color = color_;
     updated = true;
+}
+
+/*
+ * Check if this graphics object currently has the mouse over it. Return true
+ * if so, false otherwise.
+ */
+bool Graphics_Object::mouse_over()
+{
+    if(MOUSE_X >= location.x && MOUSE_X < location.x + location.w
+       && MOUSE_Y >= location.y && MOUSE_Y < location.y + location.h)
+    {
+        return true;
+    }
+
+    return false;
 }
 

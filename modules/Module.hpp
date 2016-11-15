@@ -110,14 +110,6 @@ public:
     //   a text representation of itself
     //   This function is used to save patches as text files
     virtual std::string get_unique_text_representation() = 0;
-    //   Handle a button press
-    //   Each derived module class must define its own button click handling
-    //   functionality
-    virtual void button_function(Button *) = 0;
-    //   Handle a toggle button press
-    //   Each derived module class must define its own toggle button click
-    //   handling functionality
-    virtual void toggle_button_function(Toggle_Button *) = 0;
     //   Calculate the locations of graphics objects unique to this module type
     //   This function should have a defualt implementation, but should also
     //   be possible to override

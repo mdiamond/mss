@@ -63,7 +63,7 @@ void Sah::process()
     // Process any dependencies
     process_dependencies();
 
-    for(int i = 0; i < BUFFER_SIZE; i ++)
+    for(unsigned int i = 0; i < BUFFER_SIZE; i ++)
     {
         update_input_vals(i);
 
@@ -89,6 +89,35 @@ void Sah::process()
     }
 
     processed = true;
+}
+
+/*
+ * Handle user interactions with graphics objects. First call the module class
+ * version of this function to handle events that might happen to any module.
+ * If nothing happens in the module class version of the function, then handle
+ * events specific to this module type here.
+ */
+bool Sah::handle_event(Graphics_Object *g)
+{
+    // if g is null, return false
+    if(g == nullptr)
+    {
+        return false;
+    }
+    // Handle events that apply to all modules, return true if an event
+    // is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
+    else if(g == graphics_objects["reset sampler button"])
+    {
+        reset_sampler();
+        return true;
+    }
+
+    // If none of the above happen, return false
+    return false;
 }
 
 /*
@@ -201,25 +230,4 @@ std::string Sah::get_unique_text_representation()
 {
     return "";
 }
-
-/*
- * Handle button presses. Sah button presses are used to reset the sampler.
- */
-void Sah::button_function(Button *button)
-{
-    if(button == graphics_objects["remove module button"])
-    {
-        delete this;
-    }
-    else if(button == graphics_objects["reset sampler button"])
-    {
-        reset_sampler();
-    }
-}
-
-/*
- * Sah has no toggle buttons. This is a dummy function.
- */
-void Sah::toggle_button_function(Toggle_Button *toggle_button)
-{}
 

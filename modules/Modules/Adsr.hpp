@@ -54,11 +54,10 @@ public:
 
     // Member functions, explained in Module.hpp
     virtual void process();
+    virtual bool handle_event(Graphics_Object *);
     virtual void calculate_unique_graphics_object_locations();
     virtual void initialize_unique_graphics_objects();
     virtual std::string get_unique_text_representation();
-    virtual void button_function(Button *);
-    virtual void toggle_button_function(Toggle_Button *);
 
     // Member functions particular to this module
     //   Reset amplitude
