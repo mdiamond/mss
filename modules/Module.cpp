@@ -31,9 +31,6 @@
 #include "Modules/Output.hpp"
 #include "Modules/Sah.hpp"
 
-// Included graphics classes
-#include "Graphics_Object.hpp"
-
 /*******************************
  * MODULE NAME PER MODULE TYPE *
  *******************************/
@@ -55,8 +52,8 @@ const std::map<Module::ModuleType, std::string> Module::module_names =
  * MODULE PARAMETER NAMES PER MODULE TYPE *
  ******************************************/
 
-const std::map<Module::ModuleType, std::vector<std::string> > Module::parameter_names
-=
+const std::map<Module::ModuleType,
+               std::vector<std::string> > Module::parameter_names =
 {
     {
         ADSR,
@@ -235,6 +232,98 @@ Module::~Module()
 }
 
 /*
+ * Get the contents of the text box that the user interacted with (either a
+ * float or a string of text), and attempt to set the input value to the float
+ * or set the input to receive values from the module name that may have been
+ * entered.
+ */
+void Module::handle_text_box_event(Text_Box *text_box)
+{
+    int input_num = text_box_to_input_num[text_box];
+
+    if(text_box->is_float)
+    {
+        set(input_num, text_box->as_float);
+    }
+    else
+    {
+        Module *src = find_module(&text_box->text.text);
+        // If the module is not found, inform the user, take no action
+        if(src == nullptr)
+        {
+            std::cout << RED_STDOUT << "Input could not be set, no such module"
+                      << DEFAULT_STDOUT << std::endl;
+        }
+        // If the user is attempting to receive input from the output module,
+        // inform the user that it is not possible, take no action
+        else if(src == MODULES[0])
+        {
+            std::cout << RED_STDOUT
+                      << "The output module does not output any signals "
+                      "accessible within the context of this software"
+                      << DEFAULT_STDOUT << std::endl;
+        }
+        // If the user is attempting to have a module output to itself, inform
+        // the user that it is not possible, take no action
+        else if(src == this)
+        {
+            std::cout << RED_STDOUT << "No module may output to itself"
+                      << DEFAULT_STDOUT << std::endl;
+        }
+        // Otherwise, a module has been found, and it should be able to input
+        // to this module properly, so set the input associated with input_num
+        // to receive input from the module, update the associated toggle
+        // button, and update the text box text to show the short module name
+        else
+        {
+            Toggle_Button *toggle_button = inputs[input_num].toggle_button;
+
+            set(input_num, src);
+            if(toggle_button != nullptr)
+            {
+                toggle_button->b = true;
+            }
+            text_box->update_current_text(
+                text_box->text.text.substr(0, 3) + " "
+                + text_box->text.text.substr(text_box->text.text.find(" ") + 1));
+        }
+    }
+}
+
+/*
+ * If the toggle button that the user interacted with is associated with a
+ * currently live input, cancel input. Otherwise, enable module selection mode.
+ */
+void Module::handle_toggle_button_event(Toggle_Button *toggle_button)
+{
+    // Determine the input number and text box associated with this toggle
+    // button
+    int input_num = toggle_button_to_input_num[toggle_button];
+    Text_Box *text_box = inputs[input_num].text_box;
+
+    // Input is live, cancel input, reset associated text box and toggle button
+    if(inputs[input_num].live)
+    {
+        cancel_input(input_num);
+        text_box->update_current_text(text_box->prompt_text.text);
+        if(!(text_box->prompt_text.text == "input"))
+        {
+            std::string input_val_str = std::to_string(inputs[input_num].val);
+            text_box->update_current_text(input_val_str);
+        }
+        toggle_button->b = false;
+    }
+    // Input is not live, enable module selection mode, keep track of which
+    // toggle button was clicked, and the module it is associated with
+    else
+    {
+        SELECTING_SRC = !SELECTING_SRC;
+        CURRENT_TOGGLE_BUTTON = toggle_button;
+        SELECTING_FOR_MODULE = this;
+    }
+}
+
+/*
  * This function allows the module to do something in response to user
  * interaction with a contained graphics object. Any class that inherits from
  * the module class may implement its own version, but generally, even if this
@@ -244,29 +333,26 @@ Module::~Module()
  */
 bool Module::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // if g is the background rect and select source mode is not active,
+    // If g is the background rect and select source mode is not active,
     // take no action, return false
     else if(g == graphics_objects["background rect"]
             && !SELECTING_SRC)
     {
         return false;
     }
-    // if this is not the output module, select source mode is active, and the
-    // background rect is clicked, set this module as the source for an input
-    // to another module, return true
-    else if(module_type != OUTPUT
-            && SELECTING_SRC
-            && g == graphics_objects["background rect"])
+    // If the background rect is clicked and select source mode is active,
+    // attempt to set this module as the source for an input to another module,
+    // return true if successful, false otherwise
+    else if(g == graphics_objects["background rect"])
     {
-        module_selected();
-        return true;
+        return module_selected();
     }
-    // if this is not the output module and the remove module button is
+    // If this is not the output module and the remove module button is
     // pressed, delete this module, return true
     else if(module_type != OUTPUT
             && g == graphics_objects["remove module button"])
@@ -274,8 +360,23 @@ bool Module::handle_event(Graphics_Object *g)
         delete this;
         return true;
     }
+    // If a text box is interacted with, and we aren't in select source mode,
+    // go get its contents and figure out what to do with them
+    else if(g->graphics_object_type == TEXT_BOX && !SELECTING_SRC)
+    {
+        handle_text_box_event((Text_Box *) g);
+        return true;
+    }
+    // If a toggle button is interacted with, and we aren't in select source
+    // mode, either enable select source mode or cancel input, depending on the
+    // current state of the input
+    else if(g->graphics_object_type == TOGGLE_BUTTON && !SELECTING_SRC)
+    {
+        handle_toggle_button_event((Toggle_Button *) g);
+        return true;
+    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -327,6 +428,7 @@ void Module::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
+    // Initialize text, text box, and toggle button for this parameter input
     for(unsigned int i = 0; i < parameter_names.at(module_type).size(); i ++)
     {
         parameter_name = parameter_names.at(module_type).at(i);
@@ -335,24 +437,26 @@ void Module::initialize_unique_graphics_objects()
             graphics_object_locations[parameter_name + " text"],
             secondary_module_color, parameter_name + ":");
 
-        Input_Text_Box *input_text_box = new Input_Text_Box(
+        Text_Box *text_box = new Text_Box(
             name + " " + parameter_name + " text box",
             graphics_object_locations[parameter_name + " text box"],
-            secondary_module_color, primary_module_color, "# or input", this,
-            i, NULL);
+            secondary_module_color, primary_module_color, "# or input", this);
 
-        Input_Toggle_Button *input_toggle_button = new Input_Toggle_Button(
+        Toggle_Button *toggle_button = new Toggle_Button(
             name + " " + parameter_name + " toggle button",
             graphics_object_locations[parameter_name + " toggle button"],
-            secondary_module_color, primary_module_color, this, i,
-            input_text_box);
-
-        input_text_box->input_toggle_button = input_toggle_button;
+            secondary_module_color, primary_module_color,
+            primary_module_color, secondary_module_color, "I", "I", false,
+            this);
 
         graphics_objects[parameter_name + " text"] = text;
-        graphics_objects[parameter_name + " text box"] = input_text_box;
-        graphics_objects[parameter_name + " toggle button"] =
-            input_toggle_button;
+        graphics_objects[parameter_name + " text box"] = text_box;
+        graphics_objects[parameter_name + " toggle button"] = toggle_button;
+
+        text_box_to_input_num[text_box] = i;
+        toggle_button_to_input_num[toggle_button] = i;
+        inputs[i].text_box = text_box;
+        inputs[i].toggle_button = toggle_button;
     }
 }
 
@@ -478,7 +582,7 @@ void Module::update_graphics_object_locations()
  * Set the parameter specified by input num to the value
  * specified by val.
  */
-void Module::set(float val, int input_num)
+void Module::set(int input_num, float val)
 {
     // Set the input and dependency to NULL,
     // the float to val, and the live boolean to false
@@ -489,13 +593,9 @@ void Module::set(float val, int input_num)
 
     // Reset the input toggle button associated with this text box, if
     // applicable (some inputs do not allow live value updating)
-    Input_Text_Box *input_text_box =
-        ((Input_Text_Box *) graphics_objects[parameter_names.at(module_type).at(input_num) + " text box"]);
-    if(input_text_box->input_toggle_button != NULL)
+    if(inputs[input_num].toggle_button != nullptr)
     {
-        Input_Toggle_Button *input_toggle_button =
-            ((Input_Toggle_Button *) graphics_objects[parameter_names.at(module_type).at(input_num) + " toggle button"]);
-        input_toggle_button->b = false;
+        inputs[input_num].toggle_button->b = false;
     }
 
     adopt_input_colors();
@@ -508,15 +608,13 @@ void Module::set(float val, int input_num)
  * Set the parameter specified to be updated by the output of
  * the module specified.
  */
-void Module::set(Module *src, int input_num)
+void Module::set(int input_num, Module *src)
 {
     // Set the input to the output of src, the dependency to src,
-    // the live boolean to true, and the SELECTING_SRC program state variable
-    // to false
+    // the live boolean to true
     inputs[input_num].in = &src->out;
     inputs[input_num].live = true;
     inputs[input_num].from = src;
-    SELECTING_SRC = false;
 
     // If this is the output module, update the waveforms to display
     // the proper audio buffers
@@ -551,25 +649,28 @@ void Module::set(Module *src, int input_num)
  */
 void Module::cancel_input(int input_num)
 {
+    Text_Box *text_box =
+        ((Text_Box *) graphics_objects[parameter_names.at(module_type).at(input_num) + " text box"]);
+    Toggle_Button *toggle_button =
+        ((Toggle_Button *) graphics_objects[parameter_names.at(module_type).at(input_num) + " toggle button"]);
+
     // Set the input and dependency to NULL,
     // and the live boolean to false
-    inputs[input_num].in = NULL;
+    inputs[input_num].in = nullptr;
     inputs[input_num].live = false;
-    inputs[input_num].from = NULL;
+    inputs[input_num].from = nullptr;
 
     // Reset the input text box and input toggle button associated with this
     // input
-    Input_Text_Box *input_text_box =
-        ((Input_Text_Box *) graphics_objects[parameter_names.at(module_type).at(input_num) + " text box"]);
-    if(input_text_box->prompt_text.text == "input")
+    if(text_box->prompt_text.text == "input")
     {
-        input_text_box->update_current_text("");
+        text_box->update_current_text("");
     }
     else
     {
-        input_text_box->update_current_text(std::to_string(inputs[input_num].val));
+        text_box->update_current_text(std::to_string(inputs[input_num].val));
     }
-    input_text_box->input_toggle_button->b = false;
+    toggle_button->b = false;
 
     // If this is the output module, update the waveforms to display
     // an empty audio buffer
@@ -584,7 +685,7 @@ void Module::cancel_input(int input_num)
         {
             waveform = (Waveform *) graphics_objects["waveform right"];
         }
-        waveform->buffer = NULL;
+        waveform->buffer = nullptr;
     }
 
     adopt_input_colors();
@@ -653,16 +754,18 @@ void Module::adopt_input_colors()
     for(auto it = graphics_objects.begin(); it != graphics_objects.end();
         it ++)
     {
-        if(it->second->graphics_object_type == INPUT_TEXT_BOX)
+        if(it->second->graphics_object_type == TEXT_BOX)
         {
-            dependency_num = ((Input_Text_Box *) it->second)->input_num;
+            dependency_num = text_box_to_input_num[((Text_Box *) it->second)];
             if(inputs[dependency_num].live)
-                ((Input_Text_Box *) it->second)->set_colors(
+            {
+                ((Text_Box *) it->second)->set_colors(
                     inputs[dependency_num].from->primary_module_color,
                     inputs[dependency_num].from->secondary_module_color);
+            }
             else
             {
-                ((Input_Text_Box *) it->second)->set_colors(
+                ((Text_Box *) it->second)->set_colors(
                     secondary_module_color, primary_module_color);
             }
         }
@@ -681,29 +784,38 @@ void Module::adopt_input_colors()
  *    with the input it is now the source for
  *  - set the current input toggle button back to none
  * However, if the type of this module is the output module, don't do anything!
- * The output module cannot be the source for any inputs.
+ * The output module cannot be the source for any inputs. Return true if action
+ * was taken, false otherwise.
  */
-void Module::module_selected()
+bool Module::module_selected()
 {
     if(module_type == OUTPUT)
     {
         std::cout << RED_STDOUT
                   << "The output module cannot be the source for any inputs"
                   << DEFAULT_STDOUT << std::endl;
+        return false;
+    }
+    else if(SELECTING_FOR_MODULE == this)
+    {
+        std::cout << RED_STDOUT << "No module may output to itself"
+                  << DEFAULT_STDOUT << std::endl;
+        return false;
     }
     else
     {
-        CURRENT_INPUT_TOGGLE_BUTTON->parent->set(this,
-                                                 CURRENT_INPUT_TOGGLE_BUTTON->input_num);
-        CURRENT_INPUT_TOGGLE_BUTTON->b = true;
+        int input_num = SELECTING_FOR_MODULE->toggle_button_to_input_num[CURRENT_TOGGLE_BUTTON];
+
+        SELECTING_FOR_MODULE->set(input_num, this);
+        CURRENT_TOGGLE_BUTTON->b = true;
         SELECTING_SRC = false;
-        CURRENT_INPUT_TOGGLE_BUTTON->input_text_box->update_current_text(
+        SELECTING_FOR_MODULE->inputs[input_num].text_box->update_current_text(
             get_short_name());
         // If it's the output module, set the waveform's buffer
-        if(CURRENT_INPUT_TOGGLE_BUTTON->parent->module_type == OUTPUT)
+        if(SELECTING_FOR_MODULE->module_type == OUTPUT)
         {
             // If it's the left input, update the left waveform
-            if(CURRENT_INPUT_TOGGLE_BUTTON
+            if(CURRENT_TOGGLE_BUTTON
                == MODULES[0]->graphics_objects["input left toggle button"])
             {
                 ((Waveform *)
@@ -711,7 +823,7 @@ void Module::module_selected()
                      &this->out;
             }
             // Else, update the right waveform
-            else if(CURRENT_INPUT_TOGGLE_BUTTON
+            else if(CURRENT_TOGGLE_BUTTON
                     == MODULES[0]->graphics_objects["input right toggle button"])
             {
                 ((Waveform *)
@@ -719,7 +831,9 @@ void Module::module_selected()
                      &this->out;
             }
         }
-        CURRENT_INPUT_TOGGLE_BUTTON = NULL;
+        CURRENT_TOGGLE_BUTTON = nullptr;
+        SELECTING_FOR_MODULE = nullptr;
+        return true;
     }
 }
 
@@ -736,15 +850,24 @@ void Module::render()
     }
 }
 
-void Module::clicked()
+bool Module::clicked()
 {
     for(auto it = graphics_objects.begin(); it != graphics_objects.end();
         it ++)
     {
         if(it->second->mouse_over())
         {
-            it->second->clicked();
+            // Only respond to a click if it's not selecting source mode, or if
+            // a background rectangle is being clicked
+            if(!SELECTING_SRC || it->second->graphics_object_type == RECT)
+            {
+                if(it->second->clicked())
+                {
+                    return true;
+                }
+            }
         }
     }
+    return false;
 }
 

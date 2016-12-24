@@ -272,40 +272,40 @@ void initialize_utilities_page()
     // Create the button objects and add them to the map of graphics objects
     graphics_objects["add adsr button"] =
         new Button("add adsr button", locations["add adsr button"], WHITE,
-                   BLACK, "ADD ADSR", NULL);
+                   BLACK, "ADD ADSR", NO_MODULE_LISTENER);
     graphics_objects["add delay button"] =
         new Button("add delay button", locations["add delay button"], WHITE,
-                   BLACK, "ADD DELAY", NULL);
+                   BLACK, "ADD DELAY", NO_MODULE_LISTENER);
     graphics_objects["add filter button"] =
         new Button("add filter button", locations["add filter button"], WHITE,
-                   BLACK, "ADD FILTER", NULL);
+                   BLACK, "ADD FILTER", NO_MODULE_LISTENER);
     graphics_objects["add mixer button"] =
         new Button("add mixer button", locations["add mixer button"], WHITE,
-                   BLACK, "ADD MIXER", NULL);
+                   BLACK, "ADD MIXER", NO_MODULE_LISTENER);
     graphics_objects["add multiplier button"] =
         new Button("add multiplier button", locations["add multiplier button"],
-                   WHITE, BLACK, "ADD MULTIPLIER", NULL);
+                   WHITE, BLACK, "ADD MULTIPLIER", NO_MODULE_LISTENER);
     graphics_objects["add noise button"] =
         new Button("add noise button", locations["add noise button"], WHITE,
-                   BLACK, "ADD NOISE", NULL);
+                   BLACK, "ADD NOISE", NO_MODULE_LISTENER);
     graphics_objects["add oscillator button"] =
         new Button("add oscillator button", locations["add oscillator button"],
-                   WHITE, BLACK, "ADD OSCILLATOR", NULL);
+                   WHITE, BLACK, "ADD OSCILLATOR", NO_MODULE_LISTENER);
     graphics_objects["add sah button"] =
         new Button("add sah button", locations["add sah button"], WHITE, BLACK,
-                   "ADD SAH", NULL);
+                   "ADD SAH", NO_MODULE_LISTENER);
     graphics_objects["previous page button"] =
         new Button("previous page button", locations["previous page button"],
-                   WHITE, BLACK, "PREVIOUS PAGE", NULL);
+                   WHITE, BLACK, "PREVIOUS PAGE", NO_MODULE_LISTENER);
     graphics_objects["next page button"] =
         new Button("next page button", locations["next page button"], WHITE,
-                   BLACK, "NEXT PAGE", NULL);
+                   BLACK, "NEXT PAGE", NO_MODULE_LISTENER);
     graphics_objects["save patch button"] =
         new Button("save patch button", locations["save patch button"], WHITE,
-                   BLACK, "SAVE PATCH", NULL);
+                   BLACK, "SAVE PATCH", NO_MODULE_LISTENER);
     graphics_objects["load patch button"] =
         new Button("load patch button", locations["load patch button"], WHITE,
-                   BLACK, "LOAD PATCH", NULL);
+                   BLACK, "LOAD PATCH", NO_MODULE_LISTENER);
 
     graphics_objects_vector.push_back(graphics_objects["background rect"]);
     for(auto itr = graphics_objects.begin(); itr != graphics_objects.end();

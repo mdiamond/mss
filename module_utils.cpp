@@ -90,53 +90,23 @@ void create_module(int type)
 
 /*
  * Given the name of a module, return a pointer to it if
- * it exists, or NULL if it doesn't.
+ * it exists, or nullptr if it doesn't.
  */
-Module *find_module(std::string *name, std::vector<Module *> *modules)
+Module *find_module(std::string *name)
 {
-    for(unsigned int i = 0; i < modules->size(); i ++)
+    for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
-        if(MODULES[i] != NULL)
-            if(modules->at(i)->get_name() == *name
-               || modules->at(i)->get_short_name() == *name)
+        if(MODULES[i] != nullptr)
+        {
+            if(MODULES[i]->get_name() == *name
+               || MODULES[i]->get_short_name() == *name)
             {
-                return modules->at(i);
+                return MODULES[i];
             }
+        }
     }
 
-    return NULL;
-}
-
-/*
- * Given the name of a module, return a pointer to it if it exists,
- * is not the same module as the destination module, and is not the
- * output module. Otherwise, return NULL and print an error message.
- */
-Module *find_module_as_source(std::string *name, std::vector<Module *> *modules,
-                              Module *dst)
-{
-    Module *src = find_module(name, &MODULES);
-    if(src == NULL)
-    {
-        std::cout << RED_STDOUT << "Input could not be set, no such module"
-                  << DEFAULT_STDOUT << std::endl;
-    }
-    else if(src == MODULES[0])
-    {
-        std::cout << RED_STDOUT
-                  << "The output module does not output any signals "
-                  "accessible within the context of this software"
-                  << DEFAULT_STDOUT << std::endl;
-        return NULL;
-    }
-    else if(src == dst)
-    {
-        std::cout << RED_STDOUT << "No module may output to itself"
-                  << DEFAULT_STDOUT << std::endl;
-        return NULL;
-    }
-
-    return src;
+    return nullptr;
 }
 
 /*

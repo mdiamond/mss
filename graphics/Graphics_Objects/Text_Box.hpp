@@ -4,8 +4,8 @@
  * to type into it. The data entered can be used to change parameters.
  */
 
-#ifndef MSS_TEXT_BOX_HPP
-#define MSS_TEXT_BOX_HPP
+#ifndef GRAPHICS_TEXT_BOX_HPP
+#define GRAPHICS_TEXT_BOX_HPP
 
 /************
  * INCLUDES *
@@ -25,11 +25,14 @@
 class Text_Box: public Graphics_Object
 {
 public:
-    // The text color, whether or not this text box
-    // is active, the font, the background rectangle,
-    // the text, the prompt text, and the typing text
+    // The text color, whether or not this text box is active, whether or not
+    // the most recently entered text could be converted to a float, and the
+    // float if so, the font, the background rectangle, the text, the prompt
+    // text, and the typing text
     SDL_Color text_color;
     bool active;
+    bool is_float;
+    float as_float;
     TTF_Font *font;
     Rect background;
     Text text;
@@ -38,12 +41,12 @@ public:
 
     // Constructor and destructor
     Text_Box(std::string, SDL_Rect, SDL_Color, SDL_Color,
-             std::string, TTF_Font *, Module *);
+             std::string, Graphics_Listener *);
     virtual ~Text_Box();
 
-    // Member functions
+    // Public member functions
     virtual void render();
-    virtual void clicked();
+    virtual bool clicked();
     virtual void update_location(SDL_Rect);
     //   Add character to the typing buffer
     void add_characters(char *);
@@ -57,6 +60,11 @@ public:
     void cancel_input();
     //   Set the colors of the text box
     void set_colors(SDL_Color, SDL_Color);
+
+private:
+    // Private member functions
+    //   Check if the string entered is a float, store it
+    void store_float();
 };
 
 #endif

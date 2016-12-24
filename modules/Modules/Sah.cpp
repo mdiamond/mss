@@ -28,13 +28,6 @@
 #include "Module.hpp"
 #include "Modules/Sah.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /*******************************
  * SAH MEMBER FUNCTIONS *
  *******************************/
@@ -99,24 +92,25 @@ void Sah::process()
  */
 bool Sah::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
-    else if(Module::handle_event(g))
-    {
-        return true;
-    }
+    // Handle reset sampler button
     else if(g == graphics_objects["reset sampler button"])
     {
         reset_sampler();
         return true;
     }
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -181,41 +175,42 @@ void Sah::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["signal text box"] =
-        new Input_Text_Box(name + " signal text box",
-                           graphics_object_locations["signal text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, SAH_SIGNAL, NULL);
+        new Text_Box(name + " signal text box",
+                     graphics_object_locations["signal text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["hold time text box"] =
-        new Input_Text_Box(name + " hold time text box",
-                           graphics_object_locations["hold time text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, SAH_HOLD_TIME, NULL);
+        new Text_Box(name + " hold time text box",
+                     graphics_object_locations["hold time text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["signal toggle button"] =
-        new Input_Toggle_Button(name + " signal toggle button",
-                                graphics_object_locations["signal toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, SAH_SIGNAL,
-                                (Input_Text_Box *) graphics_objects["signal text box"]);
+        new Toggle_Button(name + " signal toggle button",
+                          graphics_object_locations["signal toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["hold time toggle button"] =
-        new Input_Toggle_Button(name + " hold time toggle button",
-                                graphics_object_locations["hold time toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, SAH_HOLD_TIME,
-                                (Input_Text_Box *) graphics_objects["hold time text box"]);
+        new Toggle_Button(name + " hold time toggle button",
+                          graphics_object_locations["hold time toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["signal text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["hold time text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["hold time toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal text box"]] = SAH_SIGNAL;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal toggle button"]] = SAH_SIGNAL;
+    inputs[SAH_SIGNAL].text_box = (Text_Box *) graphics_objects["signal text box"];
+    inputs[SAH_SIGNAL].toggle_button = (Toggle_Button *) graphics_objects["signal toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["hold time text box"]] = SAH_HOLD_TIME;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["hold time toggle button"]] = SAH_HOLD_TIME;
+    inputs[SAH_HOLD_TIME].text_box = (Text_Box *) graphics_objects["hold time text box"];
+    inputs[SAH_HOLD_TIME].toggle_button = (Toggle_Button *) graphics_objects["hold time toggle button"];
 }
 
 /*

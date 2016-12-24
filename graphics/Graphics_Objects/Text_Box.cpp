@@ -9,6 +9,7 @@
 
 // Included libraries
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -16,12 +17,11 @@
 #include "SDL.h"
 
 // Included files
-#include "main.hpp"
 #include "function_forwarder.hpp"
+#include "main.hpp"
 
 // Included graphics classes
 #include "Graphics_Object.hpp"
-#include "Graphics_Objects/Input_Text_Box.hpp"
 #include "Graphics_Objects/Rect.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
 
@@ -34,10 +34,10 @@
  */
 Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color color_,
                    SDL_Color text_color_, std::string prompt_text_,
-                   TTF_Font *font_, Module *parent_) :
-    Graphics_Object(name_, TEXT_BOX, parent_, location_, color_),
+                   Graphics_Listener *listener_) :
+    Graphics_Object(name_, TEXT_BOX, listener_, location_, color_),
     text_color(text_color_),
-    active(false), font(font_),
+    active(false), font(FONT),
     background(Rect(name_ + " background rect", location_, color_,
                     NULL)),
     text(Text(name_ + " idle text", location_, text_color_, "")),
@@ -106,7 +106,7 @@ void Text_Box::render()
     }
 
     // If the text box is active and the cursor is currently supposed to be
-    // drawn draw the typing cursor
+    // drawn, draw the typing cursor
     if(active && CURSOR_ON)
     {
         SDL_SetRenderDrawColor(RENDERER, text_color.r, text_color.g,
@@ -140,6 +140,7 @@ void Text_Box::update_location(SDL_Rect location_)
 void Text_Box::update_current_text(std::string text_)
 {
     text.update_text(text_);
+    updated = true;
 }
 
 /*
@@ -165,36 +166,33 @@ void Text_Box::delete_character()
 }
 
 /*
- * Handle clicks. Make this text box active,
- * set the global active text box pointer,
- * set the SDL text input rect, and finally,
- * start SDL text input so that SDL_KEYDOWN and
- * SDL_KEYUP events will instead be reported
- * as SDL_TEXTINPUT until it is stopped.
+ * Handle clicks. Make this text box active, set the global active text box
+ * pointer, set the SDL text input rect, and finally, start SDL text input so
+ * that SDL_KEYDOWN and SDL_KEYUP events will instead be reported as
+ * SDL_TEXTINPUT until it is stopped. Return true if action is taken, false
+ * otherwise.
  */
-void Text_Box::clicked()
+bool Text_Box::clicked()
 {
-    if(!OBJECT_CLICKED)
-    {
-        std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
-                  << std::endl;
+    std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
+              << std::endl;
 
-        if(!active)
-        {
-            active = true;
-            ACTIVE_TEXT_BOX = this;
-            SDL_SetTextInputRect(&typing_text.location);
-            SDL_StartTextInput();
-        }
-        OBJECT_CLICKED = true;
+    if(!active)
+    {
+        active = true;
+        ACTIVE_TEXT_BOX = this;
+        SDL_SetTextInputRect(&typing_text.location);
+        SDL_StartTextInput();
+        return true;
     }
+    return false;
 }
 
 /*
- * Stop SDL text input, send this graphics object to the function forwarder,
- * set the current text to be what is in the typing buffer, then set this text
- * box as updated. After that, deactivate this text box and clear the typing
- * buffer.
+ * Stop SDL text input, update the current text to be what was entered, update
+ * the typing text to be an empty string again, store a float version of the
+ * entered text if possible, set this text box to be inactive, then invoke
+ * the handle_event function of the listener.
  */
 void Text_Box::entered()
 {
@@ -202,12 +200,16 @@ void Text_Box::entered()
               << std::endl;
 
     SDL_StopTextInput();
-    text.text = typing_text.text;
-    function_forwarder(this);
-    text.updated = true;
-    ACTIVE_TEXT_BOX = NULL;
+    text.update_text(typing_text.text);
+    typing_text.update_text("");
+    store_float();
+    ACTIVE_TEXT_BOX = nullptr;
     active = false;
-    typing_text.text = "";
+
+    if(listener != nullptr)
+    {
+        listener->handle_event(this);
+    }
 }
 
 /*
@@ -220,7 +222,7 @@ void Text_Box::cancel_input()
 
     SDL_StopTextInput();
     text.updated = true;
-    ACTIVE_TEXT_BOX = NULL;
+    ACTIVE_TEXT_BOX = nullptr;
     active = false;
 }
 
@@ -235,5 +237,21 @@ void Text_Box::set_colors(SDL_Color color_, SDL_Color text_color_)
     prompt_text.set_color(text_color_);
     typing_text.set_color(text_color_);
     updated = true;
+}
+
+/*
+ * Check if the string entered is a float. Update bool is_float accordingly,
+ * then store the float if applicable. Solution for converting a string to a
+ * float adapted from here:
+ * https://stackoverflow.com/questions/447206/c-isfloat-function
+ */
+void Text_Box::store_float()
+{
+    std::istringstream stream(text.text);
+    stream >> std::noskipws >> as_float;
+    if(stream.eof() && !stream.fail())
+    {
+        is_float = true;
+    }
 }
 

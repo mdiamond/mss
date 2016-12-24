@@ -19,7 +19,6 @@
  *************************/
 
 // Image processing functions
-Module *hovering_over();
 void draw_surface();
 
 #endif

@@ -30,14 +30,6 @@
 #include "Module.hpp"
 #include "Modules/Filter.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /***************************
  * FILTER MEMBER FUNCTIONS *
  ***************************/
@@ -143,37 +135,37 @@ void Filter::process()
  */
 bool Filter::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
-    else if(Module::handle_event(g))
-    {
-        return true;
-    }
-    // Handle a click of the lowpass toggle button
+    // Handle lowpass toggle button
     else if(g == graphics_objects["lowpass toggle button"])
     {
         switch_filter(LOWPASS);
         return true;
     }
-    // Handle a click of the bandpass toggle button
+    // Handle bandpass toggle button
     else if(g == graphics_objects["bandpass toggle button"])
     {
         switch_filter(BANDPASS);
         return true;
     }
-    // Handle a click of the highpass toggle button
+    // Handle highpass toggle button
     else if(g == graphics_objects["highpass toggle button"])
     {
         switch_filter(HIGHPASS);
         return true;
     }
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -247,54 +239,57 @@ void Filter::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["signal text box"] =
-        new Input_Text_Box(name + " signal text box",
-                           graphics_object_locations["signal text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, FILTER_SIGNAL, NULL);
+        new Text_Box(name + " signal text box",
+                     graphics_object_locations["signal text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["frequency cutoff text box"] =
-        new Input_Text_Box(name + " frequency cutoff text box",
-                           graphics_object_locations["frequency cutoff text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, FILTER_FREQUENCY_CUTOFF, NULL);
+        new Text_Box(name + " frequency cutoff text box",
+                     graphics_object_locations["frequency cutoff text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["q text box"] =
-        new Input_Text_Box(name + " q text box",
-                           graphics_object_locations["q text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, FILTER_Q, NULL);
+        new Text_Box(name + " q text box",
+                     graphics_object_locations["q text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["signal toggle button"] =
-        new Input_Toggle_Button(name + " signal toggle button",
-                                graphics_object_locations["signal toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, FILTER_SIGNAL,
-                                (Input_Text_Box *) graphics_objects["signal text box"]);
+        new Toggle_Button(name + " signal toggle button",
+                          graphics_object_locations["signal toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["frequency cutoff toggle button"] =
-        new Input_Toggle_Button(name + " frequency cutoff toggle button",
-                                graphics_object_locations["frequency cutoff toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, FILTER_FREQUENCY_CUTOFF,
-                                (Input_Text_Box *) graphics_objects["frequency cutoff text box"]);
+        new Toggle_Button(name + " frequency cutoff toggle button",
+                          graphics_object_locations["frequency cutoff toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["q toggle button"] =
-        new Input_Toggle_Button(name + " q toggle button",
-                                graphics_object_locations["q toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, FILTER_Q,
-                                (Input_Text_Box *) graphics_objects["q text box"]);
+        new Toggle_Button(name + " q toggle button",
+                          graphics_object_locations["q toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["signal text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["signal toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["frequency cutoff text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["frequency cutoff toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["q text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["q toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal text box"]] = FILTER_SIGNAL;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal toggle button"]] = FILTER_SIGNAL;
+    inputs[FILTER_SIGNAL].text_box = (Text_Box *) graphics_objects["signal text box"];
+    inputs[FILTER_SIGNAL].toggle_button = (Toggle_Button *) graphics_objects["signal toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["frequency cutoff text box"]] = FILTER_FREQUENCY_CUTOFF;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["frequency cutoff toggle button"]] = FILTER_FREQUENCY_CUTOFF;
+    inputs[FILTER_FREQUENCY_CUTOFF].text_box = (Text_Box *) graphics_objects["frequency cutoff text box"];
+    inputs[FILTER_FREQUENCY_CUTOFF].toggle_button = (Toggle_Button *) graphics_objects["frequency cutoff toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["q text box"]] = FILTER_Q;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["q toggle button"]] = FILTER_Q;
+    inputs[FILTER_Q].text_box = (Text_Box *) graphics_objects["q text box"];
+    inputs[FILTER_Q].toggle_button = (Toggle_Button *) graphics_objects["q toggle button"];
 
     // Initialize filter type toggle buttons
     graphics_objects["lowpass toggle button"] =
@@ -302,23 +297,23 @@ void Filter::initialize_unique_graphics_objects()
                           graphics_object_locations["lowpass toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "LP", "LP", lowpass_on, this);
+                          "LP", "LP", lowpass_on, (Graphics_Listener *) this);
     graphics_objects["bandpass toggle button"] =
         new Toggle_Button(name + " bandpass toggle button",
                           graphics_object_locations["bandpass toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "BP", "BP", bandpass_on, this);
+                          "BP", "BP", bandpass_on, (Graphics_Listener *) this);
     graphics_objects["highpass toggle button"] =
         new Toggle_Button(name + " highpass toggle button",
                           graphics_object_locations["highpass toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "HP", "HP", highpass_on, this);
+                          "HP", "HP", highpass_on, (Graphics_Listener *) this);
 }
 
 /*
- * Switch to outputting the given waveform type.
+ * Switch to processing input with the given filter type.
  */
 void Filter::switch_filter(FilterType filter_type_)
 {

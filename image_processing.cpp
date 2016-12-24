@@ -38,10 +38,12 @@
 void update_graphics_objects()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
         if(MODULES[i] != NULL)
         {
             MODULES[i]->update_graphics_object_locations();
         }
+    }
 
     MODULES_CHANGED = false;
 }

@@ -28,14 +28,6 @@
 #include "Module.hpp"
 #include "Modules/Oscillator.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /*******************************
  * OSCILLATOR MEMBER FUNCTIONS *
  *******************************/
@@ -203,45 +195,49 @@ void Oscillator::process()
  */
 bool Oscillator::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
-    else if(Module::handle_event(g))
-    {
-        return true;
-    }
-    // Handle the reset buffer button
+    // Handle reset phase button
     else if(g == graphics_objects["reset phase button"])
     {
         reset_phase();
         return true;
     }
+    // Handle sin toggle button
     else if(g == graphics_objects["sin toggle button"])
     {
         switch_waveform(SIN);
         return true;
     }
+    // Handle tri toggle button
     else if(g == graphics_objects["tri toggle button"])
     {
         switch_waveform(TRI);
         return true;
     }
+    // Handle saw toggle button
     else if(g == graphics_objects["saw toggle button"])
     {
         switch_waveform(SAW);
         return true;
     }
+    // Handle sqr toggle button
     else if(g == graphics_objects["sqr toggle button"])
     {
         switch_waveform(SQR);
         return true;
     }
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -342,86 +338,87 @@ void Oscillator::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["frequency text box"] =
-        new Input_Text_Box(name + " frequency text box",
-                           graphics_object_locations["frequency text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, OSCILLATOR_FREQUENCY, NULL);
+        new Text_Box(name + " frequency text box",
+                     graphics_object_locations["frequency text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["phase offset text box"] =
-        new Input_Text_Box(name + " phase offset text box",
-                           graphics_object_locations["phase offset text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, OSCILLATOR_PHASE_OFFSET, NULL);
+        new Text_Box(name + " phase offset text box",
+                     graphics_object_locations["phase offset text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["pulse width text box"] =
-        new Input_Text_Box(name + " pulse width text box",
-                           graphics_object_locations["pulse width text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, OSCILLATOR_PULSE_WIDTH, NULL);
+        new Text_Box(name + " pulse width text box",
+                     graphics_object_locations["pulse width text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["range low text box"] =
-        new Input_Text_Box(name + " range low text box",
-                           graphics_object_locations["range low text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, OSCILLATOR_RANGE_LOW, NULL);
+        new Text_Box(name + " range low text box",
+                     graphics_object_locations["range low text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["range high text box"] =
-        new Input_Text_Box(name + " range high text box",
-                           graphics_object_locations["range high text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, OSCILLATOR_RANGE_HIGH, NULL);
+        new Text_Box(name + " range high text box",
+                     graphics_object_locations["range high text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["frequency toggle button"] =
-        new Input_Toggle_Button(name + " frequency toggle button",
-                                graphics_object_locations["frequency toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, OSCILLATOR_FREQUENCY,
-                                (Input_Text_Box *) graphics_objects["frequency text box"]);
+        new Toggle_Button(name + " frequency toggle button",
+                          graphics_object_locations["frequency toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["phase offset toggle button"] =
-        new Input_Toggle_Button(name + " phase offset toggle button",
-                                graphics_object_locations["phase offset toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, OSCILLATOR_PHASE_OFFSET,
-                                (Input_Text_Box *) graphics_objects["phase offset text box"]);
+        new Toggle_Button(name + " phase offset toggle button",
+                          graphics_object_locations["phase offset toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["pulse width toggle button"] =
-        new Input_Toggle_Button(name + " pulse width toggle button",
-                                graphics_object_locations["pulse width toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, OSCILLATOR_PULSE_WIDTH,
-                                (Input_Text_Box *) graphics_objects["pulse width text box"]);
+        new Toggle_Button(name + " pulse width toggle button",
+                          graphics_object_locations["pulse width toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["range low toggle button"] =
-        new Input_Toggle_Button(name + " range low toggle button",
-                                graphics_object_locations["range low toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, OSCILLATOR_RANGE_LOW,
-                                (Input_Text_Box *) graphics_objects["range low text box"]);
+        new Toggle_Button(name + " range low toggle button",
+                          graphics_object_locations["range low toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["range high toggle button"] =
-        new Input_Toggle_Button(name + " range high toggle button",
-                                graphics_object_locations["range high toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, OSCILLATOR_RANGE_HIGH,
-                                (Input_Text_Box *) graphics_objects["range high text box"]);
+        new Toggle_Button(name + " range high toggle button",
+                          graphics_object_locations["range high toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["frequency text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["frequency toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["phase offset text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["phase offset toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["pulse width text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["pulse width toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["range low text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["range low toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["range high text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["range high toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["frequency text box"]] = OSCILLATOR_FREQUENCY;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["frequency toggle button"]] = OSCILLATOR_FREQUENCY;
+    inputs[OSCILLATOR_FREQUENCY].text_box = (Text_Box *) graphics_objects["frequency text box"];
+    inputs[OSCILLATOR_FREQUENCY].toggle_button = (Toggle_Button *) graphics_objects["frequency toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["phase offset text box"]] = OSCILLATOR_PHASE_OFFSET;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["phase offset toggle button"]] = OSCILLATOR_PHASE_OFFSET;
+    inputs[OSCILLATOR_PHASE_OFFSET].text_box = (Text_Box *) graphics_objects["phase offset text box"];
+    inputs[OSCILLATOR_PHASE_OFFSET].toggle_button = (Toggle_Button *) graphics_objects["phase offset toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["pulse width text box"]] = OSCILLATOR_PULSE_WIDTH;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["pulse width toggle button"]] = OSCILLATOR_PULSE_WIDTH;
+    inputs[OSCILLATOR_PULSE_WIDTH].text_box = (Text_Box *) graphics_objects["pulse width text box"];
+    inputs[OSCILLATOR_PULSE_WIDTH].toggle_button = (Toggle_Button *) graphics_objects["pulse width toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["range low text box"]] = OSCILLATOR_RANGE_LOW;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["range low toggle button"]] = OSCILLATOR_RANGE_LOW;
+    inputs[OSCILLATOR_RANGE_LOW].text_box = (Text_Box *) graphics_objects["range low text box"];
+    inputs[OSCILLATOR_RANGE_LOW].toggle_button = (Toggle_Button *) graphics_objects["range low toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["range high text box"]] = OSCILLATOR_RANGE_HIGH;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["range high toggle button"]] = OSCILLATOR_RANGE_HIGH;
+    inputs[OSCILLATOR_RANGE_HIGH].text_box = (Text_Box *) graphics_objects["range high text box"];
+    inputs[OSCILLATOR_RANGE_HIGH].toggle_button = (Toggle_Button *) graphics_objects["range high toggle button"];
 
     // Initialize filter type toggle buttons
     graphics_objects["sin toggle button"] =
@@ -429,25 +426,25 @@ void Oscillator::initialize_unique_graphics_objects()
                           graphics_object_locations["sin toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "SIN", "SIN", sin_on, this);
+                          "SIN", "SIN", sin_on, (Graphics_Listener *) this);
     graphics_objects["tri toggle button"] =
         new Toggle_Button(name + " tri toggle button",
                           graphics_object_locations["tri toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "TRI", "TRI", tri_on, this);
+                          "TRI", "TRI", tri_on, (Graphics_Listener *) this);
     graphics_objects["saw toggle button"] =
         new Toggle_Button(name + " saw toggle button",
                           graphics_object_locations["saw toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "SAW", "SAW", saw_on, this);
+                          "SAW", "SAW", saw_on, (Graphics_Listener *) this);
     graphics_objects["sqr toggle button"] =
         new Toggle_Button(name + " sqr toggle button",
                           graphics_object_locations["sqr toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "SQR", "SQR", sqr_on, this);
+                          "SQR", "SQR", sqr_on, (Graphics_Listener *) this);
 }
 
 /*

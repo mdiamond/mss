@@ -4,8 +4,8 @@
  * window, with some color.
  */
 
-#ifndef MSS_TEXT_HPP
-#define MSS_TEXT_HPP
+#ifndef GRAPHICS_TEXT_HPP
+#define GRAPHICS_TEXT_HPP
 
 /************
  * INCLUDES *
@@ -13,6 +13,7 @@
 
 // Included SDL componenets
 #include "SDL.h"
+#include "SDL_ttf.h"
 
 /*************************
  * TEXT CLASS DEFINITION *
@@ -33,7 +34,7 @@ public:
 
     // Member functions
     virtual void render();
-    virtual void clicked();
+    virtual bool clicked();
     //   Update the text displayed
     void update_text(std::string);
 };

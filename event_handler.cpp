@@ -117,7 +117,7 @@ void keydown_event(SDL_Event *e)
     else if(SELECTING_SRC && e->key.keysym.sym == SDLK_ESCAPE)
     {
         SELECTING_SRC = false;
-        CURRENT_INPUT_TOGGLE_BUTTON = NULL;
+        CURRENT_TOGGLE_BUTTON = NULL;
     }
 
     // If that key is the return key, and there is an active
@@ -153,8 +153,6 @@ void check_click()
     {
         ACTIVE_TEXT_BOX->cancel_input();
     }
-
-    OBJECT_CLICKED = false;
 
     // Call the clicked function for the current page
     p->clicked();

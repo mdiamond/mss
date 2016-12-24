@@ -28,14 +28,6 @@
 #include "Module.hpp"
 #include "Modules/Noise.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /**************************
  * NOISE MEMBER FUNCTIONS *
  **************************/
@@ -92,19 +84,19 @@ void Noise::process()
  */
 bool Noise::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
     else if(Module::handle_event(g))
     {
         return true;
     }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -159,41 +151,42 @@ void Noise::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["range low text box"] =
-        new Input_Text_Box(name + " range low text box",
-                           graphics_object_locations["range low text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, NOISE_RANGE_LOW, NULL);
+        new Text_Box(name + " range low text box",
+                     graphics_object_locations["range low text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["range high text box"] =
-        new Input_Text_Box(name + " range high text box",
-                           graphics_object_locations["range high text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, NOISE_RANGE_HIGH, NULL);
+        new Text_Box(name + " range high text box",
+                     graphics_object_locations["range high text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["range low toggle button"] =
-        new Input_Toggle_Button(name + " range low toggle button",
-                                graphics_object_locations["range low toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, NOISE_RANGE_LOW,
-                                (Input_Text_Box *) graphics_objects["range low text box"]);
+        new Toggle_Button(name + " range low toggle button",
+                          graphics_object_locations["range low toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["range high toggle button"] =
-        new Input_Toggle_Button(name + " range high toggle button",
-                                graphics_object_locations["range high toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, NOISE_RANGE_HIGH,
-                                (Input_Text_Box *) graphics_objects["range high text box"]);
+        new Toggle_Button(name + " range high toggle button",
+                          graphics_object_locations["range high toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["range low text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["range low toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["range high text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["range high toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["range low text box"]] = NOISE_RANGE_LOW;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["range low toggle button"]] = NOISE_RANGE_LOW;
+    inputs[NOISE_RANGE_LOW].text_box = (Text_Box *) graphics_objects["range low text box"];
+    inputs[NOISE_RANGE_LOW].toggle_button = (Toggle_Button *) graphics_objects["range low toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["range high text box"]] = NOISE_RANGE_HIGH;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["range high toggle button"]] = NOISE_RANGE_HIGH;
+    inputs[NOISE_RANGE_HIGH].text_box = (Text_Box *) graphics_objects["range high text box"];
+    inputs[NOISE_RANGE_HIGH].toggle_button = (Toggle_Button *) graphics_objects["range high toggle button"];
 }
 
 std::string Noise::get_unique_text_representation()

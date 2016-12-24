@@ -21,12 +21,14 @@
 #include "Module.hpp"
 
 // Included graphics classes
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
+#include "Graphics_Listener.hpp"
+#include "Graphics_Objects/Toggle_Button.hpp"
 #include "Graphics_Objects/Page.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
 
 // Included "other" classes
 #include "Color_Modifier.hpp"
+#include "function_forwarder.hpp"
 
 /**********************
  * EXTERNAL VARIABLES *
@@ -47,6 +49,7 @@ extern bool AUDIO_ON;
 
 // Wavetables
 extern std::vector<std::vector<float> > WAVETABLES;
+
 // Graphics objects and variables
 //   SDL Window and Renderer
 extern SDL_Window *WINDOW;
@@ -79,16 +82,19 @@ extern unsigned int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;
 extern int MOUSE_Y;
-extern bool OBJECT_CLICKED;
 //   Typing cursor status
 extern bool CURSOR_ON;
 //   The currently active text box
 extern Text_Box *ACTIVE_TEXT_BOX;
 //   Selecting a source module or not
 extern bool SELECTING_SRC;
-extern Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON;
+extern Toggle_Button *CURRENT_TOGGLE_BUTTON;
+extern Module *SELECTING_FOR_MODULE;
 //   Colorblind mode toggle
 extern bool COLORBLIND_ON;
+//   Function forwarder
+extern Function_Forwarder FORWARDER;
+extern Graphics_Listener *NO_MODULE_LISTENER;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

@@ -13,58 +13,35 @@
  * INCLUDES *
  ************/
 
-// Included libraries
-#include <iostream>
-#include <string>
-#include <vector>
-
-// Included SDL components
-#include "SDL.h"
-#include "SDL_ttf.h"
-
 // Included files
 #include "function_forwarder.hpp"
 #include "graphics_object_utils.hpp"
-#include "image_processing.hpp"
 #include "load_patch.hpp"
-#include "main.hpp"
 #include "module_utils.hpp"
 #include "save_patch.hpp"
 
 // Included modules classes
 #include "Module.hpp"
-#include "Modules/Adsr.hpp"
-#include "Modules/Delay.hpp"
-#include "Modules/Filter.hpp"
-#include "Modules/Mixer.hpp"
-#include "Modules/Multiplier.hpp"
-#include "Modules/Noise.hpp"
-#include "Modules/Oscillator.hpp"
-#include "Modules/Output.hpp"
-#include "Modules/Sah.hpp"
 
 // Included graphics classes
 #include "Graphics_Object.hpp"
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
+
+/***************************************
+ * FUNCTION FORWARDER MEMBER FUNCTIONS *
+ ***************************************/
+
+Function_Forwarder::Function_Forwarder()
+{}
+
+Function_Forwarder::~Function_Forwarder()
+{}
 
 /*
- * Handle functions for the graphics objects with
- * no parent module.
+ * Catchall handler for graphics objects that don't belong to any module.
  */
-void no_parent_function_forwarder(Graphics_Object *g)
+bool Function_Forwarder::handle_event(Graphics_Object *g)
 {
-    std::vector<std::string> possible_names;
-
-    possible_names = {"add adsr button", "add delay button", "add filter button",
-                      "add mixer button", "add multiplier button", "add noise button",
-                      "add oscillator button", "add sah button", "previous page button",
-                      "next page button", "save patch text box", "load patch text box"
-                     };
-
     if(g->name == possible_names[0])
     {
         create_module(Module::ADSR);
@@ -113,22 +90,6 @@ void no_parent_function_forwarder(Graphics_Object *g)
     {
         load_patch(((Text_Box *) g)->text.text);
     }
-}
-
-/**********************
- * FUNCTION FORWARDER *
- **********************/
-
-/*
- * Whenever an object with an associated function is
- * clicked, call that function.
- */
-void function_forwarder(Graphics_Object *g)
-{
-    // If the graphics object has no parent, find out what to do with it
-    if(g->parent == NULL)
-    {
-        no_parent_function_forwarder(g);
-    }
+    return true;
 }
 

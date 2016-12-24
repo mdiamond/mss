@@ -27,12 +27,6 @@
 #include "Module.hpp"
 #include "Modules/Output.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /***************************
  * OUTPUT MEMBER FUNCTIONS *
  ***************************/
@@ -69,24 +63,25 @@ void Output::process()
  */
 bool Output::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
-    else if(Module::handle_event(g))
-    {
-        return true;
-    }
-    else if(g == graphics_objects["audio on/off toggle button"])
+    // Handle audio toggle button
+    else if(g == graphics_objects["audio toggle button"])
     {
         toggle_audio();
         return true;
     }
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -122,9 +117,9 @@ void Output::calculate_unique_graphics_object_locations()
 
     // Audio on/off related graphics object locations
     location = {upper_left.x, location.y + 10, 0, 0};
-    graphics_object_locations["audio on/off text"] = location;
+    graphics_object_locations["audio text"] = location;
     location = {upper_left.x, location.y + 10, MODULE_WIDTH, 9};
-    graphics_object_locations["audio on/off toggle button"] = location;
+    graphics_object_locations["audio toggle button"] = location;
 
     // Remove the remove module button location
     graphics_object_locations.erase("remove module button");
@@ -145,9 +140,9 @@ void Output::initialize_unique_graphics_objects()
         new Text(name + " input right text",
                  graphics_object_locations["input right text"],
                  secondary_module_color, "INPUT RIGHT:");
-    graphics_objects["audio on/off text"] =
-        new Text(name + " audio on/off text",
-                 graphics_object_locations["audio on/off text"],
+    graphics_objects["audio text"] =
+        new Text(name + " audio text",
+                 graphics_object_locations["audio text"],
                  secondary_module_color, "AUDIO:");
 
     // Initialize waveform viewers
@@ -161,60 +156,60 @@ void Output::initialize_unique_graphics_objects()
                      primary_module_color, secondary_module_color, NULL);
 
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["input left text box"] =
-        new Input_Text_Box(name + " input left text box",
-                           graphics_object_locations["input left text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, OUTPUT_INPUT_L, NULL);
+        new Text_Box(name + " input left text box",
+                     graphics_object_locations["input left text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["input right text box"] =
-        new Input_Text_Box(name + " input right text box",
-                           graphics_object_locations["input right text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, OUTPUT_INPUT_R, NULL);
+        new Text_Box(name + " input right text box",
+                     graphics_object_locations["input right text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["input left toggle button"] =
-        new Input_Toggle_Button(name + " input left toggle button",
-                                graphics_object_locations["input left toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, OUTPUT_INPUT_L,
-                                (Input_Text_Box *) graphics_objects["input left text box"]);
+        new Toggle_Button(name + " input left toggle button",
+                          graphics_object_locations["input left toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["input right toggle button"] =
-        new Input_Toggle_Button(name + " input right toggle button",
-                                graphics_object_locations["input right toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, OUTPUT_INPUT_R,
-                                (Input_Text_Box *) graphics_objects["input right text box"]);
+        new Toggle_Button(name + " input right toggle button",
+                          graphics_object_locations["input right toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["input left text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["input left toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["input right text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["input right toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["input left text box"]] = OUTPUT_INPUT_L;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["input left toggle button"]] = OUTPUT_INPUT_L;
+    inputs[OUTPUT_INPUT_L].text_box = (Text_Box *) graphics_objects["input left text box"];
+    inputs[OUTPUT_INPUT_L].toggle_button = (Toggle_Button *) graphics_objects["input left toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["input right text box"]] = OUTPUT_INPUT_R;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["input right toggle button"]] = OUTPUT_INPUT_R;
+    inputs[OUTPUT_INPUT_R].text_box = (Text_Box *) graphics_objects["input right text box"];
+    inputs[OUTPUT_INPUT_R].toggle_button = (Toggle_Button *) graphics_objects["input right toggle button"];
 
     // Initialize filter type toggle buttons
     if(COLORBLIND_ON)
     {
-        graphics_objects["audio on/off toggle button"] =
-            new Toggle_Button(name + " audio on/off toggle button",
-                              graphics_object_locations["audio on/off toggle button"],
-                              BLACK, WHITE,
-                              WHITE, BLACK,
-                              FONT, "ON", "OFF", true, this);
+        graphics_objects["audio toggle button"] =
+            new Toggle_Button(name + " audio toggle button",
+                              graphics_object_locations["audio toggle button"],
+                              BLACK, WHITE, WHITE, BLACK,
+                              "ON", "OFF", true, (Graphics_Listener *) this);
     }
     else
     {
-        graphics_objects["audio on/off toggle button"] =
-            new Toggle_Button(name + " audio on/off toggle button",
-                              graphics_object_locations["audio on/off toggle button"],
-                              GREEN, RED,
-                              BLACK, WHITE,
-                              FONT, "ON", "OFF", true, this);
+        graphics_objects["audio toggle button"] =
+            new Toggle_Button(name + " audio toggle button",
+                              graphics_object_locations["audio toggle button"],
+                              GREEN, RED, BLACK, WHITE,
+                              "ON", "OFF", true, (Graphics_Listener *) this);
     }
-
 
     // Remove the remove module button
     graphics_objects.erase("remove module button");
@@ -227,6 +222,7 @@ void Output::initialize_unique_graphics_objects()
 void Output::toggle_audio()
 {
     AUDIO_ON = !AUDIO_ON;
+    ((Toggle_Button *) graphics_objects["audio toggle button"])->toggle();
 
     if(AUDIO_ON)
     {
@@ -237,7 +233,7 @@ void Output::toggle_audio()
         SDL_PauseAudio(1);
     }
 
-    std::cout << "Audio toggled" << std::endl;
+    std::cout << "Audio is now " << (AUDIO_ON ? "on" : "off") << std::endl;
 }
 
 std::string Output::get_unique_text_representation()

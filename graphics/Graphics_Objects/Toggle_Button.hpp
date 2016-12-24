@@ -5,8 +5,8 @@
  * button.
  */
 
-#ifndef MSS_TOGGLE_BUTTON_HPP
-#define MSS_TOGGLE_BUTTON_HPP
+#ifndef GRAPHICS_TOGGLE_BUTTON_HPP
+#define GRAPHICS_TOGGLE_BUTTON_HPP
 
 /************
  * INCLUDES *
@@ -35,14 +35,13 @@ public:
     Rect background_off;
 
     // Constructor and destructor
-    Toggle_Button(std::string, SDL_Rect, SDL_Color , SDL_Color , SDL_Color ,
-                  SDL_Color , TTF_Font *, std::string, std::string, bool,
-                  Module *);
+    Toggle_Button(std::string, SDL_Rect, SDL_Color, SDL_Color, SDL_Color,
+                  SDL_Color, std::string, std::string, bool,
+                  Graphics_Listener *);
     virtual ~Toggle_Button();
 
     // Member functions
     virtual void render();
-    virtual void clicked();
     //   Toggle this button
     virtual void toggle();
     //   Override the default graphics object update_location() function

@@ -28,14 +28,6 @@
 #include "Module.hpp"
 #include "Modules/Adsr.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /*************************
  * ADSR MEMBER FUNCTIONS *
  *************************/
@@ -183,25 +175,25 @@ void Adsr::process()
  */
 bool Adsr::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
-    else if(Module::handle_event(g))
-    {
-        return true;
-    }
-    // Handle the reset stage button
+    // Handle reset stage button
     else if(g == graphics_objects["reset stage button"])
     {
         reset_stage();
         return true;
     }
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -288,81 +280,87 @@ void Adsr::initialize_unique_graphics_objects()
         new Waveform(name + " waveform", graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text box objects
+    // Initialize text box objects
     graphics_objects["note text box"] =
-        new Input_Text_Box(name + " note text box",
-                           graphics_object_locations["note text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, ADSR_NOTE, NULL);
+        new Text_Box(name + " note text box",
+                     graphics_object_locations["note text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["attack text box"] =
-        new Input_Text_Box(name + " attack text box",
-                           graphics_object_locations["attack text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, ADSR_A, NULL);
+        new Text_Box(name + " attack text box",
+                     graphics_object_locations["attack text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["decay text box"] =
-        new Input_Text_Box(name + " decay text box",
-                           graphics_object_locations["decay text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, ADSR_D, NULL);
+        new Text_Box(name + " decay text box",
+                     graphics_object_locations["decay text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["sustain text box"] =
-        new Input_Text_Box(name + " sustain text box",
-                           graphics_object_locations["sustain text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, ADSR_S, NULL);
+        new Text_Box(name + " sustain text box",
+                     graphics_object_locations["sustain text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["release text box"] =
-        new Input_Text_Box(name + " release text box",
-                           graphics_object_locations["release text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, ADSR_R, NULL);
+        new Text_Box(name + " release text box",
+                     graphics_object_locations["release text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle button objects
+    // Initialize toggle button objects
     graphics_objects["note toggle button"] =
-        new Input_Toggle_Button(name + " note toggle button",
-                                graphics_object_locations["note toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, ADSR_NOTE,
-                                (Input_Text_Box *) graphics_objects["note text box"]);
+        new Toggle_Button(name + " note toggle button",
+                          graphics_object_locations["note toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["attack toggle button"] =
-        new Input_Toggle_Button(name + " attack toggle button",
-                                graphics_object_locations["attack toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, ADSR_A,
-                                (Input_Text_Box *) graphics_objects["attack text box"]);
+        new Toggle_Button(name + " attack toggle button",
+                          graphics_object_locations["attack toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["decay toggle button"] =
-        new Input_Toggle_Button(name + " decay toggle button",
-                                graphics_object_locations["decay toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, ADSR_D,
-                                (Input_Text_Box *) graphics_objects["decay text box"]);
+        new Toggle_Button(name + " decay toggle button",
+                          graphics_object_locations["decay toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["sustain toggle button"] =
-        new Input_Toggle_Button(name + " sustain toggle button",
-                                graphics_object_locations["sustain toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, ADSR_S,
-                                (Input_Text_Box *) graphics_objects["sustain text box"]);
+        new Toggle_Button(name + " sustain toggle button",
+                          graphics_object_locations["sustain toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["release toggle button"] =
-        new Input_Toggle_Button(name + " release toggle button",
-                                graphics_object_locations["release toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, ADSR_R,
-                                (Input_Text_Box *) graphics_objects["release text box"]);
+        new Toggle_Button(name + " release toggle button",
+                          graphics_object_locations["release toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["note text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["note toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["attack text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["attack toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["decay text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["decay toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["sustain text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["sustain toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["release text box"])->input_toggle_button =
-        (Input_Toggle_Button *) graphics_objects["release toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["note text box"]] = ADSR_NOTE;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["note toggle button"]] = ADSR_NOTE;
+    inputs[ADSR_NOTE].text_box = (Text_Box *) graphics_objects["note text box"];
+    inputs[ADSR_NOTE].toggle_button = (Toggle_Button *) graphics_objects["note toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["attack text box"]] = ADSR_A;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["attack toggle button"]] = ADSR_A;
+    inputs[ADSR_A].text_box = (Text_Box *) graphics_objects["attack text box"];
+    inputs[ADSR_A].toggle_button = (Toggle_Button *) graphics_objects["attack toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["decay text box"]] = ADSR_D;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["decay toggle button"]] = ADSR_D;
+    inputs[ADSR_D].text_box = (Text_Box *) graphics_objects["decay text box"];
+    inputs[ADSR_D].toggle_button = (Toggle_Button *) graphics_objects["decay toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["sustain text box"]] = ADSR_S;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["sustain toggle button"]] = ADSR_S;
+    inputs[ADSR_S].text_box = (Text_Box *) graphics_objects["sustain text box"];
+    inputs[ADSR_S].toggle_button = (Toggle_Button *) graphics_objects["sustain toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["release text box"]] = ADSR_R;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["release toggle button"]] = ADSR_R;
+    inputs[ADSR_R].text_box = (Text_Box *) graphics_objects["release text box"];
+    inputs[ADSR_R].toggle_button = (Toggle_Button *) graphics_objects["release toggle button"];
 }
 
 std::string Adsr::get_unique_text_representation()

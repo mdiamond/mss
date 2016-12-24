@@ -4,8 +4,8 @@
  * page for things like saving, adding a module, etc.
  */
 
-#ifndef MSS_PAGE_HPP
-#define MSS_PAGE_HPP
+#ifndef GRAPHICS_PAGE_HPP
+#define GRAPHICS_PAGE_HPP
 
 /************
  * INCLUDES *
@@ -29,7 +29,7 @@ public:
 
     // Member functions
     virtual void render();
-    virtual void clicked();
+    virtual bool clicked();
 };
 
 #endif

@@ -64,17 +64,23 @@ void Page::render()
 }
 
 /*
- * Send the click to all the contained graphics objects.
+ * Send the click to all the contained graphics objects. Return true if action
+ * is taken, false otherwise.
  */
-void Page::clicked()
+bool Page::clicked()
 {
+    bool ret = false;
     for(auto itr = graphics_objects.begin(); itr != graphics_objects.end();
         itr ++)
     {
         if((*itr)->mouse_over())
         {
-            (*itr)->clicked();
+            if((*itr)->clicked())
+            {
+                ret = true;
+            }
         }
     }
+    return ret;
 }
 

@@ -28,14 +28,6 @@
 #include "Module.hpp"
 #include "Modules/Delay.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Button.hpp"
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /**************************
  * DELAY MEMBER FUNCTIONS *
  **************************/
@@ -170,25 +162,25 @@ void Delay::process()
  */
 bool Delay::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
-    else if(Module::handle_event(g))
-    {
-        return true;
-    }
-    // Handle the reset buffer button
+    // Handle reset buffer button
     else if(g == graphics_objects["reset buffer button"])
     {
         reset_buffer();
         return true;
     }
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
+    else if(Module::handle_event(g))
+    {
+        return true;
+    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -271,77 +263,79 @@ void Delay::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["signal text box"] =
-        new Input_Text_Box(name + " signal text box",
-                           graphics_object_locations["signal text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, DELAY_SIGNAL, NULL);
+        new Text_Box(name + " signal text box",
+                     graphics_object_locations["signal text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["max delay time text box"] =
-        new Input_Text_Box(name + " max delay time text box",
-                           graphics_object_locations["max delay time text box"],
-                           secondary_module_color, primary_module_color,
-                           "#", this, DELAY_MAX_DELAY_TIME, NULL);
+        new Text_Box(name + " max delay time text box",
+                     graphics_object_locations["max delay time text box"],
+                     secondary_module_color, primary_module_color,
+                     "#", (Graphics_Listener *) this);
     graphics_objects["delay time text box"] =
-        new Input_Text_Box(name + " delay time text box",
-                           graphics_object_locations["delay time text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, DELAY_DELAY_TIME, NULL);
+        new Text_Box(name + " delay time text box",
+                     graphics_object_locations["delay time text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["feedback amount text box"] =
-        new Input_Text_Box(name + " feedback amount text box",
-                           graphics_object_locations["feedback amount text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, DELAY_FEEDBACK_AMOUNT, NULL);
+        new Text_Box(name + " feedback amount text box",
+                     graphics_object_locations["feedback amount text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["wet/dry amount text box"] =
-        new Input_Text_Box(name + " wet/dry amount text box",
-                           graphics_object_locations["wet/dry amount text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, DELAY_WET_DRY, NULL);
+        new Text_Box(name + " wet/dry amount text box",
+                     graphics_object_locations["wet/dry amount text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["signal toggle button"] =
-        new Input_Toggle_Button(name + " signal toggle button",
-                                graphics_object_locations["signal toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, DELAY_SIGNAL,
-                                (Input_Text_Box *) graphics_objects["signal text box"]);
+        new Toggle_Button(name + " signal toggle button",
+                          graphics_object_locations["signal toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["delay time toggle button"] =
-        new Input_Toggle_Button(name + " delay time toggle button",
-                                graphics_object_locations["delay time toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, DELAY_DELAY_TIME,
-                                (Input_Text_Box *) graphics_objects["delay time text box"]);
+        new Toggle_Button(name + " delay time toggle button",
+                          graphics_object_locations["delay time toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["feedback amount toggle button"] =
-        new Input_Toggle_Button(name + " feedback amount toggle button",
-                                graphics_object_locations["feedback amount toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, DELAY_FEEDBACK_AMOUNT,
-                                (Input_Text_Box *) graphics_objects["feedback amount text box"]);
+        new Toggle_Button(name + " feedback amount toggle button",
+                          graphics_object_locations["feedback amount toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["wet/dry amount toggle button"] =
-        new Input_Toggle_Button(name + " wet/dry amount toggle button",
-                                graphics_object_locations["wet/dry amount toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, DELAY_WET_DRY,
-                                (Input_Text_Box *) graphics_objects["wet/dry amount text box"]);
+        new Toggle_Button(name + " wet/dry amount toggle button",
+                          graphics_object_locations["wet/dry amount toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["signal text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["delay time text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["delay time toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["feedback amount text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["feedback amount toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["wet/dry amount text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["wet/dry amount toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal text box"]] = DELAY_SIGNAL;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal toggle button"]] = DELAY_SIGNAL;
+    inputs[DELAY_SIGNAL].text_box = (Text_Box *) graphics_objects["signal text box"];
+    inputs[DELAY_SIGNAL].toggle_button = (Toggle_Button *) graphics_objects["signal toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["max delay time text box"]] = DELAY_MAX_DELAY_TIME;
+    inputs[DELAY_MAX_DELAY_TIME].text_box = (Text_Box *) graphics_objects["max delay time text box"];
+    text_box_to_input_num[(Text_Box *) (Text_Box *) graphics_objects["delay time text box"]] = DELAY_DELAY_TIME;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["delay time toggle button"]] = DELAY_DELAY_TIME;
+    inputs[DELAY_DELAY_TIME].text_box = (Text_Box *) graphics_objects["delay time text box"];
+    inputs[DELAY_DELAY_TIME].toggle_button = (Toggle_Button *) graphics_objects["delay time toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["feedback amount text box"]] = DELAY_FEEDBACK_AMOUNT;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["feedback amount toggle button"]] = DELAY_FEEDBACK_AMOUNT;
+    inputs[DELAY_FEEDBACK_AMOUNT].text_box = (Text_Box *) graphics_objects["feedback amount text box"];
+    inputs[DELAY_FEEDBACK_AMOUNT].toggle_button = (Toggle_Button *) graphics_objects["feedback amount toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["wet/dry amount text box"]] = DELAY_WET_DRY;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["wet/dry amount toggle button"]] = DELAY_WET_DRY;
+    inputs[DELAY_WET_DRY].text_box = (Text_Box *) graphics_objects["wet/dry amount text box"];
+    inputs[DELAY_WET_DRY].toggle_button = (Toggle_Button *) graphics_objects["wet/dry amount toggle button"];
 }
 
 std::string Delay::get_unique_text_representation()

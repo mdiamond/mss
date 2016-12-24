@@ -91,7 +91,6 @@ unsigned int CURRENT_PAGE = 0;
 // Mouse information
 int MOUSE_X;
 int MOUSE_Y;
-bool OBJECT_CLICKED = false;
 
 // Typing cursor status
 bool CURSOR_ON = true;
@@ -99,13 +98,20 @@ bool CURSOR_ON = true;
 // The currently active text box
 Text_Box *ACTIVE_TEXT_BOX = NULL;
 
-// Whether or not the user is currently selecting a source module
-// and the input toggle button for the associated parameter
+// Whether or not the user is currently selecting a source module the toggle
+// button for the associated parameter, and the module for which input is
+// currently being selected
 bool SELECTING_SRC = false;
-Input_Toggle_Button *CURRENT_INPUT_TOGGLE_BUTTON = NULL;
+Toggle_Button *CURRENT_TOGGLE_BUTTON = nullptr;
+Module *SELECTING_FOR_MODULE = nullptr;
 
 // Whether or not to use black and white for everything
 bool COLORBLIND_ON = false;
+
+// Function forwader to handle interactions with graphics objects that don't
+// belong to any module
+Function_Forwarder FORWARDER;
+Graphics_Listener *NO_MODULE_LISTENER = (Graphics_Listener *) &FORWARDER;
 
 // The modules currently in use and whether or not
 // The set of modules has been changed recently

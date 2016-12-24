@@ -5,8 +5,8 @@
  * modules by clicking.
  */
 
-#ifndef MSS_RECT_HPP
-#define MSS_RECT_HPP
+#ifndef GRAPHICS_RECT_HPP
+#define GRAPHICS_RECT_HPP
 
 /************
  * INCLUDES *
@@ -25,12 +25,11 @@ public:
     bool fill;
 
     // Constructor and destructor
-    Rect(std::string, SDL_Rect, SDL_Color, Module *);
+    Rect(std::string, SDL_Rect, SDL_Color, Graphics_Listener *);
     virtual ~Rect();
 
     // Member functions
     virtual void render();
-    virtual void clicked();
 };
 
 #endif

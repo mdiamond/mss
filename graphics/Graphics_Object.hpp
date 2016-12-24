@@ -13,8 +13,8 @@
  *   - Waveform
  */
 
-#ifndef MSS_GRAPHICS_OBJECT_HPP
-#define MSS_GRAPHICS_OBJECT_HPP
+#ifndef GRAPHICS_GRAPHICS_OBJECT_HPP
+#define GRAPHICS_GRAPHICS_OBJECT_HPP
 
 /************
  * INCLUDES *
@@ -30,8 +30,7 @@
  * GRAPHICS_OBJECT CLASS DEFINITION *
  ************************************/
 
-// Forward declaration of module and graphics listener classes
-class Module;
+// Forward declaration of graphics listener classe
 class Graphics_Listener;
 
 class Graphics_Object
@@ -41,8 +40,6 @@ public:
     enum GraphicsObjectType
     {
         BUTTON = 0,
-        INPUT_TEXT_BOX,
-        INPUT_TOGGLE_BUTTON,
         MODULE,
         PAGE,
         RECT,
@@ -55,20 +52,19 @@ public:
     // Module information
     std::string name;
     GraphicsObjectType graphics_object_type;
-    Module *parent;
     SDL_Rect location;
     SDL_Color color;
     bool updated;
     // Constructor and destructor
     Graphics_Object(std::string, GraphicsObjectType graphics_object_type,
-                    Module *, SDL_Rect, SDL_Color);
+                    Graphics_Listener *, SDL_Rect, SDL_Color);
     virtual ~Graphics_Object();
 
     // Virtual member functions
     //   Render the module
     virtual void render() = 0;
     //   Execute on click
-    virtual void clicked() = 0;
+    virtual bool clicked();
     //   Update the location of this graphics object
     virtual void update_location(SDL_Rect);
     //   Set the color of this graphics object

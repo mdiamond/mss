@@ -117,23 +117,17 @@ void Waveform::render()
 
     background.render();
 
-    if(!SELECTING_SRC
-       || (SELECTING_SRC && parent != NULL && parent->mouse_over()))
-    {
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
-    }
-    else
-    {
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a / 2);
-    }
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
     SDL_RenderDrawLines(RENDERER, &points[0], points.size());
 }
 
 /*
  * Waveforms do not respond to clicks.
  */
-void Waveform::clicked()
-{}
+bool Waveform::clicked()
+{
+    return false;
+}
 
 /*
  * Update the location of this waveform object.

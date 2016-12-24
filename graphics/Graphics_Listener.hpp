@@ -7,8 +7,8 @@
  * function.
  */
 
-#ifndef GRAPHICS_LISTENER_HPP
-#define GRAPHICS_LISTENER_HPP
+#ifndef GRAPHICS_GRAPHICS_LISTENER_HPP
+#define GRAPHICS_GRAPHICS_LISTENER_HPP
 
 // Included classes
 #include "Graphics_Object.hpp"

@@ -16,7 +16,6 @@
 #include "SDL.h"
 
 // Included files
-#include "function_forwarder.hpp"
 #include "main.hpp"
 
 // Included graphics classes
@@ -31,8 +30,8 @@
  * Constructor.
  */
 Rect::Rect(std::string name_, SDL_Rect location_, SDL_Color color_,
-           Module *parent_) :
-    Graphics_Object(name_, RECT, parent_, location_, color_)
+           Graphics_Listener *listener_) :
+    Graphics_Object(name_, RECT, listener_, location_, color_)
 {
     fill = true;
 }
@@ -49,19 +48,8 @@ Rect::~Rect()
  */
 void Rect::render()
 {
-    if(!SELECTING_SRC
-       || (SELECTING_SRC && parent != NULL && parent->mouse_over())
-       || name == "background rect")
-    {
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
-                               color.a);
-    }
-    else
-    {
-        SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
-                               color.a / 2);
-    }
-
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                           color.a);
     if(fill)
     {
         SDL_RenderFillRect(RENDERER, &location);
@@ -69,23 +57,6 @@ void Rect::render()
     else
     {
         SDL_RenderDrawRect(RENDERER, &location);
-    }
-}
-
-/*
- * Send this object to the handle event function of its listener.
- */
-void Rect::clicked()
-{
-    if(listener != nullptr)
-    {
-        std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
-                  << std::endl;
-
-        if(listener->handle_event(this))
-        {
-            OBJECT_CLICKED = true;
-        }
     }
 }
 

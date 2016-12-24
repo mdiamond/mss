@@ -17,7 +17,6 @@
 
 // Included files
 #include "main.hpp"
-#include "function_forwarder.hpp"
 
 // Included graphics classes
 #include "Graphics_Object.hpp"
@@ -35,10 +34,10 @@
 Toggle_Button::Toggle_Button(std::string name_, SDL_Rect location_,
                              SDL_Color color_, SDL_Color color_off_,
                              SDL_Color text_color_on_,
-                             SDL_Color text_color_off_, TTF_Font *font_,
+                             SDL_Color text_color_off_,
                              std::string text_on_, std::string text_off_,
-                             bool b_, Module *parent_) :
-    Graphics_Object(name_, TOGGLE_BUTTON, parent_, location_, color_),
+                             bool b_, Graphics_Listener *listener_) :
+    Graphics_Object(name_, TOGGLE_BUTTON, listener_, location_, color_),
     b(b_), color_off(color_off_),
     text_on(Text(name_ + " text (on)", location_, text_color_on_,
                  text_on_)),
@@ -70,22 +69,6 @@ void Toggle_Button::render()
     {
         background_off.render();
         text_off.render();
-    }
-}
-
-/*
- * Send this object to its listener, call upon the toggle function to toggle
- * its state.
- */
-void Toggle_Button::clicked()
-{
-    if(!OBJECT_CLICKED && listener != nullptr)
-    {
-        std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
-                  << std::endl;
-
-        toggle();
-        listener->handle_event(this);
     }
 }
 

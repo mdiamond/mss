@@ -4,8 +4,8 @@
  * given buffer rendered wherever is desired.
  */
 
-#ifndef MSS_WAVEFORM_HPP
-#define MSS_WAVEFORM_HPP
+#ifndef GRAPHICS_WAVEFORM_HPP
+#define GRAPHICS_WAVEFORM_HPP
 
 /************
  * INCLUDES *
@@ -35,7 +35,7 @@ public:
 
     // Member functions
     virtual void render();
-    virtual void clicked();
+    virtual bool clicked();
     virtual void update_location(SDL_Rect);
     //   Calculate the y pixel location for a given sample
     float calculate_y(int);

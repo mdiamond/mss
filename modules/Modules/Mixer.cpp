@@ -28,13 +28,6 @@
 #include "Module.hpp"
 #include "Modules/Mixer.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /**************************
  * MIXER MEMBER FUNCTIONS *
  **************************/
@@ -44,7 +37,7 @@
  */
 Mixer::Mixer() :
     Module(MIXER),
-    auto_attenuate(true)
+    auto_attenuate(false)
 {
     // All multiplier floats should start at 1
     for(unsigned int i = 0; i < inputs.size(); i ++)
@@ -117,25 +110,25 @@ void Mixer::process()
  */
 bool Mixer::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
+    // Handle auto attenuate toggle button
+    else if(g == graphics_objects["auto attenuate toggle button"])
+    {
+        toggle_auto_attenuation();
+        return true;
+    }
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
     else if(Module::handle_event(g))
     {
         return true;
     }
-    // Handle a click of the auto attenuate on/off toggle button
-    else if(g == graphics_objects["auto attenuate on/off toggle button"])
-    {
-        auto_attenuate = !auto_attenuate;
-        return true;
-    }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -171,9 +164,9 @@ void Mixer::calculate_unique_graphics_object_locations()
 
     // Audio on/off related graphics object locations
     location = {upper_left.x, location.y + 10, 0, 0};
-    graphics_object_locations["auto attenuate on/off text"] = location;
+    graphics_object_locations["auto attenuate text"] = location;
     location = {upper_left.x, location.y + 10, MODULE_WIDTH, 9};
-    graphics_object_locations["auto attenuate on/off toggle button"] = location;
+    graphics_object_locations["auto attenuate toggle button"] = location;
 }
 
 /*
@@ -187,9 +180,9 @@ void Mixer::initialize_unique_graphics_objects()
         new Text(name + " signals text",
                  graphics_object_locations["signals text"],
                  secondary_module_color, "SIGNALS & MULTIPLIERS:");
-    graphics_objects["auto attenuate on/off text"] =
-        new Text(name + " auto attenuate on/off text",
-                 graphics_object_locations["auto attenuate on/off text"],
+    graphics_objects["auto attenuate text"] =
+        new Text(name + " auto attenuate text",
+                 graphics_object_locations["auto attenuate text"],
                  secondary_module_color, "AUTO ATTENUATE:");
 
     // Initialize waveform viewer
@@ -198,169 +191,180 @@ void Mixer::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["signal 1 text box"] =
-        new Input_Text_Box(name + " signal 1 text box",
-                           graphics_object_locations["signal 1 text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, MIXER_SIGNAL_1, NULL);
+        new Text_Box(name + " signal 1 text box",
+                     graphics_object_locations["signal 1 text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["signal 1 multiplier text box"] =
-        new Input_Text_Box(name + " signal 1 multiplier text box",
-                           graphics_object_locations["signal 1 multiplier text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, MIXER_SIGNAL_1_MULTIPLIER, NULL);
+        new Text_Box(name + " signal 1 multiplier text box",
+                     graphics_object_locations["signal 1 multiplier text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["signal 2 text box"] =
-        new Input_Text_Box(name + " signal 2 text box",
-                           graphics_object_locations["signal 2 text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, MIXER_SIGNAL_2, NULL);
+        new Text_Box(name + " signal 2 text box",
+                     graphics_object_locations["signal 2 text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["signal 2 multiplier text box"] =
-        new Input_Text_Box(name + " signal 2 multiplier text box",
-                           graphics_object_locations["signal 2 multiplier text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, MIXER_SIGNAL_2_MULTIPLIER, NULL);
+        new Text_Box(name + " signal 2 multiplier text box",
+                     graphics_object_locations["signal 2 multiplier text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["signal 3 text box"] =
-        new Input_Text_Box(name + " signal 3 text box",
-                           graphics_object_locations["signal 3 text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, MIXER_SIGNAL_3, NULL);
+        new Text_Box(name + " signal 3 text box",
+                     graphics_object_locations["signal 3 text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["signal 3 multiplier text box"] =
-        new Input_Text_Box(name + " signal 3 multiplier text box",
-                           graphics_object_locations["signal 3 multiplier text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, MIXER_SIGNAL_3_MULTIPLIER, NULL);
+        new Text_Box(name + " signal 3 multiplier text box",
+                     graphics_object_locations["signal 3 multiplier text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["signal 4 text box"] =
-        new Input_Text_Box(name + " signal 4 text box",
-                           graphics_object_locations["signal 4 text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, MIXER_SIGNAL_4, NULL);
+        new Text_Box(name + " signal 4 text box",
+                     graphics_object_locations["signal 4 text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["signal 4 multiplier text box"] =
-        new Input_Text_Box(name + " signal 4 multiplier text box",
-                           graphics_object_locations["signal 4 multiplier text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, MIXER_SIGNAL_4_MULTIPLIER, NULL);
+        new Text_Box(name + " signal 4 multiplier text box",
+                     graphics_object_locations["signal 4 multiplier text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["signal 5 text box"] =
-        new Input_Text_Box(name + " signal 5 text box",
-                           graphics_object_locations["signal 5 text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, MIXER_SIGNAL_5, NULL);
+        new Text_Box(name + " signal 5 text box",
+                     graphics_object_locations["signal 5 text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["signal 5 multiplier text box"] =
-        new Input_Text_Box(name + " signal 5 multiplier text box",
-                           graphics_object_locations["signal 5 multiplier text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, MIXER_SIGNAL_5_MULTIPLIER, NULL);
+        new Text_Box(name + " signal 5 multiplier text box",
+                     graphics_object_locations["signal 5 multiplier text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["signal 1 toggle button"] =
-        new Input_Toggle_Button(name + " signal 1 toggle button",
-                                graphics_object_locations["signal 1 toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_1,
-                                (Input_Text_Box *) graphics_objects["signal 1 text box"]);
+        new Toggle_Button(name + " signal 1 toggle button",
+                          graphics_object_locations["signal 1 toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 1 multiplier toggle button"] =
-        new Input_Toggle_Button(name + " signal 1 multiplier toggle button",
-                                graphics_object_locations["signal 1 multiplier toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_1_MULTIPLIER,
-                                (Input_Text_Box *) graphics_objects["signal 1 multiplier text box"]);
+        new Toggle_Button(name + " signal 1 multiplier toggle button",
+                          graphics_object_locations["signal 1 multiplier toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 2 toggle button"] =
-        new Input_Toggle_Button(name + " signal 2 toggle button",
-                                graphics_object_locations["signal 2 toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_2,
-                                (Input_Text_Box *) graphics_objects["signal 2 text box"]);
+        new Toggle_Button(name + " signal 2 toggle button",
+                          graphics_object_locations["signal 2 toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 2 multiplier toggle button"] =
-        new Input_Toggle_Button(name + " signal 2 multiplier toggle button",
-                                graphics_object_locations["signal 2 multiplier toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_2_MULTIPLIER,
-                                (Input_Text_Box *) graphics_objects["signal 2 multiplier text box"]);
+        new Toggle_Button(name + " signal 2 multiplier toggle button",
+                          graphics_object_locations["signal 2 multiplier toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 3 toggle button"] =
-        new Input_Toggle_Button(name + " signal 3 toggle button",
-                                graphics_object_locations["signal 3 toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_3,
-                                (Input_Text_Box *) graphics_objects["signal 3 text box"]);
+        new Toggle_Button(name + " signal 3 toggle button",
+                          graphics_object_locations["signal 3 toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 3 multiplier toggle button"] =
-        new Input_Toggle_Button(name + " signal 3 multiplier toggle button",
-                                graphics_object_locations["signal 3 multiplier toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_3_MULTIPLIER,
-                                (Input_Text_Box *) graphics_objects["signal 3 multiplier text box"]);
+        new Toggle_Button(name + " signal 3 multiplier toggle button",
+                          graphics_object_locations["signal 3 multiplier toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 4 toggle button"] =
-        new Input_Toggle_Button(name + " signal 4 toggle button",
-                                graphics_object_locations["signal 4 toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_4,
-                                (Input_Text_Box *) graphics_objects["signal 4 text box"]);
+        new Toggle_Button(name + " signal 4 toggle button",
+                          graphics_object_locations["signal 4 toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 4 multiplier toggle button"] =
-        new Input_Toggle_Button(name + " signal 4 multiplier toggle button",
-                                graphics_object_locations["signal 4 multiplier toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_4_MULTIPLIER,
-                                (Input_Text_Box *) graphics_objects["signal 4 multiplier text box"]);
+        new Toggle_Button(name + " signal 4 multiplier toggle button",
+                          graphics_object_locations["signal 4 multiplier toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 5 toggle button"] =
-        new Input_Toggle_Button(name + " signal 5 toggle button",
-                                graphics_object_locations["signal 5 toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_5,
-                                (Input_Text_Box *) graphics_objects["signal 5 text box"]);
+        new Toggle_Button(name + " signal 5 toggle button",
+                          graphics_object_locations["signal 5 toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal 5 multiplier toggle button"] =
-        new Input_Toggle_Button(name + " signal 5 multiplier toggle button",
-                                graphics_object_locations["signal 5 multiplier toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MIXER_SIGNAL_5_MULTIPLIER,
-                                (Input_Text_Box *) graphics_objects["signal 5 multiplier text box"]);
+        new Toggle_Button(name + " signal 5 multiplier toggle button",
+                          graphics_object_locations["signal 5 multiplier toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["signal 1 text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 1 toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 1 multiplier text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 1 multiplier toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 2 text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 2 toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 2 multiplier text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 2 multiplier toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 3 text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 3 toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 3 multiplier text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 3 multiplier toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 4 text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 4 toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 4 multiplier text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 4 multiplier toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 5 text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 5 toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal 5 multiplier text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal 5 multiplier toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 1 text box"]] = MIXER_SIGNAL_1;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 1 toggle button"]] = MIXER_SIGNAL_1;
+    inputs[MIXER_SIGNAL_1].text_box = (Text_Box *) graphics_objects["signal 1 text box"];
+    inputs[MIXER_SIGNAL_1].toggle_button = (Toggle_Button *) graphics_objects["signal 1 toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 1 multiplier text box"]] = MIXER_SIGNAL_1_MULTIPLIER;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 1 multiplier toggle button"]] = MIXER_SIGNAL_1_MULTIPLIER;
+    inputs[MIXER_SIGNAL_1_MULTIPLIER].text_box = (Text_Box *) graphics_objects["signal 1 multiplier text box"];
+    inputs[MIXER_SIGNAL_1_MULTIPLIER].toggle_button = (Toggle_Button *) graphics_objects["signal 1 multiplier toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 2 text box"]] = MIXER_SIGNAL_2;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 2 toggle button"]] = MIXER_SIGNAL_2;
+    inputs[MIXER_SIGNAL_2].text_box = (Text_Box *) graphics_objects["signal 2 text box"];
+    inputs[MIXER_SIGNAL_2].toggle_button = (Toggle_Button *) graphics_objects["signal 2 toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 2 multiplier text box"]] = MIXER_SIGNAL_2_MULTIPLIER;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 2 multiplier toggle button"]] = MIXER_SIGNAL_2_MULTIPLIER;
+    inputs[MIXER_SIGNAL_2_MULTIPLIER].text_box = (Text_Box *) graphics_objects["signal 2 multiplier text box"];
+    inputs[MIXER_SIGNAL_2_MULTIPLIER].toggle_button = (Toggle_Button *) graphics_objects["signal 2 multiplier toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 3 text box"]] = MIXER_SIGNAL_3;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 3 toggle button"]] = MIXER_SIGNAL_3;
+    inputs[MIXER_SIGNAL_3].text_box = (Text_Box *) graphics_objects["signal 3 text box"];
+    inputs[MIXER_SIGNAL_3].toggle_button = (Toggle_Button *) graphics_objects["signal 3 toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 3 multiplier text box"]] = MIXER_SIGNAL_3_MULTIPLIER;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 3 multiplier toggle button"]] = MIXER_SIGNAL_3_MULTIPLIER;
+    inputs[MIXER_SIGNAL_3_MULTIPLIER].text_box = (Text_Box *) graphics_objects["signal 3 multiplier text box"];
+    inputs[MIXER_SIGNAL_3_MULTIPLIER].toggle_button = (Toggle_Button *) graphics_objects["signal 3 multiplier toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 4 text box"]] = MIXER_SIGNAL_4;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 4 toggle button"]] = MIXER_SIGNAL_4;
+    inputs[MIXER_SIGNAL_4].text_box = (Text_Box *) graphics_objects["signal 4 text box"];
+    inputs[MIXER_SIGNAL_4].toggle_button = (Toggle_Button *) graphics_objects["signal 4 toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 4 multiplier text box"]] = MIXER_SIGNAL_4_MULTIPLIER;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 4 multiplier toggle button"]] = MIXER_SIGNAL_4_MULTIPLIER;
+    inputs[MIXER_SIGNAL_4_MULTIPLIER].text_box = (Text_Box *) graphics_objects["signal 4 multiplier text box"];
+    inputs[MIXER_SIGNAL_4_MULTIPLIER].toggle_button = (Toggle_Button *) graphics_objects["signal 4 multiplier toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 5 text box"]] = MIXER_SIGNAL_5;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 5 toggle button"]] = MIXER_SIGNAL_5;
+    inputs[MIXER_SIGNAL_5].text_box = (Text_Box *) graphics_objects["signal 5 text box"];
+    inputs[MIXER_SIGNAL_5].toggle_button = (Toggle_Button *) graphics_objects["signal 5 toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal 5 multiplier text box"]] = MIXER_SIGNAL_5_MULTIPLIER;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal 5 multiplier toggle button"]] = MIXER_SIGNAL_5_MULTIPLIER;
+    inputs[MIXER_SIGNAL_5_MULTIPLIER].text_box = (Text_Box *) graphics_objects["signal 5 multiplier text box"];
+    inputs[MIXER_SIGNAL_5_MULTIPLIER].toggle_button = (Toggle_Button *) graphics_objects["signal 5 multiplier toggle button"];
 
     // Initialize filter type toggle buttons
-    graphics_objects["auto attenuate on/off toggle button"] =
-        new Toggle_Button(name + " auto attenuate on/off toggle button",
-                          graphics_object_locations["auto attenuate on/off toggle button"],
+    graphics_objects["auto attenuate toggle button"] =
+        new Toggle_Button(name + " auto attenuate toggle button",
+                          graphics_object_locations["auto attenuate toggle button"],
                           secondary_module_color, primary_module_color,
                           primary_module_color, secondary_module_color,
-                          FONT, "ON", "OFF", true, this);
+                          "ON", "OFF", false, (Graphics_Listener *) this);
+}
+
+void Mixer::toggle_auto_attenuation()
+{
+    auto_attenuate = !auto_attenuate;
+
+    ((Toggle_Button *) graphics_objects["auto attenuate toggle button"])->toggle();
+
+    std::cout << name << " auto attenuation is now "
+              << (auto_attenuate ? "on" : "off") << std::endl;
 }
 
 std::string Mixer::get_unique_text_representation()

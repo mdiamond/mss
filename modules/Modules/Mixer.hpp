@@ -49,6 +49,7 @@ public:
     virtual void calculate_unique_graphics_object_locations();
     virtual void initialize_unique_graphics_objects();
     virtual std::string get_unique_text_representation();
+    void toggle_auto_attenuation();
 };
 
 #endif

@@ -12,9 +12,6 @@
 #include <string>
 #include <vector>
 
-// Included SDL components
-#include "SDL.h"
-
 // Included files
 #include "main.hpp"
 
@@ -29,10 +26,10 @@
 /*
  * Constructor.
  */
-Text::Text(std::string _name, SDL_Rect _location, SDL_Color _color,
-           std::string _text) :
-    Graphics_Object(_name, TEXT, NULL, _location, _color),
-    font(FONT), text(_text)
+Text::Text(std::string name_, SDL_Rect location_, SDL_Color color_,
+           std::string text_) :
+    Graphics_Object(name_, TEXT, NULL, location_, color_),
+    font(FONT), text(text_)
 {
     // Render the text for the first time
     SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
@@ -75,29 +72,18 @@ void Text::render()
         updated = false;
     }
 
-    if(text != "")
-    {
-        if(!SELECTING_SRC
-           || (SELECTING_SRC && parent != NULL && parent->mouse_over()))
-        {
-            SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
-                                   color.a);
-        }
-        else
-        {
-            SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
-                                   color.a / 2);
-        }
-
-        SDL_RenderCopy(RENDERER, texture, NULL, &location);
-    }
+    SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b,
+                           color.a);
+    SDL_RenderCopy(RENDERER, texture, NULL, &location);
 }
 
 /*
  * Text objects do not respond to clicks.
  */
-void Text::clicked()
-{}
+bool Text::clicked()
+{
+    return false;
+}
 
 /*
  * Update this text object's stored text.

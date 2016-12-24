@@ -32,10 +32,8 @@
 // Module initialization function
 void create_module(int);
 
-// A function for finding a module, and finding a module as a source for an
-// input
-Module *find_module(std::string *, std::vector<Module *> *);
-Module *find_module_as_source(std::string *, std::vector<Module *> *, Module *);
+// A function for finding a module given its name
+Module *find_module(std::string *);
 
 // A function for determining what number should be in a new module's name
 int find_available_module_number(int);

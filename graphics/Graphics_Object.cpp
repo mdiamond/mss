@@ -29,11 +29,10 @@
  */
 Graphics_Object::Graphics_Object(std::string name_,
                                  GraphicsObjectType graphics_object_type_,
-                                 Module *parent_, SDL_Rect location_,
+                                 Graphics_Listener *listener_, SDL_Rect location_,
                                  SDL_Color color_) :
-    name(name_), graphics_object_type(graphics_object_type_), parent(parent_),
-    location(location_), color(color_), updated(true),
-    listener((Graphics_Listener *) parent_)
+    name(name_), graphics_object_type(graphics_object_type_),
+    location(location_), color(color_), updated(true), listener(listener_)
 {}
 
 /*
@@ -58,6 +57,22 @@ void Graphics_Object::set_color(SDL_Color color_)
 {
     color = color_;
     updated = true;
+}
+
+/*
+ * Send this graphics object to the event handling function of its listener.
+ * Return true if the listener does anything, false otherwise
+ */
+bool Graphics_Object::clicked()
+{
+    std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
+              << std::endl;
+
+    if(listener != nullptr)
+    {
+        return listener->handle_event(this);
+    }
+    return false;
 }
 
 /*

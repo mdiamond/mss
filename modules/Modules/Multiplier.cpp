@@ -28,13 +28,6 @@
 #include "Module.hpp"
 #include "Modules/Multiplier.hpp"
 
-// Included graphics classes
-#include "Graphics_Objects/Input_Text_Box.hpp"
-#include "Graphics_Objects/Input_Toggle_Button.hpp"
-#include "Graphics_Objects/Text.hpp"
-#include "Graphics_Objects/Toggle_Button.hpp"
-#include "Graphics_Objects/Waveform.hpp"
-
 /*******************************
  * MULTIPLIER MEMBER FUNCTIONS *
  *******************************/
@@ -96,19 +89,19 @@ void Multiplier::process()
  */
 bool Multiplier::handle_event(Graphics_Object *g)
 {
-    // if g is null, return false
+    // If g is null, take no action, return false
     if(g == nullptr)
     {
         return false;
     }
-    // Handle events that apply to all modules, return true if an event
-    // is handled
+    // If none of the above, handle events that apply to all modules, return
+    // true if an event is handled
     else if(Module::handle_event(g))
     {
         return true;
     }
 
-    // If none of the above happen, return false
+    // If none of the above, return false
     return false;
 }
 
@@ -175,57 +168,57 @@ void Multiplier::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize input text boxes
+    // Initialize text boxes
     graphics_objects["signal text box"] =
-        new Input_Text_Box(name + " signal text box",
-                           graphics_object_locations["signal text box"],
-                           secondary_module_color, primary_module_color,
-                           "input", this, MULTIPLIER_SIGNAL, NULL);
+        new Text_Box(name + " signal text box",
+                     graphics_object_locations["signal text box"],
+                     secondary_module_color, primary_module_color,
+                     "input", (Graphics_Listener *) this);
     graphics_objects["signal multiplier text box"] =
-        new Input_Text_Box(name + " signal multiplier text box",
-                           graphics_object_locations["signal multiplier text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, MULTIPLIER_MULTIPLIER, NULL);
+        new Text_Box(name + " signal multiplier text box",
+                     graphics_object_locations["signal multiplier text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
     graphics_objects["dry/wet amount text box"] =
-        new Input_Text_Box(name + " dry/wet amount text box",
-                           graphics_object_locations["dry/wet amount text box"],
-                           secondary_module_color, primary_module_color,
-                           "# or input", this, MULTIPLIER_DRY_WET, NULL);
+        new Text_Box(name + " dry/wet amount text box",
+                     graphics_object_locations["dry/wet amount text box"],
+                     secondary_module_color, primary_module_color,
+                     "# or input", (Graphics_Listener *) this);
 
-    // Initialize input toggle buttons
+    // Initialize toggle buttons
     graphics_objects["signal toggle button"] =
-        new Input_Toggle_Button(name + " signal toggle button",
-                                graphics_object_locations["signal toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MULTIPLIER_SIGNAL,
-                                (Input_Text_Box *) graphics_objects["signal text box"]);
+        new Toggle_Button(name + " signal toggle button",
+                          graphics_object_locations["signal toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["signal multiplier toggle button"] =
-        new Input_Toggle_Button(name + " signal multiplier toggle button",
-                                graphics_object_locations["signal multiplier toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MULTIPLIER_MULTIPLIER,
-                                (Input_Text_Box *) graphics_objects["signal multiplier text box"]);
+        new Toggle_Button(name + " signal multiplier toggle button",
+                          graphics_object_locations["signal multiplier toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
     graphics_objects["dry/wet amount toggle button"] =
-        new Input_Toggle_Button(name + " dry/wet amount toggle button",
-                                graphics_object_locations["dry/wet amount toggle button"],
-                                secondary_module_color, primary_module_color,
-                                this, MULTIPLIER_DRY_WET,
-                                (Input_Text_Box *) graphics_objects["dry/wet amount text box"]);
+        new Toggle_Button(name + " dry/wet amount toggle button",
+                          graphics_object_locations["dry/wet amount toggle button"],
+                          secondary_module_color, secondary_module_color,
+                          RED, primary_module_color, "I", "I", false,
+                          (Graphics_Listener *) this);
 
-
-    // Point input text boxes to their associated input toggle buttons
-    ((Input_Text_Box *)
-     graphics_objects["signal text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["signal multiplier text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["signal multiplier toggle button"];
-    ((Input_Text_Box *)
-     graphics_objects["dry/wet amount text box"])->input_toggle_button =
-        (Input_Toggle_Button *)
-        graphics_objects["dry/wet amount toggle button"];
+    // Store pointers to these graphics objects in the necessary data
+    // structures
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal text box"]] = MULTIPLIER_SIGNAL;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal toggle button"]] = MULTIPLIER_SIGNAL;
+    inputs[MULTIPLIER_SIGNAL].text_box = (Text_Box *) graphics_objects["signal text box"];
+    inputs[MULTIPLIER_SIGNAL].toggle_button = (Toggle_Button *) graphics_objects["signal toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["signal multiplier text box"]] = MULTIPLIER_MULTIPLIER;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["signal multiplier toggle button"]] = MULTIPLIER_MULTIPLIER;
+    inputs[MULTIPLIER_MULTIPLIER].text_box = (Text_Box *) graphics_objects["signal multiplier text box"];
+    inputs[MULTIPLIER_MULTIPLIER].toggle_button = (Toggle_Button *) graphics_objects["signal multiplier toggle button"];
+    text_box_to_input_num[(Text_Box *) graphics_objects["dry/wet amount text box"]] = MULTIPLIER_DRY_WET;
+    toggle_button_to_input_num[(Toggle_Button *) graphics_objects["dry/wet amount toggle button"]] = MULTIPLIER_DRY_WET;
+    inputs[MULTIPLIER_DRY_WET].text_box = (Text_Box *) graphics_objects["dry/wet amount text box"];
+    inputs[MULTIPLIER_DRY_WET].toggle_button = (Toggle_Button *) graphics_objects["dry/wet amount toggle button"];
 }
 
 std::string Multiplier::get_unique_text_representation()
