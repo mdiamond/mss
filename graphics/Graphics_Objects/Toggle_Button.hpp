@@ -16,23 +16,21 @@
 #include "SDL.h"
 
 // Included graphics classes
-#include "Graphics_Objects/Rect.hpp"
-#include "Graphics_Objects/Text.hpp"
+#include "Graphics_Objects/Button.hpp"
 
 /**********************************
  * TOGGLE BUTTON CLASS DEFINITION *
  **********************************/
 
-class Toggle_Button: public Graphics_Object
+class Toggle_Button: public Button
 {
 public:
     // The boolean variable, the background color when off, the text when on,
     // the text when off, the background when on, and the background when off
     bool b;
     SDL_Color color_off;
-    Text text_on, text_off;
-    Rect background;
     Rect background_off;
+    Text text_off;
 
     // Constructor and destructor
     Toggle_Button(std::string, SDL_Rect, SDL_Color, SDL_Color, SDL_Color,

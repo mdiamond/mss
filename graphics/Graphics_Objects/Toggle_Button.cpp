@@ -37,17 +37,15 @@ Toggle_Button::Toggle_Button(std::string name_, SDL_Rect location_,
                              SDL_Color text_color_off_,
                              std::string text_on_, std::string text_off_,
                              bool b_, Graphics_Listener *listener_) :
-    Graphics_Object(name_, TOGGLE_BUTTON, listener_, location_, color_),
+    Button(name_, location_, color_, text_color_on_, text_on_, listener_),
     b(b_), color_off(color_off_),
-    text_on(Text(name_ + " text (on)", location_, text_color_on_,
-                 text_on_)),
     text_off(Text(name_ + " text (off)", location_, text_color_off_,
                   text_off_)),
-    background(Rect(name_ + " background rect (on)", location_, color_,
-                    NULL)),
     background_off(Rect(name_ + " background rect (off)", location_,
                         color_off_, NULL))
-{}
+{
+    graphics_object_type = TOGGLE_BUTTON;
+}
 
 /*
  * Destructor.
@@ -62,8 +60,7 @@ void Toggle_Button::render()
 {
     if(b)
     {
-        background.render();
-        text_on.render();
+        Button::render();
     }
     else
     {
@@ -83,9 +80,8 @@ void Toggle_Button::toggle()
 void Toggle_Button::update_location(SDL_Rect location_)
 {
     location = location_;
-    background.update_location(location_);
+    Button::update_location(location);
     background_off.update_location(location_);
-    text_on.update_location(location_);
     text_off.update_location(location_);
     updated = true;
 }
@@ -94,12 +90,11 @@ void Toggle_Button::update_location(SDL_Rect location_)
  * Updated this toggle button's colors.
  */
 void Toggle_Button::set_colors(SDL_Color color_, SDL_Color color_off_,
-                               SDL_Color text_color_on_,
+                               SDL_Color text_color_,
                                SDL_Color text_color_off_)
 {
-    background.set_color(color_);
+    Button::set_colors(color_, text_color_);
     background_off.set_color(color_off_);
-    text_on.set_color(text_color_on_);
     text_off.set_color(text_color_off_);
     updated = true;
 }
