@@ -73,9 +73,6 @@ int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
                     (MENU_HEIGHT * 2);
 SDL_Rect WINDOW_RECT = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
-// Font
-TTF_Font *FONT;
-
 // Colors
 SDL_Color BLACK = {0, 0, 0, 255};
 SDL_Color WHITE = {255, 255, 255, 255};
@@ -91,9 +88,6 @@ unsigned int CURRENT_PAGE = 0;
 // Mouse information
 int MOUSE_X;
 int MOUSE_Y;
-
-// Typing cursor status
-bool CURSOR_ON = true;
 
 // The currently active text box
 Text_Box *ACTIVE_TEXT_BOX = NULL;

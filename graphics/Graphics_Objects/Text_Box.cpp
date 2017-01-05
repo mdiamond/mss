@@ -17,6 +17,7 @@
 #include "SDL.h"
 
 // Included files
+#include "graphics_config.hpp"
 #include "function_forwarder.hpp"
 #include "main.hpp"
 
@@ -37,7 +38,7 @@ Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color color_,
                    Graphics_Listener *listener_) :
     Graphics_Object(name_, TEXT_BOX, listener_, location_, color_),
     text_color(text_color_),
-    active(false), font(FONT),
+    active(false),
     background(Rect(name_ + " background rect", location_, color_,
                     NULL)),
     text(Text(name_ + " idle text", location_, text_color_, "")),
@@ -107,7 +108,7 @@ void Text_Box::render()
 
     // If the text box is active and the cursor is currently supposed to be
     // drawn, draw the typing cursor
-    if(active && CURSOR_ON)
+    if(active && SHOW_TYPING_CURSOR)
     {
         SDL_SetRenderDrawColor(RENDERER, text_color.r, text_color.g,
                                text_color.b, text_color.a);

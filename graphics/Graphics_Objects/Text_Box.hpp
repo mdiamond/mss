@@ -27,13 +27,12 @@ class Text_Box: public Graphics_Object
 public:
     // The text color, whether or not this text box is active, whether or not
     // the most recently entered text could be converted to a float, and the
-    // float if so, the font, the background rectangle, the text, the prompt
+    // float if so, the background rectangle, the text, the prompt
     // text, and the typing text
     SDL_Color text_color;
     bool active;
     bool is_float;
     float as_float;
-    TTF_Font *font;
     Rect background;
     Text text;
     Text prompt_text;

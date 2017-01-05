@@ -13,6 +13,7 @@
 #include <vector>
 
 // Included files
+#include "graphics_config.hpp"
 #include "main.hpp"
 
 // Included graphics classes
@@ -29,10 +30,10 @@
 Text::Text(std::string name_, SDL_Rect location_, SDL_Color color_,
            std::string text_) :
     Graphics_Object(name_, TEXT, NULL, location_, color_),
-    font(FONT), text(text_)
+    text(text_)
 {
     // Render the text for the first time
-    SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(), color);
+    SDL_Surface *surface = TTF_RenderText_Blended(FONT, text.c_str(), color);
     texture = SDL_CreateTextureFromSurface(RENDERER, surface);
     SDL_QueryTexture(texture, NULL, NULL, &location.w, &location.h);
     SDL_SetRenderDrawColor(RENDERER, color.r, color.g, color.b, color.a);
@@ -56,7 +57,7 @@ void Text::render()
 {
     if(updated)
     {
-        SDL_Surface *surface = TTF_RenderText_Blended(font, text.c_str(),
+        SDL_Surface *surface = TTF_RenderText_Blended(FONT, text.c_str(),
                                                       color);
         texture = SDL_CreateTextureFromSurface(RENDERER, surface);
         SDL_QueryTexture(texture, NULL, NULL, &location.w, &location.h);

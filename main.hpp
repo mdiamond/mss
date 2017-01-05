@@ -67,8 +67,6 @@ extern int MENU_HEIGHT;
 extern int WINDOW_WIDTH;
 extern int WINDOW_HEIGHT;
 extern SDL_Rect WINDOW_RECT;
-//   Font
-extern TTF_Font *FONT;
 //   Colors
 extern SDL_Color BLACK;
 extern SDL_Color WHITE;
@@ -82,8 +80,6 @@ extern unsigned int CURRENT_PAGE;
 //   Mouse information
 extern int MOUSE_X;
 extern int MOUSE_Y;
-//   Typing cursor status
-extern bool CURSOR_ON;
 //   The currently active text box
 extern Text_Box *ACTIVE_TEXT_BOX;
 //   Selecting a source module or not

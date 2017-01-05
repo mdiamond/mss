@@ -15,9 +15,9 @@
 
 // Included SDL components
 #include "SDL.h"
-#include "SDL_ttf.h"
 
 // Included files
+#include "graphics_config.hpp"
 #include "graphics_object_utils.hpp"
 #include "initialize.hpp"
 #include "main.hpp"
@@ -40,7 +40,7 @@
  */
 bool initialize()
 {
-    // system("clear");
+    TTF_Font *font = nullptr;
 
     // Initialize SDL with the video and audio subsystems
     if((SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO | SDL_INIT_TIMER) == -1))
@@ -63,11 +63,15 @@ bool initialize()
         return false;
     }
 
-    // Open ttf fonts
-    if(!load_font())
+    // Open ttf font
+    if(!load_font(&font))
     {
         return false;
     }
+
+    // Initialize graphics library
+    initialize_graphics_library(font);
+    std::cout << "Graphics library initialized." << std::endl;
 
     // Open a window
     if(!open_window())
@@ -116,7 +120,7 @@ bool initialize()
 /*
  * Open a window using width and height specified in main.cpp.
  */
-int open_window()
+bool open_window()
 {
     Uint32 window_flags = SDL_WINDOW_ALLOW_HIGHDPI;
 
@@ -131,18 +135,18 @@ int open_window()
     {
         std::cout << RED_STDOUT << "Could not create window: "
                   << SDL_GetError() << DEFAULT_STDOUT << std::endl;
-        return 0;
+        return false;
     }
 
     std::cout << "Window opened." << std::endl;
 
-    return 1;
+    return true;
 }
 
 /*
  * Create a renderer for the window created before.
  */
-int create_renderer()
+bool create_renderer()
 {
     Uint32 render_flags = SDL_RENDERER_ACCELERATED | SDL_RENDERER_TARGETTEXTURE |
                           SDL_RENDERER_PRESENTVSYNC;
@@ -153,19 +157,19 @@ int create_renderer()
     {
         std::cout << RED_STDOUT << "Could not create renderer: "
                   << SDL_GetError() << DEFAULT_STDOUT << std::endl;
-        return 0;
+        return false;
     }
 
     std::cout << "Renderer created." << std::endl;
 
-    return 1;
+    return true;
 }
 
 /*
  * Create a texture to render to so that the GPU will be used
  * isntead of the CPU when rendering to a surface.
  */
-int create_texture()
+bool create_texture()
 {
     TEXTURE = SDL_CreateTexture(RENDERER, SDL_PIXELFORMAT_RGBA8888,
                                 SDL_TEXTUREACCESS_TARGET,
@@ -175,34 +179,34 @@ int create_texture()
     {
         std::cout << RED_STDOUT << "Could not create texture: "
                   << SDL_GetError() << DEFAULT_STDOUT << std::endl;
-        return 0;
+        return false;
     }
 
     std::cout << "Texture created." << std::endl;
 
     SDL_SetRenderTarget(RENDERER, TEXTURE);
 
-    return 1;
+    return true;
 }
 
 /*
  * Load font into external variables so that all
  * graphics objects can render text.
  */
-int load_font()
+bool load_font(TTF_Font **font)
 {
-    FONT = TTF_OpenFont("../fonts/visitor1.ttf", 10);
+    *font = TTF_OpenFont("../fonts/visitor1.ttf", 10);
 
-    if(!FONT)
+    if(!(*font))
     {
         std::cout << RED_STDOUT << "Could not open the TTF font: "
                   << TTF_GetError() << DEFAULT_STDOUT << std::endl;
-        return 0;
+        return false;
     }
 
     std::cout << "Font loaded." << std::endl;
 
-    return 1;
+    return true;
 }
 
 /*
@@ -355,7 +359,7 @@ void prettify_utilities_page()
 /*
  * Open the audio device with a simple configuration.
  */
-int open_audio_device()
+bool open_audio_device()
 {
     SDL_AudioSpec wanted, obtained;
 
@@ -370,7 +374,7 @@ int open_audio_device()
     {
         std::cout << RED_STDOUT << "Could not open the audio device: "
                   << SDL_GetError() << DEFAULT_STDOUT << std::endl;
-        return 0;
+        return false;
     }
 
     std::cout << "Audio device opened." << std::endl;
@@ -385,7 +389,7 @@ int open_audio_device()
     NUM_CHANNELS = obtained.channels;
 
     // Return success
-    return 1;
+    return true;
 }
 
 /*

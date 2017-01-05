@@ -22,8 +22,7 @@
 class Text: public Graphics_Object
 {
 public:
-    // The font of the text, the text as a string, and the text as a texture
-    TTF_Font *font;
+    // The text as a string, and the text as a texture
     std::string text;
     SDL_Texture *texture;
     int max_width = 1000;

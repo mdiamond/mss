@@ -16,6 +16,7 @@
 #include "SDL_ttf.h"
 
 // Included files
+#include "graphics_config.hpp"
 #include "event_handler.hpp"
 #include "image_processing.hpp"
 #include "initialize.hpp"
@@ -142,7 +143,7 @@ bool normal_mode()
         // Every 30 frames, negate the status of the typing cursor
         if(frame % 30 == 0)
         {
-            CURSOR_ON = !CURSOR_ON;
+            toggle_show_typing_cursor();
         }
     }
 
