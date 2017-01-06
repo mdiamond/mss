@@ -12,6 +12,7 @@
 #include <vector>
 
 // Included files
+#include "graphics_config.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
 #include "main_helpers.hpp"
@@ -135,7 +136,7 @@ void draw_surface()
                 if(((Graphics_Object *) itr->second)->graphics_object_type
                    == Graphics_Object::WAVEFORM)
                 {
-                    ((Waveform *) itr->second)->copy_buffer();
+                    copy_signal_to_waveform_buffer(((Waveform &) (*itr->second)));
                 }
             }
         }

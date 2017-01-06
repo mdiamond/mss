@@ -11,6 +11,9 @@
  * INCLUDES *
  ************/
 
+// Included libraries
+#include <string>
+
 // Included SDL componenets
 #include "SDL.h"
 #include "SDL_ttf.h"

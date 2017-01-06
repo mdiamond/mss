@@ -16,8 +16,7 @@
 #include "SDL.h"
 
 // Included files
-#include "main.hpp"
-#include "signal_processing.hpp"
+#include "graphics_config.hpp"
 
 // Included graphics classes
 #include "Graphics_Object.hpp"
@@ -78,28 +77,6 @@ float Waveform::calculate_y(int i)
 }
 
 /*
- * Copy the buffer to be rendered to inside of this waveform object. This
- * should always be done with audio locked before rendering to avoid
- * interleaving between the main thread and the audio thread.
- */
-void Waveform::copy_buffer()
-{
-    int index = 0;
-    for(unsigned int i = BUFFER_SIZE - location.w; i < BUFFER_SIZE; i ++)
-    {
-        if(buffer != NULL)
-        {
-            render_buffer[index] = (*buffer)[i];
-        }
-        else
-        {
-            render_buffer[index] = 0;
-        }
-        index ++;
-    }
-}
-
-/*
  * Render the waveform.
  */
 void Waveform::render()
@@ -137,5 +114,18 @@ void Waveform::update_location(SDL_Rect location_)
     location = location_;
     background.update_location(location_);
     updated = true;
+}
+
+/*
+ * Scale a sample and return the scaled sample.
+ */
+float scale_sample(float sample, float original_low,
+                   float original_high, float low, float high)
+{
+    sample = (sample - original_low) / (original_high - original_low);
+    sample *= high - low;
+    sample += low;
+
+    return sample;
 }
 

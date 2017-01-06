@@ -16,12 +16,25 @@
 // Included SDL components
 #include "SDL_ttf.h"
 
+// Forward declare Text_Box class
+class Text_Box;
+
 /**********************
  * EXTERNAL VARIABLES *
  **********************/
 
+// Font and typing cursor on/off boolean
 extern TTF_Font *FONT;
 extern bool SHOW_TYPING_CURSOR;
+// SDL Window and Renderer
+extern SDL_Window *WINDOW;
+extern SDL_Renderer *RENDERER;
+extern SDL_Texture *TEXTURE;
+// Mouse information
+extern int MOUSE_X;
+extern int MOUSE_Y;
+// The currently active text box
+extern Text_Box *ACTIVE_TEXT_BOX;
 
 // Initialize the graphics library, requires a font to use
 void initialize_graphics_library(TTF_Font *);

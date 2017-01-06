@@ -11,14 +11,15 @@
 #include <iostream>
 #include <vector>
 
+// Included files
+#include "graphics_config.hpp"
+
 // Included SDL components
 #include "SDL.h"
 
-// Included files
-#include "main.hpp"
-
 // Included graphics classes
 #include "Graphics_Object.hpp"
+#include "Graphics_Listener.hpp"
 
 /************************************
  * GRAPHICS_OBJECT MEMBER FUNCTIONS *
@@ -65,9 +66,6 @@ void Graphics_Object::set_color(SDL_Color color_)
  */
 bool Graphics_Object::clicked()
 {
-    std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
-              << std::endl;
-
     if(listener != nullptr)
     {
         return listener->handle_event(this);

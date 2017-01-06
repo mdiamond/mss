@@ -8,15 +8,11 @@
  ************/
 
 // Included libraries
-#include <iostream>
 #include <string>
 #include <vector>
 
 // Included SDL components
 #include "SDL.h"
-
-// Included files
-#include "main.hpp"
 
 // Included graphics classes
 #include "Graphics_Object.hpp"

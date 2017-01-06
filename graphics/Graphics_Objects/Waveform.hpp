@@ -14,6 +14,9 @@
 // Included SDL componenets
 #include "SDL.h"
 
+// Included graphics classes
+#include "Graphics_Objects/Rect.hpp"
+
 /*****************************
  * WAVEFORM CLASS DEFINITION *
  *****************************/
@@ -42,6 +45,13 @@ public:
     //   Copy the buffer to be rendered into internal memory
     void copy_buffer();
 };
+
+/************************
+ * FUNCTION DEFINITIONS *
+ ************************/
+
+// Scale a sample from one range of values to another
+float scale_sample(float, float, float, float, float);
 
 #endif
 

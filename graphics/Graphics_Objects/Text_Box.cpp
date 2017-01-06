@@ -8,7 +8,6 @@
  ************/
 
 // Included libraries
-#include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -18,10 +17,9 @@
 
 // Included files
 #include "graphics_config.hpp"
-#include "function_forwarder.hpp"
-#include "main.hpp"
 
 // Included graphics classes
+#include "Graphics_Listener.hpp"
 #include "Graphics_Object.hpp"
 #include "Graphics_Objects/Rect.hpp"
 #include "Graphics_Objects/Text_Box.hpp"
@@ -38,7 +36,7 @@ Text_Box::Text_Box(std::string name_, SDL_Rect location_, SDL_Color color_,
                    Graphics_Listener *listener_) :
     Graphics_Object(name_, TEXT_BOX, listener_, location_, color_),
     text_color(text_color_),
-    active(false),
+    active(false), is_float(false),
     background(Rect(name_ + " background rect", location_, color_,
                     NULL)),
     text(Text(name_ + " idle text", location_, text_color_, "")),
@@ -175,9 +173,6 @@ void Text_Box::delete_character()
  */
 bool Text_Box::clicked()
 {
-    std::cout << PINK_STDOUT << name << " clicked" << DEFAULT_STDOUT
-              << std::endl;
-
     if(!active)
     {
         active = true;
@@ -197,9 +192,6 @@ bool Text_Box::clicked()
  */
 void Text_Box::entered()
 {
-    std::cout << PINK_STDOUT << name << " entered" << DEFAULT_STDOUT
-              << std::endl;
-
     SDL_StopTextInput();
     text.update_text(typing_text.text);
     typing_text.update_text("");
@@ -218,9 +210,6 @@ void Text_Box::entered()
  */
 void Text_Box::cancel_input()
 {
-    std::cout << PINK_STDOUT << name << " text input cancelled"
-              << DEFAULT_STDOUT << std::endl;
-
     SDL_StopTextInput();
     text.updated = true;
     ACTIVE_TEXT_BOX = nullptr;
@@ -253,6 +242,10 @@ void Text_Box::store_float()
     if(stream.eof() && !stream.fail())
     {
         is_float = true;
+    }
+    else
+    {
+        is_float = false;
     }
 }
 

@@ -51,10 +51,6 @@ extern bool AUDIO_ON;
 extern std::vector<std::vector<float> > WAVETABLES;
 
 // Graphics objects and variables
-//   SDL Window and Renderer
-extern SDL_Window *WINDOW;
-extern SDL_Renderer *RENDERER;
-extern SDL_Texture *TEXTURE;
 //   Module dimensions and amount of modules per page
 extern int MODULE_WIDTH;
 extern int MODULE_HEIGHT;
@@ -77,11 +73,6 @@ extern SDL_Color BLUE;
 extern std::vector<Page *> PAGES;
 extern Page *UTILITIES_PAGE;
 extern unsigned int CURRENT_PAGE;
-//   Mouse information
-extern int MOUSE_X;
-extern int MOUSE_Y;
-//   The currently active text box
-extern Text_Box *ACTIVE_TEXT_BOX;
 //   Selecting a source module or not
 extern bool SELECTING_SRC;
 extern Toggle_Button *CURRENT_TOGGLE_BUTTON;

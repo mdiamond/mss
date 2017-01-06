@@ -120,31 +120,39 @@ void copy_signal(std::vector<float> *src, std::vector<float> *dst)
 }
 
 /*
+ * Copy the buffer to be rendered to inside of the provided waveform object.
+ * This should always be done with audio locked before rendering to avoid
+ * interleaving between the main thread and the audio thread.
+ * THIS IS SUPER INEFFICIENT AND SHOULD NEVER LOCK AUDIO!!!
+ */
+void copy_signal_to_waveform_buffer(Waveform &waveform)
+{
+    int index = 0;
+    for(unsigned int i = BUFFER_SIZE - waveform.location.w; i < BUFFER_SIZE; i ++)
+    {
+        if(waveform.buffer != nullptr)
+        {
+            waveform.render_buffer[index] = waveform.buffer->at(i);
+        }
+        else
+        {
+            waveform.render_buffer[index] = 0;
+        }
+        index ++;
+    }
+}
+
+/*
  * Scale a signal within its buffer.
  */
 void scale_signal(std::vector<float> *buffer, float original_low,
                   float original_high, float low, float high)
 {
-    float temp_high = original_high - original_low;
-    for(unsigned int i = 0; i < buffer->size(); i ++)
+    for(auto it = (*buffer).begin(); it != (*buffer).end(); it ++)
     {
-        (*buffer)[i] = ((*buffer)[i] - original_low) / temp_high;
-        (*buffer)[i] *= high - low;
-        (*buffer)[i] += low;
+        *it = scale_sample(*it, original_low, original_high, low,
+                                    high);
     }
-}
-
-/*
- * Scale a sample and return the scaled sample.
- */
-float scale_sample(float sample, float original_low,
-                   float original_high, float low, float high)
-{
-    sample = (sample - original_low) / (original_high - original_low);
-    sample *= high - low;
-    sample += low;
-
-    return sample;
 }
 
 /*

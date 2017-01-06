@@ -13,6 +13,17 @@
 TTF_Font *FONT = nullptr;
 bool SHOW_TYPING_CURSOR = false;
 
+SDL_Window *WINDOW;
+SDL_Renderer *RENDERER;
+SDL_Texture *TEXTURE;
+
+int MOUSE_X = 0;
+int MOUSE_Y = 0;
+
+Text_Box *ACTIVE_TEXT_BOX = nullptr;
+
+
+
 /*
  * Initialize the graphics library, requires a font to use.
  */

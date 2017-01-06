@@ -50,12 +50,6 @@ bool AUDIO_ON = true;
 // Wavetables
 std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
                                                                   0));
-
-// SDL Window and renderer
-SDL_Window *WINDOW;
-SDL_Renderer *RENDERER;
-SDL_Texture *TEXTURE;
-
 // Module dimensions and amount of modules per page
 int MODULE_WIDTH = 160;
 int MODULE_HEIGHT = 135;
@@ -84,13 +78,6 @@ SDL_Color BLUE = {0, 0, 255, 255};
 std::vector<Page *> PAGES = std::vector<Page *>();
 Page *UTILITIES_PAGE;
 unsigned int CURRENT_PAGE = 0;
-
-// Mouse information
-int MOUSE_X;
-int MOUSE_Y;
-
-// The currently active text box
-Text_Box *ACTIVE_TEXT_BOX = NULL;
 
 // Whether or not the user is currently selecting a source module the toggle
 // button for the associated parameter, and the module for which input is

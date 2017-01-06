@@ -17,6 +17,7 @@
 #include "SDL_ttf.h"
 
 // Included files
+#include "graphics_config.hpp"
 #include "graphics_object_utils.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
