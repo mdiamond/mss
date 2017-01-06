@@ -22,8 +22,6 @@ int MOUSE_Y = 0;
 
 Text_Box *ACTIVE_TEXT_BOX = nullptr;
 
-
-
 /*
  * Initialize the graphics library, requires a font to use.
  */
