@@ -19,15 +19,12 @@ file(GLOB_RECURSE modules_SRC
      "modules/*.cpp"
      "modules/*.hpp")
 
-file(GLOB_RECURSE graphics_SRC
-     "graphics/*.cpp"
-     "graphics/*.hpp")
-
-add_executable(mss ${mss_SRC} ${modules_SRC} ${graphics_SRC})
+add_executable(mss ${mss_SRC} ${modules_SRC})
 
 find_package(PkgConfig REQUIRED)
 pkg_search_module(SDL2 REQUIRED sdl2)
 pkg_search_module(SDL2TTF REQUIRED SDL2_ttf)
+
 message(STATUS "Root level project directory: " ${mss_SOURCE_DIR})
 message(STATUS "SDL2 include directory: " ${SDL2_INCLUDE_DIRS})
 message(STATUS "SDL2 library directory: " ${SDL2_LIBRARIES})
@@ -36,12 +33,14 @@ message(STATUS "SDL2_ttf include directory: " ${SDL2TTF_INCLUDE_DIRS})
 message(STATUS "SDL2_ttf library directory: " ${SDL2TTF_LIBRARIES})
 message(STATUS "SDL2_ttf cflags other: " ${SDL2TTF_CFLAGS_OTHER})
 
+add_subdirectory("graphics")
+
 target_link_libraries(mss ${SDL2_LIBRARIES})
 target_link_libraries(mss ${SDL2TTF_LIBRARIES})
+target_link_libraries(mss graphics)
 target_include_directories(mss PUBLIC ${SDL2_INCLUDE_DIRS})
 target_include_directories(mss PUBLIC ${SDL2TTF_INCLUDE_DIRS})
 target_include_directories(mss PUBLIC ${mss_SOURCE_DIR})
-target_include_directories(mss PUBLIC ${mss_SOURCE_DIR}/graphics)
 target_include_directories(mss PUBLIC ${mss_SOURCE_DIR}/modules)
 target_compile_options(mss PUBLIC ${SDL2_CFLAGS_OTHER})
 target_compile_options(mss PUBLIC ${SDL2TTF_CFLAGS_OTHER})
