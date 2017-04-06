@@ -42,3 +42,6 @@ bin
 
 # Ctags files
 tags
+
+# Produced Doxygen files
+html
