@@ -218,6 +218,8 @@ void Sah::initialize_unique_graphics_objects()
 void Sah::reset_sampler()
 {
     time_to_next_sample = 0;
+
+    std::cout << name << " sampler reset" << std::endl;
 }
 
 std::string Sah::get_unique_text_representation()

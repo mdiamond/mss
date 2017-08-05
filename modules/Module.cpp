@@ -716,7 +716,7 @@ std::string Module::get_name()
 }
 
 /*
- * Return this module's short name. For example, if this module's name is
+ * Return this modules short name. For example, if this module's name is
  * "oscillator 1", its short name will be "osc 1". A short name is always 5
  * characters long.
  */
@@ -757,7 +757,7 @@ std::string Module::get_text_representation()
 
 /*
  * Set the colors of all input text boxes and input toggle buttons to match
- * their input modules' colors if applicable. If not, set them to this module's
+ * their input modules colors if applicable. If not, set them to this module's
  * colors.
  */
 void Module::adopt_input_colors()
@@ -850,6 +850,15 @@ bool Module::module_selected()
     }
 }
 
+/*
+ * Render the graphics objects that represent this module. Always ensure that
+ * the background rectangle renders first, and then does not render again while
+ * iterating through the vector of graphics objects. Also ensure that if
+ * selecting source mode is active and we are not currently hovering over this
+ * module, we render the module selection rectangle to partially hide the
+ * module, and that it does not render when iterating through the vector of
+ * graphics objects.
+ */
 void Module::render()
 {
     graphics_objects["background rect"]->render();
@@ -862,15 +871,19 @@ void Module::render()
             it->second->render();
         }
     }
-    if(SELECTING_SRC)
+    if(SELECTING_SRC
+       && !graphics_objects["module selection rect"]->mouse_over())
     {
-        if(!graphics_objects["module selection rect"]->mouse_over())
-        {
-            graphics_objects["module selection rect"]->render();
-        }
+        graphics_objects["module selection rect"]->render();
     }
 }
 
+/*
+ * Pass along a click to the specific graphics object that has been clicked.
+ * Graphics objects should only respond to clicks if selecting source mode is
+ * inactive, or if it is the background rectangle (clicks of the background
+ * rectangle are how source selection happens).
+ */
 bool Module::clicked()
 {
     for(auto it = graphics_objects.begin(); it != graphics_objects.end();
