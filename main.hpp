@@ -28,7 +28,7 @@
 
 // Included "other" classes
 #include "Color_Modifier.hpp"
-#include "function_forwarder.hpp"
+#include "Function_Forwarder.hpp"
 
 /**********************
  * EXTERNAL VARIABLES *
@@ -42,7 +42,7 @@ extern Color_Modifier BLUE_STDOUT;
 extern Color_Modifier PINK_STDOUT;
 
 // Audio information
-extern unsigned int SAMPLE_RATE;
+extern const unsigned int SAMPLE_RATE;
 extern unsigned int BUFFER_SIZE;
 extern unsigned int NUM_CHANNELS;
 extern bool AUDIO_ON;
@@ -52,16 +52,16 @@ extern std::vector<std::vector<float> > WAVETABLES;
 
 // Graphics objects and variables
 //   Module dimensions and amount of modules per page
-extern int MODULE_WIDTH;
-extern int MODULE_HEIGHT;
-extern int MODULES_PER_ROW;
-extern int MODULES_PER_COLUMN;
-extern int MODULES_PER_PAGE;
-extern int MODULE_SPACING;
+extern const int MODULE_WIDTH;
+extern const int MODULE_HEIGHT;
+extern const int MODULES_PER_ROW;
+extern const int MODULES_PER_COLUMN;
+extern const int MODULES_PER_PAGE;
+extern const int MODULE_SPACING;
 //   Window dimensions
-extern int MENU_HEIGHT;
-extern int WINDOW_WIDTH;
-extern int WINDOW_HEIGHT;
+extern const int MENU_HEIGHT;
+extern const int WINDOW_WIDTH;
+extern const int WINDOW_HEIGHT;
 extern SDL_Rect WINDOW_RECT;
 //   Colors
 extern SDL_Color BLACK;

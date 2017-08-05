@@ -48,7 +48,7 @@ bool initialize()
         std::cout << "Could not initialize SDL: " << SDL_GetError() << std::endl;
         return false;
     }
-    std::cout << "SDL initialized." << std::endl;
+    std::cout << "SDL initialized" << std::endl;
 
     // Initialize audio device
     if(!open_audio_device())
@@ -71,7 +71,7 @@ bool initialize()
 
     // Initialize graphics library
     initialize_graphics_library(font);
-    std::cout << "Graphics library initialized." << std::endl;
+    std::cout << "Graphics library initialized" << std::endl;
 
     // Open a window
     if(!open_window())
@@ -108,7 +108,7 @@ bool initialize()
 
     // Unpause the audio
     SDL_PauseAudio(0);
-    std::cout << "Audio unpaused." << std::endl;
+    std::cout << "Audio unpaused" << std::endl;
 
     return true;
 }
@@ -138,7 +138,7 @@ bool open_window()
         return false;
     }
 
-    std::cout << "Window opened." << std::endl;
+    std::cout << "Window opened" << std::endl;
 
     return true;
 }
@@ -160,7 +160,7 @@ bool create_renderer()
         return false;
     }
 
-    std::cout << "Renderer created." << std::endl;
+    std::cout << "Renderer created" << std::endl;
 
     return true;
 }
@@ -182,7 +182,7 @@ bool create_texture()
         return false;
     }
 
-    std::cout << "Texture created." << std::endl;
+    std::cout << "Texture created" << std::endl;
 
     SDL_SetRenderTarget(RENDERER, TEXTURE);
 
@@ -204,7 +204,7 @@ bool load_font(TTF_Font **font)
         return false;
     }
 
-    std::cout << "Font loaded." << std::endl;
+    std::cout << "Font loaded" << std::endl;
 
     return true;
 }
@@ -325,7 +325,7 @@ void initialize_utilities_page()
     UTILITIES_PAGE = new Page("utilities & background page", WINDOW_RECT, BLACK,
                               &graphics_objects_vector);
 
-    std::cout << "Utilities page initialized." << std::endl;
+    std::cout << "Utilities page initialized" << std::endl;
 }
 
 /*
@@ -377,7 +377,7 @@ bool open_audio_device()
         return false;
     }
 
-    std::cout << "Audio device opened." << std::endl;
+    std::cout << "Audio device opened" << std::endl;
     std::cout << "Audio details:" << std::endl;
     std::cout << "    Sample rate: " << obtained.freq << std::endl;
     std::cout << "    Format: " << obtained.format << std::endl;
@@ -402,6 +402,6 @@ void initialize_output()
     output->initialize_graphics_objects();
     MODULES.push_back(output);
 
-    std::cout << "Output initialized." << std::endl;
+    std::cout << "Output initialized" << std::endl;
 }
 

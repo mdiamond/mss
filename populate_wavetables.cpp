@@ -121,6 +121,6 @@ void populate_wavetables()
     populate_saw();
     populate_sqr();
 
-    std::cout << "Wavetables populated." << std::endl;
+    std::cout << "Wavetables populated" << std::endl;
 }
 

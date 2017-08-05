@@ -14,7 +14,6 @@
 #include <vector>
 
 // Included files
-#include "function_forwarder.hpp"
 #include "image_processing.hpp"
 #include "main.hpp"
 #include "module_utils.hpp"
@@ -241,10 +240,14 @@ void Module::handle_text_box_event(Text_Box *text_box)
 {
     int input_num = text_box_to_input_num[text_box];
 
+    // If the text box contains a float value, use that to set the value for
+    // the input/parameter associated with the text box
     if(text_box->is_float)
     {
         set(input_num, text_box->as_float);
     }
+    // Otherwise, assume that the text box contains the name of another module
+    // to output to the input associated with the text box
     else
     {
         Module *src = find_module(&text_box->text.text);
@@ -413,7 +416,7 @@ void Module::calculate_unique_graphics_object_locations()
 }
 
 /*
- * This function initializes this module's graphics objects based on the
+ * This function initializes this modules graphics objects based on the
  * locations determined in calculate_unique_graphics_locations(). This is the
  * default implementation, but derived module classes may override it to have
  * more customized interfaces.
@@ -428,7 +431,7 @@ void Module::initialize_unique_graphics_objects()
                      graphics_object_locations["waveform"],
                      primary_module_color, secondary_module_color, &out);
 
-    // Initialize text, text box, and toggle button for this parameter input
+    // Initialize text, text box, and toggle button for this parameter/input
     for(unsigned int i = 0; i < parameter_names.at(module_type).size(); i ++)
     {
         parameter_name = parameter_names.at(module_type).at(i);
@@ -508,6 +511,8 @@ void Module::calculate_graphics_object_locations()
 
     graphics_object_locations["background rect"] =
         {upper_left.x, upper_left.y, MODULE_WIDTH, MODULE_HEIGHT};
+    graphics_object_locations["module selection rect"] =
+        graphics_object_locations["background rect"];
     graphics_object_locations["name text"] =
         {upper_left.x + 2, upper_left.y + 3, 0, 0};
     graphics_object_locations["remove module button"] =
@@ -533,21 +538,29 @@ void Module::initialize_graphics_objects()
     // Calculate the locations of all graphics objects
     calculate_graphics_object_locations();
 
-    // graphics_objects[0] is the background rectangle
+    // the background rectangle
     rect = new Rect(name + " background rect",
                     graphics_object_locations["background rect"],
                     primary_module_color,
                     this);
     graphics_objects["background rect"] = rect;
 
-    // graphics_objects[1] is the name of the object
+    // the module selection rectangle
+    rect = new Rect(name + " module selection rect",
+                    graphics_object_locations["module selection rect"],
+                    BLACK,
+                    this);
+    graphics_objects["module selection rect"] = rect;
+    rect->color.a = 127;
+
+    // the name of the object
     text = new Text(name + " module name text",
                     graphics_object_locations["name text"],
                     secondary_module_color,
                     name);
     graphics_objects["name text"] = text;
 
-    // graphics_objects[2] is the remove module button
+    // the remove module button
     button = new Button(name + " remove module button",
                         graphics_object_locations["remove module button"],
                         secondary_module_color,
@@ -564,7 +577,7 @@ void Module::initialize_graphics_objects()
 }
 
 /*
- * Update the locations of all graphics object.
+ * Update the locations of all graphics objects.
  */
 void Module::update_graphics_object_locations()
 {
@@ -843,9 +856,17 @@ void Module::render()
     for(auto it = graphics_objects.begin(); it != graphics_objects.end();
         it ++)
     {
-        if(it->first != "background rect")
+        if(it->first != "background rect"
+           && it->first != "module selection rect")
         {
             it->second->render();
+        }
+    }
+    if(SELECTING_SRC)
+    {
+        if(!graphics_objects["module selection rect"]->mouse_over())
+        {
+            graphics_objects["module selection rect"]->render();
         }
     }
 }

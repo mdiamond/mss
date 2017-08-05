@@ -18,7 +18,7 @@
 #include "SDL_ttf.h"
 
 // Included files
-#include "function_forwarder.hpp"
+#include "Function_Forwarder.hpp"
 #include "main.hpp"
 #include "module_utils.hpp"
 

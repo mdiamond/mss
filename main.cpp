@@ -42,7 +42,7 @@ Color_Modifier BLUE_STDOUT(Color_Modifier::FG_BLUE);
 Color_Modifier PINK_STDOUT(Color_Modifier::FG_PINK);
 
 // Audio information
-unsigned int SAMPLE_RATE = 44100;
+const unsigned int SAMPLE_RATE = 44100;
 unsigned int BUFFER_SIZE;
 unsigned int NUM_CHANNELS;
 bool AUDIO_ON = true;
@@ -51,20 +51,20 @@ bool AUDIO_ON = true;
 std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
                                                                   0));
 // Module dimensions and amount of modules per page
-int MODULE_WIDTH = 160;
-int MODULE_HEIGHT = 135;
-int MODULES_PER_ROW = 6;
-int MODULES_PER_COLUMN = 5;
-int MODULES_PER_PAGE = MODULES_PER_ROW * MODULES_PER_COLUMN;
-int MODULE_SPACING = 2;
+const int MODULE_WIDTH = 160;
+const int MODULE_HEIGHT = 135;
+const int MODULES_PER_ROW = 6;
+const int MODULES_PER_COLUMN = 5;
+const int MODULES_PER_PAGE = MODULES_PER_ROW * MODULES_PER_COLUMN;
+const int MODULE_SPACING = 2;
 
 // Window dimensions
-int MENU_HEIGHT = 9 + MODULE_SPACING;
-int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
-                   ((MODULES_PER_ROW - 1) * MODULE_SPACING);
-int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
-                    (MODULES_PER_COLUMN * MODULE_SPACING) +
-                    (MENU_HEIGHT * 2);
+const int MENU_HEIGHT = 9 + MODULE_SPACING;
+const int WINDOW_WIDTH = (MODULES_PER_ROW * MODULE_WIDTH) +
+                         ((MODULES_PER_ROW - 1) * MODULE_SPACING);
+const int WINDOW_HEIGHT = (MODULES_PER_COLUMN * MODULE_HEIGHT) +
+                          (MODULES_PER_COLUMN * MODULE_SPACING) +
+                          (MENU_HEIGHT * 2);
 SDL_Rect WINDOW_RECT = {0, 0, WINDOW_WIDTH, WINDOW_HEIGHT};
 
 // Colors
@@ -130,7 +130,7 @@ int main()
     }
 
     // If this is normal mode, open SDL, initialize necessary
-    // objects, and begin processing audio and video
+    // objects, and begin processing audio and graphics
     else
     {
         if(!normal_mode())
@@ -140,7 +140,7 @@ int main()
     }
 
     // Return an exit status based on whether or not
-    // the function called above succeeded and terminate
+    // the function called above succeeded
     std::cout << "Terminating..." << std::endl;
     return exit_status;
 }
