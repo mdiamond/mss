@@ -50,8 +50,14 @@ bool initialize()
     }
     std::cout << "SDL initialized" << std::endl;
 
-    // Initialize audio device
-    if(!open_audio_device())
+    // Initialize audio output device
+    if(!open_audio_output_device())
+    {
+        return false;
+    }
+
+    // Initialize audio input device
+    if(!open_audio_input_device())
     {
         return false;
     }
@@ -107,6 +113,7 @@ bool initialize()
     prettify_utilities_page();
 
     // Unpause the audio
+    SDL_PauseAudioDevice(AUDIO_INPUT_DEVICE_ID, 0);
     SDL_PauseAudio(0);
     std::cout << "Audio unpaused" << std::endl;
 
@@ -235,6 +242,10 @@ void initialize_utilities_page()
     location =
         {location.x + location.w + MODULE_SPACING, location.y, 57,
          location.h};
+    locations["add input button"] = location;
+    location =
+        {location.x + location.w + MODULE_SPACING, location.y, 57,
+         location.h};
     locations["add mixer button"] = location;
     location =
         {location.x + location.w + MODULE_SPACING, location.y, 87,
@@ -283,6 +294,9 @@ void initialize_utilities_page()
     graphics_objects["add filter button"] =
         new Button("add filter button", locations["add filter button"], WHITE,
                    BLACK, "ADD FILTER", NO_MODULE_LISTENER);
+    graphics_objects["add input button"] =
+        new Button("add input button", locations["add input button"], WHITE,
+                   BLACK, "ADD INPUT", NO_MODULE_LISTENER);
     graphics_objects["add mixer button"] =
         new Button("add mixer button", locations["add mixer button"], WHITE,
                    BLACK, "ADD MIXER", NO_MODULE_LISTENER);
@@ -357,28 +371,28 @@ void prettify_utilities_page()
  *****************************************/
 
 /*
- * Open the audio device with a simple configuration.
+ * Open the audio output device with a simple configuration. Return whether or
+ * not opening the audio output device was successful.
  */
-bool open_audio_device()
+bool open_audio_output_device()
 {
     SDL_AudioSpec wanted, obtained;
 
     wanted.freq = SAMPLE_RATE;
-    wanted.format = AUDIO_F32SYS;
+    wanted.format = AUDIO_F32;
     wanted.channels = 2;
-    wanted.samples = 512;
-    wanted.callback = audio_callback;
+    wanted.samples = 1024;
+    wanted.callback = audio_output_callback;
     wanted.userdata = NULL;
 
-    if(SDL_OpenAudio(&wanted, &obtained) == -1)
+    if(SDL_OpenAudio(&wanted, &obtained) < 0)
     {
-        std::cout << RED_STDOUT << "Could not open the audio device: "
+        std::cout << RED_STDOUT << "Could not open the audio output device: "
                   << SDL_GetError() << DEFAULT_STDOUT << std::endl;
         return false;
     }
 
-    std::cout << "Audio device opened" << std::endl;
-    std::cout << "Audio details:" << std::endl;
+    std::cout << "Audio output device opened" << std::endl;
     std::cout << "    Sample rate: " << obtained.freq << std::endl;
     std::cout << "    Format: " << obtained.format << std::endl;
     std::cout << "    Channels: " << obtained.channels << std::endl;
@@ -387,6 +401,59 @@ bool open_audio_device()
 
     BUFFER_SIZE = obtained.samples;
     NUM_CHANNELS = obtained.channels;
+
+    // Return success
+    return true;
+}
+
+/*
+ * Open the audio input device. Return whether or not it was opened
+ * successfully.
+ */
+bool open_audio_input_device()
+{
+    SDL_AudioSpec wanted, obtained;
+
+    wanted.freq = SAMPLE_RATE;
+    wanted.format = AUDIO_F32;
+    wanted.channels = 1;
+    wanted.samples = 1024;
+    wanted.callback = audio_input_callback;
+    wanted.userdata = NULL;
+
+    /* const int count = SDL_GetNumAudioDevices(1); */
+
+    /* for(int i = 0; i < count; i ++) */
+    /* { */
+    /*     std::cout << "Device #" << i << ", device name: " */
+    /*               << SDL_GetAudioDeviceName(i, 1) << std::endl; */
+    /* } */
+
+    AUDIO_INPUT_DEVICE_ID = SDL_OpenAudioDevice(SDL_GetAudioDeviceName(0, 1),
+                                                1, &wanted, &obtained, 0);
+
+    if(AUDIO_INPUT_DEVICE_ID == 0)
+    {
+        std::cout << RED_STDOUT << "Could not open the audio input device: "
+                  << SDL_GetError() << DEFAULT_STDOUT << std::endl;
+        return false;
+    }
+    if(obtained.samples != BUFFER_SIZE)
+    {
+        std::cout << RED_STDOUT << "Audio input buffer is not the same size "
+                                   "as audio output buffer!"
+                                << DEFAULT_STDOUT << std::endl;
+        return false;
+    }
+
+    std::cout << "Audio input device opened" << std::endl;
+    std::cout << "    Sample rate: " << obtained.freq << std::endl;
+    std::cout << "    Format: " << obtained.format << std::endl;
+    std::cout << "    Channels: " << obtained.channels << std::endl;
+    std::cout << "    Buffer size in samples: " << obtained.samples << std::endl;
+    std::cout << "    Buffer size in bytes: " << obtained.size << std::endl;
+
+    AUDIO_IN = std::vector<float>(BUFFER_SIZE, 0);
 
     // Return success
     return true;

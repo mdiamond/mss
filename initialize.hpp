@@ -29,7 +29,8 @@ void initialize_utilities_page();
 void prettify_utilities_page();
 
 // Audio related initialization functions
-bool open_audio_device();
+bool open_audio_output_device();
+bool open_audio_input_device();
 void initialize_output();
 
 #endif

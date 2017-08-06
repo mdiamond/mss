@@ -45,6 +45,9 @@ void create_module(int type)
     case Module::FILTER:
         module = new Filter();
         break;
+    case Module::INPUT:
+        module = new Input();
+        break;
     case Module::MIXER:
         module = new Mixer();
         break;

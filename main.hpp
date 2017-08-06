@@ -47,6 +47,10 @@ extern unsigned int BUFFER_SIZE;
 extern unsigned int NUM_CHANNELS;
 extern bool AUDIO_ON;
 
+// Audio input device id and buffer
+extern SDL_AudioDeviceID AUDIO_INPUT_DEVICE_ID;
+extern std::vector<float> AUDIO_IN;
+
 // Wavetables
 extern std::vector<std::vector<float> > WAVETABLES;
 

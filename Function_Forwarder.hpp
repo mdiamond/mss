@@ -35,9 +35,10 @@ public:
 private:
     std::vector<std::string> possible_names =
         {"add adsr button", "add delay button", "add filter button",
-         "add mixer button", "add multiplier button", "add noise button",
-         "add oscillator button", "add sah button", "previous page button",
-         "next page button", "save patch text box", "load patch text box"
+         "add input button", "add mixer button", "add multiplier button",
+         "add noise button", "add oscillator button", "add sah button",
+         "previous page button", "next page button", "save patch text box",
+         "load patch text box"
         };
 };
 

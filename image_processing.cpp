@@ -125,7 +125,7 @@ void draw_surface()
     SDL_RenderClear(RENDERER);
 
     // Copy audio data into waveform objects so that they will render without hiccups
-    SDL_LockAudio();
+    /* SDL_LockAudio(); */
     for(unsigned int i = 0; i < MODULES.size(); i ++)
     {
         if(MODULES[i] != NULL)
@@ -141,7 +141,7 @@ void draw_surface()
             }
         }
     }
-    SDL_UnlockAudio();
+    /* SDL_UnlockAudio(); */
 
     // Render graphics objects for the current page
     PAGES[CURRENT_PAGE]->render();

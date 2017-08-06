@@ -18,6 +18,7 @@
 #include "Modules/Adsr.hpp"
 #include "Modules/Delay.hpp"
 #include "Modules/Filter.hpp"
+#include "Modules/Input.hpp"
 #include "Modules/Mixer.hpp"
 #include "Modules/Multiplier.hpp"
 #include "Modules/Noise.hpp"

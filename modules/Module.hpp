@@ -50,6 +50,7 @@ public:
         ADSR = 0,
         DELAY,
         FILTER,
+        INPUT,
         MIXER,
         MULTIPLIER,
         NOISE,

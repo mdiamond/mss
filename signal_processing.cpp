@@ -37,7 +37,7 @@
  * processed and ready, the buffer is filled with the waiting samples
  * in the output modules left and right channel output buffers.
  */
-void audio_callback(void *userdata_, Uint8 *buffer_, int length_)
+void audio_output_callback(void *userdata_, Uint8 *buffer_, int length_)
 {
     // Cast the buffer to a float buffer
     float (*buffer)[NUM_CHANNELS] = (float (*)[NUM_CHANNELS]) buffer_;
@@ -67,21 +67,23 @@ void audio_callback(void *userdata_, Uint8 *buffer_, int length_)
             MODULES[i]->processed = false;
         }
     }
+}
 
-    // for(unsigned int i = 1; i < MODULES.size(); i ++)
-    // {
-    //     if(MODULES[i] != NULL)
-    //     {
-    //         for(int j = 0; j < BUFFER_SIZE; j ++)
-    //         {
-    //             if(MODULES[i]->output[j] > 1 || MODULES[i]->output[j] < -1)
-    //             {
-    //                 std::cout << RED_STDOUT << MODULES[i]->name << " is clipping" << DEFAULT_STDOUT << std::endl;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
+/*
+ * Audio callback which provides a buffer filled with audio input. All that
+ * needs to happen in this function is copying the samples into the globally
+ * accessible audio input buffer.
+ */
+void audio_input_callback(void *userdata_, Uint8 *buffer_, int length_)
+{
+    // Cast the buffer to a float buffer
+    float *buffer = (float *) buffer_;
+
+    // Copy the input signal into the globally accessible audio in vector
+    for(unsigned int i = 0; i < BUFFER_SIZE; i ++)
+    {
+        AUDIO_IN[i] = buffer[i];
+    }
 }
 
 /*******************************

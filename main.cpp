@@ -47,6 +47,10 @@ unsigned int BUFFER_SIZE;
 unsigned int NUM_CHANNELS;
 bool AUDIO_ON = true;
 
+// Audio input device id and buffer
+SDL_AudioDeviceID AUDIO_INPUT_DEVICE_ID;
+std::vector<float> AUDIO_IN;
+
 // Wavetables
 std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
                                                                   0));

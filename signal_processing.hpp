@@ -21,7 +21,8 @@ class Waveform;
  *************************/
 
 // Audio and k rate callback functions
-void audio_callback(void *, Uint8 *, int);
+void audio_output_callback(void *, Uint8 *, int);
+void audio_input_callback(void *, Uint8 *, int);
 Uint32 k_rate_callback_function(Uint32, void *);
 
 // Signal processing functions

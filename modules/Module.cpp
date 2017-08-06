@@ -39,6 +39,7 @@ const std::map<Module::ModuleType, std::string> Module::module_names =
     {ADSR, "adsr"},
     {DELAY, "delay"},
     {FILTER, "filter"},
+    {INPUT, "input"},
     {MIXER, "mixer"},
     {MULTIPLIER, "multiplier"},
     {NOISE, "noise"},
@@ -80,6 +81,11 @@ const std::map<Module::ModuleType,
             "signal",
             "frequency cutoff",
             "q"
+        }
+    },
+    {
+        INPUT,
+        {
         }
     },
     {

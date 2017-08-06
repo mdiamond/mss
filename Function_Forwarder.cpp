@@ -56,37 +56,41 @@ bool Function_Forwarder::handle_event(Graphics_Object *g)
     }
     else if(g->name == possible_names[3])
     {
-        create_module(Module::MIXER);
+        create_module(Module::INPUT);
     }
     else if(g->name == possible_names[4])
     {
-        create_module(Module::MULTIPLIER);
+        create_module(Module::MIXER);
     }
     else if(g->name == possible_names[5])
     {
-        create_module(Module::NOISE);
+        create_module(Module::MULTIPLIER);
     }
     else if(g->name == possible_names[6])
     {
-        create_module(Module::OSCILLATOR);
+        create_module(Module::NOISE);
     }
     else if(g->name == possible_names[7])
     {
-        create_module(Module::SAH);
+        create_module(Module::OSCILLATOR);
     }
     else if(g->name == possible_names[8])
     {
-        increment_page_number(-1);
+        create_module(Module::SAH);
     }
     else if(g->name == possible_names[9])
     {
-        increment_page_number(1);
+        increment_page_number(-1);
     }
     else if(g->name == possible_names[10])
     {
-        save_patch(((Text_Box *) g)->text.text);
+        increment_page_number(1);
     }
     else if(g->name == possible_names[11])
+    {
+        save_patch(((Text_Box *) g)->text.text);
+    }
+    else if(g->name == possible_names[12])
     {
         load_patch(((Text_Box *) g)->text.text);
     }
