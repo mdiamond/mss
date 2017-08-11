@@ -13,9 +13,9 @@
 TTF_Font *FONT = nullptr;
 bool SHOW_TYPING_CURSOR = false;
 
-SDL_Window *WINDOW;
-SDL_Renderer *RENDERER;
-SDL_Texture *TEXTURE;
+SDL_Window *WINDOW = nullptr;
+SDL_Renderer *RENDERER = nullptr;
+SDL_Texture *TEXTURE = nullptr;
 
 int MOUSE_X = 0;
 int MOUSE_Y = 0;
