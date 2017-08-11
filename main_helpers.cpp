@@ -51,10 +51,12 @@ void destroy_pages()
 void destroy_modules()
 {
     for(unsigned int i = 0; i < MODULES.size(); i ++)
+    {
         if(MODULES[i] != NULL)
         {
             delete MODULES[i];
         }
+    }
 }
 
 /*
@@ -62,21 +64,36 @@ void destroy_modules()
  */
 void cleanup()
 {
+    // Pause audio
+    SDL_PauseAudio(1);
+
     // Destroy the renderer
-    SDL_DestroyRenderer(RENDERER);
-    std::cout << "Destroyed renderer" << std::endl;
+    if(RENDERER != nullptr)
+    {
+        SDL_DestroyRenderer(RENDERER);
+        std::cout << "Destroyed renderer" << std::endl;
+    }
 
     // Destroy the window
-    SDL_DestroyWindow(WINDOW);
-    std::cout << "Destroyed window" << std::endl;
+    if(WINDOW != nullptr)
+    {
+        SDL_DestroyWindow(WINDOW);
+        std::cout << "Destroyed window" << std::endl;
+    }
 
     // Destroy the modules
-    destroy_modules();
-    std::cout << "Destroyed all modules" << std::endl;
+    if(!MODULES.empty())
+    {
+        destroy_modules();
+        std::cout << "Destroyed all modules" << std::endl;
+    }
 
     // Destroy all pages
-    destroy_pages();
-    std::cout << "Destroyed all pages" << std::endl;
+    if(!PAGES.empty())
+    {
+        destroy_pages();
+        std::cout << "Destroyed all pages" << std::endl;
+    }
 
     // Quit SDL
     SDL_Quit();
@@ -145,9 +162,6 @@ bool normal_mode()
             toggle_show_typing_cursor();
         }
     }
-
-    // Pause audio
-    SDL_PauseAudio(1);
 
     // Clean up
     cleanup();
