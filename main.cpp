@@ -120,7 +120,7 @@ bool testing = false;
  * If run normally, this function will open the audio device,
  * initialize the output module, and then wait for user interaction.
  */
-int main()
+int main(int argc, char **argv)
 {
     int exit_status = 0;
 

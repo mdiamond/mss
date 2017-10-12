@@ -40,6 +40,7 @@ Oscillator::Oscillator() :
     waveform_type(SIN), sin_on(true), tri_on(false),
     saw_on(false), sqr_on(false)
 {
+    inputs[OSCILLATOR_PHASE_OFFSET].val = 0;
     inputs[OSCILLATOR_PULSE_WIDTH].val = .5;
     inputs[OSCILLATOR_RANGE_LOW].val = -1;
     inputs[OSCILLATOR_RANGE_HIGH].val = 1;
@@ -504,7 +505,7 @@ void Oscillator::switch_waveform(WaveformType waveform_type_)
  */
 void Oscillator::reset_phase()
 {
-    phase = 0;
+    phase = inputs[OSCILLATOR_PHASE_OFFSET].val;
 
     std::cout << name << " phase reset" << std::endl;
 }
