@@ -8,6 +8,7 @@
  ************/
 
 // Included libraries
+#include <cmath>
 #include <iostream>
 #include <vector>
 
