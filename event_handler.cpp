@@ -66,31 +66,38 @@ void keydown_event(SDL_Event *e)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
         {
-            create_module(Module::MIXER);
+            create_module(Module::INPUT);
         }
     }
     else if(e->key.keysym.sym == SDLK_5)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
         {
-            create_module(Module::MULTIPLIER);
+            create_module(Module::MIXER);
         }
     }
     else if(e->key.keysym.sym == SDLK_6)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
         {
-            create_module(Module::NOISE);
+            create_module(Module::MULTIPLIER);
         }
     }
     else if(e->key.keysym.sym == SDLK_7)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
         {
-            create_module(Module::OSCILLATOR);
+            create_module(Module::NOISE);
         }
     }
     else if(e->key.keysym.sym == SDLK_8)
+    {
+        if(e->key.keysym.mod & KMOD_LCTRL)
+        {
+            create_module(Module::OSCILLATOR);
+        }
+    }
+    else if(e->key.keysym.sym == SDLK_9)
     {
         if(e->key.keysym.mod & KMOD_LCTRL)
         {
