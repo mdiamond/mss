@@ -35,12 +35,12 @@
  * output module to process, which recursively triggers the processing
  * of samples down the entire signal chain. Once all samples are
  * processed and ready, the buffer is filled with the waiting samples
- * in the output modules left and right channel output buffers.
+ * in the output modules inputs.
  */
 void audio_callback(void *userdata_, Uint8 *buffer_, int length_)
 {
     // Cast the buffer to a float buffer
-    float (*buffer)[NUM_CHANNELS] = (float (*)[NUM_CHANNELS]) buffer_;
+    float *buffer = (float *) buffer_;
 
     // Get the address of the output module for later use
     Output *output = (Output *) MODULES[0];
@@ -51,15 +51,18 @@ void audio_callback(void *userdata_, Uint8 *buffer_, int length_)
     // the beginning of the signal chain will be processed first
     output->process();
 
+    // Populate the audio buffer, either with samples from the inputs to the
+    // output module, or with 0s if there is no input for the channel
     for(unsigned int i = 0; i < BUFFER_SIZE; i ++)
     {
         for(unsigned int j = 0; j < NUM_CHANNELS; j ++)
         {
-            buffer[i][j] = output->inputs[j].live
-                           ? output->inputs[j].in->at(i) : 0;
+            *buffer = output->inputs[j].live ? output->inputs[j].in->at(i) : 0;
+            buffer ++;
         }
     }
 
+    // Mark all modules as not processed
     for(unsigned int i = 1; i < MODULES.size(); i ++)
     {
         if(MODULES[i] != NULL)
@@ -67,21 +70,6 @@ void audio_callback(void *userdata_, Uint8 *buffer_, int length_)
             MODULES[i]->processed = false;
         }
     }
-
-    // for(unsigned int i = 1; i < MODULES.size(); i ++)
-    // {
-    //     if(MODULES[i] != NULL)
-    //     {
-    //         for(int j = 0; j < BUFFER_SIZE; j ++)
-    //         {
-    //             if(MODULES[i]->output[j] > 1 || MODULES[i]->output[j] < -1)
-    //             {
-    //                 std::cout << RED_STDOUT << MODULES[i]->name << " is clipping" << DEFAULT_STDOUT << std::endl;
-    //                 break;
-    //             }
-    //         }
-    //     }
-    // }
 }
 
 /*******************************

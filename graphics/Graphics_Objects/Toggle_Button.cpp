@@ -35,10 +35,10 @@ Toggle_Button::Toggle_Button(std::string name_, SDL_Rect location_,
                              bool b_, Graphics_Listener *listener_) :
     Button(name_, location_, color_, text_color_on_, text_on_, listener_),
     b(b_), color_off(color_off_),
-    text_off(Text(name_ + " text (off)", location_, text_color_off_,
-                  text_off_)),
     background_off(Rect(name_ + " background rect (off)", location_,
-                        color_off_, NULL))
+                        color_off_, NULL)),
+    text_off(Text(name_ + " text (off)", location_, text_color_off_,
+                  text_off_))
 {
     graphics_object_type = TOGGLE_BUTTON;
 }

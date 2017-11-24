@@ -48,7 +48,7 @@ extern unsigned int NUM_CHANNELS;
 extern bool AUDIO_ON;
 
 // Wavetables
-extern std::vector<std::vector<float> > WAVETABLES;
+extern std::vector<std::vector<float>> WAVETABLES;
 
 // Graphics objects and variables
 //   Module dimensions and amount of modules per page

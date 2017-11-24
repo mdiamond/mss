@@ -9,15 +9,8 @@
 
 // Included libraries
 #include <iostream>
-#include <string>
-#include <vector>
-
-// Included SDL components
-#include "SDL.h"
-#include "SDL_ttf.h"
 
 // Included files
-#include "image_processing.hpp"
 #include "main.hpp"
 
 /********************
@@ -29,13 +22,9 @@
  */
 void increment_page_number(int num)
 {
-    unsigned int tmp = CURRENT_PAGE;
-
-    tmp += num;
-
-    if(tmp >= 0 && tmp < PAGES.size())
+    if(CURRENT_PAGE + num < PAGES.size())
     {
-        CURRENT_PAGE = tmp;
+        CURRENT_PAGE += num;
         std::cout << "Switched to page " << CURRENT_PAGE << std::endl;
     }
 }

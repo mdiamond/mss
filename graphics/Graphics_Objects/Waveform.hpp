@@ -11,6 +11,9 @@
  * INCLUDES *
  ************/
 
+// Included libraries
+#include <vector>
+
 // Included SDL componenets
 #include "SDL.h"
 

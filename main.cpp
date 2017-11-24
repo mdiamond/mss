@@ -48,7 +48,7 @@ unsigned int NUM_CHANNELS;
 bool AUDIO_ON = true;
 
 // Wavetables
-std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
+std::vector<std::vector<float>> WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
                                                                   0));
 // Module dimensions and amount of modules per page
 const int MODULE_WIDTH = 160;
