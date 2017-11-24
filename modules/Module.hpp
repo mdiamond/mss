@@ -81,7 +81,7 @@ public:
     //   Map of the names per module type
     static const std::map<ModuleType, std::string> module_names;
     //   Map of the parameters per module type
-    static const std::map<ModuleType, std::vector<std::string> > parameter_names;
+    static const std::map<ModuleType, std::vector<std::string>> parameter_names;
 
     // Maps that associate particular text boxes and toggle buttons with
     // particular module input numbers

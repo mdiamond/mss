@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 2.8.12)
 
-add_compile_options(-std=c++11)
+add_compile_options(-std=c++14)
 add_compile_options(-g)
 add_compile_options(-O0)
 add_compile_options(-Wall)
+add_compile_options(-pedantic)
 add_compile_options(-fdiagnostics-color=always)
 if(APPLE)
     add_compile_options(-stdlib=libc++)
