@@ -53,7 +53,7 @@ const std::map<Module::ModuleType, std::string> Module::module_names =
  ******************************************/
 
 const std::map<Module::ModuleType,
-               std::vector<std::string> > Module::parameter_names =
+               std::vector<std::string>> Module::parameter_names =
 {
     {
         ADSR,

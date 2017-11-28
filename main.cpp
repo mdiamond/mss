@@ -52,7 +52,7 @@ SDL_AudioDeviceID AUDIO_INPUT_DEVICE_ID;
 std::vector<float> AUDIO_IN;
 
 // Wavetables
-std::vector<std::vector<float> > WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
+std::vector<std::vector<float>> WAVETABLES(4, std::vector<float>(SAMPLE_RATE,
                                                                   0));
 // Module dimensions and amount of modules per page
 const int MODULE_WIDTH = 160;

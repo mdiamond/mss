@@ -151,7 +151,7 @@ void keydown_event(SDL_Event *e)
  * clicked() function. Return true if something
  * was clicked, false if nothing was clicked.
  */
-void check_click()
+void handle_click()
 {
     Page *p = PAGES[CURRENT_PAGE];
 
@@ -170,13 +170,13 @@ void check_click()
  * Handle SDL_MOUSEBUTTONDOWN and SDL_MOUSEMOTION
  * events.
  */
-void mouse_event(SDL_Event *e)
+void handle_mouse_event(SDL_Event *e)
 {
     MOUSE_X = e->motion.x;
     MOUSE_Y = e->motion.y;
     if(e->type == SDL_MOUSEBUTTONDOWN)
     {
-        check_click();
+        handle_click();
     }
 }
 
@@ -225,7 +225,7 @@ bool event_handler(SDL_Event *e)
         else if(e->type == SDL_MOUSEBUTTONDOWN ||
                 e->type == SDL_MOUSEMOTION)
         {
-            mouse_event(e);
+            handle_mouse_event(e);
         }
     }
 

@@ -52,7 +52,7 @@ extern SDL_AudioDeviceID AUDIO_INPUT_DEVICE_ID;
 extern std::vector<float> AUDIO_IN;
 
 // Wavetables
-extern std::vector<std::vector<float> > WAVETABLES;
+extern std::vector<std::vector<float>> WAVETABLES;
 
 // Graphics objects and variables
 //   Module dimensions and amount of modules per page
