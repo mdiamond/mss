@@ -1,3 +1,3 @@
-# MSS - Modular Software-based Synthesizer
-A modular synthesizer for creating sound.
+# mss - modular software synthesizer
+A modular synthesizer for creating and manipulating sound.
 
