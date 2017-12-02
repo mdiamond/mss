@@ -13,12 +13,12 @@ endif()
 project(mss)
 
 file(GLOB mss_SRC
-     "*.cpp"
-     "*.hpp")
+     "src/*.cpp"
+     "src/*.hpp")
 
 file(GLOB_RECURSE modules_SRC
-     "modules/*.cpp"
-     "modules/*.hpp")
+     "src/modules/*.cpp"
+     "src/modules/*.hpp")
 
 add_executable(mss ${mss_SRC} ${modules_SRC})
 
@@ -34,15 +34,15 @@ message(STATUS "SDL2_ttf include directory: " ${SDL2TTF_INCLUDE_DIRS})
 message(STATUS "SDL2_ttf library directory: " ${SDL2TTF_LIBRARIES})
 message(STATUS "SDL2_ttf cflags other: " ${SDL2TTF_CFLAGS_OTHER})
 
-add_subdirectory("graphics")
+add_subdirectory("src/graphics")
 
 target_link_libraries(mss ${SDL2_LIBRARIES})
 target_link_libraries(mss ${SDL2TTF_LIBRARIES})
 target_link_libraries(mss graphics)
 target_include_directories(mss PUBLIC ${SDL2_INCLUDE_DIRS})
 target_include_directories(mss PUBLIC ${SDL2TTF_INCLUDE_DIRS})
-target_include_directories(mss PUBLIC ${mss_SOURCE_DIR})
-target_include_directories(mss PUBLIC ${mss_SOURCE_DIR}/modules)
+target_include_directories(mss PUBLIC ${mss_SOURCE_DIR}/src)
+target_include_directories(mss PUBLIC ${mss_SOURCE_DIR}/src/modules)
 target_compile_options(mss PUBLIC ${SDL2_CFLAGS_OTHER})
 target_compile_options(mss PUBLIC ${SDL2TTF_CFLAGS_OTHER})
 
