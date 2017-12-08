@@ -41,6 +41,8 @@ Toggle_Button::Toggle_Button(std::string name_, SDL_Rect location_,
                   text_off_))
 {
     graphics_object_type = TOGGLE_BUTTON;
+    // Make the text start 1 pixel away from the edge of the containing box
+    text_off.location.x += 1;
 }
 
 /*
@@ -79,6 +81,7 @@ void Toggle_Button::update_location(SDL_Rect location_)
     Button::update_location(location);
     background_off.update_location(location_);
     text_off.update_location(location_);
+    text_off.location.x += 1;
     updated = true;
 }
 

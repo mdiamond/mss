@@ -229,18 +229,18 @@ void initialize_utilities_page()
     std::vector<Graphics_Object *> graphics_objects_vector;
 
     location =
-        {2, WINDOW_HEIGHT - (MENU_HEIGHT * 2), 51, 9};
+        {2, WINDOW_HEIGHT - (MENU_HEIGHT * 2), 49, 9};
     locations["add adsr button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 57,
+        {location.x + location.w + MODULE_SPACING, location.y, 55,
          location.h};
     locations["add delay button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 63,
+        {location.x + location.w + MODULE_SPACING, location.y, 61,
          location.h};
     locations["add filter button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 57,
+        {location.x + location.w + MODULE_SPACING, location.y, 55,
          location.h};
     locations["add input button"] = location;
     location =
@@ -248,27 +248,27 @@ void initialize_utilities_page()
          location.h};
     locations["add mixer button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 87,
+        {location.x + location.w + MODULE_SPACING, location.y, 85,
          location.h};
     locations["add multiplier button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 57,
+        {location.x + location.w + MODULE_SPACING, location.y, 55,
          location.h};
     locations["add noise button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 87,
+        {location.x + location.w + MODULE_SPACING, location.y, 85,
          location.h};
     locations["add oscillator button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 45,
+        {location.x + location.w + MODULE_SPACING, location.y, 43,
          location.h};
     locations["add sah button"] = location;
     location =
-        {WINDOW_WIDTH - 81 - 57 - (2 * MODULE_SPACING), location.y, 81,
+        {WINDOW_WIDTH - 79 - 55 - (2 * MODULE_SPACING), location.y, 79,
          location.h};
     locations["previous page button"] = location;
     location =
-        {location.x + location.w + MODULE_SPACING, location.y, 57,
+        {location.x + location.w + MODULE_SPACING, location.y, 55,
          location.h};
     locations["next page button"] = location;
     location =

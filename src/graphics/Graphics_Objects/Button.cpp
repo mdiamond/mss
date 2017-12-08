@@ -58,6 +58,7 @@ void Button::update_location(SDL_Rect location_)
     location = location_;
     background.update_location(location_);
     text.update_location(location_);
+    text.location.x += 1;
     updated = true;
 }
 

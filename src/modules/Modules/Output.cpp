@@ -115,7 +115,7 @@ void Output::calculate_unique_graphics_object_locations()
     graphics_object_locations["input right toggle button"] = location;
 
     // Audio on/off related graphics object locations
-    location = {upper_left.x, location.y + 10, 0, 0};
+    location = {upper_left.x + 2, location.y + 10, 0, 0};
     graphics_object_locations["audio text"] = location;
     location = {upper_left.x, location.y + 10, MODULE_WIDTH, 9};
     graphics_object_locations["audio toggle button"] = location;
