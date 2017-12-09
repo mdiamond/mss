@@ -1,6 +1,8 @@
 # Modular Software Synthesizer
 A modular synthesizer for creating and manipulating sound, programmed in C++ with SDL2.
 
+![mss screenshot](https://mdiamond.github.io/images/new_mss_screenshot.png)
+
 ## Dependencies
 * cmake
 * ninja
